@@ -1,0 +1,271 @@
+# Tool Registry
+#
+# Global catalog of evaluated tools for squad integration
+#
+# Squad: squad-creator
+# Created: 2025-01-01
+
+name: tool-registry
+version: 1.0.0
+description: "Global catalog of evaluated tools for squad integration"
+
+# Metadata
+metadata:
+  created: 2025-01-01
+  author: squad-creator
+  squad: squad-creator
+  tags: [tools, registry, evaluation]
+
+# Data schema definition
+schema:
+  type: object
+  required: [id, name, category, tier]
+  properties:
+    id:
+      type: string
+      description: "Unique tool identifier (kebab-case)"
+      pattern: "^[a-z][a-z0-9-]*$"
+    name:
+      type: string
+      description: "Human-readable tool name"
+    category:
+      type: string
+      description: "Tool category by discovery channel"
+      enum: [mcp, api, cli, library, github]
+    tier:
+      type: string
+      description: "Quality tier based on evaluation percentile"
+      enum: [tier-1, tier-2, tier-3, tier-4]
+    rice_score:
+      type: number
+      description: "RICE evaluation score (0-100)"
+      minimum: 0
+    wsjf_score:
+      type: number
+      description: "WSJF evaluation score (0-100)"
+      minimum: 0
+    security_gate:
+      type: string
+      description: "Security evaluation result"
+      enum: [pass, fail, pending]
+    social_proof_gate:
+      type: string
+      description: "Social proof evaluation result"
+      enum: [pass, fail, pending]
+    decision:
+      type: string
+      description: "Decision matrix outcome"
+      enum: [do-now, do-next, do-later, dont-do]
+    flags:
+      type: array
+      description: "Advisory flags"
+      items:
+        type: string
+    url:
+      type: string
+      description: "Primary URL for the tool"
+    notes:
+      type: string
+      description: "Evaluation notes and context"
+
+# Default values for new entries
+defaults:
+  tier: tier-3
+  security_gate: pending
+  social_proof_gate: pending
+  decision: do-later
+  flags: []
+
+# Validation rules
+validation:
+  - rule: "id must be unique"
+    check: "unique(entries.id)"
+  - rule: "name must not be empty"
+    check: "length(name) > 0"
+  - rule: "tier-1 tools must pass both gates"
+    check: "if tier == 'tier-1' then security_gate == 'pass' and social_proof_gate == 'pass'"
+  - rule: "do-now requires score > 80"
+    check: "if decision == 'do-now' then rice_score > 80 or wsjf_score > 80"
+
+# Data entries
+entries:
+  - id: context7
+    name: Context7
+    category: mcp
+    tier: tier-1
+    rice_score: 85
+    wsjf_score: 90
+    security_gate: pass
+    social_proof_gate: pass
+    decision: do-now
+    flags: [recommended, core]
+    url: "https://context7.com"
+    notes: "Library documentation lookup via MCP. Essential for up-to-date API references during development."
+
+  - id: playwright-mcp
+    name: Playwright MCP
+    category: mcp
+    tier: tier-1
+    rice_score: 80
+    wsjf_score: 85
+    security_gate: pass
+    social_proof_gate: pass
+    decision: do-now
+    flags: [recommended, core]
+    url: "https://github.com/anthropics/mcp-playwright"
+    notes: "Browser automation and testing via MCP. Enables web scraping, screenshot capture, and E2E testing."
+
+  - id: exa-search
+    name: EXA Search
+    category: api
+    tier: tier-1
+    rice_score: 78
+    wsjf_score: 82
+    security_gate: pass
+    social_proof_gate: pass
+    decision: do-now
+    flags: [recommended]
+    url: "https://exa.ai"
+    notes: "Web search API for research. Semantic search with neural retrieval for high-quality results."
+
+  - id: apify
+    name: Apify
+    category: api
+    tier: tier-2
+    rice_score: 72
+    wsjf_score: 70
+    security_gate: pass
+    social_proof_gate: pass
+    decision: do-next
+    flags: [recommended]
+    url: "https://apify.com"
+    notes: "Web scraping platform with Actor marketplace. Social media extraction and data collection."
+
+  - id: github-cli
+    name: GitHub CLI (gh)
+    category: cli
+    tier: tier-1
+    rice_score: 90
+    wsjf_score: 88
+    security_gate: pass
+    social_proof_gate: pass
+    decision: do-now
+    flags: [recommended, core]
+    url: "https://cli.github.com"
+    notes: "Official GitHub CLI. PR management, issue tracking, repo operations from terminal."
+
+  - id: supabase-cli
+    name: Supabase CLI
+    category: cli
+    tier: tier-1
+    rice_score: 82
+    wsjf_score: 80
+    security_gate: pass
+    social_proof_gate: pass
+    decision: do-now
+    flags: [recommended, core]
+    url: "https://supabase.com/docs/reference/cli"
+    notes: "Local Supabase development, migrations, and deployment management."
+
+  - id: zod
+    name: Zod
+    category: library
+    tier: tier-1
+    rice_score: 88
+    wsjf_score: 85
+    security_gate: pass
+    social_proof_gate: pass
+    decision: do-now
+    flags: [recommended, core]
+    url: "https://zod.dev"
+    notes: "TypeScript-first schema validation. Runtime type checking for data integrity."
+
+  - id: langchain
+    name: LangChain
+    category: library
+    tier: tier-2
+    rice_score: 70
+    wsjf_score: 68
+    security_gate: pass
+    social_proof_gate: pass
+    decision: do-next
+    flags: []
+    url: "https://langchain.com"
+    notes: "LLM application framework. Chains, agents, and retrieval for AI workflows."
+
+  - id: crew-ai
+    name: CrewAI
+    category: github
+    tier: tier-2
+    rice_score: 65
+    wsjf_score: 72
+    security_gate: pass
+    social_proof_gate: pass
+    decision: do-next
+    flags: [experimental]
+    url: "https://github.com/joaomdmoura/crewAI"
+    notes: "Multi-agent orchestration framework. Reference for agent collaboration patterns."
+
+  - id: jq
+    name: jq
+    category: cli
+    tier: tier-1
+    rice_score: 85
+    wsjf_score: 80
+    security_gate: pass
+    social_proof_gate: pass
+    decision: do-now
+    flags: [recommended]
+    url: "https://jqlang.github.io/jq/"
+    notes: "Command-line JSON processor. Essential for data transformation in pipelines."
+
+# Usage examples
+usage:
+  load: |
+    const yaml = require('js-yaml');
+    const fs = require('fs');
+    const registry = yaml.load(fs.readFileSync('tool-registry.yaml', 'utf8'));
+    console.log(`Loaded ${registry.entries.length} tools`);
+
+  query_by_tier: |
+    const tier1 = registry.entries.filter(t => t.tier === 'tier-1');
+    console.log(`Tier-1 tools: ${tier1.map(t => t.name).join(', ')}`);
+
+  query_by_category: |
+    const mcpTools = registry.entries.filter(t => t.category === 'mcp');
+    const apiTools = registry.entries.filter(t => t.category === 'api');
+    const cliTools = registry.entries.filter(t => t.category === 'cli');
+
+  query_by_decision: |
+    const doNow = registry.entries.filter(t => t.decision === 'do-now');
+    const doNext = registry.entries.filter(t => t.decision === 'do-next');
+
+  query_recommended: |
+    const recommended = registry.entries.filter(t => t.flags.includes('recommended'));
+    const core = registry.entries.filter(t => t.flags.includes('core'));
+
+  add_entry: |
+    registry.entries.push({
+      id: 'new-tool',
+      name: 'New Tool',
+      category: 'api',
+      tier: 'tier-3',
+      rice_score: 50,
+      wsjf_score: 45,
+      security_gate: 'pending',
+      social_proof_gate: 'pending',
+      decision: 'do-later',
+      flags: [],
+      url: 'https://example.com',
+      notes: 'Newly discovered tool, pending full evaluation.',
+    });
+
+  evaluate_tool: |
+    // Run full evaluation pipeline
+    const tool = registry.entries.find(t => t.id === 'new-tool');
+    // 1. Calculate RICE score
+    // 2. Calculate WSJF score
+    // 3. Run security gate (CVE check, license audit)
+    // 4. Run social proof gate (stars, downloads)
+    // 5. Assign tier based on percentile
+    // 6. Determine decision quadrant

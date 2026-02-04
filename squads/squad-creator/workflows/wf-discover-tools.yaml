@@ -1,0 +1,273 @@
+workflow:
+  id: wf-discover-tools
+  name: Deep Tool Discovery Workflow
+  description: >-
+    Comprehensive tool discovery and evaluation workflow with 4 phases.
+    Uses 5 parallel search channels, RICE/WSJF scoring, security and social proof gates,
+    tier classification, and decision matrix generation.
+  type: tool-discovery
+  version: 1.0.0
+  squad: squad-creator
+  responsible: "@squad-architect"
+
+  phases:
+    - phase_0: Capability Gap Analysis
+    - phase_1: Parallel Deep Search
+    - phase_2: Comprehensive Evaluation
+    - phase_3: Decision Matrix
+
+  sequence:
+    # ═══════════════════════════════════════════════════════════════════════════
+    # PHASE 0: CAPABILITY GAP ANALYSIS
+    # ═══════════════════════════════════════════════════════════════════════════
+    - phase: 0
+      name: Capability Gap Analysis
+      description: "Map what the squad needs vs what it currently has"
+
+    - agent: squad-architect
+      action: analyze_current_capabilities
+      inputs:
+        - squad_name: "Target squad to analyze"
+        - domain: "Area of capability need"
+      creates:
+        - capability_map.yaml
+        - gap_analysis.md
+      notes: |
+        STEP 1 — Analyze Current State:
+        - Load squad manifest (squad.yaml)
+        - Inventory existing tools, scripts, and dependencies
+        - Map current capabilities against domain requirements
+        - Identify gaps: what's missing, what's underserved, what's outdated
+
+        STEP 2 — Define Search Criteria:
+        - Translate gaps into search queries
+        - Set constraints (budget, license, security requirements)
+        - Prioritize gaps by impact on squad effectiveness
+        - Define must-have vs nice-to-have capabilities
+
+    # ═══════════════════════════════════════════════════════════════════════════
+    # PHASE 1: PARALLEL DEEP SEARCH
+    # ═══════════════════════════════════════════════════════════════════════════
+    - phase: 1
+      name: Parallel Deep Search
+      description: "5 parallel search channels for maximum coverage"
+
+    - agent: squad-architect
+      action: parallel_search
+      requires: gap_analysis.md
+      creates:
+        - search_results_mcp.yaml
+        - search_results_api.yaml
+        - search_results_cli.yaml
+        - search_results_library.yaml
+        - search_results_github.yaml
+      notes: |
+        Run 5 search channels IN PARALLEL:
+
+        CHANNEL 1 — MCP Servers:
+        - Search Docker MCP catalog
+        - Check community MCP registries
+        - Evaluate MCP compatibility with current stack
+        - Check for authentication requirements
+
+        CHANNEL 2 — APIs:
+        - Search API marketplaces (RapidAPI, APIs.guru)
+        - Check for REST/GraphQL endpoints
+        - Evaluate rate limits and pricing
+        - Check for SDK availability
+
+        CHANNEL 3 — CLI Tools:
+        - Search package managers (npm, pip, cargo, brew)
+        - Check for CLI tools matching capability needs
+        - Evaluate installation complexity
+        - Check cross-platform compatibility
+
+        CHANNEL 4 — Libraries/Packages:
+        - Search npm, PyPI, crates.io
+        - Check for mature, well-maintained libraries
+        - Evaluate API surface and documentation
+        - Check bundle size and dependency tree
+
+        CHANNEL 5 — GitHub Repositories:
+        - Search GitHub for relevant projects
+        - Check for active maintenance (commits, releases)
+        - Evaluate community health (stars, forks, issues)
+        - Check for AIOS/MCP integration potential
+
+    # ═══════════════════════════════════════════════════════════════════════════
+    # PHASE 2: COMPREHENSIVE EVALUATION
+    # ═══════════════════════════════════════════════════════════════════════════
+    - phase: 2
+      name: Comprehensive Evaluation
+      description: "RICE/WSJF scoring, security gate, social proof gate, tier classification"
+
+    - agent: squad-architect
+      action: evaluate_candidates
+      requires:
+        - search_results_mcp.yaml
+        - search_results_api.yaml
+        - search_results_cli.yaml
+        - search_results_library.yaml
+        - search_results_github.yaml
+      creates:
+        - evaluation_results.yaml
+        - tier_classification.yaml
+      notes: |
+        STEP 1 — RICE Scoring (per candidate):
+        - Reach: How many squad agents/tasks benefit (1-10)
+        - Impact: How much it improves capability (1-10)
+        - Confidence: How sure we are of the above (1-10)
+        - Effort: Integration effort required (1-10)
+        - Formula: (Reach * Impact * Confidence) / Effort
+
+        STEP 2 — WSJF Scoring (per candidate):
+        - User/Business Value: Direct value to squad users (1-10)
+        - Time Criticality: Urgency of the need (1-10)
+        - Risk Reduction: How much risk it mitigates (1-10)
+        - Duration: Estimated integration time (1-10)
+        - Formula: (Value + Criticality + Risk) / Duration
+
+        STEP 3 — Security Gate (pass/fail):
+        - CVE database check (known vulnerabilities)
+        - License compatibility (MIT/Apache=pass, GPL=caution, proprietary=block)
+        - Maintenance health (last commit < 6 months, issues response < 7 days)
+        - Dependency audit (no known vulnerable transitive deps)
+
+        STEP 4 — Social Proof Gate (pass/fail):
+        - GitHub stars threshold (>100 for libraries, >50 for tools)
+        - Download count (npm >1K/week, PyPI >500/week)
+        - Community activity (issues response time, PR merge rate)
+        - Documentation quality (README, API docs, examples)
+
+        STEP 5 — Tier Classification:
+        - Calculate composite score: (RICE * 0.4) + (WSJF * 0.3) + (Security * 0.2) + (Social * 0.1)
+        - Tier 1: Top 10% (composite > 80)
+        - Tier 2: Top 25% (composite > 60)
+        - Tier 3: Top 50% (composite > 40)
+        - Tier 4: Bottom 50% (composite <= 40)
+
+        STEP 6 — Flag Assignment:
+        - [recommended]: Tier 1 + both gates pass
+        - [core]: Essential for squad operation
+        - [experimental]: High potential, low social proof
+        - [deprecated]: Superseded by better option
+        - [security-concern]: Security gate failed
+
+    # ═══════════════════════════════════════════════════════════════════════════
+    # PHASE 3: DECISION MATRIX
+    # ═══════════════════════════════════════════════════════════════════════════
+    - phase: 3
+      name: Decision Matrix
+      description: "Final decision: DO NOW / DO NEXT / DO LATER / DON'T DO"
+
+    - agent: squad-architect
+      action: generate_decision_matrix
+      requires:
+        - evaluation_results.yaml
+        - tier_classification.yaml
+      creates:
+        - decision_matrix.md
+        - updated_tool_registry.yaml
+      notes: |
+        DECISION RULES:
+
+        DO NOW (Immediate integration):
+        - Composite score > 80
+        - Both security and social proof gates PASS
+        - Tier 1 classification
+        - Clear capability gap addressed
+
+        DO NEXT (Next sprint/iteration):
+        - Composite score > 60
+        - Both gates pass (or security pass + social pending)
+        - Tier 1 or Tier 2 classification
+        - Important but not urgent
+
+        DO LATER (Backlog):
+        - Composite score > 40
+        - At least security gate passes
+        - Tier 2 or Tier 3 classification
+        - Nice-to-have capability
+
+        DON'T DO (Reject):
+        - Composite score < 40
+        - Security gate FAILS
+        - Tier 4 classification
+        - Better alternatives exist
+        - Maintenance risk too high
+
+        OUTPUT FORMAT:
+        Generate decision matrix as markdown table:
+        | Tool | Category | RICE | WSJF | Security | Social | Tier | Decision | Notes |
+
+        Update tool-registry.yaml with new entries.
+        Generate summary with top 3 recommendations.
+
+  flow_diagram: |
+    ```mermaid
+    graph TD
+        subgraph PHASE_0["PHASE 0: Capability Gap Analysis"]
+            A[Start: Tool Discovery] --> B[Load Squad Manifest]
+            B --> C[Inventory Current Tools]
+            C --> D[Map Capability Gaps]
+            D --> E[Define Search Criteria]
+        end
+
+        subgraph PHASE_1["PHASE 1: Parallel Deep Search"]
+            E --> F1[MCP Catalog Search]
+            E --> F2[API Marketplace Search]
+            E --> F3[CLI Registry Search]
+            E --> F4[Library/Package Search]
+            E --> F5[GitHub Search]
+        end
+
+        subgraph PHASE_2["PHASE 2: Comprehensive Evaluation"]
+            F1 & F2 & F3 & F4 & F5 --> G[Merge Candidates]
+            G --> H[RICE Scoring]
+            H --> I[WSJF Scoring]
+            I --> J{Security Gate}
+            J -->|PASS| K{Social Proof Gate}
+            J -->|FAIL| L[Flag: security-concern]
+            K -->|PASS| M[Tier Classification]
+            K -->|FAIL| N[Flag: experimental]
+            L --> M
+            N --> M
+        end
+
+        subgraph PHASE_3["PHASE 3: Decision Matrix"]
+            M --> O{Composite Score}
+            O -->|>80| P[DO NOW]
+            O -->|>60| Q[DO NEXT]
+            O -->|>40| R[DO LATER]
+            O -->|<=40| S[DON'T DO]
+            P & Q & R & S --> T[Update Registry]
+            T --> U[Generate Report]
+        end
+
+        style P fill:#90EE90
+        style Q fill:#ADD8E6
+        style R fill:#FFE4B5
+        style S fill:#FFB6C1
+        style F1 fill:#E6E6FA
+        style F2 fill:#E6E6FA
+        style F3 fill:#E6E6FA
+        style F4 fill:#E6E6FA
+        style F5 fill:#E6E6FA
+    ```
+
+  decision_guidance:
+    when_to_use:
+      - Squad needs new capabilities not covered by existing tools
+      - Evaluating alternatives to current tools
+      - Planning squad technology roadmap
+      - Onboarding new domain requirements
+    when_not_to_use:
+      - Tool is already known and validated
+      - Simple one-off script needs
+      - Internal utility that won't be reused
+
+  handoff_prompts:
+    phase0_to_phase1: "Capability gaps identified. Starting parallel search across 5 channels."
+    phase1_to_phase2: "Search complete. Evaluating candidates with RICE/WSJF and running gates."
+    phase2_to_phase3: "Evaluation complete. Generating decision matrix and updating registry."
+    complete: "Tool discovery complete. Decision matrix generated. Registry updated with new entries."
