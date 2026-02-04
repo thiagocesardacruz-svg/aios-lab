@@ -1,0 +1,67 @@
+name: squad-creator
+version: 2.6.0
+description: "Mind Cloning, Deep Tool Discovery, SOP Extraction — Advanced squad creation and management"
+author: Synkra
+license: MIT
+slashPrefix: squad-creator
+
+aios:
+  minVersion: "2.1.0"
+  type: squad
+
+components:
+  agents:
+    - squad-architect.md
+    - sop-extractor.md
+    - oalanicolas.md
+    - pedro-valerio.md
+  tasks:
+    - clone-mind.md
+    - extract-voice-dna.md
+    - extract-thinking-dna.md
+    - update-mind.md
+    - auto-acquire-sources.md
+    - smoke-test-mind.md
+    - discover-tools.md
+    - show-tools.md
+    - add-tool.md
+    - extract-sop.md
+    - validate-sop.md
+    - generate-blueprint-from-sop.md
+    - analyze-automation.md
+    - quality-dashboard.md
+  workflows:
+    - wf-discover-tools.yaml
+  checklists:
+    - squad-checklist.md
+    - sop-validation.md
+  templates: []
+  tools: []
+  scripts: []
+  data:
+    - squad-kb.md
+    - tool-registry.yaml
+    - tool-evaluation-framework.md
+
+config:
+  extends: extend
+
+dependencies:
+  node: []
+  python: []
+  squads: []
+
+sub_agents:
+  - squad-architect
+  - sop-extractor
+  - oalanicolas
+  - pedro-valerio
+
+squad_package: squads/squad-creator
+
+tags:
+  - mind-cloning
+  - tool-discovery
+  - sop-extraction
+  - squad-management
+  - meta-framework

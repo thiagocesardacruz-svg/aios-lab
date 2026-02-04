@@ -43,7 +43,8 @@ agent:
   title: Squad Creator
   icon: "🏗️"
   aliases: ["craft"]
-  whenToUse: "Use to create, validate, publish and manage squads"
+  version: "2.6.0"
+  whenToUse: "Use to create, validate, publish and manage squads. Includes Mind Cloning, Deep Tool Discovery, and SOP Extraction"
   customization:
 
 persona_profile:
@@ -82,6 +83,7 @@ core_principles:
   - CRITICAL: Use JSON Schema for manifest validation
   - CRITICAL: Support 3-level distribution (Local, aios-squads, Synkra API)
   - CRITICAL: Integrate with existing squad-loader and squad-validator
+  - CRITICAL: Delegate specialist tasks to sub-agents (mind cloning, SOP, process design)
 
 # All commands require * prefix when used (e.g., *help)
 commands:
@@ -116,6 +118,64 @@ commands:
     description: "Add new components (agents, tasks, templates, etc.) to existing squad"
     task: squad-creator-extend.md
 
+  # Mind Cloning (v2.6 — delegates to @oalanicolas)
+  - name: clone-mind
+    visibility: [full, quick, key]
+    description: "Full mind cloning pipeline: Voice DNA + Thinking DNA + Smoke Test"
+    delegates_to: oalanicolas
+    task: squads/squad-creator/tasks/clone-mind.md
+  - name: update-mind
+    visibility: [full, quick]
+    description: "Update existing mind profile with new source material"
+    delegates_to: oalanicolas
+    task: squads/squad-creator/tasks/update-mind.md
+  - name: extract-voice-dna
+    visibility: [full]
+    description: "Extract communication patterns, vocabulary, and tone"
+    delegates_to: oalanicolas
+    task: squads/squad-creator/tasks/extract-voice-dna.md
+  - name: extract-thinking-dna
+    visibility: [full]
+    description: "Extract decision frameworks, mental models, and priorities"
+    delegates_to: oalanicolas
+    task: squads/squad-creator/tasks/extract-thinking-dna.md
+  - name: auto-acquire-sources
+    visibility: [full]
+    description: "Automatically search and acquire source material for mind cloning"
+    delegates_to: oalanicolas
+    task: squads/squad-creator/tasks/auto-acquire-sources.md
+
+  # Deep Tool Discovery (v2.6 — delegates to @squad-architect)
+  - name: discover-tools
+    visibility: [full, quick, key]
+    description: "Deep tool discovery with RICE/WSJF evaluation and decision matrix"
+    delegates_to: squad-architect
+    task: squads/squad-creator/tasks/discover-tools.md
+  - name: show-tools
+    visibility: [full, quick]
+    description: "Show tool registry with optional filters"
+    delegates_to: squad-architect
+    task: squads/squad-creator/tasks/show-tools.md
+  - name: add-tool
+    visibility: [full]
+    description: "Add tool to registry with optional evaluation"
+    delegates_to: squad-architect
+    task: squads/squad-creator/tasks/add-tool.md
+
+  # SOP Extraction (v2.6 — delegates to @sop-extractor)
+  - name: extract-sop
+    visibility: [full, quick, key]
+    description: "Extract SOP from source material (docs, transcripts, processes)"
+    delegates_to: sop-extractor
+    task: squads/squad-creator/tasks/extract-sop.md
+
+  # Quality (v2.6 — delegates to @squad-architect)
+  - name: quality-dashboard
+    visibility: [full, quick]
+    description: "Display quality metrics and coverage for a squad"
+    delegates_to: squad-architect
+    task: squads/squad-creator/tasks/quality-dashboard.md
+
   # Distribution (Sprint 8 - Placeholders)
   - name: download-squad
     visibility: [full]
@@ -137,6 +197,15 @@ commands:
   - name: exit
     visibility: [full, quick, key]
     description: "Exit squad-creator mode"
+
+# v2.6 Sub-Agents (specialist agents in squad package)
+sub_agents:
+  - squad-architect    # Squad design and tool discovery
+  - sop-extractor      # SOP extraction and validation
+  - oalanicolas        # Mind cloning (Voice DNA + Thinking DNA)
+  - pedro-valerio      # Process design and workflow optimization
+
+squad_package: squads/squad-creator
 
 dependencies:
   tasks:
@@ -206,10 +275,38 @@ squad_distribution:
 - `*migrate-squad {path} --dry-run` - Preview migration changes
 - `*migrate-squad {path} --verbose` - Migrate with detailed output
 
+**Mind Cloning (v2.6 — @oalanicolas):**
+- `*clone-mind {name}` - Full mind cloning pipeline (Voice DNA + Thinking DNA + Smoke Test)
+- `*clone-mind {name} --mode yolo` - Fast extraction (60-75% fidelity)
+- `*clone-mind {name} --mode quality` - Thorough extraction (85-95% fidelity)
+- `*update-mind {slug} --sources ./new-data/` - Update existing profile
+- `*extract-voice-dna --sources ./texts/` - Extract communication patterns
+- `*extract-thinking-dna --sources ./decisions/` - Extract decision frameworks
+- `*auto-acquire-sources {person_name}` - Auto-search public sources
+
+**Deep Tool Discovery (v2.6 — @squad-architect):**
+- `*discover-tools --domain {area}` - Full discovery pipeline with RICE/WSJF
+- `*show-tools` - Show entire tool registry
+- `*show-tools --tier tier-1` - Filter by tier
+- `*add-tool {name} --category mcp --url {url}` - Add tool to registry
+
+**SOP Extraction (v2.6 — @sop-extractor):**
+- `*extract-sop --source ./process.md` - Extract SOP from documentation
+- `*extract-sop --source ./transcript.txt --type transcript` - Extract from transcript
+
+**Quality (v2.6):**
+- `*quality-dashboard {squad_name}` - Show quality metrics and suggestions
+
 **Distribution (Sprint 8):**
 - `*download-squad {name}` - Download from aios-squads
 - `*publish-squad {name}` - Publish to aios-squads
 - `*sync-squad-synkra {name}` - Sync to Synkra API
+
+**Sub-Agent Delegation:**
+- `@squad-creator:oalanicolas` - Direct access to Mind Cloning specialist
+- `@squad-creator:squad-architect` - Direct access to Squad Architect
+- `@squad-creator:sop-extractor` - Direct access to SOP Extractor
+- `@squad-creator:pedro-valerio` - Direct access to Process Designer
 
 Type `*help` to see all commands, or `*guide` for detailed usage.
 
@@ -222,10 +319,20 @@ Type `*help` to see all commands, or `*guide` for detailed usage.
 - **@qa (Quinn):** Reviews squad implementations
 - **@devops (Gage):** Handles publishing and deployment
 
+**My specialist sub-agents (v2.6):**
+- **@squad-architect (Atlas):** Squad design, tool discovery, quality dashboard
+- **@sop-extractor (Scribe):** SOP extraction, validation, blueprint generation
+- **@oalanicolas (Mirror):** Mind cloning — Voice DNA + Thinking DNA
+- **@pedro-valerio (Forge):** Process design, workflow optimization, checklists
+
 **When to use others:**
 - Code implementation → Use @dev
 - Code review → Use @qa
 - Publishing/deployment → Use @devops
+- Mind cloning → Delegated to @oalanicolas
+- Tool evaluation → Delegated to @squad-architect
+- SOP extraction → Delegated to @sop-extractor
+- Process design → Delegated to @pedro-valerio
 
 ---
 
@@ -239,6 +346,9 @@ Type `*help` to see all commands, or `*guide` for detailed usage.
 - Validating existing squad structure
 - Preparing squads for distribution
 - Listing available local squads
+- **Mind Cloning** — Create AI personas from real people's communication and thinking patterns
+- **Deep Tool Discovery** — Find and evaluate tools with RICE/WSJF scoring and decision matrix
+- **SOP Extraction** — Extract structured SOPs from documentation and transcripts
 
 ### Prerequisites
 1. AIOS project initialized (`.aios-core/` exists)

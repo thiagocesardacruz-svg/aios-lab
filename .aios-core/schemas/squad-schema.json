@@ -1,0 +1,154 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://synkra.dev/schemas/squad-schema.json",
+  "title": "Squad Manifest Schema",
+  "description": "Validates squad.yaml manifest files for AIOS squads",
+  "type": "object",
+  "required": ["name", "version", "description", "aios", "components"],
+  "properties": {
+    "name": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]*[a-z0-9]$",
+      "minLength": 2,
+      "maxLength": 50,
+      "description": "Squad name in kebab-case"
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+(-[a-z0-9.]+)?$",
+      "description": "Semantic version (e.g., 1.0.0, 2.6.0-beta.1)"
+    },
+    "description": {
+      "type": "string",
+      "minLength": 5,
+      "maxLength": 500,
+      "description": "Brief description of the squad's purpose"
+    },
+    "author": {
+      "type": "string",
+      "description": "Squad author name"
+    },
+    "license": {
+      "type": "string",
+      "enum": ["MIT", "Apache-2.0", "ISC", "UNLICENSED", "GPL-3.0", "BSD-3-Clause"],
+      "default": "MIT"
+    },
+    "slashPrefix": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]*$",
+      "description": "Prefix for slash commands"
+    },
+    "aios": {
+      "type": "object",
+      "required": ["minVersion", "type"],
+      "properties": {
+        "minVersion": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+\\.\\d+$",
+          "description": "Minimum AIOS version required"
+        },
+        "type": {
+          "type": "string",
+          "enum": ["squad"],
+          "description": "Package type (always 'squad')"
+        }
+      },
+      "additionalProperties": false
+    },
+    "components": {
+      "type": "object",
+      "required": ["agents", "tasks"],
+      "properties": {
+        "agents": {
+          "type": "array",
+          "items": { "type": "string" },
+          "minItems": 1,
+          "description": "List of agent definition files"
+        },
+        "tasks": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "List of task definition files"
+        },
+        "workflows": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "List of workflow definition files"
+        },
+        "checklists": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "List of checklist files"
+        },
+        "templates": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "List of template files"
+        },
+        "tools": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "List of tool files"
+        },
+        "scripts": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "List of script files"
+        },
+        "data": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "List of data files"
+        }
+      },
+      "additionalProperties": false
+    },
+    "config": {
+      "type": "object",
+      "properties": {
+        "extends": {
+          "type": "string",
+          "enum": ["extend", "override", "none"],
+          "default": "extend"
+        },
+        "coding-standards": { "type": "string" },
+        "tech-stack": { "type": "string" },
+        "source-tree": { "type": "string" }
+      },
+      "additionalProperties": true
+    },
+    "dependencies": {
+      "type": "object",
+      "properties": {
+        "node": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "python": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "squads": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      },
+      "additionalProperties": false
+    },
+    "tags": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Tags for categorization"
+    },
+    "sub_agents": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "List of specialist sub-agent IDs"
+    },
+    "squad_package": {
+      "type": "string",
+      "description": "Path to the squad package directory"
+    }
+  },
+  "additionalProperties": false
+}
