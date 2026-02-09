@@ -5,6 +5,7 @@ export type ViewName =
   | 'my-products'
   | 'dna'
   | 'my-plan'
+  | 'goals'
   | 'gpt-experts'
   | 'gpt-tools'
   | 'prompt-library'

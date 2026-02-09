@@ -44,6 +44,7 @@ export const NAV_ITEMS: NavItem[] = [
   // MAIN
   { id: 'dashboard', label: 'Home', icon: LayoutDashboard, group: 'MAIN' },
   { id: 'dna', label: 'DNA', icon: Fingerprint, group: 'MAIN' },
+  { id: 'goals', label: 'Goals', icon: Target, group: 'MAIN' },
   { id: 'my-plan', label: 'My Plan', icon: Map, group: 'MAIN' },
 
   // INTELLIGENCE
@@ -161,79 +162,242 @@ export const PLATFORM_TOOLS_DATA: PlatformTool[] = [
 
 export const PROMPTS_DATA: PromptItem[] = [
   // Recommended
-  { 
-    id: 'pr1', 
-    title: 'Instagram Caption Pro', 
-    category: 'Marketing', 
-    content: 'Create engaging captions with emojis...', 
-    tags: ['Social'], 
-    type: 'workflow', 
-    lastModified: '2 mins ago', 
+  {
+    id: 'pr1',
+    title: 'Instagram Caption Pro',
+    category: 'Marketing',
+    content: `You are a social media expert for {{business_name}}, a {{niche}} in {{location}}.
+
+Create 3 engaging Instagram caption options for a post about [TOPIC].
+
+Requirements:
+- Use a {{tone}} tone that resonates with {{target_audience}}
+- Include 3-5 relevant emojis
+- Add a compelling call-to-action
+- Include 5-8 relevant hashtags
+- Keep it under 150 words
+
+Format each option clearly numbered.`,
+    tags: ['Social', 'Instagram'],
+    type: 'workflow',
+    lastModified: '2 mins ago',
     author: 'System AI',
     isRecommended: true
   },
-  { 
-    id: 'pr2', 
-    title: 'Cold Call Master Script', 
-    category: 'Sales', 
-    content: 'Script for B2B cold calling...', 
-    tags: ['Sales'], 
-    type: 'script', 
-    lastModified: '1 hour ago', 
+  {
+    id: 'pr2',
+    title: 'TripAdvisor Review Response',
+    category: 'Sales',
+    content: `You are the Guest Relations Manager at {{business_name}}, a {{niche}} in {{location}}.
+
+Write a professional response to this TripAdvisor review:
+[PASTE REVIEW HERE]
+
+Guidelines:
+- Use a {{tone}} tone
+- Thank the guest for their feedback
+- Address specific points mentioned
+- If negative, apologize and offer resolution
+- Invite them to return
+- Keep it under 150 words
+- Sign with your name and title`,
+    tags: ['Reviews', 'TripAdvisor'],
+    type: 'script',
+    lastModified: '1 hour ago',
     author: 'Head of Sales',
     isRecommended: true
   },
-  { 
-    id: 'pr3', 
-    title: 'Hotel Ops Quality Check', 
-    category: 'Ops', 
-    content: 'Standard operating procedure for...', 
-    tags: ['Ops'], 
-    type: 'workflow', 
-    lastModified: 'Yesterday', 
-    author: 'Ops Manager',
+  {
+    id: 'pr3',
+    title: 'Upsell Email Sequence',
+    category: 'Marketing',
+    content: `You are the Revenue Manager at {{business_name}}.
+
+Create a 3-email upsell sequence for guests who booked a standard room.
+
+Target audience: {{target_audience}}
+Tone: {{tone}}
+
+Email 1 (Day of booking): Welcome + Room upgrade offer
+Email 2 (3 days before): Experience packages (spa, dining, tours)
+Email 3 (Day before): Last-minute add-ons
+
+For each email include:
+- Subject line (with emoji)
+- Preview text
+- Body copy (max 100 words)
+- Clear CTA button text`,
+    tags: ['Email', 'Revenue'],
+    type: 'workflow',
+    lastModified: 'Yesterday',
+    author: 'Revenue Team',
     isRecommended: true
   },
   // List Items
-  { 
-    id: 'pr4', 
-    title: 'Crisis Management Protocol', 
-    category: 'Legal', 
-    content: 'Steps to handle PR crisis...', 
-    tags: ['Legal'], 
-    type: 'link', 
-    lastModified: '3 days ago', 
-    author: 'Legal Team'
+  {
+    id: 'pr4',
+    title: 'Guest Complaint Handler',
+    category: 'Ops',
+    content: `You are the Front Office Manager at {{business_name}}.
+
+A guest has complained about: [DESCRIBE COMPLAINT]
+
+Draft a response that:
+1. Acknowledges their frustration
+2. Takes ownership of the issue
+3. Explains what happened (if known)
+4. Offers a specific resolution
+5. Provides compensation if appropriate
+6. Invites follow-up
+
+Tone: {{tone}}, empathetic, solution-focused
+Keep under 200 words.`,
+    tags: ['Support', 'Operations'],
+    type: 'script',
+    lastModified: '3 days ago',
+    author: 'Ops Manager'
   },
-  { 
-    id: 'pr5', 
-    title: 'Welcome Email Sequence', 
-    category: 'Marketing', 
-    content: '3-part email series for new guests...', 
-    tags: ['Email'], 
-    type: 'script', 
-    lastModified: '1 week ago', 
+  {
+    id: 'pr5',
+    title: 'Welcome Email Sequence',
+    category: 'Marketing',
+    content: `You are the Marketing Manager at {{business_name}}, a {{niche}} in {{location}}.
+
+Create a 3-part welcome email series for new newsletter subscribers.
+
+Target: {{target_audience}}
+Tone: {{tone}}
+
+Email 1: Welcome + Brand story
+Email 2: Exclusive tips/content for travelers
+Email 3: Special offer for first booking
+
+Include for each:
+- Subject line
+- Preview text
+- Body (150 words max)
+- CTA`,
+    tags: ['Email', 'Automation'],
+    type: 'script',
+    lastModified: '1 week ago',
     author: 'Marketing Team'
   },
-  { 
-    id: 'pr6', 
-    title: 'Refund Policy Generator', 
-    category: 'Ops', 
-    content: 'Generate refund responses based on...', 
-    tags: ['Support'], 
-    type: 'workflow', 
-    lastModified: '2 weeks ago', 
-    author: 'Finance Dept'
+  {
+    id: 'pr6',
+    title: 'Booking.com Description Optimizer',
+    category: 'Sales',
+    content: `You are an OTA optimization specialist for {{business_name}}.
+
+Rewrite this property description for Booking.com:
+[PASTE CURRENT DESCRIPTION]
+
+Optimize for:
+- SEO keywords relevant to {{location}} and {{niche}}
+- Appeal to {{target_audience}}
+- Highlight unique selling points
+- Use {{tone}} language
+- Include amenities and nearby attractions
+- Max 1000 characters
+
+Also suggest:
+- 5 photo caption ideas
+- 3 FAQ questions to add`,
+    tags: ['OTA', 'Booking.com'],
+    type: 'workflow',
+    lastModified: '2 weeks ago',
+    author: 'Revenue Team'
   },
-  { 
-    id: 'pr7', 
-    title: 'Competitor Analysis Agent', 
-    category: 'Marketing', 
-    content: 'Analyze local competitors pricing...', 
-    tags: ['Strategy'], 
-    type: 'workflow', 
-    lastModified: 'Oct 12', 
+  {
+    id: 'pr7',
+    title: 'Competitor Analysis Report',
+    category: 'Marketing',
+    content: `You are a market research analyst for {{business_name}} in {{location}}.
+
+Analyze these competitors: [LIST 3-5 COMPETITORS]
+
+Create a report covering:
+1. Pricing comparison (rate ranges)
+2. Unique selling propositions
+3. Online reputation (review scores)
+4. Social media presence
+5. Key differentiators
+6. Opportunities for {{business_name}}
+
+Format as a structured report with actionable recommendations.`,
+    tags: ['Strategy', 'Research'],
+    type: 'workflow',
+    lastModified: 'Oct 12',
     author: 'System AI'
+  },
+  {
+    id: 'pr8',
+    title: 'LinkedIn Post Generator',
+    category: 'Marketing',
+    content: `You are the GM of {{business_name}}, posting on LinkedIn.
+
+Create a thought leadership post about: [TOPIC]
+
+Style:
+- Professional but personable ({{tone}})
+- Share industry insights or behind-the-scenes
+- Include a hook in the first line
+- Add 3-5 relevant hashtags
+- End with a question to drive engagement
+- 150-200 words max`,
+    tags: ['Social', 'LinkedIn'],
+    type: 'script',
+    lastModified: 'Oct 10',
+    author: 'Marketing Team'
+  },
+  {
+    id: 'pr9',
+    title: 'Staff Training SOP',
+    category: 'HR',
+    content: `You are the HR Manager at {{business_name}}.
+
+Create a Standard Operating Procedure for: [PROCESS NAME]
+
+Include:
+1. Purpose and scope
+2. Step-by-step instructions
+3. Quality standards
+4. Common mistakes to avoid
+5. Performance metrics
+6. Training checklist
+
+Format for easy printing and posting in staff areas.
+Tone: Clear, instructional, brand-aligned ({{tone}})`,
+    tags: ['Training', 'SOP'],
+    type: 'workflow',
+    lastModified: 'Oct 8',
+    author: 'HR Manager'
+  },
+  {
+    id: 'pr10',
+    title: 'WhatsApp Quick Replies',
+    category: 'Sales',
+    content: `You are the Reservations Manager at {{business_name}}.
+
+Create 10 WhatsApp quick reply templates for common inquiries:
+
+1. Availability check
+2. Rate request
+3. Booking confirmation
+4. Check-in instructions
+5. Directions/parking
+6. Amenities info
+7. Special requests
+8. Cancellation policy
+9. Payment options
+10. Thank you / Post-stay
+
+Keep each under 160 characters.
+Tone: {{tone}}, helpful, concise.
+Include 1 emoji per message.`,
+    tags: ['WhatsApp', 'Templates'],
+    type: 'script',
+    lastModified: 'Oct 5',
+    author: 'Front Office'
   },
 ];
 

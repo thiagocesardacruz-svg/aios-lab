@@ -13,6 +13,7 @@ import { GPTDiscovery } from './pages/GPTDiscovery';
 import { TemplateLibrary } from './pages/TemplateLibrary';
 import { Login } from './pages/Login';
 import { Onboarding } from './pages/Onboarding';
+import { Goals } from './pages/Goals';
 import { TaskPlayer } from './components/TaskPlayer';
 import { ViewName, Task, DNAParams } from './types';
 import { GPT_TOOLS_DATA, GPT_EXPERTS_DATA, SCRIPTS_DATA, DOCS_DATA, CINEMATIC_BACKGROUNDS } from './constants';
@@ -103,9 +104,11 @@ const AppContent: React.FC = () => {
       case 'my-products':
         return <MyProducts onNavigate={setCurrentView} onOpenProduct={(id) => console.log('Open product:', id)} />;
       case 'dna':
-        return <Personalize dna={legacyDNA} onSave={(newDna) => console.log('Save DNA:', newDna)} />;
+        return <Personalize />;
       case 'my-plan':
         return <MyPlan onOpenTask={setSelectedTask} />;
+      case 'goals':
+        return <Goals />;
 
       // INTELLIGENCE
       case 'gpt-experts':
