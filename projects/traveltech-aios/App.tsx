@@ -168,25 +168,23 @@ const AppContent: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-zinc-950 text-zinc-200 font-sans selection:bg-violet-500/30 selection:text-violet-200">
+    <div className="min-h-screen bg-zinc-900 text-zinc-200 font-sans selection:bg-violet-500/30 selection:text-violet-200">
 
-      {/* Cinematic Background */}
+      {/* Cinematic Background - More visible */}
       <div
-        className="fixed inset-0 z-0 bg-cover bg-center opacity-30 pointer-events-none transition-all duration-1000 ease-in-out"
+        className="fixed inset-0 z-0 bg-cover bg-center opacity-40 pointer-events-none transition-all duration-1000 ease-in-out"
         style={{ backgroundImage: `url("${backgroundImage}")` }}
       />
-      {/* Heavy Overlay for readability */}
-      <div className="fixed inset-0 z-0 bg-gradient-to-b from-zinc-950/80 via-zinc-950/85 to-zinc-950 pointer-events-none" />
+      {/* Lighter Overlay */}
+      <div className="fixed inset-0 z-0 bg-gradient-to-b from-zinc-900/70 via-zinc-900/75 to-zinc-900/90 pointer-events-none" />
 
       {/* Main Layout */}
       <div className="relative z-10 flex h-screen">
         <Sidebar currentView={currentView} onNavigate={setCurrentView} />
 
-        {/* Content Area Shell - Internal scroll */}
+        {/* Content Area Shell - Internal scroll, full width */}
         <main className="flex-1 h-screen overflow-y-auto overflow-x-hidden transition-all duration-300 md:ml-[280px] pt-20 md:pt-8 pb-24 md:pb-8 px-4 md:px-8">
-          <div className="max-w-6xl mx-auto">
-            {renderContent()}
-          </div>
+          {renderContent()}
         </main>
 
         <MobileNav currentView={currentView} onNavigate={setCurrentView} />

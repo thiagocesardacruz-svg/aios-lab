@@ -2,7 +2,7 @@ import React from 'react';
 import { useDNA } from '../contexts/DNAContext';
 import { Button, Badge, Card, IconBox, tokens } from '../components/UI';
 import { Task, ViewName } from '../types';
-import { MOCK_TASKS } from '../constants';
+import { MOCK_TASKS, GPT_TOOLS_DATA, GPT_EXPERTS_DATA } from '../constants';
 import {
   ArrowRight,
   Zap,
@@ -12,7 +12,9 @@ import {
   Sparkles,
   ChevronRight,
   MessageSquare,
-  BarChart3
+  BarChart3,
+  Bot,
+  Wrench
 } from 'lucide-react';
 
 interface DashboardProps {
@@ -195,9 +197,89 @@ export const Dashboard: React.FC<DashboardProps> = ({ onOpenTask, onNavigate }) 
         </button>
       </div>
 
+      {/* GPT Experts Section */}
+      <div>
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-xs font-bold text-zinc-500 uppercase tracking-widest">
+            GPT Experts
+          </h2>
+          <button
+            onClick={() => onNavigate('gpt-experts')}
+            className="text-xs text-violet-400 hover:text-violet-300 transition-colors flex items-center gap-1"
+          >
+            View All <ChevronRight className="w-3 h-3" />
+          </button>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          {GPT_EXPERTS_DATA.slice(0, 4).map((expert) => {
+            const Icon = expert.icon;
+            return (
+              <button
+                key={expert.id}
+                onClick={() => onNavigate('gpt-experts')}
+                className="group text-left p-4 rounded-2xl bg-zinc-800/30 border border-white/5 hover:bg-zinc-800/50 hover:border-cyan-500/30 transition-all duration-300"
+              >
+                <div className="flex items-start gap-3 mb-3">
+                  <div className="w-10 h-10 rounded-xl bg-cyan-500/10 flex items-center justify-center">
+                    <Icon className="w-5 h-5 text-cyan-400" />
+                  </div>
+                  <Badge variant="cyan" size="sm">{expert.category}</Badge>
+                </div>
+                <h3 className="text-sm font-semibold text-white mb-1 group-hover:text-cyan-100 transition-colors">
+                  {expert.title}
+                </h3>
+                <p className="text-xs text-zinc-500 line-clamp-2">
+                  {expert.shortDescription}
+                </p>
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* GPT Tools Section */}
+      <div>
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-xs font-bold text-zinc-500 uppercase tracking-widest">
+            GPT Tools
+          </h2>
+          <button
+            onClick={() => onNavigate('gpt-tools')}
+            className="text-xs text-violet-400 hover:text-violet-300 transition-colors flex items-center gap-1"
+          >
+            View All <ChevronRight className="w-3 h-3" />
+          </button>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          {GPT_TOOLS_DATA.slice(0, 4).map((tool) => {
+            const Icon = tool.icon;
+            return (
+              <button
+                key={tool.id}
+                onClick={() => onNavigate('gpt-tools')}
+                className="group text-left p-4 rounded-2xl bg-zinc-800/30 border border-white/5 hover:bg-zinc-800/50 hover:border-violet-500/30 transition-all duration-300"
+              >
+                <div className="flex items-start gap-3 mb-3">
+                  <div className="w-10 h-10 rounded-xl bg-violet-500/10 flex items-center justify-center">
+                    <Icon className="w-5 h-5 text-violet-400" />
+                  </div>
+                  <Badge variant="violet" size="sm">{tool.category}</Badge>
+                </div>
+                <h3 className="text-sm font-semibold text-white mb-1 group-hover:text-violet-100 transition-colors">
+                  {tool.title}
+                </h3>
+                <p className="text-xs text-zinc-500 line-clamp-2">
+                  {tool.shortDescription}
+                </p>
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
       {/* DNA Tip */}
       {dna && (
-        <div className="p-4 rounded-xl bg-zinc-900/30 border border-white/5 flex items-center justify-between">
+        <div className="p-4 rounded-xl bg-zinc-800/30 border border-white/5 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 rounded-lg bg-violet-500/10 flex items-center justify-center">
               <Wand2 className="w-4 h-4 text-violet-400" />

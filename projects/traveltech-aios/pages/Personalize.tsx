@@ -306,7 +306,7 @@ export const Personalize: React.FC = () => {
   };
 
   return (
-    <div className={`max-w-4xl mx-auto ${tokens.spacing.section} animate-fade-in-up`}>
+    <div className={`w-full ${tokens.spacing.section} animate-fade-in-up`}>
       {/* Header */}
       <div className="mb-8">
         <div className="flex items-center gap-3 mb-2">
