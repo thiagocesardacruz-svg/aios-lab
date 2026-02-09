@@ -1,0 +1,161 @@
+# Workflow: Quick Sales Page
+# Versão acelerada para criar página de vendas básica
+
+name: quick-page
+version: "1.0.0"
+description: Criar página de vendas rápida usando templates pré-definidos
+
+trigger:
+  command: "*quick-sales-page"
+  alias: "*qsp"
+
+phases:
+  - name: quick-discovery
+    description: Coleta rápida de informações essenciais
+    tasks:
+      - quick-briefing
+    parallel: false
+
+  - name: quick-creation
+    description: Gerar copy usando templates
+    tasks:
+      - template-fill
+    depends_on: quick-discovery
+
+  - name: quick-review
+    description: Revisão rápida
+    tasks:
+      - quick-optimization
+    depends_on: quick-creation
+
+agents:
+  primary: copy-chief
+
+inputs:
+  required:
+    - name: product_name
+      type: string
+      prompt: "Nome do produto"
+
+    - name: main_benefit
+      type: string
+      prompt: "Principal benefício/transformação (1 frase)"
+
+    - name: target_audience
+      type: string
+      prompt: "Para quem é este produto? (1 frase)"
+
+    - name: price
+      type: string
+      prompt: "Preço do produto"
+
+    - name: main_pain
+      type: string
+      prompt: "Principal dor que resolve"
+
+  optional:
+    - name: testimonial
+      type: text
+      prompt: "Um depoimento de cliente (se houver)"
+
+    - name: guarantee_days
+      type: number
+      default: 7
+      prompt: "Dias de garantia"
+
+templates_used:
+  - sales-page
+  - headline-formulas
+  - offer-stack
+
+outputs:
+  - name: quick_sales_page
+    type: file
+    path: "output/quick/{{product_name}}-sales-page.md"
+
+estimated_duration: "30-60 minutes"
+
+simplified_tasks:
+  quick-briefing:
+    description: Preencher briefing mínimo viável
+    agent: copy-chief
+    duration: "10 min"
+    steps:
+      - Coletar inputs obrigatórios
+      - Definir nível de consciência (assumir Problem Aware)
+      - Selecionar headline formula adequada
+      - Definir 3 benefícios principais
+
+  template-fill:
+    description: Preencher template de sales page
+    agent: copy-chief
+    duration: "30 min"
+    steps:
+      - Gerar headline usando fórmula selecionada
+      - Escrever seção de problema (PAS)
+      - Escrever apresentação do produto
+      - Criar 5 bullets de benefícios
+      - Montar offer stack simples
+      - Adicionar garantia
+      - Criar CTA
+
+  quick-optimization:
+    description: Revisão rápida de elementos essenciais
+    agent: copy-chief
+    duration: "15 min"
+    checklist:
+      - Headline clara e impactante
+      - Benefício principal destacado
+      - CTA visível e claro
+      - Garantia presente
+      - Preço apresentado corretamente
+
+flow_diagram: |
+  ┌─────────────────────────────────────────┐
+  │         QUICK SALES PAGE WORKFLOW        │
+  ├─────────────────────────────────────────┤
+  │                                          │
+  │  ┌─────────────┐                        │
+  │  │   INPUTS    │  5 perguntas básicas   │
+  │  └──────┬──────┘                        │
+  │         │                                │
+  │         ▼                                │
+  │  ┌─────────────┐                        │
+  │  │  BRIEFING   │  10 min                │
+  │  │  Rápido     │                        │
+  │  └──────┬──────┘                        │
+  │         │                                │
+  │         ▼                                │
+  │  ┌─────────────┐                        │
+  │  │  TEMPLATE   │  30 min                │
+  │  │  Fill       │                        │
+  │  └──────┬──────┘                        │
+  │         │                                │
+  │         ▼                                │
+  │  ┌─────────────┐                        │
+  │  │  REVIEW     │  15 min                │
+  │  │  Rápido     │                        │
+  │  └──────┬──────┘                        │
+  │         │                                │
+  │         ▼                                │
+  │  ┌─────────────────────────────────────┐│
+  │  │  📄 SALES PAGE BÁSICA               ││
+  │  │  Pronta para usar ou iterar         ││
+  │  └─────────────────────────────────────┘│
+  │                                          │
+  │  Total: ~55 minutos                      │
+  └─────────────────────────────────────────┘
+
+comparison:
+  vs_full_workflow:
+    full:
+      tasks: 9
+      duration: "3-5 hours"
+      depth: "Completo com pesquisa"
+      use_case: "Lançamentos importantes"
+
+    quick:
+      tasks: 3
+      duration: "30-60 min"
+      depth: "Template-based"
+      use_case: "MVPs, testes rápidos, produtos simples"
