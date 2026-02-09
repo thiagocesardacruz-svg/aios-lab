@@ -8,10 +8,6 @@ import {
   Zap,
   Map,
   Wand2,
-  Calendar,
-  TrendingUp,
-  Users,
-  Star,
   Target,
   Sparkles,
   ChevronRight,
@@ -23,14 +19,6 @@ interface DashboardProps {
   onOpenTask: (task: Task) => void;
   onNavigate: (view: ViewName) => void;
 }
-
-// Mock metrics for demo
-const MOCK_METRICS = {
-  directBookings: { value: '+12%', trend: 'up', label: 'Direct Bookings' },
-  reviewScore: { value: '4.7', trend: 'up', label: 'Review Score' },
-  responseTime: { value: '2.4h', trend: 'down', label: 'Avg Response' },
-  conversionRate: { value: '3.2%', trend: 'up', label: 'Conversion' },
-};
 
 const QUICK_ACTIONS = [
   { id: 'prompt', icon: MessageSquare, label: 'Generate Response', view: 'prompt-library' as ViewName, color: 'violet' },
@@ -90,30 +78,6 @@ export const Dashboard: React.FC<DashboardProps> = ({ onOpenTask, onNavigate }) 
             Goals
           </Button>
         </div>
-      </div>
-
-      {/* Quick Stats */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        {Object.entries(MOCK_METRICS).map(([key, metric]) => (
-          <div
-            key={key}
-            className="p-4 rounded-2xl bg-zinc-900/50 border border-white/5"
-          >
-            <p className="text-xs text-zinc-500 uppercase tracking-wider mb-1">
-              {metric.label}
-            </p>
-            <div className="flex items-baseline gap-2">
-              <span className="text-2xl font-bold text-white">{metric.value}</span>
-              <span
-                className={`text-xs font-medium ${
-                  metric.trend === 'up' ? 'text-emerald-400' : 'text-amber-400'
-                }`}
-              >
-                {metric.trend === 'up' ? '↑' : '↓'}
-              </span>
-            </div>
-          </div>
-        ))}
       </div>
 
       {/* Quick Actions */}
