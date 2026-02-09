@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { GPTResource } from '../types';
-import { PageHeader, Badge } from '../components/UI';
+import { PageHeader, Badge, Card, IconBox, Chip, tokens } from '../components/UI';
 import { Search, ChevronRight } from 'lucide-react';
 import { GPTDrawer } from '../components/GPTDrawer';
 
@@ -28,38 +28,33 @@ export const GPTDiscovery: React.FC<GPTDiscoveryProps> = ({ title, subtitle, dat
   });
 
   return (
-    <div className="w-full max-w-full mx-auto pb-20">
-      <PageHeader 
-        title={title} 
+    <div className={`w-full ${tokens.spacing.section} animate-fade-in-up`}>
+      <PageHeader
+        title={title}
         subtitle={subtitle}
         actions={
             <div className="relative">
                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500" />
-                 <input 
-                    type="text" 
-                    placeholder="Search..." 
+                 <input
+                    type="text"
+                    placeholder="Search..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="pl-9 pr-4 py-2 h-10 bg-zinc-900/50 border border-white/10 rounded-xl text-sm text-zinc-200 focus:outline-none focus:ring-1 focus:ring-violet-500 w-64 transition-all" 
+                    className={`pl-9 pr-4 py-2 h-10 ${tokens.bg.input} border ${tokens.border.default} ${tokens.radius.md} text-sm text-zinc-200 focus:outline-none focus:ring-1 focus:ring-violet-500 w-64 ${tokens.transition.default}`}
                 />
             </div>
         }
       />
 
       {/* Tabs / Chips */}
-      <div className="flex flex-wrap items-center gap-2 mb-8 border-b border-white/5 pb-6">
+      <div className="flex flex-wrap items-center gap-2 border-b border-white/5 pb-6">
         {categories.map(cat => (
-            <button
+            <Chip
                 key={cat}
+                label={cat}
+                selected={selectedCategory === cat}
                 onClick={() => setSelectedCategory(cat)}
-                className={`px-4 py-1.5 rounded-full text-xs font-medium transition-all duration-300 border ${
-                    selectedCategory === cat 
-                    ? 'bg-white text-zinc-950 border-white shadow-lg shadow-white/10' 
-                    : 'bg-zinc-900/50 text-zinc-400 border-white/5 hover:bg-zinc-800 hover:text-zinc-200'
-                }`}
-            >
-                {cat}
-            </button>
+            />
         ))}
       </div>
 
@@ -68,30 +63,29 @@ export const GPTDiscovery: React.FC<GPTDiscoveryProps> = ({ title, subtitle, dat
         {filteredData.map(resource => {
             const Icon = resource.icon;
             return (
-                <div 
+                <Card
                     key={resource.id}
+                    hover
                     onClick={() => setSelectedResource(resource)}
-                    className="group flex flex-col p-6 rounded-2xl bg-zinc-900/40 border border-white/5 hover:border-violet-500/30 hover:bg-zinc-800/60 cursor-pointer transition-all duration-300 hover:-translate-y-1 h-full"
+                    className="group flex flex-col h-full hover:-translate-y-1"
                 >
                     <div className="flex items-start justify-between mb-4">
-                        <div className="w-10 h-10 rounded-lg bg-zinc-800/50 border border-white/5 flex items-center justify-center">
-                            <Icon className={`w-5 h-5 ${resource.color}`} />
-                        </div>
+                        <IconBox icon={Icon} size="md" color="neutral" />
                         <Badge variant="neutral">{resource.category}</Badge>
                     </div>
 
-                    <h3 className="text-lg font-bold text-zinc-200 group-hover:text-white mb-2 leading-tight">
+                    <h3 className={`text-lg font-bold ${tokens.text.primary} group-hover:text-white mb-2 leading-tight`}>
                         {resource.title}
                     </h3>
-                    
-                    <p className="text-sm text-zinc-500 leading-relaxed line-clamp-2 mb-6 flex-1">
+
+                    <p className={`text-sm ${tokens.text.tertiary} leading-relaxed line-clamp-2 mb-6 flex-1`}>
                         {resource.shortDescription}
                     </p>
 
-                    <div className="flex items-center text-xs font-bold text-zinc-500 group-hover:text-violet-400 uppercase tracking-widest transition-colors">
+                    <div className={`flex items-center text-xs font-bold ${tokens.text.tertiary} group-hover:text-violet-400 uppercase tracking-widest ${tokens.transition.default}`}>
                         View Details <ChevronRight className="w-3 h-3 ml-1" />
                     </div>
-                </div>
+                </Card>
             )
         })}
       </div>

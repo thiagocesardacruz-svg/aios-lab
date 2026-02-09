@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDNA } from '../contexts/DNAContext';
-import { Button, Badge } from '../components/UI';
+import { Button, Badge, Card, IconBox, tokens } from '../components/UI';
 import { Task, ViewName } from '../types';
 import { MOCK_TASKS } from '../constants';
 import {
@@ -55,7 +55,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onOpenTask, onNavigate }) 
   }
 
   return (
-    <div className="w-full max-w-6xl mx-auto space-y-8 animate-fade-in-up">
+    <div className={`w-full ${tokens.spacing.section} animate-fade-in-up`}>
       {/* Header with DNA context */}
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
         <div>

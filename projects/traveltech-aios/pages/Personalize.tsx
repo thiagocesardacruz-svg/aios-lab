@@ -1,15 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useDNA } from '../contexts/DNAContext';
-import { Button } from '../components/UI';
+import { Button, Card, tokens } from '../components/UI';
 import {
-  Save,
   Sparkles,
   Building2,
   MapPin,
   Users,
   MessageSquare,
   Tag,
-  Check,
   Pencil,
   X
 } from 'lucide-react';
@@ -308,7 +306,7 @@ export const Personalize: React.FC = () => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto animate-fade-in-up">
+    <div className={`max-w-4xl mx-auto ${tokens.spacing.section} animate-fade-in-up`}>
       {/* Header */}
       <div className="mb-8">
         <div className="flex items-center gap-3 mb-2">

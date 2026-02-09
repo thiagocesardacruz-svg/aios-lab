@@ -179,12 +179,14 @@ const AppContent: React.FC = () => {
       <div className="fixed inset-0 z-0 bg-gradient-to-b from-zinc-950/80 via-zinc-950/85 to-zinc-950 pointer-events-none" />
 
       {/* Main Layout */}
-      <div className="relative z-10 flex">
+      <div className="relative z-10 flex h-screen">
         <Sidebar currentView={currentView} onNavigate={setCurrentView} />
 
-        {/* Content Area Shell */}
-        <main className="flex-1 min-h-screen transition-all duration-300 md:ml-[280px] p-6 pt-24 md:pt-10 overflow-x-hidden">
+        {/* Content Area Shell - Internal scroll */}
+        <main className="flex-1 h-screen overflow-y-auto overflow-x-hidden transition-all duration-300 md:ml-[280px] pt-20 md:pt-8 pb-24 md:pb-8 px-4 md:px-8">
+          <div className="max-w-6xl mx-auto">
             {renderContent()}
+          </div>
         </main>
 
         <MobileNav currentView={currentView} onNavigate={setCurrentView} />

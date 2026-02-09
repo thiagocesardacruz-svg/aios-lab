@@ -13,7 +13,7 @@ import {
   ChevronRight,
   Sparkles
 } from 'lucide-react';
-import { Button } from '../components/UI';
+import { Button, Card, IconBox, tokens } from '../components/UI';
 
 // ============================================================================
 // GROWTH VERTICALS DATA
@@ -318,7 +318,7 @@ export const Goals: React.FC = () => {
   const totalSelected = selectedGoals.length;
 
   return (
-    <div className="max-w-4xl mx-auto animate-fade-in-up">
+    <div className={`max-w-4xl mx-auto ${tokens.spacing.section} animate-fade-in-up`}>
       {/* Header */}
       <div className="mb-8">
         <div className="flex items-center gap-3 mb-2">

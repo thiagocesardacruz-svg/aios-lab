@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { PageHeader, Badge, Button, CopyBlock } from '../components/UI';
+import { PageHeader, Badge, Button, CopyBlock, Card, Chip, tokens } from '../components/UI';
 import { PLATFORM_TOOLS_DATA } from '../constants';
 import { PlatformTool, DNAParams } from '../types';
 import { Search, ChevronRight, Instagram, Linkedin, Facebook, Youtube, Globe, MapPin, X, Info, Wand2, ExternalLink } from 'lucide-react';
@@ -45,38 +45,33 @@ export const PlatformsHub: React.FC<PlatformsHubProps> = ({ dna }) => {
   };
 
   return (
-    <div className="w-full max-w-full mx-auto pb-20">
-      <PageHeader 
-        title="Digital Platforms" 
+    <div className={`w-full ${tokens.spacing.section} animate-fade-in-up`}>
+      <PageHeader
+        title="Digital Platforms"
         subtitle="Platform-specific workflows and prompts to master your online presence."
         actions={
             <div className="relative">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500" />
-                <input 
-                    type="text" 
-                    placeholder="Search actions..." 
+                <input
+                    type="text"
+                    placeholder="Search actions..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="pl-9 pr-4 py-2 h-10 bg-zinc-900/50 border border-white/10 rounded-xl text-sm text-zinc-200 focus:outline-none focus:ring-1 focus:ring-violet-500 w-64 transition-all" 
+                    className={`pl-9 pr-4 py-2 h-10 ${tokens.bg.input} border ${tokens.border.default} ${tokens.radius.md} text-sm text-zinc-200 focus:outline-none focus:ring-1 focus:ring-violet-500 w-64 ${tokens.transition.default}`}
                 />
             </div>
         }
       />
 
       {/* Filter Chips */}
-      <div className="flex flex-wrap items-center gap-2 mb-8 border-b border-white/5 pb-6">
+      <div className="flex flex-wrap items-center gap-2 border-b border-white/5 pb-6">
         {platforms.map(p => (
-            <button
+            <Chip
                 key={p}
+                label={p}
+                selected={selectedPlatform === p}
                 onClick={() => setSelectedPlatform(p)}
-                className={`px-4 py-1.5 rounded-full text-xs font-medium transition-all duration-300 border ${
-                    selectedPlatform === p 
-                    ? 'bg-white text-zinc-950 border-white shadow-lg shadow-white/10' 
-                    : 'bg-zinc-900/50 text-zinc-400 border-white/5 hover:bg-zinc-800 hover:text-zinc-200'
-                }`}
-            >
-                {p}
-            </button>
+            />
         ))}
       </div>
 
@@ -85,30 +80,31 @@ export const PlatformsHub: React.FC<PlatformsHubProps> = ({ dna }) => {
         {filteredData.map(tool => {
             const Icon = getPlatformIcon(tool.platform);
             return (
-                <div 
-                    key={tool.id} 
+                <Card
+                    key={tool.id}
+                    hover
                     onClick={() => setSelectedTool(tool)}
-                    className="group flex flex-col p-6 rounded-2xl bg-zinc-900/40 border border-white/5 hover:border-violet-500/30 hover:bg-zinc-800/60 cursor-pointer transition-all duration-300 hover:-translate-y-1"
+                    className="group flex flex-col h-full hover:-translate-y-1"
                 >
                     <div className="flex justify-between items-start mb-4">
-                        <div className="w-10 h-10 rounded-lg bg-zinc-800/50 border border-white/5 flex items-center justify-center text-zinc-400 group-hover:text-white group-hover:bg-violet-600 transition-colors">
+                        <div className={`w-10 h-10 ${tokens.radius.sm} bg-zinc-800/50 border border-white/5 flex items-center justify-center text-zinc-400 group-hover:text-white group-hover:bg-violet-600 ${tokens.transition.default}`}>
                             <Icon className="w-5 h-5" />
                         </div>
                         <Badge variant="neutral">{tool.platform}</Badge>
                     </div>
 
-                    <h3 className="text-lg font-bold text-zinc-200 group-hover:text-white mb-2 leading-tight">
+                    <h3 className={`text-lg font-bold ${tokens.text.primary} group-hover:text-white mb-2 leading-tight`}>
                         {tool.title}
                     </h3>
 
-                    <p className="text-sm text-zinc-500 line-clamp-2 mb-6 flex-1">
+                    <p className={`text-sm ${tokens.text.tertiary} line-clamp-2 mb-6 flex-1`}>
                         {tool.purpose}
                     </p>
 
-                    <div className="flex items-center text-xs font-bold text-zinc-500 group-hover:text-violet-400 uppercase tracking-widest transition-colors">
+                    <div className={`flex items-center text-xs font-bold ${tokens.text.tertiary} group-hover:text-violet-400 uppercase tracking-widest ${tokens.transition.default}`}>
                         Launch Action <ChevronRight className="w-3 h-3 ml-1" />
                     </div>
-                </div>
+                </Card>
             );
         })}
       </div>

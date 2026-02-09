@@ -9,7 +9,6 @@ import {
   Zap,
   FileText,
   ExternalLink,
-  Play,
   Copy,
   Check,
   Clock,
@@ -19,7 +18,7 @@ import {
   Tag,
   Wand2
 } from 'lucide-react';
-import { Button } from '../components/UI';
+import { Button, Card, Chip, tokens } from '../components/UI';
 
 // ============================================================================
 // UTILITIES
@@ -284,7 +283,7 @@ export const PromptLibrary: React.FC = () => {
   };
 
   return (
-    <div className="w-full max-w-full mx-auto pb-20 space-y-8">
+    <div className={`w-full ${tokens.spacing.section} animate-fade-in-up`}>
       {/* Header */}
       <div className="flex items-center gap-3">
         <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-violet-500 to-cyan-500 flex items-center justify-center">
@@ -323,17 +322,12 @@ export const PromptLibrary: React.FC = () => {
           { id: 'sales', label: 'Sales' },
           { id: 'ops', label: 'Operations' },
         ].map((tab) => (
-          <button
+          <Chip
             key={tab.id}
-            onClick={() => setActiveTab(tab.id as any)}
-            className={`px-4 py-2 rounded-xl text-sm font-medium transition-all ${
-              activeTab === tab.id
-                ? 'bg-violet-500 text-white'
-                : 'bg-zinc-800/50 text-zinc-400 hover:text-white hover:bg-zinc-800'
-            }`}
-          >
-            {tab.label}
-          </button>
+            label={tab.label}
+            selected={activeTab === tab.id}
+            onClick={() => setActiveTab(tab.id as typeof activeTab)}
+          />
         ))}
       </div>
 

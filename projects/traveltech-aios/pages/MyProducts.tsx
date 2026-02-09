@@ -1,7 +1,7 @@
 import React from 'react';
 import { useProducts } from '../contexts/ProductsContext';
 import { useDNA } from '../contexts/DNAContext';
-import { Button, Badge } from '../components/UI';
+import { Button, Badge, Card, tokens } from '../components/UI';
 import { ArrowRight, Plus, Sparkles, Clock, Star } from 'lucide-react';
 import type { ViewName } from '../types';
 
@@ -39,7 +39,7 @@ export const MyProducts: React.FC<MyProductsProps> = ({ onNavigate, onOpenProduc
   }
 
   return (
-    <div className="max-w-5xl mx-auto px-4 py-8 animate-fade-in-up">
+    <div className={`max-w-5xl mx-auto ${tokens.spacing.section} animate-fade-in-up`}>
       {/* Welcome Header */}
       <div className="mb-12">
         <h1 className="text-3xl md:text-4xl font-semibold text-white mb-2">

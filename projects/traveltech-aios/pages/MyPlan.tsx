@@ -1,5 +1,5 @@
 import React from 'react';
-import { PageHeader, Badge } from '../components/UI';
+import { PageHeader, Badge, Card, tokens } from '../components/UI';
 import { Task } from '../types';
 import { MOCK_TASKS } from '../constants';
 import { Calendar, Circle, CheckCircle2 } from 'lucide-react';
@@ -10,7 +10,7 @@ interface MyPlanProps {
 
 export const MyPlan: React.FC<MyPlanProps> = ({ onOpenTask }) => {
   return (
-    <div className="w-full max-w-full mx-auto pb-20">
+    <div className={`w-full ${tokens.spacing.section} animate-fade-in-up`}>
       <PageHeader 
         title="My Plan" 
         subtitle="Sua estratégia executável organizada cronologicamente." 
@@ -52,10 +52,7 @@ export const MyPlan: React.FC<MyPlanProps> = ({ onOpenTask }) => {
 };
 
 const TaskCard: React.FC<{ task: Task; onClick: () => void }> = ({ task, onClick }) => (
-    <div 
-        onClick={onClick}
-        className="group relative p-6 rounded-2xl glass-panel border border-white/5 hover:border-violet-500/30 transition-all cursor-pointer hover:bg-white/[0.07]"
-    >
+    <Card hover onClick={onClick} className="group">
         <div className="flex justify-between items-start mb-2">
             <Badge variant={task.type === 'execution' ? 'neutral' : 'warning'}>
                 {task.type.toUpperCase()}
@@ -64,11 +61,11 @@ const TaskCard: React.FC<{ task: Task; onClick: () => void }> = ({ task, onClick
                 {task.status === 'completed' ? <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500" /> : <Circle className="w-3.5 h-3.5 text-zinc-700" />}
             </div>
         </div>
-        <h4 className="text-lg font-semibold text-zinc-200 group-hover:text-white transition-colors mb-1">
+        <h4 className={`text-lg font-semibold ${tokens.text.primary} group-hover:text-white transition-colors mb-1`}>
             {task.title}
         </h4>
-        <p className="text-sm text-zinc-500 line-clamp-2">
+        <p className={`text-sm ${tokens.text.secondary} line-clamp-2`}>
             {task.description}
         </p>
-    </div>
+    </Card>
 );
