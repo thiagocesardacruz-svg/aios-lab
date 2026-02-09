@@ -100,7 +100,7 @@ const AppContent: React.FC = () => {
     switch (currentView) {
       // MAIN
       case 'dashboard':
-        return <Dashboard onOpenTask={setSelectedTask} onNavigate={setCurrentView} dna={legacyDNA} />;
+        return <Dashboard onOpenTask={setSelectedTask} onNavigate={setCurrentView} />;
       case 'my-products':
         return <MyProducts onNavigate={setCurrentView} onOpenProduct={(id) => console.log('Open product:', id)} />;
       case 'dna':
@@ -163,7 +163,7 @@ const AppContent: React.FC = () => {
         return <PlaceholderPage title="Help Center" subtitle="Tutorials, FAQs and direct support from our team." />;
 
       default:
-        return <Dashboard onOpenTask={setSelectedTask} onNavigate={setCurrentView} dna={legacyDNA} />;
+        return <Dashboard onOpenTask={setSelectedTask} onNavigate={setCurrentView} />;
     }
   };
 
