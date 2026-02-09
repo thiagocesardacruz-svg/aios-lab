@@ -1,9 +1,9 @@
-import { 
-  LayoutDashboard, 
-  Map, 
-  Library, 
-  MessageSquareText, 
-  FileText, 
+import {
+  LayoutDashboard,
+  Map,
+  Library,
+  MessageSquareText,
+  FileText,
   Share2,
   Fingerprint,
   Bot,
@@ -17,7 +17,9 @@ import {
   Briefcase,
   Users,
   Search,
-  PenTool
+  PenTool,
+  TrendingUp,
+  Heart
 } from 'lucide-react';
 import { NavItem, Task, PlatformStatus, PromptItem, GPTResource, TemplateResource, PlatformTool } from './types';
 
@@ -539,6 +541,86 @@ export const GPT_EXPERTS_DATA: GPTResource[] = [
       objectives: ['Increase emotional connection.', 'Drive bookings.'],
       requirements: ['Room features.', 'Tone of voice guidelines.'],
       deliverables: ['Polished descriptions.', 'Taglines.']
+    }
+  },
+  {
+    id: 'exp4',
+    title: 'Revenue Manager',
+    shortDescription: 'Dynamic pricing, yield optimization, and demand forecasting specialist.',
+    category: 'Revenue',
+    icon: TrendingUp,
+    color: 'text-orange-500',
+    externalUrl: 'https://chat.openai.com',
+    details: {
+      overview: 'Expert in hospitality revenue management with 15+ years optimizing ADR and RevPAR.',
+      whenToUse: ['Setting seasonal rates.', 'Analyzing competitor pricing.', 'Forecasting demand.'],
+      objectives: ['Maximize revenue per room.', 'Optimize occupancy.', 'Balance direct vs OTA.'],
+      requirements: ['Historical booking data.', 'Competitor rates.', 'Event calendar.'],
+      deliverables: ['Pricing strategy.', 'Rate calendar.', 'Demand forecast.']
+    }
+  },
+  {
+    id: 'exp5',
+    title: 'Guest Experience Designer',
+    shortDescription: 'Creates memorable touchpoints from booking to checkout and beyond.',
+    category: 'Operations',
+    icon: Heart,
+    color: 'text-rose-500',
+    externalUrl: 'https://chat.openai.com',
+    details: {
+      overview: 'Hospitality experience expert focused on guest journey mapping and service excellence.',
+      whenToUse: ['Redesigning guest journey.', 'Improving review scores.', 'Training staff.'],
+      objectives: ['Increase guest satisfaction.', 'Create wow moments.', 'Build loyalty.'],
+      requirements: ['Current guest journey.', 'Review feedback.', 'Service standards.'],
+      deliverables: ['Journey map.', 'Touchpoint improvements.', 'Service scripts.']
+    }
+  },
+  {
+    id: 'exp6',
+    title: 'Social Media Manager',
+    shortDescription: 'Content strategy, engagement tactics, and viral campaign creation.',
+    category: 'Marketing',
+    icon: Share2,
+    color: 'text-blue-500',
+    externalUrl: 'https://chat.openai.com',
+    details: {
+      overview: 'Social media specialist with expertise in travel and hospitality content that converts.',
+      whenToUse: ['Planning content calendar.', 'Responding to comments.', 'Running campaigns.'],
+      objectives: ['Grow followers.', 'Increase engagement.', 'Drive bookings from social.'],
+      requirements: ['Brand guidelines.', 'Target audience.', 'Content assets.'],
+      deliverables: ['Content calendar.', 'Post templates.', 'Engagement playbook.']
+    }
+  },
+  {
+    id: 'exp7',
+    title: 'Sales Director',
+    shortDescription: 'B2B partnerships, group sales, and corporate account strategies.',
+    category: 'Sales',
+    icon: Briefcase,
+    color: 'text-violet-500',
+    externalUrl: 'https://chat.openai.com',
+    details: {
+      overview: 'Senior sales leader specialized in hospitality B2B and MICE markets.',
+      whenToUse: ['Prospecting corporate clients.', 'Negotiating group rates.', 'Building partnerships.'],
+      objectives: ['Increase B2B revenue.', 'Build corporate pipeline.', 'Close group deals.'],
+      requirements: ['Target companies.', 'Current rates.', 'Capacity info.'],
+      deliverables: ['Sales pitch.', 'Proposal templates.', 'Follow-up sequences.']
+    }
+  },
+  {
+    id: 'exp8',
+    title: 'Operations Consultant',
+    shortDescription: 'Process optimization, SOP creation, and efficiency improvements.',
+    category: 'Operations',
+    icon: Settings,
+    color: 'text-slate-500',
+    externalUrl: 'https://chat.openai.com',
+    details: {
+      overview: 'Operations expert with deep knowledge in hotel and travel agency workflows.',
+      whenToUse: ['Streamlining processes.', 'Creating SOPs.', 'Training new staff.'],
+      objectives: ['Reduce operational costs.', 'Improve efficiency.', 'Standardize quality.'],
+      requirements: ['Current workflows.', 'Pain points.', 'Team structure.'],
+      deliverables: ['Process maps.', 'SOPs.', 'Checklists.']
     }
   }
 ];
