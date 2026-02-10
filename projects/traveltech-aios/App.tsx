@@ -14,6 +14,8 @@ import { TemplateLibrary } from './pages/TemplateLibrary';
 import { Login } from './pages/Login';
 import { Onboarding } from './pages/Onboarding';
 import { Goals } from './pages/Goals';
+import { NotionPrompts } from './pages/NotionPrompts';
+import { NotionExperts } from './pages/NotionExperts';
 import { TaskPlayer } from './components/TaskPlayer';
 import { ViewName, Task, DNAParams } from './types';
 import { GPT_TOOLS_DATA, GPT_EXPERTS_DATA, SCRIPTS_DATA, DOCS_DATA, CINEMATIC_BACKGROUNDS } from './constants';
@@ -161,6 +163,12 @@ const AppContent: React.FC = () => {
         return <PlaceholderPage title="Settings" subtitle="Global system settings, integrations and permissions." />;
       case 'help':
         return <PlaceholderPage title="Help Center" subtitle="Tutorials, FAQs and direct support from our team." />;
+
+      // NOTION-STYLE (Test)
+      case 'notion-prompts':
+        return <NotionPrompts />;
+      case 'notion-experts':
+        return <NotionExperts />;
 
       default:
         return <Dashboard onOpenTask={setSelectedTask} onNavigate={setCurrentView} />;

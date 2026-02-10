@@ -1,0 +1,140 @@
+# /mkt/ad-creative-pack Workflow
+# Criar pack de criativos para ads
+
+workflow:
+  id: ad-creative-pack
+  name: Ad Creative Pack
+  description: "Cria pack completo de criativos para campanhas de ads"
+  version: "1.0.0"
+  squad: marketing
+  responsible: "@copy-specialist"
+
+inputs:
+  - name: product
+    type: string
+    required: true
+  - name: platform
+    type: string
+    required: true
+    options: [meta, google, linkedin, youtube, tiktok]
+  - name: objective
+    type: string
+    required: true
+    options: [awareness, traffic, leads, sales]
+  - name: variations
+    type: integer
+    default: 5
+
+outputs:
+  - name: ad-pack
+    type: markdown
+    path: "docs/outputs/mkt/ads/{product}-{platform}-pack.md"
+
+phases:
+  - phase_0: Research
+  - phase_1: Hooks
+  - phase_2: Copy
+  - phase_3: Specs
+
+sequence:
+  - phase: 0
+    name: Gather Context
+    agent: content-strategist
+    action: research
+    inputs:
+      - product
+      - platform
+    creates:
+      - context.md (memory)
+    notes: |
+      Coletar:
+      - ICP para o platform
+      - Dores principais
+      - Ângulos que funcionam
+      - Competitor ads
+
+  - phase: 1
+    name: Create Hooks
+    agent: copy-specialist
+    action: create_hooks
+    inputs:
+      - context
+      - variations
+    creates:
+      - hooks.md (memory)
+    notes: |
+      Criar {variations} hooks:
+      - Pattern interrupt
+      - Question
+      - Bold statement
+      - Curiosity
+      - Proof-based
+
+  - phase: 2
+    name: Write Ad Copy
+    agent: copy-specialist
+    action: write_ads
+    inputs:
+      - hooks
+      - context
+      - platform
+    creates:
+      - ad-copies.md (memory)
+    notes: |
+      Para cada hook:
+      - Primary text
+      - Headline
+      - Description
+      - CTA
+      Adaptar para specs do platform
+
+  - phase: 3
+    name: Add Specs
+    agent: funnel-architect
+    action: specify
+    inputs:
+      - ad-copies
+      - platform
+    creates:
+      - ad-pack.md
+    notes: |
+      Adicionar:
+      - Dimensões recomendadas
+      - Tracking pixels
+      - UTM parameters
+      - A/B test structure
+
+output_format: |
+  # Ad Creative Pack: {product}
+
+  ## Campaign Info
+  - Platform: {platform}
+  - Objective: {objective}
+  - Variations: {count}
+
+  ---
+
+  ## Ad Variation 1
+  **Hook:** {hook}
+
+  **Primary Text:**
+  {primary_text}
+
+  **Headline:** {headline}
+  **Description:** {description}
+  **CTA:** {cta}
+
+  ---
+
+  [Repeat for each variation]
+
+  ---
+
+  ## Technical Specs
+  - Image sizes: {sizes}
+  - Video specs: {video_specs}
+  - Tracking: {tracking}
+  - UTMs: {utms}
+
+  ## A/B Testing Plan
+  {ab_plan}

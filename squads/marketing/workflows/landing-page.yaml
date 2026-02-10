@@ -1,0 +1,159 @@
+# /mkt/landing-page Workflow
+# Criar landing page completa
+
+workflow:
+  id: landing-page
+  name: Create Landing Page
+  description: "Cria landing page completa com copy, estrutura e especificações"
+  version: "1.0.0"
+  squad: marketing
+  responsible: "@copy-specialist"
+
+inputs:
+  - name: product
+    type: string
+    required: true
+    description: "Produto ou oferta"
+  - name: objective
+    type: string
+    required: true
+    options: [lead_capture, sales, webinar_registration, application]
+  - name: icp
+    type: string
+    required: false
+    description: "ICP target (ou usar default)"
+
+outputs:
+  - name: landing-page-doc
+    type: markdown
+    path: "docs/outputs/mkt/{product}-landing.md"
+  - name: landing-page-spec
+    type: yaml
+    path: "docs/outputs/mkt/{product}-landing-spec.yaml"
+
+phases:
+  - phase_0: Research
+  - phase_1: Strategy
+  - phase_2: Copy
+  - phase_3: Structure
+  - phase_4: Review
+
+sequence:
+  - phase: 0
+    name: Gather Context
+    agent: content-strategist
+    action: research
+    inputs:
+      - product
+      - icp
+    creates:
+      - context.md (memory)
+    notes: |
+      Coletar:
+      - ICP e dores
+      - Benefícios do produto
+      - Provas e cases
+      - Objeções comuns
+
+  - phase: 1
+    name: Define Offer
+    agent: offer-engine
+    action: structure_offer
+    inputs:
+      - product
+      - context
+    creates:
+      - offer-structure.md (memory)
+    notes: |
+      Definir:
+      - Core offer
+      - Bonuses
+      - Guarantee
+      - Price/CTA
+
+  - phase: 2
+    name: Write Copy
+    agent: copy-specialist
+    action: write_landing
+    inputs:
+      - context
+      - offer-structure
+    creates:
+      - landing-copy.md
+    notes: |
+      Escrever:
+      - Headline + subheadline
+      - Hero section
+      - Problem/agitation
+      - Solution/benefits
+      - Features
+      - Social proof
+      - Offer stack
+      - FAQ
+      - Final CTA
+
+  - phase: 3
+    name: Define Structure
+    agent: funnel-architect
+    action: specify_layout
+    inputs:
+      - landing-copy
+      - objective
+    creates:
+      - landing-spec.yaml
+    notes: |
+      Especificar:
+      - Seções e ordem
+      - CTAs e posições
+      - Elementos visuais
+      - Mobile considerations
+      - Tracking pixels
+
+  - phase: 4
+    name: QA Review
+    agent: marketing-lead
+    action: review
+    inputs:
+      - landing-copy
+      - landing-spec
+    checklist: checklists/copy-quality.md
+    creates:
+      - landing-page-doc.md
+      - landing-page-spec.yaml
+
+output_format: |
+  # Landing Page: {product}
+
+  ## Headline
+  {headline}
+
+  ## Subheadline
+  {subheadline}
+
+  ## Hero Section
+  {hero_content}
+
+  ## Problem
+  {problem_section}
+
+  ## Solution
+  {solution_section}
+
+  ## Benefits
+  {benefits_list}
+
+  ## Social Proof
+  {testimonials}
+
+  ## Offer
+  {offer_stack}
+
+  ## FAQ
+  {faq_items}
+
+  ## CTA
+  {final_cta}
+
+  ---
+  ## Specs
+  {technical_specs}

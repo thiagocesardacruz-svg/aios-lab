@@ -1,0 +1,108 @@
+name: full-research
+description: Complete deep research workflow for new projects
+version: 1.0.0
+
+metadata:
+  duration: 3-5 days
+  depth: deep
+  outputs:
+    - strategic-brief.md
+    - audience-personas.md
+    - competitor-map.md
+    - market-analysis.md
+
+phases:
+  - name: discovery
+    description: Define problem and understand audience
+    duration: 1-2 days
+    tasks:
+      - id: problem-definition
+        file: tasks/01-problem-definition.md
+        outputs:
+          - problem-statement.md
+        checklist: checklists/discovery-checklist.md
+
+      - id: audience-research
+        file: tasks/02-audience-research.md
+        depends_on: [problem-definition]
+        outputs:
+          - audience-personas.md
+        templates:
+          - templates/audience-persona-tmpl.md
+
+  - name: analysis
+    description: Analyze market and competition
+    duration: 1-2 days
+    depends_on: [discovery]
+    tasks:
+      - id: market-analysis
+        file: tasks/03-market-analysis.md
+        outputs:
+          - market-analysis.md
+
+      - id: competitor-mapping
+        file: tasks/04-competitor-mapping.md
+        outputs:
+          - competitor-map.md
+
+      - id: gap-analysis
+        file: tasks/05-gap-analysis.md
+        depends_on: [market-analysis, competitor-mapping]
+        outputs:
+          - gap-opportunities.md
+          - swot.md
+        templates:
+          - templates/swot-tmpl.md
+        checklist: checklists/analysis-checklist.md
+
+  - name: strategy
+    description: Define positioning and create brief
+    duration: 1 day
+    depends_on: [analysis]
+    tasks:
+      - id: positioning
+        file: tasks/06-positioning.md
+        outputs:
+          - positioning-statement.md
+
+      - id: strategic-brief
+        file: tasks/07-strategic-brief.md
+        depends_on: [positioning]
+        outputs:
+          - strategic-brief.md
+        templates:
+          - templates/strategic-brief-tmpl.md
+        checklist: checklists/strategy-checklist.md
+
+milestones:
+  - name: discovery-complete
+    after: discovery
+    deliverables:
+      - problem-statement.md
+      - audience-personas.md
+    review: optional
+
+  - name: analysis-complete
+    after: analysis
+    deliverables:
+      - market-analysis.md
+      - competitor-map.md
+      - gap-opportunities.md
+    review: recommended
+
+  - name: strategy-complete
+    after: strategy
+    deliverables:
+      - strategic-brief.md
+    review: required
+
+exit_criteria:
+  - Strategic brief is complete and approved
+  - All research documents are finalized
+  - Stakeholders have signed off
+  - Ready to create PRD
+
+next_steps:
+  - Create PRD based on strategic brief
+  - Begin product development
+  - Create marketing assets

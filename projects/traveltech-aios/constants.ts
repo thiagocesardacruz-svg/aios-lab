@@ -19,7 +19,9 @@ import {
   Search,
   PenTool,
   TrendingUp,
-  Heart
+  Heart,
+  Database,
+  Sparkles
 } from 'lucide-react';
 import { NavItem, Task, PlatformStatus, PromptItem, GPTResource, TemplateResource, PlatformTool } from './types';
 
@@ -63,6 +65,10 @@ export const NAV_ITEMS: NavItem[] = [
   { id: 'profile', label: 'My Profile', icon: User, group: 'ACCOUNT' },
   { id: 'settings', label: 'Settings', icon: Settings, group: 'ACCOUNT' },
   { id: 'help', label: 'Help Center', icon: HelpCircle, group: 'ACCOUNT' },
+
+  // NOTION (Test)
+  { id: 'notion-prompts', label: 'Prompts DB', icon: Database, group: 'NOTION' },
+  { id: 'notion-experts', label: 'Experts DB', icon: Sparkles, group: 'NOTION' },
 ];
 
 export const MOCK_TASKS: Task[] = [

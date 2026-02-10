@@ -1,0 +1,162 @@
+# Workflow: Full Sales Page
+# Workflow completo para criar página de vendas do zero
+
+name: full-sales-page
+version: "1.0.0"
+description: Criar página de vendas completa para produto digital
+
+trigger:
+  command: "*create-sales-page"
+  alias: "*sp"
+
+phases:
+  - name: discovery
+    description: Entender produto e público
+    tasks:
+      - analyze-product
+      - define-avatar
+    parallel: false
+
+  - name: strategy
+    description: Estruturar oferta e posicionamento
+    tasks:
+      - structure-offer
+    depends_on: discovery
+
+  - name: creation
+    description: Criar copy e elementos de prova
+    tasks:
+      - write-headlines
+      - write-copy
+      - create-proof
+    parallel: false
+    depends_on: strategy
+
+  - name: assembly
+    description: Montar página completa
+    tasks:
+      - design-layout
+      - assemble-page
+    parallel: false
+    depends_on: creation
+
+  - name: optimization
+    description: Otimizar para conversão
+    tasks:
+      - optimize-page
+    depends_on: assembly
+
+agents:
+  primary: offer-architect
+  supporting:
+    - copy-chief
+    - conversion-optimizer
+
+inputs:
+  required:
+    - name: product_name
+      type: string
+      prompt: "Nome do produto digital"
+
+    - name: product_type
+      type: enum
+      options:
+        - curso_online
+        - ebook
+        - mentoria
+        - software
+        - comunidade
+        - template
+        - outro
+      prompt: "Tipo de produto"
+
+    - name: product_description
+      type: text
+      prompt: "Descreva o produto (o que é, o que entrega, transformação prometida)"
+
+  optional:
+    - name: target_price
+      type: string
+      prompt: "Faixa de preço desejada (ex: R$ 297-497)"
+
+    - name: existing_testimonials
+      type: text
+      prompt: "Cole depoimentos existentes (se houver)"
+
+    - name: competitor_urls
+      type: list
+      prompt: "URLs de páginas concorrentes para análise"
+
+outputs:
+  - name: sales_page_markdown
+    type: file
+    path: "output/{{product_name}}/sales-page.md"
+
+  - name: sales_page_html
+    type: file
+    path: "output/{{product_name}}/sales-page.html"
+
+  - name: optimization_report
+    type: file
+    path: "output/{{product_name}}/optimization-report.md"
+
+  - name: assets_spec
+    type: file
+    path: "output/{{product_name}}/assets-needed.md"
+
+validation:
+  checklist:
+    - copy-quality
+    - conversion-elements
+    - compliance
+
+estimated_duration: "3-5 hours"
+
+flow_diagram: |
+  ┌─────────────────────────────────────────────────────────────────────┐
+  │                        FULL SALES PAGE WORKFLOW                      │
+  ├─────────────────────────────────────────────────────────────────────┤
+  │                                                                      │
+  │  DISCOVERY                                                           │
+  │  ┌──────────────────┐    ┌──────────────────┐                       │
+  │  │  Analyze Product │───▶│  Define Avatar   │                       │
+  │  │  @offer-architect│    │  @copy-chief     │                       │
+  │  └──────────────────┘    └────────┬─────────┘                       │
+  │                                   │                                  │
+  │  STRATEGY                         ▼                                  │
+  │  ┌──────────────────────────────────────────┐                       │
+  │  │          Structure Offer                  │                       │
+  │  │          @offer-architect                 │                       │
+  │  └──────────────────┬───────────────────────┘                       │
+  │                     │                                                │
+  │  CREATION           ▼                                                │
+  │  ┌──────────────────┐                                               │
+  │  │ Write Headlines  │                                               │
+  │  │ @copy-chief      │                                               │
+  │  └────────┬─────────┘                                               │
+  │           ▼                                                          │
+  │  ┌──────────────────┐    ┌──────────────────┐                       │
+  │  │   Write Copy     │───▶│  Create Proof    │                       │
+  │  │   @copy-chief    │    │  @conv-optimizer │                       │
+  │  └──────────────────┘    └────────┬─────────┘                       │
+  │                                   │                                  │
+  │  ASSEMBLY                         ▼                                  │
+  │  ┌──────────────────┐    ┌──────────────────┐                       │
+  │  │  Design Layout   │───▶│  Assemble Page   │                       │
+  │  │  @conv-optimizer │    │  @conv-optimizer │                       │
+  │  └──────────────────┘    └────────┬─────────┘                       │
+  │                                   │                                  │
+  │  OPTIMIZATION                     ▼                                  │
+  │  ┌──────────────────────────────────────────┐                       │
+  │  │            Optimize Page                  │                       │
+  │  │            @conversion-optimizer          │                       │
+  │  └──────────────────┬───────────────────────┘                       │
+  │                     │                                                │
+  │                     ▼                                                │
+  │  ┌──────────────────────────────────────────┐                       │
+  │  │         📄 SALES PAGE COMPLETA            │                       │
+  │  │         + Relatório de Otimização        │                       │
+  │  │         + Spec de Assets                 │                       │
+  │  └──────────────────────────────────────────┘                       │
+  │                                                                      │
+  └─────────────────────────────────────────────────────────────────────┘

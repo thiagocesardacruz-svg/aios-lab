@@ -1,0 +1,132 @@
+# /mkt/seo-plan Workflow
+# Plano de SEO com keywords
+
+workflow:
+  id: seo-plan
+  name: SEO Plan
+  description: "Cria plano de SEO completo com keywords, clusters e calendário"
+  version: "1.0.0"
+  squad: marketing
+  responsible: "@seo-specialist"
+
+inputs:
+  - name: topic
+    type: string
+    required: true
+    description: "Tópico principal ou nicho"
+  - name: goals
+    type: string
+    required: false
+    description: "Objetivos de SEO"
+  - name: timeframe
+    type: string
+    default: "3_months"
+    options: [1_month, 3_months, 6_months, 12_months]
+
+outputs:
+  - name: seo-plan
+    type: markdown
+    path: "docs/outputs/mkt/{topic}-seo-plan.md"
+  - name: keyword-list
+    type: yaml
+    path: "docs/outputs/mkt/{topic}-keywords.yaml"
+
+phases:
+  - phase_0: Research
+  - phase_1: Cluster
+  - phase_2: Prioritize
+  - phase_3: Plan
+
+sequence:
+  - phase: 0
+    name: Keyword Research
+    agent: seo-specialist
+    action: research_keywords
+    inputs:
+      - topic
+    creates:
+      - raw-keywords.yaml (memory)
+    notes: |
+      Pesquisar:
+      - Seed keywords
+      - Long-tail variations
+      - Questions
+      - Related topics
+      - Competitor keywords
+
+  - phase: 1
+    name: Create Clusters
+    agent: seo-specialist
+    action: cluster_keywords
+    inputs:
+      - raw-keywords
+    creates:
+      - clusters.yaml (memory)
+    notes: |
+      Organizar em:
+      - Pillar topics
+      - Cluster topics
+      - Supporting content
+      - Map search intent
+
+  - phase: 2
+    name: Prioritize
+    agent: seo-specialist
+    action: prioritize
+    inputs:
+      - clusters
+      - goals
+    creates:
+      - prioritized-list.yaml (memory)
+    notes: |
+      Priorizar por:
+      - Volume × dificuldade
+      - Business impact
+      - Quick wins vs long-term
+      - Resource requirements
+
+  - phase: 3
+    name: Create Plan
+    agent: seo-specialist
+    action: create_plan
+    inputs:
+      - prioritized-list
+      - timeframe
+    creates:
+      - seo-plan.md
+      - keyword-list.yaml
+    notes: |
+      Criar:
+      - Content calendar
+      - Briefs por artigo
+      - Link building strategy
+      - Technical recommendations
+
+output_format: |
+  # SEO Plan: {topic}
+
+  ## Executive Summary
+  {summary}
+
+  ## Keyword Overview
+  - Total keywords: {total}
+  - Clusters: {cluster_count}
+  - Estimated traffic potential: {traffic}
+
+  ## Clusters
+  {clusters_detail}
+
+  ## Priority List
+  {priority_table}
+
+  ## Content Calendar
+  {calendar}
+
+  ## Technical Recommendations
+  {technical}
+
+  ## Link Building Strategy
+  {link_building}
+
+  ## Metrics & KPIs
+  {metrics}

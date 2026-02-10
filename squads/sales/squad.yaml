@@ -1,0 +1,103 @@
+# Sales Squad
+# Travel Tech Digital AIOS
+# Version: 1.0.0
+
+name: sales
+version: "1.0.0"
+description: "Sales squad responsible for lead qualification, proposals, pipeline management, and closing deals for digital products and consulting services."
+
+aios:
+  minVersion: "2.1.0"
+  type: squad
+  domain: revenue
+
+config:
+  slashPrefix: "sales"
+  entry_point: "workflows/pipeline-review.yaml"
+
+lead:
+  agent: "sales-lead"
+  role: "Sales Lead"
+
+agents:
+  - id: "sales-lead"
+    file: "agents/sales-lead.md"
+    role: "Commercial strategy, ICP, approach"
+  - id: "sdr"
+    file: "agents/sdr.md"
+    role: "Prospecting, qualification, scheduling"
+  - id: "closer"
+    file: "agents/closer.md"
+    role: "Discovery, diagnosis, closing"
+  - id: "sales-analyst"
+    file: "agents/sales-analyst.md"
+    role: "Pipeline, forecast, metrics"
+
+components:
+  agents:
+    - "sales-lead.md"
+    - "sdr.md"
+    - "closer.md"
+    - "sales-analyst.md"
+  tasks:
+    - "qualify-lead.md"
+    - "create-proposal.md"
+    - "handle-objection.md"
+    - "analyze-pipeline.md"
+  workflows:
+    - "prospect.yaml"
+    - "discovery.yaml"
+    - "create-proposal.yaml"
+    - "follow-up-sequence.yaml"
+    - "pipeline-review.yaml"
+  templates:
+    - "proposal-tmpl.md"
+    - "discovery-script.md"
+    - "objection-handlers.md"
+  checklists:
+    - "qualification-criteria.md"
+    - "proposal-review.md"
+  data:
+    - "icp-criteria.yaml"
+    - "pricing-tiers.yaml"
+
+dependencies:
+  requires:
+    - "marketing"
+    - "sales-pages"
+  provides:
+    - "qualified-leads"
+    - "proposals"
+    - "closed-deals"
+
+tags:
+  - "revenue"
+  - "sales"
+  - "closing"
+
+commands:
+  - name: "prospect"
+    workflow: "workflows/prospect.yaml"
+    description: "Prospect and qualify leads"
+    visibility: "full"
+  - name: "discovery"
+    workflow: "workflows/discovery.yaml"
+    description: "Deep discovery session"
+    visibility: "full"
+  - name: "create-proposal"
+    workflow: "workflows/create-proposal.yaml"
+    description: "Create commercial proposal"
+    visibility: "full"
+  - name: "follow-up-sequence"
+    workflow: "workflows/follow-up-sequence.yaml"
+    description: "Create follow-up sequence"
+    visibility: "full"
+  - name: "pipeline-review"
+    workflow: "workflows/pipeline-review.yaml"
+    description: "Review pipeline and forecast"
+    visibility: "full"
+
+quality:
+  min_checklist_coverage: 85
+  require_qa_gate: true
+  require_documentation: true

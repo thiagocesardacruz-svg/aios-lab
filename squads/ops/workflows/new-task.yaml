@@ -1,0 +1,119 @@
+# /ops/new-task Workflow
+# Cria nova OS a partir de pedido
+
+workflow:
+  id: new-task
+  name: Create New Task
+  description: "Recebe pedido em texto, classifica, cria OS e roteia para squad"
+  version: "1.0.0"
+  squad: ops
+  responsible: "@ops-manager"
+
+inputs:
+  - name: request
+    type: string
+    required: true
+    description: "Pedido em texto livre"
+  - name: priority
+    type: string
+    default: "medium"
+    options: [critical, high, medium, low]
+  - name: requester
+    type: string
+    default: "thiago"
+
+outputs:
+  - name: os_file
+    type: yaml
+    path: "logs/service-orders/OS-{year}-{sequence}.yaml"
+
+phases:
+  - phase_0: Parse Request
+  - phase_1: Classify
+  - phase_2: Create OS
+  - phase_3: Route
+
+sequence:
+  - phase: 0
+    name: Parse Request
+    agent: ops-manager
+    action: parse
+    inputs:
+      - request
+    creates:
+      - parsed_request (memory)
+    notes: |
+      Extrair:
+      - O que precisa ser feito
+      - Para quem/qual produto
+      - Urgência implícita
+      - Contexto adicional
+
+  - phase: 1
+    name: Classify Domain
+    agent: ops-manager
+    action: classify
+    inputs:
+      - parsed_request
+    creates:
+      - classification (memory)
+    notes: |
+      Classificar em:
+      - marketing: conteúdo, landing, ads, seo, copy
+      - sales: proposta, lead, pipeline, follow-up
+      - growth: experimento, análise, otimização
+      - tech: automação, integração, ferramenta
+      - finance: custo, pricing, budget
+      - qa: validação, review, checklist
+      - translator: tradução, localização
+      - customer: onboarding, retenção, suporte
+
+  - phase: 2
+    name: Generate OS ID
+    agent: clawdbot
+    action: generate_id
+    creates:
+      - os_id (memory)
+    notes: |
+      Formato: OS-{YYYY}-{NNNN}
+      Sequência incrementa do último ID
+
+  - phase: 2
+    name: Create OS File
+    agent: ops-manager
+    action: create_os
+    inputs:
+      - os_id
+      - parsed_request
+      - classification
+      - priority
+      - requester
+    creates:
+      - os_file.yaml
+    template: templates/os-template.yaml
+
+  - phase: 3
+    name: Route to Squad
+    agent: ops-manager
+    action: route
+    inputs:
+      - os_file
+      - classification.squad
+    notes: |
+      - Atualizar status para "intake"
+      - Log no console
+      - Ready for squad pickup
+
+output_format: |
+  ✅ OS Criada: {os_id}
+
+  📋 {title}
+  🎯 Squad: {squad}
+  🔄 Workflow: {workflow}
+  ⚡ Priority: {priority}
+
+  Aguardando pickup pelo squad {squad}.
+
+error_handling:
+  on_failure: log_and_notify
+  notification: "@ops-lead"

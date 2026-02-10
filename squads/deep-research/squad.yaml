@@ -1,0 +1,66 @@
+name: deep-research
+version: 1.0.0
+description: Framework de pesquisa profunda para novos projetos
+
+metadata:
+  author: TravelTech Digital
+  category: research
+  tags: [research, strategy, discovery, analysis]
+
+agents:
+  - researcher
+
+phases:
+  discovery:
+    tasks:
+      - 01-problem-definition
+      - 02-audience-research
+    outputs:
+      - problem-statement.md
+      - audience-personas.md
+
+  analysis:
+    tasks:
+      - 03-market-analysis
+      - 04-competitor-mapping
+      - 05-gap-analysis
+    outputs:
+      - market-analysis.md
+      - competitor-map.md
+      - gap-opportunities.md
+
+  strategy:
+    tasks:
+      - 06-positioning
+      - 07-strategic-brief
+    outputs:
+      - positioning-statement.md
+      - strategic-brief.md
+
+depth_levels:
+  quick:
+    description: Validação rápida de ideia
+    duration: 2-4 hours
+    tasks: [01, 02, 07]
+
+  standard:
+    description: Novo produto ou feature
+    duration: 1-2 days
+    tasks: [01, 02, 03, 04, 06, 07]
+
+  deep:
+    description: Novo mercado ou pivô estratégico
+    duration: 1 week
+    tasks: all
+
+integrations:
+  notion: optional
+  google-drive: optional
+  web-search: recommended
+
+templates:
+  - project-brief-tmpl.md
+  - audience-persona-tmpl.md
+  - competitor-analysis-tmpl.md
+  - swot-tmpl.md
+  - strategic-brief-tmpl.md

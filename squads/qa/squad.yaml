@@ -1,0 +1,71 @@
+# QA Squad
+# Travel Tech Digital AIOS
+# Version: 1.0.0
+
+name: qa
+version: "1.0.0"
+description: "Quality Assurance squad responsible for output validation, quality gates, process audits, and maintaining high standards across all deliverables."
+
+aios:
+  minVersion: "2.1.0"
+  type: squad
+  domain: quality
+
+config:
+  slashPrefix: "qa"
+  entry_point: null
+
+lead:
+  agent: "qa-lead"
+  role: "QA Lead"
+
+agents:
+  - id: "qa-lead"
+    file: "agents/qa-lead.md"
+    role: "Quality gates, DoD, standards"
+  - id: "content-reviewer"
+    file: "agents/content-reviewer.md"
+    role: "Copy review, claims, CTAs"
+  - id: "process-auditor"
+    file: "agents/process-auditor.md"
+    role: "Process validation, logs, costs"
+
+components:
+  agents:
+    - "qa-lead.md"
+    - "content-reviewer.md"
+    - "process-auditor.md"
+  workflows:
+    - "release-gate.yaml"
+    - "review-content.yaml"
+    - "validate-output.yaml"
+    - "audit-process.yaml"
+    - "run-checklist.yaml"
+
+tags:
+  - "quality"
+  - "validation"
+  - "audit"
+  - "review"
+
+commands:
+  - name: "release-gate"
+    workflow: "workflows/release-gate.yaml"
+    description: "Final validation before deploy"
+    visibility: "full"
+  - name: "review-content"
+    workflow: "workflows/review-content.yaml"
+    description: "Review content quality"
+    visibility: "full"
+  - name: "validate-output"
+    workflow: "workflows/validate-output.yaml"
+    description: "Validate against templates/DoD"
+    visibility: "full"
+  - name: "audit-process"
+    workflow: "workflows/audit-process.yaml"
+    description: "Audit execution process"
+    visibility: "full"
+  - name: "run-checklist"
+    workflow: "workflows/run-checklist.yaml"
+    description: "Run specific checklist"
+    visibility: "quick"

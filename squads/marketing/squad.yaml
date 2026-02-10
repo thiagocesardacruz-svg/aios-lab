@@ -1,0 +1,143 @@
+# Marketing Squad
+# Travel Tech Digital AIOS
+# Versão: 1.0.0
+
+name: marketing
+version: "1.0.0"
+description: "Squad de Marketing Digital responsável por estratégia de go-to-market, conteúdo, SEO, copywriting, funis e campanhas de ads."
+
+aios:
+  minVersion: "2.1.0"
+  type: squad
+  domain: go-to-market
+
+config:
+  slashPrefix: "mkt"
+  entry_point: "workflows/market-research.yaml"
+
+lead:
+  agent: "marketing-lead"
+  role: "Marketing Lead"
+
+agents:
+  - id: "marketing-lead"
+    file: "agents/marketing-lead.md"
+    role: "Estratégia e coordenação"
+  - id: "offer-engine"
+    file: "agents/offer-engine.md"
+    role: "Arquitetura de ofertas (Hormozi)"
+  - id: "content-strategist"
+    file: "agents/content-strategist.md"
+    role: "Estratégia de conteúdo"
+  - id: "copy-specialist"
+    file: "agents/copy-specialist.md"
+    role: "Copywriting"
+  - id: "seo-specialist"
+    file: "agents/seo-specialist.md"
+    role: "SEO e keywords"
+  - id: "funnel-architect"
+    file: "agents/funnel-architect.md"
+    role: "Arquitetura de funis"
+
+components:
+  agents:
+    - "marketing-lead.md"
+    - "offer-engine.md"
+    - "content-strategist.md"
+    - "copy-specialist.md"
+    - "seo-specialist.md"
+    - "funnel-architect.md"
+  tasks:
+    - "analyze-icp.md"
+    - "keyword-research.md"
+    - "write-copy.md"
+    - "create-brief.md"
+    - "design-funnel.md"
+    - "create-email.md"
+    - "create-ad.md"
+  workflows:
+    - "market-research.yaml"
+    - "seo-plan.yaml"
+    - "create-funnel.yaml"
+    - "landing-page.yaml"
+    - "article.yaml"
+    - "email-sequence.yaml"
+    - "social-calendar.yaml"
+    - "ad-creative-pack.yaml"
+  templates:
+    - "landing-page-tmpl.md"
+    - "article-tmpl.md"
+    - "email-tmpl.md"
+    - "ad-copy-tmpl.md"
+    - "funnel-map-tmpl.md"
+  checklists:
+    - "copy-quality.md"
+    - "seo-onpage.md"
+    - "funnel-validation.md"
+  data:
+    - "icp-profiles.yaml"
+    - "competitor-analysis.md"
+    - "keyword-clusters.yaml"
+
+dependencies:
+  requires:
+    - "deep-research"
+  provides:
+    - "content"
+    - "landing-pages"
+    - "funnels"
+    - "ads"
+
+integrations:
+  - name: "wordpress"
+    type: "tool"
+    required: false
+  - name: "ghl"
+    type: "api"
+    required: false
+
+tags:
+  - "go-to-market"
+  - "content"
+  - "seo"
+  - "ads"
+  - "funnels"
+
+commands:
+  - name: "market-research"
+    workflow: "workflows/market-research.yaml"
+    description: "Pesquisa de mercado e ICP"
+    visibility: "full"
+  - name: "seo-plan"
+    workflow: "workflows/seo-plan.yaml"
+    description: "Plano de SEO com keywords"
+    visibility: "full"
+  - name: "create-funnel"
+    workflow: "workflows/create-funnel.yaml"
+    description: "Criar funil completo"
+    visibility: "full"
+  - name: "landing-page"
+    workflow: "workflows/landing-page.yaml"
+    description: "Criar landing page"
+    visibility: "full"
+  - name: "article"
+    workflow: "workflows/article.yaml"
+    description: "Criar artigo SEO"
+    visibility: "full"
+  - name: "email-sequence"
+    workflow: "workflows/email-sequence.yaml"
+    description: "Criar sequência de emails"
+    visibility: "full"
+  - name: "social-calendar"
+    workflow: "workflows/social-calendar.yaml"
+    description: "Calendário de 30 dias"
+    visibility: "quick"
+  - name: "ad-creative-pack"
+    workflow: "workflows/ad-creative-pack.yaml"
+    description: "Pack de criativos para ads"
+    visibility: "full"
+
+quality:
+  min_checklist_coverage: 85
+  require_qa_gate: true
+  require_documentation: true

@@ -1,0 +1,65 @@
+# Translator Squad
+# Travel Tech Digital AIOS
+# Version: 1.0.0
+
+name: translator
+version: "1.0.0"
+description: "Translation and localization squad for multilingual products. Handles translation, cultural adaptation, and terminology consistency."
+
+aios:
+  minVersion: "2.1.0"
+  type: squad
+  domain: localization
+
+config:
+  slashPrefix: "translate"
+  entry_point: null
+
+lead:
+  agent: "translation-lead"
+  role: "Translation Lead"
+
+agents:
+  - id: "translation-lead"
+    file: "agents/translation-lead.md"
+    role: "Coordination, glossaries, standards"
+  - id: "translators"
+    file: "agents/translators.md"
+    role: "EN, PT-BR, ES, FR, DE, IT, AR"
+  - id: "localization-specialist"
+    file: "agents/localization-specialist.md"
+    role: "Cultural adaptation, market fit"
+
+components:
+  agents:
+    - "translation-lead.md"
+    - "translators.md"
+    - "localization-specialist.md"
+  workflows:
+    - "localize-content.yaml"
+    - "translate-batch.yaml"
+    - "review.yaml"
+    - "glossary-update.yaml"
+
+tags:
+  - "translation"
+  - "localization"
+  - "multilingual"
+
+commands:
+  - name: "localize-content"
+    workflow: "workflows/localize-content.yaml"
+    description: "Translate and localize content"
+    visibility: "full"
+  - name: "translate-batch"
+    workflow: "workflows/translate-batch.yaml"
+    description: "Batch translation"
+    visibility: "full"
+  - name: "review"
+    workflow: "workflows/review.yaml"
+    description: "Review translation quality"
+    visibility: "full"
+  - name: "glossary-update"
+    workflow: "workflows/glossary-update.yaml"
+    description: "Update terminology glossary"
+    visibility: "quick"

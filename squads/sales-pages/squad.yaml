@@ -1,0 +1,27 @@
+name: sales-pages
+version: "1.0.0"
+description: Squad especializado em criar páginas de vendas de alta conversão para produtos digitais
+
+agents:
+  - copy-chief
+  - offer-architect
+  - conversion-optimizer
+
+workflows:
+  - full-sales-page
+  - quick-page
+
+entry_point: full-sales-page
+
+config:
+  default_language: pt-BR
+  output_format: markdown
+  include_analytics_hooks: true
+
+metadata:
+  author: Synkra AIOS
+  tags:
+    - copywriting
+    - sales
+    - conversion
+    - marketing

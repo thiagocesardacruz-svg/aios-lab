@@ -14,13 +14,15 @@ export type ViewName =
   | 'platforms'
   | 'profile'
   | 'settings'
-  | 'help';
+  | 'help'
+  | 'notion-prompts'
+  | 'notion-experts';
 
 export interface NavItem {
   id: ViewName;
   label: string;
   icon: LucideIcon;
-  group: 'MAIN' | 'INTELLIGENCE' | 'RESOURCES' | 'ACCOUNT';
+  group: 'MAIN' | 'INTELLIGENCE' | 'RESOURCES' | 'ACCOUNT' | 'NOTION';
 }
 
 export interface Task {

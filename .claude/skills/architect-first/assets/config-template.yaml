@@ -1,0 +1,90 @@
+# Configuration Template for Architect-First Projects
+#
+# This template demonstrates the principle: Config > Hardcoding
+# All mutable values should be externalized to configuration files like this.
+
+# =============================================================================
+# System Configuration
+# =============================================================================
+system:
+  name: "my-project"
+  version: "1.0.0"
+  environment: "development"  # development|staging|production
+  debug: true
+
+# =============================================================================
+# Application Settings
+# =============================================================================
+application:
+  host: "localhost"
+  port: 8000
+  workers: 4
+  timeout: 30
+
+# =============================================================================
+# Logging Configuration
+# =============================================================================
+logging:
+  level: "INFO"  # DEBUG|INFO|WARNING|ERROR|CRITICAL
+  format: "json"  # json|text
+  output: "stdout"  # stdout|file
+
+# =============================================================================
+# Database Configuration
+# =============================================================================
+database:
+  primary:
+    engine: "postgresql"
+    host: "localhost"
+    port: 5432
+    name: "myapp_dev"
+    username: "developer"
+    password: "${DB_PASSWORD}"  # From environment variable
+    pool_size: 10
+
+# =============================================================================
+# Cache Configuration
+# =============================================================================
+cache:
+  enabled: true
+  backend: "redis"
+  host: "localhost"
+  port: 6379
+  ttl: 3600
+
+# =============================================================================
+# Feature Flags
+# =============================================================================
+features:
+  new_feature_x:
+    enabled: false
+    rollout_percentage: 0
+
+# =============================================================================
+# Security Settings
+# =============================================================================
+security:
+  auth:
+    jwt:
+      secret: "${JWT_SECRET}"
+      algorithm: "HS256"
+      expiration: 3600
+
+# =============================================================================
+# Module/Expansion Pack Paths
+# =============================================================================
+modules:
+  expansion_packs_dir: "expansion-packs"
+  auto_discover:
+    enabled: true
+    search_paths:
+      - "expansion-packs"
+      - "plugins"
+
+# =============================================================================
+# File Paths & Directories
+# =============================================================================
+paths:
+  data_dir: "data"
+  output_dir: "outputs"
+  temp_dir: "/tmp/myapp"

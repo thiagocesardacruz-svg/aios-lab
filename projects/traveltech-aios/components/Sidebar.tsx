@@ -16,6 +16,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentView, onNavigate }) => 
     INTELLIGENCE: NAV_ITEMS.filter(i => i.group === 'INTELLIGENCE'),
     RESOURCES: NAV_ITEMS.filter(i => i.group === 'RESOURCES'),
     ACCOUNT: NAV_ITEMS.filter(i => i.group === 'ACCOUNT'),
+    NOTION: NAV_ITEMS.filter(i => i.group === 'NOTION'),
   };
 
   const NavGroup = ({ title, items }: { title: string, items: NavItem[] }) => (
@@ -69,6 +70,9 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentView, onNavigate }) => 
         <NavGroup title="Intelligence" items={groups.INTELLIGENCE} />
         <NavGroup title="Resources" items={groups.RESOURCES} />
         <NavGroup title="Account" items={groups.ACCOUNT} />
+        {groups.NOTION.length > 0 && (
+          <NavGroup title="Notion (Test)" items={groups.NOTION} />
+        )}
       </div>
 
       {/* Footer Profile */}
