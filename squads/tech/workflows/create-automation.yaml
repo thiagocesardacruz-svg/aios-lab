@@ -1,0 +1,81 @@
+# Create Automation Workflow
+# /tech/create-automation
+
+name: create-automation
+version: "1.0.0"
+description: "Create n8n automation workflow"
+command: "/tech/create-automation"
+
+trigger:
+  type: command
+  requires:
+    - automation_request
+    - trigger_type
+
+agents:
+  primary: automation-engineer
+
+inputs:
+  required:
+    - name: trigger
+      description: "What triggers the automation"
+    - name: actions
+      description: "What the automation does"
+  optional:
+    - name: schedule
+      description: "If scheduled, the cron expression"
+    - name: error_handling
+      default: "notify-and-retry"
+
+steps:
+  - id: design_workflow
+    name: "Design Workflow"
+    agent: automation-engineer
+    action: "Design the automation flow"
+    outputs:
+      - workflow_diagram
+      - nodes_needed
+
+  - id: build_workflow
+    name: "Build in n8n"
+    agent: automation-engineer
+    action: "Create the workflow in n8n"
+    depends_on: [design_workflow]
+
+  - id: configure_error_handling
+    name: "Configure Error Handling"
+    agent: automation-engineer
+    action: "Setup error handling and notifications"
+    depends_on: [build_workflow]
+
+  - id: test_workflow
+    name: "Test Workflow"
+    agent: automation-engineer
+    action: "Test with sample data"
+    depends_on: [configure_error_handling]
+
+  - id: document
+    name: "Document"
+    agent: automation-engineer
+    action: "Create documentation"
+    depends_on: [test_workflow]
+
+  - id: activate
+    name: "Activate"
+    agent: automation-engineer
+    action: "Enable in production"
+    depends_on: [document]
+
+outputs:
+  - name: workflow
+    description: "n8n workflow"
+  - name: documentation
+    description: "Workflow documentation"
+  - name: monitoring
+    description: "Monitoring setup"
+
+quality_gates:
+  - "Workflow tested successfully"
+  - "Error handling configured"
+  - "Documentation complete"
+  - "Monitoring in place"

@@ -1,0 +1,87 @@
+# App Setup Workflow
+# /tech/app-setup
+
+name: app-setup
+version: "1.0.0"
+description: "Create technical base already connected to Design System"
+command: "/tech/app-setup"
+
+trigger:
+  type: command
+  requires:
+    - app_name
+    - design_tokens
+
+agents:
+  primary: tech-lead
+  support: application-developer
+
+inputs:
+  required:
+    - name: app_name
+      description: "Application name"
+    - name: tokens
+      description: "Design tokens from Design System"
+  optional:
+    - name: stack
+      default: "next-supabase"
+    - name: features
+      description: "Initial features to scaffold"
+
+steps:
+  - id: define_stack
+    name: "Define Stack"
+    agent: tech-lead
+    action: "Confirm stack and architecture"
+    outputs:
+      - stack_config
+      - folder_structure
+
+  - id: import_tokens
+    name: "Import Design Tokens"
+    agent: application-developer
+    action: "Import and configure design tokens"
+    depends_on: [define_stack]
+    outputs:
+      - tailwind_config
+      - css_variables
+
+  - id: setup_components
+    name: "Setup Base Components"
+    agent: application-developer
+    action: "Configure shadcn/ui with tokens"
+    depends_on: [import_tokens]
+    outputs:
+      - component_config
+
+  - id: repo_structure
+    name: "Create Repository Structure"
+    agent: application-developer
+    action: "Setup folder structure and configs"
+    depends_on: [setup_components]
+    outputs:
+      - repo_scaffold
+
+  - id: ci_setup
+    name: "Setup CI/CD"
+    agent: tech-lead
+    action: "Configure GitHub Actions"
+    depends_on: [repo_structure]
+    outputs:
+      - ci_config
+
+outputs:
+  - name: app_scaffold
+    description: "Complete app scaffold"
+  - name: design_tokens_integrated
+    description: "Tokens configured in Tailwind"
+  - name: component_base
+    description: "shadcn/ui configured"
+  - name: ci_pipeline
+    description: "GitHub Actions ready"
+
+quality_gates:
+  - "Design tokens imported correctly"
+  - "shadcn/ui configured with tokens"
+  - "Folder structure follows standards"
+  - "CI pipeline passes"
