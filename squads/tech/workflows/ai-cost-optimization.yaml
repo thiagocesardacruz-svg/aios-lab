@@ -1,0 +1,111 @@
+# AI Cost Optimization Workflow
+# /tech/ai-cost-optimization
+
+name: ai-cost-optimization
+version: "1.0.0"
+description: "Reduce AI costs without losing quality"
+command: "/tech/ai-cost-optimization"
+
+trigger:
+  type: command
+  requires:
+    - cost_logs
+    - optimization_target
+
+agents:
+  primary: ai-ops
+
+inputs:
+  required:
+    - name: scope
+      description: "What to optimize (squad, workflow, global)"
+    - name: period
+      description: "Time period to analyze"
+  optional:
+    - name: target_reduction
+      default: "20%"
+    - name: quality_threshold
+      default: "95%"
+
+steps:
+  - id: analyze_logs
+    name: "Analyze Logs"
+    agent: ai-ops
+    action: "Analyze token usage and costs"
+    outputs:
+      - usage_breakdown
+      - cost_by_category
+      - waste_identified
+
+  - id: identify_waste
+    name: "Identify Waste"
+    agent: ai-ops
+    action: "Find optimization opportunities"
+    depends_on: [analyze_logs]
+    checks:
+      - "Repeated identical calls (cache opportunity)"
+      - "Simple tasks using Opus (route to Haiku)"
+      - "LLM for deterministic (replace with script)"
+      - "High VRFY costs (KB drift)"
+      - "High RCVR costs (system degrading)"
+
+  - id: script_replacement
+    name: "Replace with Script"
+    agent: ai-ops
+    action: "Convert appropriate LLM calls to scripts"
+    depends_on: [identify_waste]
+    outputs:
+      - scripts_created
+      - calls_eliminated
+
+  - id: implement_caching
+    name: "Implement Caching"
+    agent: ai-ops
+    action: "Add caching for repeated calls"
+    depends_on: [script_replacement]
+    outputs:
+      - cache_config
+      - estimated_savings
+
+  - id: optimize_prompts
+    name: "Optimize Prompts"
+    agent: ai-ops
+    action: "Reduce token usage in prompts"
+    depends_on: [implement_caching]
+    techniques:
+      - "Remove redundant context"
+      - "Use concise instructions"
+      - "Structured output formats"
+
+  - id: adjust_routing
+    name: "Adjust Model Routing"
+    agent: ai-ops
+    action: "Route to cheaper models where appropriate"
+    depends_on: [optimize_prompts]
+
+  - id: monitor
+    name: "Setup Monitoring"
+    agent: ai-ops
+    action: "Configure ongoing cost monitoring"
+    depends_on: [adjust_routing]
+
+outputs:
+  - name: cost_report
+    description: "Before/after cost analysis"
+  - name: recommendations
+    description: "Optimization recommendations"
+  - name: savings_estimate
+    description: "Projected monthly savings"
+  - name: monitoring_config
+    description: "Alerting configuration"
+
+quality_gates:
+  - "Quality threshold maintained"
+  - "No functionality lost"
+  - "Savings achieved"
+  - "Monitoring in place"
+
+budget_limits:
+  monthly: "€470"
+  daily_alert: "€15"
+  daily_hard: "€20"

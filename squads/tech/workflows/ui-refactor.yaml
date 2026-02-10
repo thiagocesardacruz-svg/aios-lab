@@ -1,0 +1,92 @@
+# UI Refactor Workflow
+# /tech/ui-refactor
+
+name: ui-refactor
+version: "1.0.0"
+description: "Eliminate technical and visual inconsistencies"
+command: "/tech/ui-refactor"
+
+trigger:
+  type: command
+  requires:
+    - target_scope
+    - design_system_reference
+
+agents:
+  primary: tech-lead
+  design: design-system
+  dev: application-developer
+
+inputs:
+  required:
+    - name: scope
+      description: "What to refactor (component, page, module)"
+    - name: issues
+      description: "Known inconsistencies to fix"
+  optional:
+    - name: priority
+      default: "high"
+    - name: breaking_changes_allowed
+      default: false
+
+steps:
+  - id: audit_ui
+    name: "Audit UI/Code"
+    agent: tech-lead
+    action: "Identify all inconsistencies"
+    outputs:
+      - inconsistency_list
+      - duplicate_patterns
+      - debt_assessment
+
+  - id: identify_duplications
+    name: "Identify Duplications"
+    agent: tech-lead
+    action: "Find duplicate components and patterns"
+    depends_on: [audit_ui]
+    outputs:
+      - duplication_map
+      - consolidation_plan
+
+  - id: standardize
+    name: "Standardize"
+    agent: application-developer
+    action: "Apply Design System standards"
+    depends_on: [identify_duplications]
+    rules:
+      - "Replace custom with DS components"
+      - "Use tokens for all values"
+      - "Follow naming conventions"
+
+  - id: update_components
+    name: "Update Components"
+    agent: application-developer
+    action: "Refactor to use consolidated patterns"
+    depends_on: [standardize]
+
+  - id: test_regression
+    name: "Test for Regression"
+    agent: application-developer
+    action: "Ensure nothing broke"
+    depends_on: [update_components]
+
+  - id: qa_final
+    name: "Final QA"
+    agent: tech-lead
+    action: "Review and approve refactor"
+    depends_on: [test_regression]
+
+outputs:
+  - name: refactor_report
+    description: "What was changed"
+  - name: updated_components
+    description: "Refactored components"
+  - name: consistency_score
+    description: "Before/after consistency metrics"
+
+quality_gates:
+  - "All duplications eliminated"
+  - "All components use DS tokens"
+  - "No regression in functionality"
+  - "Tests pass"
+  - "Tech Lead approved"

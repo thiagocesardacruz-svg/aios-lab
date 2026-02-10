@@ -1,0 +1,98 @@
+# Component Implementation Workflow
+# /tech/component-implementation
+
+name: component-implementation
+version: "1.0.0"
+description: "Implement components defined in design spec"
+command: "/tech/component-implementation"
+
+trigger:
+  type: command
+  requires:
+    - component_spec
+    - design_tokens
+
+agents:
+  primary: application-developer
+  qa: tech-lead
+
+inputs:
+  required:
+    - name: component_spec
+      description: "Component specification from Design System"
+    - name: component_name
+      description: "Name of the component"
+  optional:
+    - name: variants
+      description: "Component variants to implement"
+    - name: states
+      description: "States (hover, active, disabled, etc.)"
+
+steps:
+  - id: receive_spec
+    name: "Receive Spec"
+    agent: application-developer
+    action: "Review component specification"
+    validation:
+      - "Spec is complete"
+      - "Tokens are defined"
+      - "States are specified"
+
+  - id: implement_component
+    name: "Implement Component"
+    agent: application-developer
+    action: "Build component following spec"
+    depends_on: [receive_spec]
+    rules:
+      - "Use Design System tokens only"
+      - "No hardcoded values"
+      - "Follow naming conventions"
+
+  - id: implement_variants
+    name: "Implement Variants"
+    agent: application-developer
+    action: "Build all variants and states"
+    depends_on: [implement_component]
+
+  - id: write_tests
+    name: "Write Tests"
+    agent: application-developer
+    action: "Unit and integration tests"
+    depends_on: [implement_variants]
+    requirements:
+      - "Coverage > 80%"
+      - "All states tested"
+      - "Accessibility tested"
+
+  - id: tech_review
+    name: "Tech Lead Review"
+    agent: tech-lead
+    action: "Code review and approval"
+    depends_on: [write_tests]
+    decision:
+      approve: merge
+      revise: implement_component
+
+  - id: merge
+    name: "Merge"
+    agent: application-developer
+    action: "Merge to main branch"
+    depends_on: [tech_review]
+
+outputs:
+  - name: component
+    description: "Functional component"
+    format: "TSX"
+  - name: tests
+    description: "Test files"
+    format: "test.tsx"
+  - name: docs
+    description: "Component documentation"
+    format: "MD"
+
+quality_gates:
+  - "Matches design spec exactly"
+  - "Uses Design System tokens"
+  - "All variants work"
+  - "Tests pass"
+  - "Tech Lead approved"

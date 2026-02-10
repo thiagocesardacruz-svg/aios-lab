@@ -1,10 +1,10 @@
 # Tech Squad
 # Travel Tech Digital AIOS
-# Version: 1.0.0
+# Version: 2.0.0
 
 name: tech
-version: "1.0.0"
-description: "Tech squad responsible for automation, tools, integrations, and technical infrastructure. Converts strategy into operational reality."
+version: "2.0.0"
+description: "Transform design, decisions, and workflows into stable, scalable, and cheap-to-operate systems."
 
 aios:
   minVersion: "2.1.0"
@@ -15,6 +15,12 @@ config:
   slashPrefix: "tech"
   entry_point: null
 
+# Golden Rule
+rules:
+  - "No UI enters production without passing through Design System"
+  - "No Design System exists without technical adherence"
+  - "Dev doesn't invent UI, doesn't redefine UX, doesn't improvise components"
+
 lead:
   agent: "tech-lead"
   role: "Tech Lead"
@@ -22,16 +28,19 @@ lead:
 agents:
   - id: "tech-lead"
     file: "agents/tech-lead.md"
-    role: "Stack decisions, technical direction"
+    role: "Technical architecture, code quality, stack decisions"
   - id: "automation-engineer"
     file: "agents/automation-engineer.md"
-    role: "n8n, workflows, integrations"
+    role: "n8n, integrations, workflows, data pipelines"
   - id: "ghl-specialist"
     file: "agents/ghl-specialist.md"
-    role: "GoHighLevel, CRM, funnels"
+    role: "GoHighLevel CRM, funnels, commercial ops"
   - id: "ai-ops"
     file: "agents/ai-ops.md"
-    role: "AI optimization, prompts, costs"
+    role: "AI optimization, costs, prompt engineering"
+  - id: "application-developer"
+    file: "agents/application-developer.md"
+    role: "Component implementation, API integration"
 
 components:
   agents:
@@ -39,37 +48,83 @@ components:
     - "automation-engineer.md"
     - "ghl-specialist.md"
     - "ai-ops.md"
+    - "application-developer.md"
   workflows:
+    - "app-setup.yaml"
+    - "component-implementation.yaml"
+    - "vibe-coding-integration.yaml"
+    - "ui-refactor.yaml"
+    - "ai-cost-optimization.yaml"
     - "create-automation.yaml"
-    - "integrate-tool.yaml"
     - "ghl-setup.yaml"
-    - "ghl-snapshot.yaml"
-    - "ai-ops-optimize.yaml"
 
 tags:
+  - "tech"
+  - "development"
   - "automation"
   - "integration"
   - "infrastructure"
-  - "tools"
 
 commands:
+  - name: "app-setup"
+    workflow: "workflows/app-setup.yaml"
+    description: "Create app base connected to Design System"
+    visibility: "full"
+  - name: "component-implementation"
+    workflow: "workflows/component-implementation.yaml"
+    description: "Implement component from design spec"
+    visibility: "full"
+  - name: "vibe-coding-integration"
+    workflow: "workflows/vibe-coding-integration.yaml"
+    description: "Transform Vibe Coding into production code"
+    visibility: "full"
+  - name: "ui-refactor"
+    workflow: "workflows/ui-refactor.yaml"
+    description: "Eliminate UI/code inconsistencies"
+    visibility: "full"
+  - name: "ai-cost-optimization"
+    workflow: "workflows/ai-cost-optimization.yaml"
+    description: "Optimize AI costs without losing quality"
+    visibility: "full"
   - name: "create-automation"
     workflow: "workflows/create-automation.yaml"
-    description: "Create n8n automation"
-    visibility: "full"
-  - name: "integrate-tool"
-    workflow: "workflows/integrate-tool.yaml"
-    description: "Integrate new tool"
+    description: "Create n8n automation workflow"
     visibility: "full"
   - name: "ghl-setup"
     workflow: "workflows/ghl-setup.yaml"
     description: "Setup GHL funnel/CRM"
     visibility: "full"
-  - name: "ghl-snapshot"
-    workflow: "workflows/ghl-snapshot.yaml"
-    description: "Create GHL snapshot"
-    visibility: "full"
-  - name: "ai-ops-optimize"
-    workflow: "workflows/ai-ops-optimize.yaml"
-    description: "Optimize AI usage"
-    visibility: "full"
+
+interface:
+  receives_from:
+    - squad: "design-system"
+      type: "specs"
+      required: ["tokens", "components", "patterns"]
+    - squad: "design"
+      type: "handoff"
+      required: ["layouts", "assets", "specs"]
+  delivers_to:
+    - squad: "ops"
+      type: "completion"
+      outputs: ["deployed_code", "documentation"]
+
+coupling:
+  design_system:
+    decisions_by_design:
+      - "Tokens (colors, spacing, radius)"
+      - "Components"
+      - "States"
+      - "Base layouts"
+      - "Standard flows"
+    decisions_by_tech:
+      - "Real implementation"
+      - "Performance"
+      - "Technical accessibility"
+      - "Code reuse"
+      - "Repository organization"
+    decisions_together:
+      - "Component viability"
+      - "Variation limits"
+      - "Complexity vs value"
+      - "Vibe Coding patterns"
+      - "Componentization strategy"
