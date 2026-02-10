@@ -1,0 +1,116 @@
+# /ops/cost-report Workflow
+# Gera relatório de custos
+
+workflow:
+  id: cost-report
+  name: Cost Report
+  description: "Consolida custos por squad, workflow, projeto e período"
+  version: "1.0.0"
+  squad: ops
+  responsible: "@ops-lead"
+
+inputs:
+  - name: period
+    type: string
+    default: "month"
+    options: [day, week, month]
+  - name: breakdown
+    type: string
+    default: "squad"
+    options: [squad, workflow, project, category]
+
+outputs:
+  - name: cost-report
+    type: markdown
+    path: "logs/reports/cost-{period}-{date}.md"
+
+phases:
+  - phase_0: Collect
+  - phase_1: Calculate
+  - phase_2: Compare
+  - phase_3: Report
+
+sequence:
+  - phase: 0
+    name: Collect Cost Logs
+    agent: clawdbot
+    action: read_files
+    inputs:
+      - path: "logs/costs/*.yaml"
+      - path: "logs/service-orders/*.yaml"
+    creates:
+      - raw_data (memory)
+
+  - phase: 1
+    name: Calculate Totals
+    agent: clawdbot
+    action: calculate
+    inputs:
+      - raw_data
+      - breakdown
+    creates:
+      - totals (memory)
+    notes: |
+      Por squad:
+        - Total tokens in/out
+        - Total EUR
+        - Média por OS
+      Por workflow:
+        - Execuções
+        - Custo médio
+        - Custo total
+      Por categoria:
+        - BASE, EXEC, VRFY, RCVR, DEV
+
+  - phase: 2
+    name: Compare with Budget
+    agent: ops-manager
+    action: compare
+    inputs:
+      - totals
+      - budget: 470  # EUR mensal
+    creates:
+      - comparison (memory)
+    notes: |
+      - % do budget usado
+      - Projeção para fim do período
+      - Alertas se > 80%
+
+  - phase: 3
+    name: Generate Report
+    agent: ops-lead
+    action: report
+    inputs:
+      - totals
+      - comparison
+    creates:
+      - cost-report.md
+
+output_format: |
+  ## 💰 Cost Report - {period}
+
+  ### Summary
+  - Total: €{total_eur}
+  - Budget: €{budget_eur}
+  - Used: {percent_used}%
+  - Remaining: €{remaining}
+
+  ### By {breakdown}
+  {breakdown_table}
+
+  ### Top Consumers
+  {top_5_list}
+
+  ### Alerts
+  {alerts}
+
+  ### Recommendations
+  {recommendations}
+
+alerts:
+  - condition: "percent_used > 80"
+    message: "⚠️ Budget above 80%"
+    action: notify_director
+  - condition: "daily_avg > 20"
+    message: "🔴 Daily average exceeds limit"
+    action: activate_safe_mode

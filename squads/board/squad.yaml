@@ -1,0 +1,161 @@
+# Board Advisor Squad
+# Travel Tech Digital AIOS
+# Version: 1.0.0
+
+name: board
+version: "1.0.0"
+description: "Advisory board of mind clones providing strategic guidance, frameworks, and decision validation. Does NOT execute - only advises."
+
+aios:
+  minVersion: "2.1.0"
+  type: squad
+  domain: strategy
+
+config:
+  slashPrefix: "board"
+  entry_point: null
+  advisory_only: true  # CRITICAL: This squad does not execute
+
+lead:
+  agent: null  # No lead - all advisors are equal
+  role: "Advisory Board"
+
+# Mind Clones (created using squad-creator clone-mind.md)
+agents:
+  - id: "elon-musk"
+    file: "agents/elon-musk.md"
+    role: "Systems & First Principles Advisor"
+  - id: "bill-gates"
+    file: "agents/bill-gates.md"
+    role: "Platform & Long-Term Strategy Advisor"
+  - id: "alex-hormozi"
+    file: "agents/alex-hormozi.md"
+    role: "Revenue & Offer Architect"
+  - id: "dan-kennedy"
+    file: "agents/dan-kennedy.md"
+    role: "Direct Response & Positioning Advisor"
+  - id: "peter-thiel"
+    file: "agents/peter-thiel.md"
+    role: "Moat & Asymmetry Advisor"
+  - id: "charlie-munger"
+    file: "agents/charlie-munger.md"
+    role: "Risk & Bias Advisor"
+  - id: "ray-dalio"
+    file: "agents/ray-dalio.md"
+    role: "Principles & Governance Advisor"
+  - id: "steve-jobs"
+    file: "agents/steve-jobs.md"
+    role: "Product & Experience Advisor"
+
+components:
+  agents:
+    - "elon-musk.md"
+    - "bill-gates.md"
+    - "alex-hormozi.md"
+    - "dan-kennedy.md"
+    - "peter-thiel.md"
+    - "charlie-munger.md"
+    - "ray-dalio.md"
+    - "steve-jobs.md"
+  workflows:
+    - "strategic-review.yaml"
+    - "offer-review.yaml"
+    - "risk-assessment.yaml"
+    - "platform-direction.yaml"
+    - "principles-check.yaml"
+  templates:
+    - "decision-memo.md"
+  data:
+    - "board-principles.md"
+
+# CRITICAL RULES
+rules:
+  - "Board does NOT execute any work"
+  - "Board does NOT enter operational Kanban"
+  - "Board does NOT make final decisions"
+  - "Board ONLY provides frameworks and guidance"
+  - "Output is ALWAYS a Decision Memo"
+  - "Memos can become OS via /ops/new-task"
+
+tags:
+  - "advisory"
+  - "strategy"
+  - "mind-clones"
+
+commands:
+  - name: "elon/system-review"
+    workflow: null
+    description: "First principles system analysis"
+    visibility: "full"
+  - name: "elon/architecture-direction"
+    workflow: null
+    description: "Architecture simplification"
+    visibility: "full"
+  - name: "gates/platform-direction"
+    workflow: null
+    description: "Platform strategy"
+    visibility: "full"
+  - name: "gates/long-term-review"
+    workflow: null
+    description: "5-10 year thinking"
+    visibility: "full"
+  - name: "hormozi/offer-review"
+    workflow: null
+    description: "Offer architecture"
+    visibility: "full"
+  - name: "hormozi/pricing-strategy"
+    workflow: null
+    description: "Pricing optimization"
+    visibility: "full"
+  - name: "kennedy/positioning-review"
+    workflow: null
+    description: "Market positioning"
+    visibility: "full"
+  - name: "kennedy/message-clarity"
+    workflow: null
+    description: "Message clarity"
+    visibility: "full"
+  - name: "thiel/moat-review"
+    workflow: null
+    description: "Competitive moat analysis"
+    visibility: "full"
+  - name: "thiel/focus-decision"
+    workflow: null
+    description: "Focus vs expansion"
+    visibility: "full"
+  - name: "munger/risk-assessment"
+    workflow: null
+    description: "Risk analysis"
+    visibility: "full"
+  - name: "munger/bias-check"
+    workflow: null
+    description: "Bias detection"
+    visibility: "full"
+  - name: "dalio/principles-check"
+    workflow: null
+    description: "Principles alignment"
+    visibility: "full"
+  - name: "dalio/governance-review"
+    workflow: null
+    description: "Governance review"
+    visibility: "full"
+  - name: "jobs/product-review"
+    workflow: null
+    description: "Product simplicity"
+    visibility: "full"
+  - name: "jobs/simplicity-check"
+    workflow: null
+    description: "UX simplification"
+    visibility: "full"
+  - name: "strategic-review"
+    workflow: "workflows/strategic-review.yaml"
+    description: "Multi-advisor strategic review"
+    visibility: "full"
+  - name: "offer-review"
+    workflow: "workflows/offer-review.yaml"
+    description: "Multi-advisor offer review"
+    visibility: "full"
+  - name: "risk-assessment"
+    workflow: "workflows/risk-assessment.yaml"
+    description: "Multi-advisor risk assessment"
+    visibility: "full"

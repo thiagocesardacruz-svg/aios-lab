@@ -1,0 +1,114 @@
+# /board/strategic-review Workflow
+# Multi-advisor strategic review
+
+workflow:
+  id: strategic-review
+  name: Strategic Review
+  description: "Multi-advisor strategic review for high-impact decisions"
+  version: "1.0.0"
+  squad: board
+  type: advisory
+
+inputs:
+  - name: topic
+    type: string
+    required: true
+    description: "Strategic topic to review"
+  - name: context
+    type: string
+    required: true
+    description: "Context and background"
+  - name: options
+    type: array
+    required: false
+    description: "Options being considered"
+
+outputs:
+  - name: decision-memo
+    type: markdown
+    path: "docs/board-memos/{date}-{topic}.md"
+
+advisors:
+  - bill-gates
+  - peter-thiel
+  - ray-dalio
+
+sequence:
+  - phase: 0
+    name: Context Analysis
+    description: "Each advisor reviews the context"
+    parallel: true
+    actions:
+      - advisor: bill-gates
+        focus: "Long-term platform implications"
+      - advisor: peter-thiel
+        focus: "Moat and differentiation"
+      - advisor: ray-dalio
+        focus: "Principles alignment"
+
+  - phase: 1
+    name: Position Statements
+    description: "Each advisor provides their view"
+    parallel: true
+    actions:
+      - advisor: bill-gates
+        output: "Platform perspective"
+      - advisor: peter-thiel
+        output: "Competition perspective"
+      - advisor: ray-dalio
+        output: "Governance perspective"
+
+  - phase: 2
+    name: Debate
+    description: "Identify conflicts and synthesize"
+    action: synthesize
+    inputs:
+      - all position statements
+    creates:
+      - conflicts (memory)
+      - synthesis (memory)
+
+  - phase: 3
+    name: Decision Memo
+    description: "Generate final memo"
+    action: generate_memo
+    template: templates/decision-memo.md
+    creates:
+      - decision-memo.md
+
+output_format: |
+  # Decision Memo: {topic}
+
+  ## Context
+  {context}
+
+  ## Advisors Consulted
+  - Bill Gates (Platform & Long-Term)
+  - Peter Thiel (Moat & Asymmetry)
+  - Ray Dalio (Principles & Governance)
+
+  ## Key Arguments
+
+  ### Gates (Platform View)
+  {gates_view}
+
+  ### Thiel (Competition View)
+  {thiel_view}
+
+  ### Dalio (Governance View)
+  {dalio_view}
+
+  ## Conflicts of View
+  {conflicts}
+
+  ## Synthesis
+  {synthesis}
+
+  ## Recommended Decision
+  {recommendation}
+
+  ## Conditions for Execution
+  {conditions}
+
+  ---
+  *This memo does not execute. To proceed, create OS via /ops/new-task*

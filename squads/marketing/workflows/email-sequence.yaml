@@ -1,0 +1,124 @@
+# /mkt/email-sequence Workflow
+# Criar sequência de emails
+
+workflow:
+  id: email-sequence
+  name: Create Email Sequence
+  description: "Cria sequência de emails para nurturing, onboarding ou promoção"
+  version: "1.0.0"
+  squad: marketing
+  responsible: "@copy-specialist"
+
+inputs:
+  - name: purpose
+    type: string
+    required: true
+    options: [welcome, nurture, promo, onboarding, reactivation]
+  - name: product
+    type: string
+    required: true
+  - name: emails_count
+    type: integer
+    default: 5
+
+outputs:
+  - name: email-sequence
+    type: markdown
+    path: "docs/outputs/mkt/emails/{product}-{purpose}-sequence.md"
+
+phases:
+  - phase_0: Strategy
+  - phase_1: Structure
+  - phase_2: Write
+  - phase_3: Review
+
+sequence:
+  - phase: 0
+    name: Define Strategy
+    agent: funnel-architect
+    action: plan_sequence
+    inputs:
+      - purpose
+      - product
+      - emails_count
+    creates:
+      - sequence-strategy.md (memory)
+    notes: |
+      Definir:
+      - Objetivo da sequência
+      - Jornada emocional
+      - Delays entre emails
+      - Triggers e conditions
+
+  - phase: 1
+    name: Structure Emails
+    agent: content-strategist
+    action: structure
+    inputs:
+      - sequence-strategy
+    creates:
+      - email-outlines.md (memory)
+    notes: |
+      Para cada email:
+      - Objetivo específico
+      - Subject line concept
+      - Key message
+      - CTA
+
+  - phase: 2
+    name: Write Emails
+    agent: copy-specialist
+    action: write_emails
+    inputs:
+      - email-outlines
+    creates:
+      - emails-draft.md (memory)
+    notes: |
+      Para cada email:
+      - Subject line (+ variação)
+      - Preview text
+      - Body copy
+      - CTA
+      - P.S. (se aplicável)
+
+  - phase: 3
+    name: Review & Finalize
+    agent: marketing-lead
+    action: review
+    inputs:
+      - emails-draft
+    checklist: checklists/copy-quality.md
+    creates:
+      - email-sequence.md
+
+output_format: |
+  # Email Sequence: {purpose} - {product}
+
+  ## Overview
+  - Purpose: {purpose}
+  - Emails: {count}
+  - Total duration: {duration}
+
+  ---
+
+  ## Email 1: {email_1_name}
+  **Delay:** {delay}
+  **Objective:** {objective}
+
+  **Subject:** {subject}
+  **Preview:** {preview}
+
+  ---
+  {body}
+  ---
+
+  **CTA:** {cta}
+
+  ---
+
+  [Repeat for each email]
+
+  ---
+
+  ## Automation Notes
+  {automation_instructions}

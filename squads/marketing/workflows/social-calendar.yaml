@@ -1,0 +1,124 @@
+# /mkt/social-calendar Workflow
+# Calendário de social media
+
+workflow:
+  id: social-calendar
+  name: Social Calendar
+  description: "Cria calendário de 30 dias para social media"
+  version: "1.0.0"
+  squad: marketing
+  responsible: "@content-strategist"
+
+inputs:
+  - name: brand
+    type: string
+    required: true
+  - name: platforms
+    type: array
+    required: true
+    options: [instagram, linkedin, twitter, tiktok, youtube]
+  - name: posts_per_week
+    type: integer
+    default: 5
+
+outputs:
+  - name: calendar
+    type: markdown
+    path: "docs/outputs/mkt/social/{brand}-calendar-{month}.md"
+
+phases:
+  - phase_0: Strategy
+  - phase_1: Themes
+  - phase_2: Content
+  - phase_3: Schedule
+
+sequence:
+  - phase: 0
+    name: Define Strategy
+    agent: content-strategist
+    action: plan
+    inputs:
+      - brand
+      - platforms
+    creates:
+      - strategy.md (memory)
+    notes: |
+      Definir:
+      - Objetivos do mês
+      - Pilares de conteúdo
+      - Mix de formatos
+      - Datas importantes
+
+  - phase: 1
+    name: Create Themes
+    agent: content-strategist
+    action: themes
+    inputs:
+      - strategy
+    creates:
+      - themes.md (memory)
+    notes: |
+      Criar temas por semana:
+      - Semana 1: {tema}
+      - Semana 2: {tema}
+      - Semana 3: {tema}
+      - Semana 4: {tema}
+
+  - phase: 2
+    name: Create Content Ideas
+    agent: copy-specialist
+    action: ideate
+    inputs:
+      - themes
+      - posts_per_week
+    creates:
+      - content-ideas.md (memory)
+    notes: |
+      Para cada post:
+      - Tipo (carrossel, reel, post, story)
+      - Hook
+      - Conceito
+      - CTA
+
+  - phase: 3
+    name: Create Schedule
+    agent: content-strategist
+    action: schedule
+    inputs:
+      - content-ideas
+      - platforms
+    creates:
+      - calendar.md
+
+output_format: |
+  # Social Calendar: {brand} - {month}
+
+  ## Strategy
+  {strategy_summary}
+
+  ## Content Pillars
+  {pillars}
+
+  ---
+
+  ## Week 1: {theme}
+  | Day | Platform | Type | Hook | CTA |
+  |-----|----------|------|------|-----|
+  {week_1_table}
+
+  ## Week 2: {theme}
+  {week_2_table}
+
+  ## Week 3: {theme}
+  {week_3_table}
+
+  ## Week 4: {theme}
+  {week_4_table}
+
+  ---
+
+  ## Important Dates
+  {dates}
+
+  ## Hashtag Sets
+  {hashtags}
