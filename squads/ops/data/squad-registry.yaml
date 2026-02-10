@@ -1,5 +1,5 @@
 # Squad Registry
-# Lista oficial de squads e seus domínios
+# Official list of squads and their domains
 
 squads:
   ops:
@@ -8,7 +8,7 @@ squads:
     type: orchestration
     prefix: "/ops"
     lead: ops-lead
-    description: "Orquestração e operações centrais"
+    description: "Central orchestration and operations"
 
   marketing:
     name: Marketing
@@ -16,7 +16,7 @@ squads:
     type: operational
     prefix: "/mkt"
     lead: marketing-lead
-    description: "Marketing digital, conteúdo, SEO, ads"
+    description: "Digital marketing, content, SEO, ads"
 
   sales:
     name: Sales
@@ -24,7 +24,7 @@ squads:
     type: operational
     prefix: "/sales"
     lead: sales-lead
-    description: "Vendas, propostas, pipeline"
+    description: "Sales, proposals, pipeline management"
 
   growth:
     name: Growth
@@ -32,7 +32,23 @@ squads:
     type: operational
     prefix: "/growth"
     lead: growth-lead
-    description: "Crescimento, experimentos, otimização"
+    description: "Growth, experiments, optimization"
+
+  design:
+    name: Design
+    domain: creative
+    type: operational
+    prefix: "/design"
+    lead: design-lead
+    description: "Creative design for conversion - ads, social, VSLs, brand"
+
+  design-system:
+    name: Design System
+    domain: product
+    type: specialist
+    prefix: "/ds"
+    lead: design-system
+    description: "UI systems, design tokens, components, accessibility"
 
   tech:
     name: Tech
@@ -40,7 +56,7 @@ squads:
     type: operational
     prefix: "/tech"
     lead: tech-lead
-    description: "Automação, ferramentas, integrações"
+    description: "Automation, tools, integrations"
 
   development:
     name: Development
@@ -48,7 +64,7 @@ squads:
     type: operational
     prefix: "/dev"
     lead: architect
-    description: "Desenvolvimento de produto e software"
+    description: "Product and software development"
 
   finance:
     name: Finance
@@ -56,7 +72,7 @@ squads:
     type: operational
     prefix: "/finance"
     lead: finance-lead
-    description: "Gestão financeira, pricing, budget"
+    description: "Financial management, pricing, budget"
 
   qa:
     name: QA
@@ -64,7 +80,7 @@ squads:
     type: support
     prefix: "/qa"
     lead: qa-lead
-    description: "Qualidade, validação, checklists"
+    description: "Quality, validation, checklists"
 
   translator:
     name: Translator
@@ -72,7 +88,7 @@ squads:
     type: support
     prefix: "/translate"
     lead: translation-lead
-    description: "Tradução e localização"
+    description: "Translation and localization"
 
   customer:
     name: Customer
@@ -80,7 +96,7 @@ squads:
     type: operational
     prefix: "/customer"
     lead: customer-lead
-    description: "Sucesso do cliente, retenção"
+    description: "Customer success, retention"
 
   board:
     name: Board Advisor
@@ -88,94 +104,110 @@ squads:
     type: advisory
     prefix: "/board"
     lead: null
-    description: "Consultoria estratégica (mind clones)"
+    description: "Strategic advisory (mind clones)"
 
-# Mapeamento de palavras-chave para squads
+# Keyword to squad routing
 keyword_routing:
   marketing:
     - landing
-    - página
+    - page
     - copy
     - seo
-    - conteúdo
-    - artigo
+    - content
+    - article
     - blog
     - email
     - newsletter
     - ads
-    - anúncio
-    - campanha
-    - funil
+    - campaign
     - funnel
     - social
-    - marca
     - brand
 
   sales:
-    - proposta
+    - proposal
     - lead
     - pipeline
-    - venda
-    - cliente
+    - sales
+    - client
     - prospect
     - follow-up
     - deal
-    - negociação
-    - fechamento
+    - negotiation
+    - closing
 
   growth:
-    - experimento
-    - teste
+    - experiment
+    - test
     - a/b
-    - otimização
-    - métrica
-    - análise
+    - optimization
+    - metric
+    - analysis
     - viral
     - referral
     - cac
     - ltv
 
+  design:
+    - creative
+    - ad
+    - visual
+    - carousel
+    - reel
+    - vsl
+    - video
+    - brand kit
+    - infographic
+
+  design-system:
+    - component
+    - token
+    - ui
+    - accessibility
+    - a11y
+    - wcag
+    - atomic
+    - design system
+
   tech:
-    - automação
+    - automation
     - n8n
     - ghl
-    - integração
+    - integration
     - api
-    - ferramenta
+    - tool
     - script
     - workflow
     - zapier
 
   finance:
-    - custo
-    - preço
+    - cost
+    - price
     - pricing
     - budget
-    - orçamento
-    - margem
-    - receita
-    - despesa
+    - margin
+    - revenue
+    - expense
 
   qa:
-    - revisar
-    - validar
-    - checklist
-    - qualidade
-    - teste
     - review
+    - validate
+    - checklist
+    - quality
+    - test
 
   translator:
-    - traduzir
-    - tradução
-    - inglês
-    - espanhol
-    - português
-    - localizar
+    - translate
+    - translation
+    - english
+    - spanish
+    - portuguese
+    - localize
 
   customer:
     - onboarding
-    - retenção
+    - retention
     - churn
-    - suporte
+    - support
     - feedback
     - nps
