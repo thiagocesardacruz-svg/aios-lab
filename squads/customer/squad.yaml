@@ -1,0 +1,61 @@
+# Customer Squad
+# Travel Tech Digital AIOS
+# Version: 1.0.0
+
+name: customer
+version: "1.0.0"
+description: "Customer success squad focused on post-sale experience, onboarding, retention, and maximizing customer lifetime value."
+
+aios:
+  minVersion: "2.1.0"
+  type: squad
+  domain: customer-success
+
+config:
+  slashPrefix: "customer"
+  entry_point: null
+
+lead:
+  agent: "customer-lead"
+  role: "Customer Lead"
+
+agents:
+  - id: "customer-lead"
+    file: "agents/customer-lead.md"
+    role: "Post-sale experience, retention, LTV"
+  - id: "onboarding-architect"
+    file: "agents/onboarding-architect.md"
+    role: "Onboarding, time-to-value"
+  - id: "retention-strategist"
+    file: "agents/retention-strategist.md"
+    role: "Churn, upsell, reactivation"
+
+components:
+  agents:
+    - "customer-lead.md"
+    - "onboarding-architect.md"
+    - "retention-strategist.md"
+  workflows:
+    - "onboarding-sequence.yaml"
+    - "retention-system.yaml"
+    - "upsell-campaign.yaml"
+
+tags:
+  - "customer-success"
+  - "retention"
+  - "onboarding"
+  - "ltv"
+
+commands:
+  - name: "onboarding-sequence"
+    workflow: "workflows/onboarding-sequence.yaml"
+    description: "Create onboarding sequence"
+    visibility: "full"
+  - name: "retention-system"
+    workflow: "workflows/retention-system.yaml"
+    description: "Design retention system"
+    visibility: "full"
+  - name: "upsell-campaign"
+    workflow: "workflows/upsell-campaign.yaml"
+    description: "Create upsell campaign"
+    visibility: "full"

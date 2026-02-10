@@ -1,0 +1,181 @@
+# Squad Registry
+# Lista oficial de squads e seus domínios
+
+squads:
+  ops:
+    name: OPS
+    domain: operations
+    type: orchestration
+    prefix: "/ops"
+    lead: ops-lead
+    description: "Orquestração e operações centrais"
+
+  marketing:
+    name: Marketing
+    domain: go-to-market
+    type: operational
+    prefix: "/mkt"
+    lead: marketing-lead
+    description: "Marketing digital, conteúdo, SEO, ads"
+
+  sales:
+    name: Sales
+    domain: revenue
+    type: operational
+    prefix: "/sales"
+    lead: sales-lead
+    description: "Vendas, propostas, pipeline"
+
+  growth:
+    name: Growth
+    domain: go-to-market
+    type: operational
+    prefix: "/growth"
+    lead: growth-lead
+    description: "Crescimento, experimentos, otimização"
+
+  tech:
+    name: Tech
+    domain: infrastructure
+    type: operational
+    prefix: "/tech"
+    lead: tech-lead
+    description: "Automação, ferramentas, integrações"
+
+  development:
+    name: Development
+    domain: product
+    type: operational
+    prefix: "/dev"
+    lead: architect
+    description: "Desenvolvimento de produto e software"
+
+  finance:
+    name: Finance
+    domain: finance
+    type: operational
+    prefix: "/finance"
+    lead: finance-lead
+    description: "Gestão financeira, pricing, budget"
+
+  qa:
+    name: QA
+    domain: quality
+    type: support
+    prefix: "/qa"
+    lead: qa-lead
+    description: "Qualidade, validação, checklists"
+
+  translator:
+    name: Translator
+    domain: localization
+    type: support
+    prefix: "/translate"
+    lead: translation-lead
+    description: "Tradução e localização"
+
+  customer:
+    name: Customer
+    domain: customer-success
+    type: operational
+    prefix: "/customer"
+    lead: customer-lead
+    description: "Sucesso do cliente, retenção"
+
+  board:
+    name: Board Advisor
+    domain: strategy
+    type: advisory
+    prefix: "/board"
+    lead: null
+    description: "Consultoria estratégica (mind clones)"
+
+# Mapeamento de palavras-chave para squads
+keyword_routing:
+  marketing:
+    - landing
+    - página
+    - copy
+    - seo
+    - conteúdo
+    - artigo
+    - blog
+    - email
+    - newsletter
+    - ads
+    - anúncio
+    - campanha
+    - funil
+    - funnel
+    - social
+    - marca
+    - brand
+
+  sales:
+    - proposta
+    - lead
+    - pipeline
+    - venda
+    - cliente
+    - prospect
+    - follow-up
+    - deal
+    - negociação
+    - fechamento
+
+  growth:
+    - experimento
+    - teste
+    - a/b
+    - otimização
+    - métrica
+    - análise
+    - viral
+    - referral
+    - cac
+    - ltv
+
+  tech:
+    - automação
+    - n8n
+    - ghl
+    - integração
+    - api
+    - ferramenta
+    - script
+    - workflow
+    - zapier
+
+  finance:
+    - custo
+    - preço
+    - pricing
+    - budget
+    - orçamento
+    - margem
+    - receita
+    - despesa
+
+  qa:
+    - revisar
+    - validar
+    - checklist
+    - qualidade
+    - teste
+    - review
+
+  translator:
+    - traduzir
+    - tradução
+    - inglês
+    - espanhol
+    - português
+    - localizar
+
+  customer:
+    - onboarding
+    - retenção
+    - churn
+    - suporte
+    - feedback
+    - nps

@@ -1,0 +1,75 @@
+# Tech Squad
+# Travel Tech Digital AIOS
+# Version: 1.0.0
+
+name: tech
+version: "1.0.0"
+description: "Tech squad responsible for automation, tools, integrations, and technical infrastructure. Converts strategy into operational reality."
+
+aios:
+  minVersion: "2.1.0"
+  type: squad
+  domain: infrastructure
+
+config:
+  slashPrefix: "tech"
+  entry_point: null
+
+lead:
+  agent: "tech-lead"
+  role: "Tech Lead"
+
+agents:
+  - id: "tech-lead"
+    file: "agents/tech-lead.md"
+    role: "Stack decisions, technical direction"
+  - id: "automation-engineer"
+    file: "agents/automation-engineer.md"
+    role: "n8n, workflows, integrations"
+  - id: "ghl-specialist"
+    file: "agents/ghl-specialist.md"
+    role: "GoHighLevel, CRM, funnels"
+  - id: "ai-ops"
+    file: "agents/ai-ops.md"
+    role: "AI optimization, prompts, costs"
+
+components:
+  agents:
+    - "tech-lead.md"
+    - "automation-engineer.md"
+    - "ghl-specialist.md"
+    - "ai-ops.md"
+  workflows:
+    - "create-automation.yaml"
+    - "integrate-tool.yaml"
+    - "ghl-setup.yaml"
+    - "ghl-snapshot.yaml"
+    - "ai-ops-optimize.yaml"
+
+tags:
+  - "automation"
+  - "integration"
+  - "infrastructure"
+  - "tools"
+
+commands:
+  - name: "create-automation"
+    workflow: "workflows/create-automation.yaml"
+    description: "Create n8n automation"
+    visibility: "full"
+  - name: "integrate-tool"
+    workflow: "workflows/integrate-tool.yaml"
+    description: "Integrate new tool"
+    visibility: "full"
+  - name: "ghl-setup"
+    workflow: "workflows/ghl-setup.yaml"
+    description: "Setup GHL funnel/CRM"
+    visibility: "full"
+  - name: "ghl-snapshot"
+    workflow: "workflows/ghl-snapshot.yaml"
+    description: "Create GHL snapshot"
+    visibility: "full"
+  - name: "ai-ops-optimize"
+    workflow: "workflows/ai-ops-optimize.yaml"
+    description: "Optimize AI usage"
+    visibility: "full"

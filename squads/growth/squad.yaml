@@ -1,0 +1,75 @@
+# Growth Squad
+# Travel Tech Digital AIOS
+# Version: 1.0.0
+
+name: growth
+version: "1.0.0"
+description: "Growth squad focused on scaling, optimization, experimentation, and data-driven growth strategies."
+
+aios:
+  minVersion: "2.1.0"
+  type: squad
+  domain: go-to-market
+
+config:
+  slashPrefix: "growth"
+  entry_point: "workflows/analyze-funnel.yaml"
+
+lead:
+  agent: "growth-lead"
+  role: "Growth Lead"
+
+agents:
+  - id: "growth-lead"
+    file: "agents/growth-lead.md"
+    role: "Growth strategy, experiments"
+  - id: "data-analyst"
+    file: "agents/data-analyst.md"
+    role: "Metrics, analysis, insights"
+  - id: "growth-hacker"
+    file: "agents/growth-hacker.md"
+    role: "A/B tests, optimization"
+  - id: "pmf-specialist"
+    file: "agents/pmf-specialist.md"
+    role: "Product-market fit validation"
+
+components:
+  agents:
+    - "growth-lead.md"
+    - "data-analyst.md"
+    - "growth-hacker.md"
+    - "pmf-specialist.md"
+  workflows:
+    - "experiment.yaml"
+    - "analyze-funnel.yaml"
+    - "market-research.yaml"
+    - "competitor-analysis.yaml"
+    - "create-wave.yaml"
+
+tags:
+  - "growth"
+  - "optimization"
+  - "experiments"
+  - "analytics"
+
+commands:
+  - name: "experiment"
+    workflow: "workflows/experiment.yaml"
+    description: "Design and run experiment"
+    visibility: "full"
+  - name: "analyze-funnel"
+    workflow: "workflows/analyze-funnel.yaml"
+    description: "Analyze conversion funnel"
+    visibility: "full"
+  - name: "market-research"
+    workflow: "workflows/market-research.yaml"
+    description: "Deep market research"
+    visibility: "full"
+  - name: "competitor-analysis"
+    workflow: "workflows/competitor-analysis.yaml"
+    description: "Competitor deep-dive"
+    visibility: "full"
+  - name: "create-wave"
+    workflow: "workflows/create-wave.yaml"
+    description: "Create growth wave"
+    visibility: "full"

@@ -1,0 +1,66 @@
+# Finance Squad
+# Travel Tech Digital AIOS
+# Version: 1.0.0
+
+name: finance
+version: "1.0.0"
+description: "Finance squad responsible for financial viability, pricing strategy, budget management, and monthly financial controls."
+
+aios:
+  minVersion: "2.1.0"
+  type: squad
+  domain: finance
+
+config:
+  slashPrefix: "finance"
+  entry_point: "workflows/report.yaml"
+
+lead:
+  agent: "finance-lead"
+  role: "Finance Lead"
+
+agents:
+  - id: "finance-lead"
+    file: "agents/finance-lead.md"
+    role: "Financial management, decisions"
+  - id: "financial-analyst"
+    file: "agents/financial-analyst.md"
+    role: "Unit economics, viability, KPIs"
+  - id: "pricing-strategist"
+    file: "agents/pricing-strategist.md"
+    role: "Pricing, margins, value narrative"
+
+components:
+  agents:
+    - "finance-lead.md"
+    - "financial-analyst.md"
+    - "pricing-strategist.md"
+  workflows:
+    - "report.yaml"
+    - "kpi.yaml"
+    - "pricing-review.yaml"
+    - "budget-check.yaml"
+
+tags:
+  - "finance"
+  - "pricing"
+  - "budget"
+  - "kpi"
+
+commands:
+  - name: "report"
+    workflow: "workflows/report.yaml"
+    description: "Financial report"
+    visibility: "full"
+  - name: "kpi"
+    workflow: "workflows/kpi.yaml"
+    description: "KPI analysis"
+    visibility: "full"
+  - name: "pricing-review"
+    workflow: "workflows/pricing-review.yaml"
+    description: "Review pricing strategy"
+    visibility: "full"
+  - name: "budget-check"
+    workflow: "workflows/budget-check.yaml"
+    description: "Budget check and alerts"
+    visibility: "full"

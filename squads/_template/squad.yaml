@@ -1,0 +1,75 @@
+# Squad Template
+# Copie esta estrutura para criar novos squads
+# Versão: 1.0.0
+
+name: "{squad-name}"
+version: "1.0.0"
+description: "{Descrição do squad em 1-2 frases}"
+
+# Metadados AIOS
+aios:
+  minVersion: "2.1.0"
+  type: squad
+  domain: "{domain}"  # go-to-market | revenue | operations | development | support | advisory
+
+# Configuração do squad
+config:
+  slashPrefix: "{prefix}"  # Prefixo para comandos: /{prefix}/workflow
+  entry_point: null  # Workflow padrão quando squad é acionado
+
+# Squad Lead
+lead:
+  agent: "{lead-agent-id}"
+  role: "Squad Lead"
+
+# Agentes do squad
+agents:
+  - id: "{agent-id}"
+    file: "agents/{agent-id}.md"
+    role: "{role}"
+
+# Componentes
+components:
+  agents:
+    - "{agent-id}.md"
+  tasks:
+    - "{task-id}.md"
+  workflows:
+    - "{workflow-id}.yaml"
+  templates:
+    - "{template-id}.md"
+  checklists:
+    - "{checklist-id}.md"
+  data:
+    - "{data-file}.md"
+
+# Dependências de outros squads
+dependencies:
+  requires:
+    - "{other-squad}"  # Squads que este precisa
+  provides:
+    - "{capability}"   # O que este squad oferece
+
+# Integrações
+integrations:
+  - name: "{integration}"
+    type: "{type}"  # tool | api | mcp
+    required: true
+
+# Tags
+tags:
+  - "{tag1}"
+  - "{tag2}"
+
+# Comandos públicos (workflows expostos)
+commands:
+  - name: "{command-name}"
+    workflow: "workflows/{workflow}.yaml"
+    description: "{descrição curta}"
+    visibility: "full"  # full | quick | key
+
+# Configurações de qualidade
+quality:
+  min_checklist_coverage: 80
+  require_qa_gate: true
+  require_documentation: true

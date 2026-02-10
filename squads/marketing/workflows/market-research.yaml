@@ -1,0 +1,136 @@
+# /mkt/market-research Workflow
+# Pesquisa de mercado e ICP
+
+workflow:
+  id: market-research
+  name: Market Research
+  description: "Pesquisa completa de mercado, ICP, concorrência e oportunidades"
+  version: "1.0.0"
+  squad: marketing
+  responsible: "@content-strategist"
+
+inputs:
+  - name: product
+    type: string
+    required: true
+    description: "Produto ou serviço a pesquisar"
+  - name: market
+    type: string
+    required: true
+    description: "Mercado alvo"
+  - name: depth
+    type: string
+    default: "standard"
+    options: [quick, standard, deep]
+
+outputs:
+  - name: research-report
+    type: markdown
+    path: "docs/research/{product}-market-research.md"
+
+phases:
+  - phase_0: ICP Definition
+  - phase_1: Market Analysis
+  - phase_2: Competitor Mapping
+  - phase_3: Opportunities
+  - phase_4: Recommendations
+
+sequence:
+  - phase: 0
+    name: Define ICP
+    agent: content-strategist
+    action: analyze_icp
+    inputs:
+      - product
+      - market
+    creates:
+      - icp-profile.md
+    notes: |
+      Definir:
+      - Demografia e psicografia
+      - Dores principais (top 5)
+      - Desejos e aspirações
+      - Objeções comuns
+      - Linguagem utilizada
+
+  - phase: 1
+    name: Analyze Market
+    agent: content-strategist
+    action: market_analysis
+    inputs:
+      - product
+      - market
+    creates:
+      - market-analysis.md
+    notes: |
+      Analisar:
+      - Tamanho do mercado
+      - Tendências
+      - Players principais
+      - Barreiras de entrada
+
+  - phase: 2
+    name: Map Competitors
+    agent: content-strategist
+    action: competitor_mapping
+    inputs:
+      - market
+    creates:
+      - competitor-map.md
+    notes: |
+      Para cada competidor:
+      - Posicionamento
+      - Ofertas
+      - Preços
+      - Pontos fortes/fracos
+      - Estratégia de conteúdo
+
+  - phase: 3
+    name: Identify Opportunities
+    agent: marketing-lead
+    action: gap_analysis
+    inputs:
+      - icp-profile
+      - competitor-map
+    creates:
+      - opportunities.md
+    notes: |
+      Identificar:
+      - Gaps não atendidos
+      - Dores negligenciadas
+      - Ângulos diferenciadores
+      - Quick wins
+
+  - phase: 4
+    name: Create Recommendations
+    agent: marketing-lead
+    action: synthesize
+    inputs:
+      - all previous outputs
+    creates:
+      - research-report.md
+    template: templates/research-report-tmpl.md
+
+output_format: |
+  # Market Research: {product}
+
+  ## Executive Summary
+  {summary}
+
+  ## ICP Profile
+  {icp_details}
+
+  ## Market Analysis
+  {market_details}
+
+  ## Competitive Landscape
+  {competitor_details}
+
+  ## Opportunities
+  {opportunities}
+
+  ## Recommendations
+  {recommendations}
+
+  ## Next Steps
+  {next_steps}

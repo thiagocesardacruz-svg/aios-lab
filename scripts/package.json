@@ -1,0 +1,26 @@
+{
+  "name": "@aios/scripts",
+  "version": "1.0.0",
+  "description": "AIOS utility scripts for OS management, validation, and sync",
+  "type": "module",
+  "scripts": {
+    "generate-os": "node generate-os-id.js",
+    "validate": "node validate-os.js",
+    "costs": "node cost-calculator.js",
+    "health": "node health-check.js",
+    "sync": "node sync-yaml-to-notion.js"
+  },
+  "dependencies": {
+    "js-yaml": "^4.1.0",
+    "glob": "^10.3.0",
+    "chalk": "^5.3.0"
+  },
+  "devDependencies": {
+    "@notionhq/client": "^2.2.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "author": "Travel Tech Digital",
+  "license": "PROPRIETARY"
+}

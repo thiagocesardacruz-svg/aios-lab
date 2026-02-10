@@ -1,0 +1,98 @@
+# OPS Squad - Orchestration & Operations
+# Travel Tech Digital AIOS
+# Versão: 1.0.0
+
+name: ops
+version: "1.0.0"
+description: "Squad de orquestração responsável pela coordenação global, roteamento de trabalho, visão sistêmica e gestão operacional do sistema AIOS."
+
+aios:
+  minVersion: "2.1.0"
+  type: squad
+  domain: operations
+
+config:
+  slashPrefix: "ops"
+  entry_point: "workflows/status.yaml"
+
+lead:
+  agent: "ops-lead"
+  role: "AIOS Master"
+
+agents:
+  - id: "ops-lead"
+    file: "agents/ops-lead.md"
+    role: "Visão sistêmica, prioridades, conflitos"
+  - id: "ops-manager"
+    file: "agents/ops-manager.md"
+    role: "Traduz pedidos em OS, roteia para squads"
+  - id: "clawdbot"
+    file: "agents/clawdbot.md"
+    role: "Executor determinístico, sync, logs"
+
+components:
+  agents:
+    - "ops-lead.md"
+    - "ops-manager.md"
+    - "clawdbot.md"
+  tasks:
+    - "create-os.md"
+    - "route-os.md"
+    - "sync-notion.md"
+    - "generate-report.md"
+  workflows:
+    - "status.yaml"
+    - "new-task.yaml"
+    - "cost-report.yaml"
+    - "sync-notion.yaml"
+  templates:
+    - "os-template.yaml"
+    - "daily-digest.md"
+  checklists:
+    - "os-validation.md"
+  data:
+    - "squad-registry.yaml"
+
+dependencies:
+  requires: []
+  provides:
+    - "orchestration"
+    - "routing"
+    - "cost-tracking"
+    - "sync"
+
+integrations:
+  - name: "notion"
+    type: "api"
+    required: true
+  - name: "local-filesystem"
+    type: "tool"
+    required: true
+
+tags:
+  - "core"
+  - "orchestration"
+  - "meta"
+
+commands:
+  - name: "status"
+    workflow: "workflows/status.yaml"
+    description: "Mostra status geral do sistema"
+    visibility: "full"
+  - name: "new-task"
+    workflow: "workflows/new-task.yaml"
+    description: "Cria nova OS a partir de pedido"
+    visibility: "full"
+  - name: "cost-report"
+    workflow: "workflows/cost-report.yaml"
+    description: "Relatório de custos"
+    visibility: "full"
+  - name: "sync-notion"
+    workflow: "workflows/sync-notion.yaml"
+    description: "Sincroniza YAML com Notion"
+    visibility: "quick"
+
+quality:
+  min_checklist_coverage: 90
+  require_qa_gate: true
+  require_documentation: true

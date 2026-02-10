@@ -1,0 +1,97 @@
+# /ops/status Workflow
+# Mostra status geral do sistema AIOS
+
+workflow:
+  id: status
+  name: System Status
+  description: "Coleta e apresenta status geral do sistema, OS ativas, bloqueios e custos"
+  version: "1.0.0"
+  squad: ops
+  responsible: "@ops-lead"
+
+inputs:
+  - name: period
+    type: string
+    default: "today"
+    options: [today, week, month]
+    description: "Período para análise"
+
+outputs:
+  - name: status-report
+    type: markdown
+    path: "logs/reports/status-{date}.md"
+
+phases:
+  - phase_0: Collect Data
+  - phase_1: Analyze
+  - phase_2: Report
+
+sequence:
+  - phase: 0
+    name: Collect OS Data
+    agent: clawdbot
+    action: read_os_files
+    inputs:
+      - path: "logs/service-orders/*.yaml"
+    creates:
+      - os_list (memory)
+
+  - phase: 0
+    name: Collect Cost Data
+    agent: clawdbot
+    action: read_cost_files
+    inputs:
+      - path: "logs/costs/{period}.yaml"
+    creates:
+      - cost_data (memory)
+
+  - phase: 1
+    name: Analyze Status
+    agent: ops-manager
+    action: analyze
+    inputs:
+      - os_list
+      - cost_data
+    creates:
+      - analysis (memory)
+    notes: |
+      Calcular:
+      - Total OS por status
+      - OS bloqueadas > 24h
+      - Custo acumulado vs budget
+      - Squads mais ativos
+
+  - phase: 2
+    name: Generate Report
+    agent: ops-lead
+    action: report
+    inputs:
+      - analysis
+    creates:
+      - status-report.md
+    template: templates/status-report.md
+
+output_format: |
+  ## 📊 System Status - {date}
+
+  ### OS Summary
+  - Intake: {intake_count}
+  - Running: {running_count}
+  - Blocked: {blocked_count}
+  - QA: {qa_count}
+  - Done (today): {done_today}
+
+  ### Alerts
+  {alerts}
+
+  ### Cost
+  - Today: €{cost_today}
+  - Month: €{cost_month} / €{budget_month}
+  - Remaining: €{remaining}
+
+  ### By Squad
+  {squad_breakdown}
+
+error_handling:
+  on_failure: log_and_continue
+  fallback: "Status unavailable - check logs"
