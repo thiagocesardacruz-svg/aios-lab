@@ -1,136 +1,113 @@
+# Design Squad
+# Travel Tech Digital AIOS
+# Version: 1.0.0
+
 name: design
-version: "2.1.0"
-slashPrefix: design
-title: "Design - Brad Frost Methodology"
-description: "100% independent design system agent - UI audit, design tokens, component generation, accessibility. Zero database dependencies."
-author: "AIOS Team"
-icon: "🎨"
-type: specialist
+version: "1.0.0"
+description: "Creative design squad for conversion-focused visual assets. Ads, social content, VSLs, brand kits, landing visuals."
 
-# IMPORTANT: 100% INDEPENDENT - NO EXTERNAL DEPENDENCIES
-independence: true
-independence_details: |
-  This expansion pack is completely self-contained:
-  - No database required
-  - No external APIs
-  - No cloud services
-  - Works with any codebase (React, Vue, HTML/CSS)
-  - All operations are filesystem-based
+aios:
+  minVersion: "2.1.0"
+  type: squad
+  domain: creative
 
-# Optional tools (standard dev environment)
-dependencies:
-  optional:
-    - name: Node.js
-      version: ">=18.0"
-      description: "For component generation and npm packages"
-      install: "https://nodejs.org/"
-    - name: npm/yarn/pnpm
-      description: "Package manager for installing component dependencies"
+config:
+  slashPrefix: "design"
+  entry_point: null
 
-# No environment variables required
-environment:
-  required: []
-  optional:
-    - name: NODE_ENV
-      description: "Development/production mode"
-      default: "development"
+lead:
+  agent: "design-lead"
+  role: "Design Lead"
 
 agents:
-  - design-system
+  - id: "design-lead"
+    file: "agents/design-lead.md"
+    role: "Creative direction, brand QA, final approvals"
+  - id: "performance-designer"
+    file: "agents/performance-designer.md"
+    role: "Conversion-focused ads and creatives"
+  - id: "motion-video-specialist"
+    file: "agents/motion-video-specialist.md"
+    role: "VSLs, video ads, reels, motion graphics"
+  - id: "visual-systems-designer"
+    file: "agents/visual-systems-designer.md"
+    role: "Carousels, infographics, templates, slides"
 
-tasks:
-  # Brownfield workflow (audit existing codebase)
-  - audit-codebase
-  - audit-reading-experience
-  - audit-tailwind-config
-  - consolidate-patterns
-  - extract-tokens
-  - generate-migration-strategy
-  - generate-shock-report
-  - calculate-roi
-  # Greenfield workflow (new design system)
-  - setup-design-system
-  - build-component
-  - compose-molecule
-  - extend-pattern
-  - generate-documentation
-  - bootstrap-shadcn-library
-  - export-design-tokens-dtcg
-  # Accessibility
-  - a11y-audit
-  - aria-audit
-  - contrast-matrix
-  - focus-order-audit
-  # Refactoring
-  - atomic-refactor-plan
-  - atomic-refactor-execute
-  # Analytics & maintenance
-  - design-compare
-  - ds-health-metrics
-  - bundle-audit
-  - token-usage-analytics
-  - dead-code-detection
-  - validate-design-fidelity
-  - tailwind-upgrade
-  - integrate-squad
-  # Prefixed versions (ds-*)
-  - ds-audit-codebase
-  - ds-build-component
-  - ds-calculate-roi
-  - ds-compose-molecule
-  - ds-consolidate-patterns
-  - ds-extend-pattern
-  - ds-extract-tokens
-  - ds-generate-documentation
-  - ds-generate-migration-strategy
-  - ds-generate-shock-report
-  - ds-health-metrics
-  - ds-integrate-squad
-  - ds-rebuild-artifact
-  - ds-scan-artifact
-  - ds-setup-design-system
-  # Shared
-  - create-doc
-  - execute-checklist
-
-templates:
-  - component-visual-spec-tmpl
-  - design-fidelity-report-tmpl
-  - ds-artifact-analysis
-  - ds-health-report-tmpl
-  - ds-migration-strategy-tmpl
-  - ds-state-persistence-tmpl
-  - ds-tokens-schema-tmpl
-  - migration-strategy-tmpl
-  - state-persistence-tmpl
-  - tokens-schema-tmpl
-
-checklists:
-  - accessibility-wcag-checklist
-  - atomic-refactor-checklist
-  - component-quality-checklist
-  - design-fidelity-checklist
-  - ds-accessibility-wcag-checklist
-  - ds-component-quality-checklist
-  - ds-migration-readiness-checklist
-  - ds-pattern-audit-checklist
-  - migration-readiness-checklist
-  - pattern-audit-checklist
-  - reading-accessibility-checklist
-
-workflows:
-  - audit-only
-  - brownfield-complete
-  - greenfield-new
+components:
+  agents:
+    - "design-lead.md"
+    - "performance-designer.md"
+    - "motion-video-specialist.md"
+    - "visual-systems-designer.md"
+  workflows:
+    - "ad-creative-pack.yaml"
+    - "social-content-pack.yaml"
+    - "vsl-kit.yaml"
+    - "brand-kit.yaml"
+    - "landing-visual.yaml"
+  checklists:
+    - "creative-conversion.md"
+    - "brand-consistency.md"
+    - "visual-hierarchy.md"
+  templates:
+    - "creative-brief.md"
+    - "brand-guidelines.md"
 
 tags:
-  - design-system
-  - ui
-  - components
-  - tokens
-  - accessibility
-  - wcag
-  - atomic-design
-  - brad-frost
-  - independent
-  - shareable
+  - "design"
+  - "creative"
+  - "ads"
+  - "social"
+  - "video"
+  - "conversion"
+
+commands:
+  - name: "ad-creative-pack"
+    workflow: "workflows/ad-creative-pack.yaml"
+    description: "Create complete ad creative pack"
+    visibility: "full"
+  - name: "social-content-pack"
+    workflow: "workflows/social-content-pack.yaml"
+    description: "Social media content pack"
+    visibility: "full"
+  - name: "vsl-kit"
+    workflow: "workflows/vsl-kit.yaml"
+    description: "VSL visual structure kit"
+    visibility: "full"
+  - name: "brand-kit"
+    workflow: "workflows/brand-kit.yaml"
+    description: "Minimal brand identity kit"
+    visibility: "full"
+  - name: "landing-visual"
+    workflow: "workflows/landing-visual.yaml"
+    description: "Landing page visual design"
+    visibility: "full"
+
+# Interface rules
+interface:
+  receives_from:
+    - squad: "marketing"
+      type: "briefing"
+      required: ["offer", "icp", "angle"]
+    - squad: "sales"
+      type: "briefing"
+      required: ["value_prop", "objections"]
+    - squad: "ops"
+      type: "service_order"
+      required: ["os_id", "requirements"]
+  delivers_to:
+    - squad: "marketing"
+      type: "assets"
+      outputs: ["creatives", "templates", "guidelines"]
+    - squad: "tech"
+      type: "handoff"
+      outputs: ["specs", "assets", "layouts"]
+
+# What this squad does NOT do
+boundaries:
+  does_not:
+    - "Write copy or offers (Marketing)"
+    - "Decide strategy (Marketing/Sales)"
+    - "Run media/ads (Growth)"
+    - "Build UI components (Design System squad)"
+    - "Implement code (Tech)"

@@ -1,0 +1,102 @@
+# Landing Visual Workflow
+# /design/landing-visual
+
+name: landing-visual
+version: "1.0.0"
+description: "Design visual layout for landing page"
+command: "/design/landing-visual"
+
+trigger:
+  type: command
+  requires:
+    - wireframe_or_copy
+    - brand_assets
+    - conversion_goal
+
+agents:
+  primary: performance-designer
+  qa: design-lead
+
+inputs:
+  required:
+    - name: copy
+      description: "Approved landing page copy"
+    - name: goal
+      description: "Primary conversion goal"
+  optional:
+    - name: wireframe
+      description: "Wireframe if available"
+    - name: brand_assets
+      description: "Logos, colors, fonts"
+    - name: hero_image
+      description: "Hero image if provided"
+    - name: testimonials
+      description: "Social proof elements"
+
+steps:
+  - id: receive_copy
+    name: "Receive Copy/Wireframe"
+    agent: performance-designer
+    action: "Review copy and requirements"
+    validation:
+      - "Copy is approved"
+      - "CTA is clear"
+      - "Sections are defined"
+
+  - id: create_layout
+    name: "Create Visual Layout"
+    agent: performance-designer
+    action: "Design page layout"
+    depends_on: [receive_copy]
+    outputs:
+      - desktop_layout
+      - mobile_layout
+
+  - id: optimize_conversion
+    name: "Optimize for Conversion"
+    agent: performance-designer
+    action: "Apply conversion optimization"
+    depends_on: [create_layout]
+    focus:
+      - Visual hierarchy
+      - CTA prominence
+      - Trust signals
+      - Scroll flow
+
+  - id: qa_legibility
+    name: "QA Legibility & CTA"
+    agent: design-lead
+    action: "Review readability and CTA clarity"
+    depends_on: [optimize_conversion]
+    checklist: visual-hierarchy
+
+  - id: prepare_handoff
+    name: "Prepare Tech Handoff"
+    agent: performance-designer
+    action: "Export specs for development"
+    depends_on: [qa_legibility]
+
+outputs:
+  - name: layout
+    description: "Desktop and mobile layouts"
+    format: "Figma"
+  - name: assets
+    description: "All exported assets"
+    format: "PNG/SVG"
+  - name: specs
+    description: "Development specs"
+    format: "MD"
+  - name: component_map
+    description: "Component breakdown"
+    format: "MD"
+
+quality_gates:
+  - "Hero is impactful"
+  - "CTA is visible above fold"
+  - "Mobile is optimized"
+  - "Load time considered"
+  - "Specs are dev-ready"
+
+handoff_to: tech
+
+estimated_duration: "4-8 hours"

@@ -1,0 +1,106 @@
+# Brand Kit Workflow
+# /design/brand-kit
+
+name: brand-kit
+version: "1.0.0"
+description: "Create minimal brand identity kit"
+command: "/design/brand-kit"
+
+trigger:
+  type: command
+  requires:
+    - brand_name
+    - brand_values
+    - target_audience
+
+agents:
+  primary: design-lead
+  support: visual-systems-designer
+
+inputs:
+  required:
+    - name: brand_name
+      description: "Brand or product name"
+    - name: values
+      description: "Brand values and personality"
+    - name: audience
+      description: "Target audience"
+  optional:
+    - name: existing_logo
+      description: "Logo if already exists"
+    - name: color_preferences
+      description: "Any color requirements"
+    - name: competitors
+      description: "Competitor references"
+
+steps:
+  - id: diagnosis
+    name: "Visual Diagnosis"
+    agent: design-lead
+    action: "Assess current visual state"
+    outputs:
+      - current_state
+      - gaps_identified
+
+  - id: define_palette
+    name: "Define Colors & Typography"
+    agent: design-lead
+    action: "Select color palette and fonts"
+    depends_on: [diagnosis]
+    outputs:
+      - color_palette
+      - typography_system
+
+  - id: create_layouts
+    name: "Create Base Layouts"
+    agent: visual-systems-designer
+    action: "Design core layout patterns"
+    depends_on: [define_palette]
+    outputs:
+      - layout_templates
+
+  - id: create_templates
+    name: "Create Essential Templates"
+    agent: visual-systems-designer
+    action: "Build key templates"
+    depends_on: [create_layouts]
+    outputs:
+      - social_templates
+      - document_templates
+      - presentation_templates
+
+  - id: qa_consistency
+    name: "QA Consistency"
+    agent: design-lead
+    action: "Validate brand consistency"
+    depends_on: [create_templates]
+    checklist: brand-consistency
+
+  - id: document_guidelines
+    name: "Document Guidelines"
+    agent: design-lead
+    action: "Create usage guidelines"
+    depends_on: [qa_consistency]
+
+outputs:
+  - name: brandbook
+    description: "Mini brand guidelines"
+    format: "PDF/MD"
+  - name: templates
+    description: "Essential templates"
+    format: "Figma/Canva"
+  - name: usage_guide
+    description: "How to use brand assets"
+    format: "MD"
+  - name: asset_library
+    description: "Logos, colors, fonts"
+    format: "Folder"
+
+quality_gates:
+  - "Colors are harmonious"
+  - "Typography is readable"
+  - "Templates are consistent"
+  - "Guidelines are clear"
+  - "Easy to use by non-designers"
+
+estimated_duration: "8-16 hours"
