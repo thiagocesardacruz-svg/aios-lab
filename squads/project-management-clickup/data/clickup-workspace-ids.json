@@ -1,0 +1,86 @@
+{
+  "workspace": {
+    "name": "Thiago OS",
+    "team_id": "90152366829"
+  },
+  "spaces": {
+    "PERSONAL": {
+      "id": "901510017090",
+      "lists": {
+        "Finance": "901521081531",
+        "Goals": "901521081534",
+        "Health": "901521081535",
+        "Leisure": "901521081536",
+        "Courses": "901521081538",
+        "Love": "901521081541"
+      }
+    },
+    "WORK": {
+      "id": "901510017089",
+      "folders": {
+        "Travel Tech Digital": "901514324064",
+        "Tripwix": "901514324065"
+      },
+      "lists": {
+        "AI OS V3.1 MVP": "901521080769"
+      }
+    },
+    "AI OPS": {
+      "id": "901510017091",
+      "lists": {
+        "Inbox": "901521080779",
+        "In Progress": "901521080780",
+        "Awaiting Human": "901521080781",
+        "Completed": "901521080784"
+      }
+    },
+    "RESOURCES": {
+      "id": "901510017092",
+      "lists": {
+        "Knowledge Base": "901521080787",
+        "Templates": "901521080789",
+        "Documentation": "901521080790",
+        "Archived": "901521081542"
+      }
+    }
+  },
+  "statuses": {
+    "pattern": "universal",
+    "values": ["inbox", "to do", "in progress", "review", "waiting", "done", "complete"]
+  },
+  "custom_fields": {
+    "Executor Type": "8eaa8398-8740-49d4-9bea-7164e76eb7ba",
+    "Agent": "936e8499-160f-4028-a85a-26234954bd1b",
+    "Cost (EUR)": "488870a0-7d5e-4973-a067-07df43896382",
+    "Tokens": "4f1b9e06-d0c8-4a93-9b68-1826f0d4441c"
+  },
+  "deprecated_fields": {
+    "OS ID": "12f6a07f-153d-46ec-9ef3-321c83fa8023",
+    "Priority GTD": "eeec444f-6172-422f-9815-0ba4a9271d66",
+    "Executor (old)": "4bea3216-a068-47cc-bf20-8e33b43f98f9"
+  },
+  "dashboard": {
+    "task_id": "86c86bz0w",
+    "url": "https://app.clickup.com/t/86c86bz0w"
+  },
+  "goals": {
+    "daily_budget": {
+      "id": "befc00d9-1d6b-45ad-8f4c-e968b2c04852",
+      "key_result": "da2df462-bf84-4a0d-9783-1d6849ecf49b",
+      "url": "https://app.clickup.com/90152366829/goals/1"
+    },
+    "monthly_budget": {
+      "id": "ca936b1b-b442-4376-9a71-1403501c0b83",
+      "key_result": "8f8f345f-cd3c-432c-8296-7c43ba96b5d8",
+      "url": "https://app.clickup.com/90152366829/goals/2"
+    },
+    "token_usage": {
+      "id": "9a4a40fc-e30c-40fb-9e7a-ab570d09317d",
+      "key_result": "14292302-f06d-47ea-8bfe-d8acba22df6a",
+      "url": "https://app.clickup.com/90152366829/goals/3"
+    }
+  },
+  "created_at": "2026-02-11",
+  "updated_at": "2026-02-11",
+  "created_by": "@devops"
+}
