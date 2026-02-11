@@ -1,337 +1,412 @@
 # Troubleshooting
 
-> squad-creator v2.6 -- Common problems and solutions
-> Last updated: 2026-02-04
+> **Algo deu errado?** Este documento ajuda a resolver.
+>
+> **Dúvidas gerais?** Veja [FAQ.md](./FAQ.md). **Primeira vez?** [POR-ONDE-COMECAR.md](./POR-ONDE-COMECAR.md).
 
 ---
 
-## 1. Schema Validation Errors
+## Índice
 
-### Problem: squad.yaml fails YAML parsing
+1. [Expert Muito Obscuro](#1-expert-muito-obscuro)
+2. [Fontes Insuficientes](#2-fontes-insuficientes)
+3. [Smoke Test Falhando](#3-smoke-test-falhando)
+4. [Agent Responde de Forma Genérica](#4-agent-responde-de-forma-genérica)
+5. [Quality Gate Blocking](#5-quality-gate-blocking)
+6. [DNA Inconsistente](#6-dna-inconsistente)
+7. [Squad Sem Tier 0](#7-squad-sem-tier-0)
+8. [Workflow Travado](#8-workflow-travado)
 
-**Symptoms**: `*validate-squad` reports "YAML parse error" or "invalid manifest".
+---
 
-**Error Code**: `SC-ERR-001`
+## 1. Expert Muito Obscuro
 
-**Common Causes**:
-- Indentation errors (using tabs instead of spaces, or inconsistent spacing)
-- Missing colons after keys
-- Unquoted strings containing special characters (`:`, `#`, `@`, `{`, `}`)
-- Duplicate keys in the same mapping
-
-**Solution**:
-1. Check indentation -- YAML requires consistent spaces (2 or 4), never tabs
-2. Ensure all values with special characters are quoted: `description: "Mind Cloning: Voice + Thinking"`
-3. Use a YAML linter to identify the exact line with the error
-4. Verify no duplicate keys exist at the same nesting level
-
-**Example fix**:
-```yaml
-# WRONG -- unquoted special characters
-description: Mind Cloning: Advanced
-
-# CORRECT -- quoted string
-description: "Mind Cloning: Advanced"
+### Sintoma
+```
+❌ FONTES INSUFICIENTES
+Encontrei apenas 3 fontes para {expert}.
+Mínimo necessário: 10 fontes (5 Tier 1).
 ```
 
-### Problem: Task frontmatter validation fails
+### Causa
+O expert não tem material público suficiente documentado.
 
-**Symptoms**: `*quality-dashboard` reports low task coverage, or `*validate-squad` warns about incomplete task definitions.
+### Soluções
 
-**Error Code**: `SC-ERR-002`
+**Opção A: Fornecer materiais próprios**
+```bash
+*clone-mind "{expert}" --sources ./meus-materiais/
+```
 
-**Common Causes**:
-- Missing required frontmatter fields (`task`, `responsavel`, `Entrada`, `Saida`, `Checklist`)
-- Frontmatter not enclosed in `---` delimiters
-- Field names using wrong capitalization (YAML is case-sensitive)
+Se você tem:
+- PDFs de livros
+- Transcrições de cursos
+- Anotações de palestras
 
-**Solution**:
-1. Ensure every task file starts and ends its frontmatter with `---`
-2. Include all 5 required fields: `task`, `responsavel`, `Entrada`, `Saida`, `Checklist`
-3. Use exact field names with correct capitalization (note: `Entrada` and `Saida` are capitalized, `responsavel` is lowercase)
+Esses viram **Tier 0** (máxima confiança).
 
-**Required frontmatter template**:
-```yaml
----
-task: Task Name Here
-responsavel: "@agent-name"
-responsavel_type: agent
-atomic_layer: task
-elicit: true
-Entrada: |
-  - param1: description (type, required/optional)
-Saida: |
-  - output1: description (type)
-Checklist:
-  - "[ ] First checklist item"
-  - "[ ] Second checklist item"
----
+**Opção B: Escolher expert mais documentado**
+
+Experts bem documentados têm:
+- 3+ livros publicados
+- 10+ entrevistas/podcasts
+- Frameworks com nome próprio
+- Case studies públicos
+
+**Opção C: Prosseguir com qualidade reduzida (não recomendado)**
+```
+⚠️ Fidelity esperada: 40-50%
+O agent vai funcionar, mas será mais genérico.
 ```
 
 ---
 
-## 2. Mind Cloning Issues
+## 2. Fontes Insuficientes
 
-### Problem: Low fidelity score (below 60%)
+### Sintoma
+```
+SOURCE_QUALITY: FAIL
+- Total sources: 7/10 ❌
+- Tier 1 sources: 3/5 ❌
+```
 
-**Symptoms**: `*clone-mind` completes but reports a fidelity score below 60%, or `*smoke-test` shows poor match percentages.
+### Causa
+Fallback chain não encontrou fontes suficientes.
 
-**Error Code**: `SC-MC-001`
+### Soluções
 
-**Common Causes**:
-- Insufficient source material (too few sources or too little text)
-- Sources that are not representative of the person's actual voice or thinking
-- Using only one type of source (e.g., only formal documents, missing casual communication)
-- Sources containing more third-party content than the target person's own writing
-- Sources that are too short (under 500 words total)
+**1. Rodar auto-acquire manualmente**
+```bash
+*auto-acquire-sources "{expert}" --domain {domain}
+```
 
-**Solution**:
-1. Add more diverse sources. For YOLO mode, ensure at least 2 high-quality sources (500+ words each). For QUALITY mode, ensure at least 5 sources from different contexts.
-2. Prioritize sources authored directly by the person over sources about them.
-3. Mix source types: combine written content (blog posts, articles) with conversational material (transcripts, interviews) and decision-oriented material (ADRs, strategy docs).
-4. Run `*update-mind` with additional sources to incrementally improve the profile.
-5. If score is below 40%, the pipeline aborts automatically. Gather more material before retrying.
+**2. Adicionar materiais do usuário**
+```bash
+# Coletar materiais em uma pasta
+mkdir ./materials/{expert}/
+# Adicionar PDFs, transcrições, etc.
 
-### Problem: Source validation fails
+# Rodar com materiais
+*clone-mind "{expert}" --sources ./materials/{expert}/
+```
 
-**Symptoms**: `*clone-mind` aborts with "insufficient valid sources" or "source inaccessible".
+**3. Expandir queries de busca**
 
-**Error Code**: `SC-MC-002`
-
-**Common Causes**:
-- File paths are incorrect or files do not exist
-- Files exist but are empty or contain only formatting (no actual text content)
-- Fewer than 2 valid sources remain after skipping inaccessible ones
-- File encoding issues (non-UTF-8 files)
-
-**Solution**:
-1. Verify all file paths are correct and files exist on disk
-2. Ensure files contain actual text content (not just headers or empty templates)
-3. Check file encoding -- the pipeline expects UTF-8 (falls back to Latin-1 if needed)
-4. If using URLs, ensure they are publicly accessible
-
-### Problem: Profile merge conflicts in QUALITY mode
-
-**Symptoms**: `*clone-mind` in quality mode repeatedly prompts for conflict resolution, or merged profile seems inconsistent.
-
-**Error Code**: `SC-MC-003`
-
-**Common Causes**:
-- Source material from different time periods showing genuine evolution in the person's style
-- Sources from very different contexts (e.g., academic writing vs. casual social media)
-- Contradictory signals in decision patterns (conservative in some domains, aggressive in others)
-
-**Solution**:
-1. When prompted for conflict resolution, consider whether the difference represents context-dependent behavior (which should be preserved as a range) or source noise (which should be resolved by picking the higher-confidence signal)
-2. If conflicts are excessive, try running in YOLO mode first to establish a baseline, then switch to QUALITY mode with `*update-mind`
-3. Add context tags to your sources (formal vs. informal, recent vs. historical) to help the extractor understand variations
+Busque manualmente por:
+```
+"{expert}" masterclass
+"{expert}" workshop
+"{expert}" course transcript
+"{expert}" complete interview
+"{expert}" book summary detailed
+```
 
 ---
 
-## 3. Tool Discovery Issues
+## 3. Smoke Test Falhando
 
-### Problem: No results found
+### Sintoma
+```
+SMOKE_TEST: FAIL
+- Test 1: PASS
+- Test 2: FAIL (2/5 checks)
+- Test 3: PASS
+```
 
-**Symptoms**: `*discover-tools` returns empty results or "no tools found for domain".
+### Causa
+O agent não está aplicando corretamente o DNA extraído.
 
-**Error Code**: `SC-TD-001`
+### Diagnóstico
 
-**Common Causes**:
-- Domain description is too specific or uses niche terminology
-- Search channels are rate-limited or temporarily unavailable
-- Constraint parameters are too restrictive (e.g., requiring free + MIT + no-cloud eliminates most options)
+**Qual teste falhou?**
 
-**Solution**:
-1. Broaden the domain description. Instead of "GraphQL schema stitching with TypeScript support for monorepo", try "GraphQL tools"
-2. Remove or relax constraints one at a time to see which is most restrictive
-3. Try different domain phrasings -- the 5 search channels respond differently to different terms
-4. Run `*discover-tools` without constraints first, then filter results manually
-5. If a specific search channel times out, it is skipped automatically. Check the output notes for any skipped channels and retry later.
+| Teste | Problema Provável |
+|-------|-------------------|
+| Test 1 (Knowledge) | Voice DNA incompleto |
+| Test 2 (Decision) | Thinking DNA incompleto |
+| Test 3 (Objection) | Objection handling faltando |
 
-### Problem: Security Gate blocks all candidates
+### Soluções
 
-**Symptoms**: Every discovered tool is classified as "DON'T DO" due to security gate failure.
+**Test 1 falhou: Voice DNA**
+```bash
+# Verificar voice_dna.yaml
+cat outputs/minds/{slug}/voice_dna.yaml
 
-**Error Code**: `SC-TD-002`
+# Se incompleto, re-extrair com mais fontes
+*extract-voice-dna "{expert}" --sources ./mais-entrevistas/
+```
 
-**Common Causes**:
-- Tools have unpatched CVEs in the NVD database
-- License incompatibility with your constraints (GPL tools when MIT is required)
-- Tools are unmaintained (no commits in 12+ months)
-- Dependency chain contains known vulnerable packages
+**Test 2 falhou: Thinking DNA**
+```bash
+# Verificar thinking_dna.yaml
+cat outputs/minds/{slug}/thinking_dna.yaml
 
-**Solution**:
-1. Review the specific security gate failure reason for each tool
-2. For license issues, consider whether GPL/LGPL tools can be used with dynamic linking
-3. For CVE issues, check if patches are available or if the vulnerability is not applicable to your use case
-4. For maintenance issues, evaluate if the tool is "done" (stable and feature-complete) vs. truly abandoned
-5. Use `*add-tool` to manually evaluate tools with overridden gate assessments (documented justification required)
+# Verificar se heuristics estão completas
+# Se não, re-extrair
+*extract-thinking-dna "{expert}" --sources ./mais-livros/
+```
 
-### Problem: Social Proof Gate fails for valid tools
-
-**Symptoms**: Good tools are flagged as "experimental" or "LOW_CONFIDENCE" due to social proof failure.
-
-**Error Code**: `SC-TD-003`
-
-**Common Causes**:
-- Tool is new but high quality (not yet widely adopted)
-- Tool is in a niche domain with inherently smaller community
-- Tool is hosted outside GitHub (star count unavailable)
-
-**Solution**:
-1. Social Proof Gate failure caps tools at Tier 3 maximum but does not block them entirely
-2. For niche tools, manually add them with `*add-tool` and document the low social proof justification
-3. The `[experimental]` flag is appropriate for new, promising tools. They can be upgraded later as adoption grows.
-4. Consider running the tool's own test suite and documenting results as manual social proof
+**Test 3 falhou: Objection handling**
+```yaml
+# Adicionar manualmente ao thinking_dna.yaml:
+objection_handling:
+  "{objeção comum}":
+    response: "Como expert responderia..."
+    conviction_level: 9/10
+```
 
 ---
 
-## 4. SOP Extraction Issues
+## 4. Agent Responde de Forma Genérica
 
-### Problem: Extraction produces incomplete SOP
+### Sintoma
+Agent está funcional mas não "soa" como o expert real.
 
-**Symptoms**: `*extract-sop` generates an SOP with multiple empty parts, or `*validate-sop` reports low completeness.
+### Causa
+Voice DNA não foi bem aplicado no agent.md.
 
-**Error Code**: `SC-SOP-001`
+### Diagnóstico
+```bash
+# Comparar DNA com agent
+cat outputs/minds/{slug}/voice_dna.yaml
+cat squads/{squad}/agents/{agent}.md
 
-**Common Causes**:
-- Source document does not contain a complete procedure (only covers part of a workflow)
-- Source type is misclassified (e.g., passing a high-level strategy doc as `document` when it should be `observation`)
-- Source contains mostly narrative text with no discernible procedural steps
-- Source is in a format the parser cannot handle well
+# Verificar se power_words aparecem no agent
+```
 
-**Solution**:
-1. Verify the source actually contains procedural content (step-by-step instructions, action items, or process descriptions)
-2. Try a different `source_type` parameter. Transcripts and interviews have different parsing strategies than documents.
-3. If the source covers only part of a procedure, the SOP will note gaps. Provide additional sources to fill the gaps.
-4. For narrative-heavy sources, consider extracting key actions manually into a bullet-point list, then running `*extract-sop` on that
-5. Use `*validate-sop --verbose` to see exactly which parts are missing and target your remediation efforts
+### Soluções
 
-### Problem: Cognitive taxonomy classification seems wrong
+**1. Verificar seção voice_dna no agent**
 
-**Symptoms**: Steps are classified at the wrong cognitive level (e.g., a creative task classified as "Remember").
+O agent.md deve ter:
+```yaml
+voice_dna:
+  vocabulary:
+    always_use: [lista de power_words]
+    never_use: [lista de proibidos]
 
-**Error Code**: `SC-SOP-002`
+  sentence_starters:
+    - "Como {expert} diria..."
 
-**Common Causes**:
-- Step description is too vague for accurate classification
-- Step bundles multiple cognitive levels into one action
-- Domain-specific actions that look simple but require expert judgment
+  tone:
+    # dimensões específicas
+```
 
-**Solution**:
-1. Refine step descriptions to be more specific about what cognitive activity is required
-2. Split compound steps that combine recall with evaluation (e.g., "Look up the standard and decide if it applies" should be two steps)
-3. Review classifications against Bloom's taxonomy definitions in [CONCEPTS.md](./CONCEPTS.md)
-4. Manual override is always possible -- edit the SOP output directly and re-validate
+**2. Adicionar mais output_examples**
 
----
+```yaml
+output_examples:
+  - input: "Pergunta típica"
+    output: |
+      Resposta no estilo EXATO do expert,
+      usando vocabulary e tone documentados.
+```
 
-## 5. Agent Activation Issues
-
-### Problem: Sub-agent does not activate
-
-**Symptoms**: Typing `@squad-creator:oalanicolas` does not change the agent context, or produces an error.
-
-**Error Code**: `SC-AGT-001`
-
-**Common Causes**:
-- Typo in agent name (agent IDs are: `squad-architect`, `sop-extractor`, `oalanicolas`, `pedro-valerio`)
-- Squad-creator package is not properly loaded in the AIOS environment
-- AIOS version is below the minimum required (2.1.0)
-- Agent definition file is missing or corrupted
-
-**Solution**:
-1. Double-check the agent ID spelling. Use exact IDs: `squad-architect`, `sop-extractor`, `oalanicolas`, `pedro-valerio`
-2. Verify the agent definition files exist in `squads/squad-creator/agents/`
-3. Check AIOS version compatibility (requires v2.1.0+)
-4. Try activating the base agent first (`@squad-creator`) and then delegate from there
-
-### Problem: Agent does not recognize command
-
-**Symptoms**: Running a command returns "unknown command" or agent does not respond correctly.
-
-**Error Code**: `SC-AGT-002`
-
-**Common Causes**:
-- Command is being run on the wrong agent (e.g., `*extract-sop` on Atlas instead of Scribe)
-- Missing the `*` prefix
-- Using the wrong command name (e.g., `*clone` instead of `*clone-mind`)
-
-**Solution**:
-1. Check which agent is currently active -- each agent has its own command set
-2. Run `*help` to see the full list of commands available to the current agent
-3. Ensure the `*` prefix is present
-4. Refer to [COMMANDS.md](./COMMANDS.md) for the exact command names per agent
+**3. Re-gerar agent com DNA atualizado**
+```bash
+*create-agent {name} --squad {squad} --based-on "{expert}"
+```
 
 ---
 
-## 6. Sub-Agent Delegation Errors
+## 5. Quality Gate Blocking
 
-### Problem: Delegation to sub-agent fails silently
+### Sintoma
+```
+QUALITY_GATE: BLOCKED
+Cannot proceed until resolved.
+```
 
-**Symptoms**: Requesting a delegation (e.g., Atlas asks Mirror to clone a mind) does not produce output.
+### Gates e Soluções
 
-**Error Code**: `SC-DLG-001`
+| Gate | Threshold | Como Resolver |
+|------|-----------|---------------|
+| SOURCE_QUALITY | 5/5 blocking | Adicionar mais fontes |
+| VOICE_QUALITY | 8/10 | Melhorar voice extraction |
+| THINKING_QUALITY | 7/9 | Melhorar thinking extraction |
+| SYNTHESIS_QUALITY | Consistente | Revisar inconsistências |
+| SMOKE_TEST | 3/3 | Ver seção 3 acima |
 
-**Common Causes**:
-- Sub-agent's task dependency files are not present on disk
-- The delegating agent does not have the target agent listed in its `delegate_to` configuration
-- Task file referenced by the sub-agent has a parsing error
-
-**Solution**:
-1. Verify task dependency files exist: check the `dependencies.tasks` list in the target agent's definition
-2. Confirm the delegation path is valid: check `responsibility_boundaries.delegate_to` in the source agent's definition
-3. Run `*validate-squad squad-creator` to check all component files are present
-4. Manually activate the target sub-agent and run the command directly to isolate the issue
-
-### Problem: Circular delegation loop
-
-**Symptoms**: Two agents keep delegating to each other without producing results.
-
-**Error Code**: `SC-DLG-002`
-
-**Common Causes**:
-- Misconfigured `delegate_to` sections creating a cycle
-- Ambiguous request that both agents interpret as belonging to the other
-
-**Solution**:
-1. Each agent has clear responsibility boundaries. Review the `whenToUse` and `delegate_to` sections.
-2. Be explicit about which agent should handle the task by directly activating that agent.
-3. If the request genuinely spans two agents, break it into sequential steps and run each on the appropriate agent.
+### Override (não recomendado)
+```bash
+# Em YOLO mode, alguns gates podem ser bypassed
+# Mas fidelity será muito baixa
+*create-squad {domain} --mode yolo --skip-validation
+```
 
 ---
 
-## Error Code Reference
+## 6. DNA Inconsistente
 
-| Code | Category | Description |
-|------|----------|-------------|
-| SC-ERR-001 | Schema | YAML parsing error in squad.yaml |
-| SC-ERR-002 | Schema | Task frontmatter validation failure |
-| SC-MC-001 | Mind Cloning | Low fidelity score |
-| SC-MC-002 | Mind Cloning | Source validation failure |
-| SC-MC-003 | Mind Cloning | Profile merge conflict |
-| SC-TD-001 | Tool Discovery | No results found |
-| SC-TD-002 | Tool Discovery | Security Gate blocks all |
-| SC-TD-003 | Tool Discovery | Social Proof Gate failure |
-| SC-SOP-001 | SOP Extraction | Incomplete extraction |
-| SC-SOP-002 | SOP Extraction | Wrong cognitive classification |
-| SC-AGT-001 | Agent | Sub-agent activation failure |
-| SC-AGT-002 | Agent | Unrecognized command |
-| SC-DLG-001 | Delegation | Silent delegation failure |
-| SC-DLG-002 | Delegation | Circular delegation loop |
+### Sintoma
+```
+SYNTHESIS_QUALITY: FAIL
+Voice e Thinking DNA têm contradições.
+```
+
+### Causa
+Fontes diferentes apresentam visões conflitantes do expert.
+
+### Diagnóstico
+```bash
+# Ver onde está a contradição
+cat outputs/minds/{slug}/voice_dna.yaml
+cat outputs/minds/{slug}/thinking_dna.yaml
+
+# Procurar por:
+# - Tom diferente em diferentes contextos
+# - Heurísticas que se contradizem
+```
+
+### Soluções
+
+**1. Documentar como contradição autêntica**
+
+Alguns experts SÃO contraditórios. Isso é real.
+
+```yaml
+# No voice_dna.yaml
+contradictions:
+  - paradox: "Diz X em livros, mas faz Y em entrevistas"
+    context: "Livros são mais formais"
+    authentic: true  # Não é erro, é o expert mesmo
+```
+
+**2. Priorizar fontes mais recentes**
+
+Se expert mudou de opinião ao longo do tempo:
+```yaml
+# Usar temporal weighting
+sources:
+  - title: "Livro de 2020"
+    weight: 1.0  # Mais recente = mais peso
+  - title: "Entrevista de 2010"
+    weight: 0.7  # Mais antigo = menos peso
+```
 
 ---
 
-## Getting Further Help
+## 7. Squad Sem Tier 0
 
-If your issue is not covered above:
+### Sintoma
+```
+ARCHITECTURE: WARNING
+Squad não tem agent Tier 0 (diagnóstico).
+```
 
-1. Run `*quality-dashboard squad-creator` to get an overall health check of the squad-creator itself
-2. Check the agent definition files in `squads/squad-creator/agents/` for configuration issues
-3. Review the task files in `squads/squad-creator/tasks/` for implementation details
-4. Consult the [CONCEPTS.md](./CONCEPTS.md) for framework details
-5. Review [ARCHITECTURE-DIAGRAMS.md](./ARCHITECTURE-DIAGRAMS.md) to understand the expected flow
+### Causa
+Pesquisa não encontrou mind com capacidade diagnóstica.
+
+### Impacto
+Sem Tier 0, requests vão direto para execução sem análise prévia.
+
+### Soluções
+
+**1. Identificar mind diagnóstico**
+
+Procure por expert que seja conhecido por:
+- Classificação/categorização
+- Análise antes de execução
+- Frameworks de diagnóstico
+
+Exemplos:
+- Copywriting: Eugene Schwartz (Awareness Levels)
+- Legal: [expert que classifica casos]
+- Marketing: [expert que segmenta mercados]
+
+**2. Criar orchestrator com capacidade diagnóstica**
+
+Se não encontrar mind específico:
+```yaml
+# No orchestrator do squad
+capabilities:
+  - "Diagnostic routing"
+  - "Classify request before routing"
+
+diagnostic_questions:
+  - "Qual o awareness level do público?"
+  - "Qual o objetivo principal?"
+```
 
 ---
 
-*squad-creator docs v2.6.0 -- Synkra AIOS*
+## 8. Workflow Travado
+
+### Sintoma
+Workflow parou e não prossegue.
+
+### Diagnóstico
+
+**1. Verificar checkpoint atual**
+```bash
+# Ver onde parou
+*show-context
+```
+
+**2. Verificar se está esperando input**
+
+Em QUALITY mode, vários checkpoints pedem input:
+- CP1: Aprovar minds
+- CP_MATERIALS: Fornecer materiais
+- CP_DNA: Validar DNA
+- CP_FINAL: Aprovação final
+
+**3. Verificar se falhou silenciosamente**
+```bash
+# Ver logs recentes
+*validate-squad {squad}
+```
+
+### Soluções
+
+**Retomar workflow**
+```bash
+# Re-executar do ponto atual
+*create-squad {domain} --resume
+```
+
+**Forçar prosseguimento (YOLO)**
+```bash
+*create-squad {domain} --mode yolo --force
+```
+
+---
+
+## Quick Debug Checklist
+
+```
+□ Expert tem frameworks documentados?
+□ Fontes >= 10 (5+ Tier 1)?
+□ Triangulação possível (3+ por claim)?
+□ Voice DNA completo (power_words, phrases)?
+□ Thinking DNA completo (frameworks, heuristics)?
+□ Smoke tests passando (3/3)?
+□ Squad tem Tier 0?
+□ Agent tem 300+ lines?
+```
+
+---
+
+## Quando Pedir Ajuda
+
+Se nenhuma solução funcionou:
+
+1. **Documente o problema:**
+   - Comando executado
+   - Erro exato
+   - O que já tentou
+
+2. **Colete contexto:**
+   ```bash
+   *show-context
+   *validate-squad {squad}
+   cat outputs/minds/{slug}/quality_dashboard.md
+   ```
+
+3. **Abra issue** com essas informações
+
+---
+
+**Squad Architect | Troubleshooting v1.0**
+*"Todo problema tem solução. A maioria é falta de fontes."*

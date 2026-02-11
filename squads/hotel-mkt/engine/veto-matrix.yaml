@@ -1,0 +1,910 @@
+# ═══════════════════════════════════════════════════════════════
+# VETO MATRIX — hotel-mkt Squad (Andon System)
+# ═══════════════════════════════════════════════════════════════
+# Version: 1.0.0
+# Inspired by: Toyota Andon Cord + Poka-yoke (mistake-proofing)
+# Purpose: Qualquer agente pode "puxar a corda" para parar processo se detectar problema
+# Philosophy: "Melhor parar agora do que publicar algo ruim."
+# ═══════════════════════════════════════════════════════════════
+
+veto_matrix:
+  squad: "hotel-mkt"
+  version: "1.0.0"
+  total_agents: 13
+  total_veto_conditions: 52
+  philosophy: |
+    Inspirado no Andon cord da Toyota: qualquer trabalhador pode parar a linha de
+    produção se detectar um problema de qualidade. No marketing, qualquer agente
+    pode "puxar a corda" para PARAR o processo se detectar algo que vai resultar
+    em dinheiro desperdiçado, reputação danificada ou compliance violado.
+
+  # ═════════════════════════════════════════════════════════════
+  # SEVERITY LEVELS
+  # ═════════════════════════════════════════════════════════════
+
+  severity_levels:
+    BLOCK:
+      description: "Processo PARA. Não avança até resolver."
+      color: "red"
+      icon: "🛑"
+      enforcement: "Hard stop, requires fix + verification before proceeding"
+      escalation: "Immediate notification to Chief"
+
+    WARN:
+      description: "Alerta emitido. Pode avançar com justificativa documentada."
+      color: "yellow"
+      icon: "⚠️"
+      enforcement: "Logged warning, requires acknowledgment to proceed"
+      escalation: "Notificação ao Chief (não bloqueante)"
+
+    KILL:
+      description: "Projeto/peça CANCELADO. Não pode ser recuperado neste ciclo."
+      color: "black"
+      icon: "💀"
+      enforcement: "Immediate termination, no bypass possible"
+      escalation: "Immediate escalation to Chief + Manager"
+
+  # ═════════════════════════════════════════════════════════════
+  # TIER 0: ORCHESTRATOR
+  # ═════════════════════════════════════════════════════════════
+
+  agents:
+    - agent_id: "hotel-mkt-chief"
+      agent_name: "Hotel Marketing Chief"
+      tier: 0
+      role: "orchestrator"
+      veto_authority: "Máxima — pode vetar qualquer coisa"
+
+      veto_conditions:
+        - veto_id: "CHIEF-V1"
+          condition: "Tarefa roteada sem diagnóstico prévio (Emotional Value Equation)"
+          severity: BLOCK
+          action: "Executar Emotional Value Equation antes de rotear"
+          rationale: |
+            Sem diagnóstico, roteamento vai para agente errado.
+            Chief precisa entender: qual o objetivo? Qual a expectativa emocional?
+            Qual o valor real sendo entregue?
+          how_to_detect:
+            - "Briefing não menciona target emotion ou guest desire"
+            - "Pedido genérico tipo 'fazer campanha' sem objetivo claro"
+          fix:
+            - "Preencher Emotional Value Equation"
+            - "Definir: Sonho × Certeza × Identidade / (Esforço + Tempo + Risco)"
+            - "Identificar qual agente é mais adequado para o objetivo"
+
+        - veto_id: "CHIEF-V2"
+          condition: "Campanha sem brief aprovado"
+          severity: BLOCK
+          action: "Criar e aprovar brief antes de iniciar qualquer workflow"
+          rationale: |
+            Brief é o contrato entre marketing e operações/finance.
+            Sem brief = sem objetivo claro = impossível medir sucesso.
+          how_to_detect:
+            - "Workflow iniciado sem documento campaign_brief.pdf"
+            - "Brief não tem: budget, datas, target audience, KPIs, approval"
+          fix:
+            - "Criar brief usando template padrão"
+            - "Obter aprovação de finance (budget) e ops (deliverability)"
+
+        - veto_id: "CHIEF-V3"
+          condition: "Budget não alocado para campanha"
+          severity: BLOCK
+          action: "Definir budget antes de acionar agentes de execução"
+          rationale: |
+            Executores precisam saber quanto podem gastar.
+            Sem budget = trabalho pode ser desperdiçado se depois não houver verba.
+          how_to_detect:
+            - "Campaign brief sem valor de budget"
+            - "Budget 'a definir' ou 'TBD'"
+          fix:
+            - "Solicitar aprovação de budget com finance"
+            - "Se budget indisponível, HOLD ou KILL projeto"
+
+        - veto_id: "CHIEF-V4"
+          condition: "KPI principal não é mensurável"
+          severity: WARN
+          action: "Definir KPI mensurável ou documentar por que não é possível"
+          rationale: |
+            Objetivo vago = impossível otimizar.
+            Ex: 'aumentar awareness' não é mensurável.
+          how_to_detect:
+            - "KPI como 'awareness', 'engagement', 'buzz' sem métrica específica"
+          fix:
+            - "Substituir por métrica mensurável: impressões, reach, conversões"
+            - "Ou documentar que é campanha de brand (não performance)"
+
+        - veto_id: "CHIEF-V5"
+          condition: "Projeto com ROI projetado < 2:1"
+          severity: WARN
+          action: "Revisar estratégia ou documentar justificativa (ex: brand building)"
+          rationale: |
+            ROI < 2x é pior que comissão de OTA (15-20%).
+            Melhor deixar OTAs venderem.
+          how_to_detect:
+            - "Projeção financeira mostra ROI < 2x"
+          fix:
+            - "Revisar estratégia para melhorar ROI"
+            - "Ou justificar: campanha de brand, não performance"
+
+  # ═════════════════════════════════════════════════════════════
+  # TIER 1: NÚCLEO ESTRATÉGICO
+  # ═════════════════════════════════════════════════════════════
+
+    - agent_id: "hotel-trend-hunter"
+      agent_name: "Trend Hunter"
+      tier: 1
+      role: "strategist"
+
+      veto_conditions:
+        - veto_id: "TREND-V1"
+          condition: "Trend report com menos de 20 keywords validadas"
+          severity: BLOCK
+          action: "Pesquisar mais keywords antes de entregar briefing"
+          rationale: |
+            20 keywords é baseline mínimo para ter diversidade de ângulos.
+            Com < 20, estratégia fica limitada.
+          how_to_detect:
+            - "Spreadsheet keyword_research.xlsx tem < 20 linhas"
+          fix:
+            - "Expandir pesquisa: sinônimos, long-tail, related queries"
+            - "Usar Google Trends, SEMrush, Ahrefs"
+
+        - veto_id: "TREND-V2"
+          condition: "Tendência declarada sem 3+ fontes de dados confirmando"
+          severity: BLOCK
+          action: "Coletar mais fontes ou reclassificar como 'sinal fraco'"
+          rationale: |
+            Trend com 1 fonte pode ser outlier.
+            3+ fontes = validação cross-channel.
+          how_to_detect:
+            - "Trend citada mas só 1 fonte (ex: apenas Google Trends)"
+          fix:
+            - "Validar com: Google Trends + social listening + competitor analysis"
+            - "Ou reclassificar: 'sinal fraco a monitorar'"
+
+        - veto_id: "TREND-V3"
+          condition: "Previsão sazonal sem dados históricos de baseline"
+          severity: WARN
+          action: "Documentar que é previsão sem baseline, usar benchmarks do setor"
+          rationale: |
+            Previsão sem histórico é especulação.
+            Útil, mas precisa ser transparente sobre incerteza.
+          how_to_detect:
+            - "Sazonalidade prevista mas sem dados de anos anteriores"
+          fix:
+            - "Buscar dados históricos (3 anos idealmente)"
+            - "Ou usar benchmarks do setor como proxy"
+
+        - veto_id: "TREND-V4"
+          condition: "Competitor analysis com < 10 propriedades"
+          severity: WARN
+          action: "Expandir análise ou documentar por que sample é pequeno"
+          rationale: |
+            < 10 competitors = sample pequeno, pode não ser representativo.
+          how_to_detect:
+            - "Competitor_matrix.xlsx tem < 10 linhas"
+          fix:
+            - "Adicionar mais competitors (até 15-20)"
+            - "Ou justificar: mercado pequeno, apenas competidores diretos"
+
+    # ───────────────────────────────────────────────────────────
+
+    - agent_id: "hotel-offer-architect"
+      agent_name: "Offer Architect"
+      tier: 1
+      role: "strategist"
+
+      veto_conditions:
+        - veto_id: "OFFER-V1"
+          condition: "Oferta sem urgência ou scarcity clara"
+          severity: BLOCK
+          action: "Adicionar mecanismo de scarcity/urgency antes de lançar"
+          rationale: |
+            Sem urgência, prospect procrastina ('vou pensar').
+            Urgency/scarcity são triggers críticos de conversão.
+          how_to_detect:
+            - "Offer JSON não tem campos 'scarcity' ou 'urgency' preenchidos"
+            - "Ou valores são vagos: 'vagas limitadas' sem número"
+          fix:
+            - "Scarcity: 'Apenas 10 quartos neste pacote'"
+            - "Urgency: 'Reservas até 15/03 ou preço sobe 20%'"
+
+        - veto_id: "OFFER-V2"
+          condition: "Margin analysis mostra profitability < 30%"
+          severity: WARN
+          action: "Revisar pricing ou justificar (ex: loss leader, upsell posterior)"
+          rationale: |
+            Margin < 30% é arriscado (custos variáveis, imprevistos).
+            Pode virar prejuízo se ocupação não bater.
+          how_to_detect:
+            - "Pricing_strategy.xlsx mostra margin < 30%"
+          fix:
+            - "Ajustar pricing (aumentar preço ou reduzir bonuses)"
+            - "Ou justificar: loss leader para capturar cliente e upsell depois"
+
+        - veto_id: "OFFER-V3"
+          condition: "Oferta não tem guarantee (risk reversal)"
+          severity: WARN
+          action: "Adicionar guarantee ou documentar por que não é possível"
+          rationale: |
+            Guarantee remove friction na decisão.
+            Ex: cancelamento flexível, best rate guarantee.
+          how_to_detect:
+            - "Offer JSON não tem campo 'guarantee' preenchido"
+          fix:
+            - "Adicionar: 'Cancelamento grátis até 48h antes' ou 'Melhor tarifa garantida'"
+
+        - veto_id: "OFFER-V4"
+          condition: "Bonuses têm perceived value < 2x o custo para o hotel"
+          severity: WARN
+          action: "Aumentar perceived value dos bonuses"
+          rationale: |
+            Bonus precisa parecer valioso para o guest, mas custar pouco para o hotel.
+            Ratio ideal: perceived value 3-5x o custo real.
+          how_to_detect:
+            - "Bonus: 'desconto 5%' (baixo perceived value)"
+          fix:
+            - "Substituir por bonuses de alto perceived value e baixo custo:"
+            - "Ex: upgrade de quarto (custo $0 se disponível), late checkout, welcome drink"
+
+    # ───────────────────────────────────────────────────────────
+
+    - agent_id: "hotel-guest-strategist"
+      agent_name: "Guest Strategist"
+      tier: 1
+      role: "strategist"
+
+      veto_conditions:
+        - veto_id: "GUEST-V1"
+          condition: "Segmentos definidos sem psychographics (só demographics)"
+          severity: BLOCK
+          action: "Adicionar psychographics (desires, fears, values) a cada segmento"
+          rationale: |
+            Demographics dizem WHO, psychographics dizem WHY.
+            Marketing emocional precisa de psychographics.
+          how_to_detect:
+            - "Segment_profiles.json só tem idade/gênero/renda"
+            - "Falta: desires, fears, values, aspirations"
+          fix:
+            - "Pesquisar: o que este segmento DESEJA? O que TEME?"
+            - "Ex: casal 30-40 anos DESEJA romance/escape, TEME rotina/tédio"
+
+        - veto_id: "GUEST-V2"
+          condition: "Messaging pillars são genéricos (aplicam a qualquer hotel)"
+          severity: BLOCK
+          action: "Especificar messaging com ângulos únicos do hotel"
+          rationale: |
+            Messaging genérico = commoditização.
+            Precisa destacar o único deste hotel.
+          how_to_detect:
+            - "Messaging: 'conforto, qualidade, atendimento excelente'"
+            - "Todos hotéis falam isso (não é diferenciação)"
+          fix:
+            - "Identificar unique angles: localização única, design, experiência"
+            - "Ex: 'Vista 360° do mar' vs genérico 'boa localização'"
+
+        - veto_id: "GUEST-V3"
+          condition: "Guest journey map não identifica momento de decisão crítico"
+          severity: WARN
+          action: "Identificar 'Moment of Truth' onde guest decide booking"
+          rationale: |
+            Journey map sem momento crítico = não sabe onde otimizar.
+          how_to_detect:
+            - "Journey map tem fases mas não marca onde conversão acontece"
+          fix:
+            - "Mapear: qual touchpoint/momento faz guest decidir reservar?"
+            - "Ex: ao ver fotos do quarto, ao ler review 5 estrelas, ao ver preço com desconto"
+
+  # ═════════════════════════════════════════════════════════════
+  # TIER 2: EXECUÇÃO
+  # ═════════════════════════════════════════════════════════════
+
+    - agent_id: "hotel-copywriter"
+      agent_name: "Copywriter"
+      tier: 2
+      role: "executor"
+
+      veto_conditions:
+        - veto_id: "COPY-V1"
+          condition: "Copy principal sem proof (social proof, data, testimonials)"
+          severity: BLOCK
+          action: "Adicionar proof antes de lançar"
+          rationale: |
+            Promise sem proof = não acreditam.
+            Proof > Promise (framework de Hormozi).
+          how_to_detect:
+            - "Landing page/email faz claims mas não mostra evidência"
+            - "Ex: 'melhor hotel da região' sem review/prêmio/rating"
+          fix:
+            - "Adicionar: testimonials, ratings (4.9/5), awards, números (500+ hóspedes felizes)"
+
+        - veto_id: "COPY-V2"
+          condition: "CTAs ausentes ou vagos em 30%+ das peças"
+          severity: BLOCK
+          action: "Revisar todas peças e adicionar CTAs específicos"
+          rationale: |
+            Sem CTA claro = usuário não sabe o que fazer = sem conversão.
+          how_to_detect:
+            - "Email/ad termina sem CTA"
+            - "CTA vago: 'clique aqui' ao invés de 'Reserve agora'"
+          fix:
+            - "Toda peça precisa de CTA específico e action-oriented"
+            - "Ex: 'Reserve sua suíte com 20% off', 'Veja disponibilidade'"
+
+        - veto_id: "COPY-V3"
+          condition: "Copy é feature-focused ao invés de benefit-focused"
+          severity: WARN
+          action: "Reescrever features como benefits emocionais"
+          rationale: |
+            Guest não compra 'cama king size', compra 'melhor noite de sono da vida'.
+          how_to_detect:
+            - "Copy lista: ar condicionado, TV, Wi-Fi (features)"
+            - "Não menciona: descanso, relaxamento, escape (benefits)"
+          fix:
+            - "Converter features → benefits:"
+            - "'Cama king size' → 'Acorde revigorado após melhor noite de sono'"
+
+        - veto_id: "COPY-V4"
+          condition: "Headline não para o scroll (primeiro 3 segundos)"
+          severity: WARN
+          action: "Reescrever headline com hook mais forte"
+          rationale: |
+            Online, você tem 3 segundos para capturar atenção.
+            Headline fraco = scroll passa.
+          how_to_detect:
+            - "Headline é informativo mas sem punch: 'Conheça nosso hotel'"
+          fix:
+            - "Usar curiosity, urgency, contrarian, problem/solution"
+            - "Ex: 'Por que 87% dos casais escolhem este hotel para lua de mel?'"
+
+    # ───────────────────────────────────────────────────────────
+
+    - agent_id: "hotel-social-creator"
+      agent_name: "Social Creator"
+      tier: 2
+      role: "executor"
+
+      veto_conditions:
+        - veto_id: "SOCIAL-V1"
+          condition: "Conteúdo visual é stock photos genérico (não autêntico)"
+          severity: BLOCK
+          action: "Usar fotos reais do hotel ou UGC"
+          rationale: |
+            Stock photos = não confiável, todo mundo detecta.
+            Autenticidade > perfeição.
+          how_to_detect:
+            - "Imagens são claramente stock (watermarks, pessoas sem contexto)"
+          fix:
+            - "Usar: fotos reais do hotel, UGC de hóspedes, behind-the-scenes"
+
+        - veto_id: "SOCIAL-V2"
+          condition: "Post sem hook nos primeiros 3 words do caption"
+          severity: WARN
+          action: "Reescrever caption com hook forte no início"
+          rationale: |
+            Instagram/Facebook cortam caption após 3 linhas.
+            Hook precisa estar no início para parar scroll.
+          how_to_detect:
+            - "Caption começa: 'Hoje queremos compartilhar...'"
+            - "Primeiros 3 words são fracos/genéricos"
+          fix:
+            - "Começar com: pergunta provocativa, statement bold, curiosity"
+            - "Ex: 'Você sabia que... / Imagina acordar com... / Segredo revelado:'"
+
+        - veto_id: "SOCIAL-V3"
+          condition: "Calendário de conteúdo é 100% promotional (sem value content)"
+          severity: WARN
+          action: "Balancear: 80% value/educacional + 20% promotional"
+          rationale: |
+            Feed só de promo = unfollow.
+            Precisa dar valor: dicas, entretenimento, educação.
+          how_to_detect:
+            - "Todos posts são: 'Reserve agora', 'Promoção', 'Desconto'"
+          fix:
+            - "80% value: dicas de viagem, hidden gems locais, histórias"
+            - "20% promo: ofertas diretas"
+
+        - veto_id: "SOCIAL-V4"
+          condition: "Vídeo/Reel sem hook nos primeiros 3 segundos"
+          severity: WARN
+          action: "Re-editar com hook visual/textual forte no início"
+          rationale: |
+            Reels/TikTok: primeiros 3s decidem se assiste ou scrolls.
+          how_to_detect:
+            - "Vídeo começa com logo/intro lento"
+          fix:
+            - "Começar com: visual impactante, texto provocativo, movimento"
+
+    # ───────────────────────────────────────────────────────────
+
+    - agent_id: "hotel-ads-specialist"
+      agent_name: "Ads Specialist"
+      tier: 2
+      role: "executor"
+
+      veto_conditions:
+        - veto_id: "ADS-V1"
+          condition: "Campanha sem tracking pixels verificados"
+          severity: BLOCK
+          action: "Verificar todos os pixels antes de lançar"
+          rationale: |
+            Ads sem tracking = dinheiro jogado fora sem dados para otimizar.
+            NUNCA lançar sem tracking 100%.
+          how_to_detect:
+            - "Meta Pixel Helper ou Tag Assistant mostra pixels não disparando"
+            - "Test conversion não aparece no dashboard"
+          fix:
+            - "Instalar e testar: Meta Pixel, Google Ads tag, GA4 events"
+            - "Fazer test conversions até confirmar 100%"
+
+        - veto_id: "ADS-V2"
+          condition: "Ads violam platform policies (> 30% rejeitadas)"
+          severity: BLOCK
+          action: "Revisar creative guidelines antes de submeter"
+          rationale: |
+            Rejeição em massa = atraso de semanas, budget não gasto.
+          how_to_detect:
+            - "Após submissão, > 30% ads são rejeitadas"
+          fix:
+            - "Revisar Meta/Google policies: claims médicos, before/after proibidos, etc"
+            - "Pré-revisar ads antes de upload em massa"
+
+        - veto_id: "ADS-V3"
+          condition: "Landing page para ads carrega em > 3 segundos"
+          severity: BLOCK
+          action: "Otimizar landing page antes de gastar budget"
+          rationale: |
+            Cada segundo de atraso = 7% menos conversões.
+            > 3s = 20%+ conversões perdidas.
+          how_to_detect:
+            - "PageSpeed Insights score < 80"
+            - "Tempo real de load > 3s (teste manual)"
+          fix:
+            - "Otimizar: comprimir imagens, lazy loading, CDN, minify CSS/JS"
+
+        - veto_id: "ADS-V4"
+          condition: "Budget sem cap (pode gastar ilimitado por erro)"
+          severity: BLOCK
+          action: "Configurar budget caps e bid limits"
+          rationale: |
+            Sem cap, bug ou erro pode gastar R$ 50k overnight.
+          how_to_detect:
+            - "Campanha sem daily budget cap ou lifetime budget"
+          fix:
+            - "Configurar: daily cap, lifetime cap, bid cap"
+
+        - veto_id: "ADS-V5"
+          condition: "Ads não têm UTM parameters (impossível trackear fonte)"
+          severity: WARN
+          action: "Adicionar UTM tracking a todos os links"
+          rationale: |
+            Sem UTM = não sabe qual ad/platform/campanha gerou conversão.
+          how_to_detect:
+            - "URLs dos ads não têm ?utm_source=..."
+          fix:
+            - "Adicionar: utm_source, utm_medium, utm_campaign, utm_content"
+
+    # ───────────────────────────────────────────────────────────
+
+    - agent_id: "hotel-email-maestro"
+      agent_name: "Email Maestro"
+      tier: 2
+      role: "executor"
+
+      veto_conditions:
+        - veto_id: "EMAIL-V1"
+          condition: "Email sem A/B test em subject line"
+          severity: WARN
+          action: "Configurar A/B test (mínimo 2 variations)"
+          rationale: |
+            Subject line determina open rate.
+            Sem test = deixar 20-30% open rate na mesa.
+          how_to_detect:
+            - "ESP mostra apenas 1 subject line (sem A/B test)"
+          fix:
+            - "Criar 2-3 variations de subject e testar com 10-20% da lista"
+
+        - veto_id: "EMAIL-V2"
+          condition: "Spam score > 3/10 (Mail Tester ou similar)"
+          severity: BLOCK
+          action: "Corrigir elementos de spam antes de enviar"
+          rationale: |
+            Spam score alto = vai direto pra spam folder.
+            Deliverability morta.
+          how_to_detect:
+            - "Mail Tester score > 3/10"
+          fix:
+            - "Remover: palavras spam (grátis, urgente, clique), excesso de links"
+            - "Adicionar: plain text version, unsubscribe link, sender authentication"
+
+        - veto_id: "EMAIL-V3"
+          condition: "Email não renderiza corretamente em mobile"
+          severity: BLOCK
+          action: "Testar em iOS/Android antes de enviar"
+          rationale: |
+            60-70% abrem email no mobile.
+            Se não renderiza = email inútil.
+          how_to_detect:
+            - "Preview mobile mostra: texto cortado, botões não clicáveis, imagens quebradas"
+          fix:
+            - "Usar template responsivo"
+            - "Testar em: Gmail (iOS/Android), Apple Mail, Outlook mobile"
+
+        - veto_id: "EMAIL-V4"
+          condition: "Sequência de emails sem progressão lógica (todos iguais)"
+          severity: WARN
+          action: "Criar progressão: Awareness → Consideration → Decision"
+          rationale: |
+            Emails repetitivos = unsubscribe.
+            Sequência precisa contar história progressiva.
+          how_to_detect:
+            - "Todos emails têm mesmo CTA: 'Reserve agora'"
+          fix:
+            - "Email 1: Awareness (educar), Email 2: Consideration (comparar)"
+            - "Email 3: Decision (oferta + urgency), Email 4: Last call"
+
+    # ───────────────────────────────────────────────────────────
+
+    - agent_id: "hotel-seo-architect"
+      agent_name: "SEO Architect"
+      tier: 2
+      role: "executor"
+
+      veto_conditions:
+        - veto_id: "SEO-V1"
+          condition: "Página sem meta title ou meta description"
+          severity: BLOCK
+          action: "Adicionar meta tags antes de publicar"
+          rationale: |
+            Meta tags = o que aparece no Google.
+            Sem meta = Google cria automaticamente (geralmente ruim).
+          how_to_detect:
+            - "HTML não tem <title> ou <meta name='description'>"
+          fix:
+            - "Title: < 60 chars, keyword no início"
+            - "Description: 150-160 chars, CTA incluído"
+
+        - veto_id: "SEO-V2"
+          condition: "Página tem > 5 erros críticos de Core Web Vitals"
+          severity: BLOCK
+          action: "Corrigir erros antes de indexar"
+          rationale: |
+            Core Web Vitals = ranking factor do Google.
+            Erros críticos = não vai ranquear.
+          how_to_detect:
+            - "Lighthouse audit mostra: LCP > 2.5s, FID > 100ms, CLS > 0.1"
+          fix:
+            - "Otimizar: imagens (webp), fonts, JS, servidor response time"
+
+        - veto_id: "SEO-V3"
+          condition: "Conteúdo tem < 300 palavras (thin content)"
+          severity: WARN
+          action: "Expandir conteúdo ou consolidar com outra página"
+          rationale: |
+            < 300 palavras = Google considera thin content (baixo value).
+          how_to_detect:
+            - "Word count < 300"
+          fix:
+            - "Expandir para 500-1000 palavras (se faz sentido)"
+            - "Ou consolidar com página relacionada (evitar duplicate)"
+
+        - veto_id: "SEO-V4"
+          condition: "Schema markup inválido (erros no validador)"
+          severity: WARN
+          action: "Corrigir schema antes de publicar"
+          rationale: |
+            Schema inválido = Google ignora (não usa em rich snippets).
+          how_to_detect:
+            - "Schema.org validator mostra errors"
+          fix:
+            - "Corrigir JSON-LD: campos obrigatórios, format correto"
+
+  # ═════════════════════════════════════════════════════════════
+  # TIER 3: ESPECIALISTAS
+  # ═════════════════════════════════════════════════════════════
+
+    - agent_id: "hotel-reputation-guardian"
+      agent_name: "Reputation Guardian"
+      tier: 3
+      role: "specialist"
+
+      veto_conditions:
+        - veto_id: "REP-V1"
+          condition: "Resposta a review negativa é defensiva ou agressiva"
+          severity: KILL
+          action: "NUNCA enviar resposta defensiva. Re-escrever com empatia."
+          rationale: |
+            Resposta agressiva = crise de reputação viral.
+            Pode destruir brand em horas.
+          how_to_detect:
+            - "Resposta usa: 'mas', 'porém', 'você está errado', tom corporate frio"
+          fix:
+            - "Reescrever com framework: Acknowledge → Apologize → Action"
+            - "Tom: empático, pessoal, humano (não corporate)"
+
+        - veto_id: "REP-V2"
+          condition: "Review request enviado < 24h após checkout"
+          severity: WARN
+          action: "Aguardar 24-48h após checkout para enviar"
+          rationale: |
+            Guest ainda está viajando (não quer pensar em review).
+            24-48h = tempo ideal (experiência fresca, já em casa).
+          how_to_detect:
+            - "Automation trigger: send review request on checkout day"
+          fix:
+            - "Configurar delay: 24-48h após checkout"
+
+        - veto_id: "REP-V3"
+          condition: "Resposta a review positiva é genérica (copy-paste)"
+          severity: WARN
+          action: "Personalizar resposta com detalhes específicos do guest"
+          rationale: |
+            Resposta genérica = não leu o review.
+            Personalização mostra que você se importa.
+          how_to_detect:
+            - "Resposta: 'Obrigado pelo feedback! Esperamos vê-lo novamente.'"
+          fix:
+            - "Mencionar detalhe específico do review"
+            - "Ex: 'Ficamos felizes que aproveitou o café da manhã com vista para o mar!'"
+
+        - veto_id: "REP-V4"
+          condition: "SLA de resposta > 48h consistentemente"
+          severity: WARN
+          action: "Melhorar processo de resposta para < 24h"
+          rationale: |
+            Resposta rápida = mostra que hotel é atento.
+            > 48h = parece que não se importa.
+          how_to_detect:
+            - "Tempo médio de resposta > 48h por 2 semanas"
+          fix:
+            - "Configurar alertas automáticos"
+            - "Criar templates para acelerar (mas personalizar)"
+
+    # ───────────────────────────────────────────────────────────
+
+    - agent_id: "hotel-ugc-curator"
+      agent_name: "UGC Curator"
+      tier: 3
+      role: "specialist"
+
+      veto_conditions:
+        - veto_id: "UGC-V1"
+          condition: "UGC usado sem consentimento LGPD/direito de imagem"
+          severity: KILL
+          action: "NUNCA usar UGC sem permissão. Problema legal grave."
+          rationale: |
+            Usar foto de hóspede sem consent = violação LGPD + direito de imagem.
+            Multa + processo.
+          how_to_detect:
+            - "Foto de hóspede sem registro de consent_status = granted"
+          fix:
+            - "Solicitar permissão via DM/email antes de usar"
+            - "Documentar consent em database"
+
+        - veto_id: "UGC-V2"
+          condition: "UGC mostra algo off-brand ou negativo"
+          severity: BLOCK
+          action: "Não publicar UGC que contradiz posicionamento"
+          rationale: |
+            UGC precisa reforçar brand, não diluir.
+          how_to_detect:
+            - "Foto de hóspede mostra: área suja, má qualidade, comportamento inadequado"
+          fix:
+            - "Curate apenas UGC que reforça brand values"
+
+        - veto_id: "UGC-V3"
+          condition: "UGC pack sem caption suggestions"
+          severity: WARN
+          action: "Adicionar caption suggestions para facilitar uso"
+          rationale: |
+            Social Creator precisa de contexto para usar UGC efetivamente.
+          how_to_detect:
+            - "ZIP file com fotos mas sem metadata de contexto"
+          fix:
+            - "Adicionar: onde foi tirada, o que mostra, ângulo sugerido de storytelling"
+
+    # ───────────────────────────────────────────────────────────
+
+    - agent_id: "hotel-direct-booking"
+      agent_name: "Direct Booking Specialist"
+      tier: 3
+      role: "specialist"
+
+      veto_conditions:
+        - veto_id: "DIRECT-V1"
+          condition: "Booking engine quebrado (taxa de erro > 5%)"
+          severity: BLOCK
+          action: "Pausar ads e fix booking engine URGENTE"
+          rationale: |
+            Ads direcionam tráfego para engine quebrado = dinheiro desperdiçado.
+          how_to_detect:
+            - "Analytics mostra: 95%+ usuários abandonam no checkout"
+            - "Test bookings falham consistentemente"
+          fix:
+            - "Pausar campanhas pagas imediatamente"
+            - "Escalar para tech team (P0 bug)"
+            - "Só reativar ads após fix confirmado"
+
+        - veto_id: "DIRECT-V2"
+          condition: "Rate parity violation (site direto mais caro que OTA)"
+          severity: BLOCK
+          action: "Corrigir pricing antes de promover reserva direta"
+          rationale: |
+            Se OTA é mais barato, campanha de direct booking vai falhar.
+            Guest vai comparar e reservar na OTA.
+          how_to_detect:
+            - "Rate_parity_report.xlsx mostra: tarifa direta > tarifa OTA"
+          fix:
+            - "Igualar tarifas ou adicionar perks exclusivos que compensem"
+
+        - veto_id: "DIRECT-V3"
+          condition: "Conversão < 1.5% por 2 semanas consecutivas"
+          severity: WARN
+          action: "Auditoria de funnel para identificar friction points"
+          rationale: |
+            Conversão < 1.5% indica problema sério (benchmark é 2-3%).
+          how_to_detect:
+            - "GA4 mostra: conversion rate < 1.5% por 14 dias"
+          fix:
+            - "Auditoria: load time, mobile UX, form fields, payment options"
+
+        - veto_id: "DIRECT-V4"
+          condition: "WhatsApp booking sem SLA de resposta (> 2h)"
+          severity: WARN
+          action: "Definir SLA < 1h durante business hours"
+          rationale: |
+            WhatsApp = expectativa de resposta rápida.
+            > 2h = guest desiste e reserva na OTA.
+          how_to_detect:
+            - "Tempo médio de resposta WhatsApp > 2h"
+          fix:
+            - "Configurar alertas, auto-responder, ou contratar coverage"
+
+    # ───────────────────────────────────────────────────────────
+
+    - agent_id: "hotel-pr-advertorial"
+      agent_name: "PR & Advertorial"
+      tier: 3
+      role: "specialist"
+
+      veto_conditions:
+        - veto_id: "PR-V1"
+          condition: "Advertorial sem disclosure de conteúdo patrocinado"
+          severity: KILL
+          action: "NUNCA publicar advertorial sem disclosure. Viola regulação."
+          rationale: |
+            Advertorial sem disclosure = publicidade enganosa.
+            Multa de órgãos reguladores (Conar, Procon).
+          how_to_detect:
+            - "Artigo pago mas não menciona 'Conteúdo Patrocinado' ou 'Publieditorial'"
+          fix:
+            - "Adicionar disclosure claro no topo: 'Conteúdo Patrocinado por [Hotel]'"
+
+        - veto_id: "PR-V2"
+          condition: "Advertorial é 100% sales pitch (sem valor editorial)"
+          severity: BLOCK
+          action: "Re-escrever com 70% valor editorial + 30% promo"
+          rationale: |
+            Pure sales pitch = sites não publicam, leitores rejeitam.
+          how_to_detect:
+            - "Artigo só fala do hotel (sem dicas, informação útil)"
+          fix:
+            - "Estrutura: 70% dicas de viagem/destino + 30% menção do hotel"
+
+        - veto_id: "PR-V3"
+          condition: "Backlink é nofollow (sem valor SEO)"
+          severity: WARN
+          action: "Negociar dofollow ou documentar que objetivo é brand (não SEO)"
+          rationale: |
+            Nofollow link = não passa authority SEO.
+            Se objetivo é SEO, nofollow não serve.
+          how_to_detect:
+            - "Link publicado tem rel='nofollow'"
+          fix:
+            - "Negociar dofollow (pode custar mais)"
+            - "Ou aceitar que objetivo é brand awareness, não SEO"
+
+        - veto_id: "PR-V4"
+          condition: "Site de publicação tem DA < 20 (low authority)"
+          severity: WARN
+          action: "Reconsiderar publicação ou negociar preço menor"
+          rationale: |
+            Site com DA < 20 tem pouco tráfego e pouca authority.
+            Pode não valer o investimento.
+          how_to_detect:
+            - "Ahrefs/Moz mostra DA < 20"
+          fix:
+            - "Focar em sites DA > 30"
+            - "Ou negociar preço muito baixo para sites pequenos"
+
+# ═══════════════════════════════════════════════════════════════
+# VETO ENFORCEMENT GUIDELINES
+# ═══════════════════════════════════════════════════════════════
+
+veto_enforcement:
+  how_to_trigger_veto:
+    - "Agent detecta veto condition durante execução"
+    - "Agent documenta: veto_id, evidence, timestamp"
+    - "Agent aciona BLOCK/WARN/KILL conforme severity"
+    - "Agent notifica Chief imediatamente (BLOCK e KILL)"
+
+  block_enforcement:
+    - "Processo PARA até condition ser resolvida"
+    - "Chief é notificado automaticamente"
+    - "Fix precisa ser verificado antes de prosseguir"
+    - "Quem triggered veto precisa aprovar fix"
+
+  warn_enforcement:
+    - "Warning é logged"
+    - "Processo pode continuar se justificativa for documentada"
+    - "Chief é notificado (não bloqueante)"
+    - "Revisar warnings mensalmente para identificar padrões"
+
+  kill_enforcement:
+    - "Projeto/peça é CANCELADO imediatamente"
+    - "Sem possibilidade de bypass"
+    - "Escalação automática para Chief + Manager"
+    - "Post-mortem obrigatório para documentar learnings"
+
+  veto_override:
+    - "Apenas Chief pode override veto (exceto KILL)"
+    - "Override precisa ser documentado com rationale forte"
+    - "Max 1 override por workflow (se > 1 = problema sistêmico)"
+
+  veto_metrics:
+    - metric: "Veto rate"
+      target: "5-15% (se > 20% = processo ruim, se < 2% = vetos não usados)"
+      calculation: "Vetos triggered / total executions"
+
+    - metric: "Veto resolution time"
+      target: "< 4h para BLOCK, < 1h para KILL"
+      calculation: "Time from veto trigger to resolution"
+
+    - metric: "False positive rate"
+      target: "< 5%"
+      calculation: "Vetos overridden / total vetos"
+
+    - metric: "Repeat veto rate"
+      target: "< 10%"
+      calculation: "Same veto triggered 2+ times / total vetos"
+
+# ═══════════════════════════════════════════════════════════════
+# COMMON VETO SCENARIOS (REAL-WORLD MARKETING DISASTERS)
+# ═══════════════════════════════════════════════════════════════
+
+common_disasters:
+  - disaster: "Ads sem tracking → R$ 20k gasto sem dados"
+    veto: "ADS-V1"
+    prevention: "NUNCA lançar sem verificar pixels"
+
+  - disaster: "Email com spam score alto → deliverability morta por 6 meses"
+    veto: "EMAIL-V2"
+    prevention: "Sempre testar spam score antes de enviar"
+
+  - disaster: "Resposta agressiva a review → viral no Twitter → crise"
+    veto: "REP-V1"
+    prevention: "KILL qualquer resposta defensiva imediatamente"
+
+  - disaster: "UGC sem consent → processo por direito de imagem"
+    veto: "UGC-V1"
+    prevention: "NUNCA usar foto sem permissão documentada"
+
+  - disaster: "Advertorial sem disclosure → multa Conar R$ 50k"
+    veto: "PR-V1"
+    prevention: "SEMPRE incluir 'Conteúdo Patrocinado'"
+
+  - disaster: "Landing page lenta (5s) → 30% conversões perdidas → R$ 15k desperdiçado"
+    veto: "ADS-V3"
+    prevention: "Otimizar antes de gastar budget"
+
+  - disaster: "Copy sem proof → conversão 0.5% (deveria ser 3%) → campanha falha"
+    veto: "COPY-V1"
+    prevention: "Adicionar testimonials, ratings, data"
+
+  - disaster: "Oferta sem urgency → procrastinação → ROI 1.5x (deveria ser 4x)"
+    veto: "OFFER-V1"
+    prevention: "Sempre ter deadline ou scarcity"
+
+# ═══════════════════════════════════════════════════════════════
+# END OF VETO MATRIX
+# ═══════════════════════════════════════════════════════════════

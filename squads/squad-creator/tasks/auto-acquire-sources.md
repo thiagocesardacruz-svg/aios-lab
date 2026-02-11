@@ -1,96 +1,350 @@
 ---
-task: Auto-Acquire Sources
-responsavel: "@oalanicolas"
-responsavel_type: agent
-atomic_layer: task
-elicit: true
-Entrada: |
-  - person_name: Full name of the person to find sources for (string, required)
-  - domain: Professional area or field, e.g. "AI engineering", "product management" (string, required)
-  - search_depth: How deep to search — shallow (quick, top results) or deep (exhaustive) (string, optional, default: shallow)
-Saida: |
-  - acquired_sources: Array of discovered sources with path, type, and confidence score (array)
-  - total_sources: Total number of sources found (number)
-  - coverage_assessment: Qualitative assessment of source diversity and completeness (string)
-Checklist:
-  - "[ ] Search LinkedIn for professional profile and posts"
-  - "[ ] Search GitHub for repositories and contributions"
-  - "[ ] Search Medium/blog platforms for written content"
-  - "[ ] Search Twitter/X for posts and threads"
-  - "[ ] Search YouTube for talk transcripts"
-  - "[ ] Search podcast directories for interview transcripts"
-  - "[ ] Evaluate source quality and confidence"
-  - "[ ] Download or reference accessible content"
-  - "[ ] Generate coverage assessment"
+task-id: auto-acquire-sources
+name: Automated Source Acquisition
+version: 2.0.0
+execution_type: Hybrid
+estimated-time: 15-30 min
+complexity: low
+
+# NOTA: Este task agora é executado através do workflow wf-auto-acquire-sources.yaml
+# que integra os MCPs descobertos (youtube-transcript, firecrawl, etc.)
+# Ver: workflows/wf-auto-acquire-sources.yaml
+
+workflow_reference: wf-auto-acquire-sources.yaml
+
+inputs:
+  required:
+    - mind_name: "Nome do expert"
+    - domain: "Área de expertise"
+  optional:
+    - target_count: "Número alvo de fontes (default: 15)"
+
+outputs:
+  primary:
+    - acquired_sources: "Lista de fontes adquiridas automaticamente"
+    - sources_inventory.yaml: "Inventário estruturado"
+
+tools:
+  installed:
+    - exa: "Web search"
+  recommended:
+    - mcp-youtube-transcript: "YouTube transcripts"
+    - firecrawl-mcp: "Web scraping"
+  see_also: "docs/TOOL-RECOMMENDATIONS.md"
+
+elicit: false
 ---
 
-# *auto-acquire-sources
+# Automated Source Acquisition
 
-Automatically discovers and collects public source material for a person to feed into the mind cloning pipeline. Searches across multiple platforms and evaluates source quality.
+> **Princípio:** "Maximize o material antes de extrair. Mais fontes = maior fidelidade."
+>
+> **Modo:** Executa automaticamente, sem input do usuário.
 
-## Uso
+---
+
+## FASE 1: YOUTUBE TRANSCRIPT MINING (5 min)
+
+### 1.1 Queries de Busca
+
+Execute estas buscas no YouTube:
 
 ```
-*auto-acquire-sources person_name="Nicolas Oala" domain="AI engineering" search_depth=deep
+"{mind_name}" interview
+"{mind_name}" podcast
+"{mind_name}" keynote
+"{mind_name}" masterclass
+"{mind_name}" talk
+"{mind_name}" {domain} advice
 ```
 
-## Parametros
+### 1.2 Critérios de Seleção
 
-| Param | Type | Required | Default | Description |
-|-------|------|----------|---------|-------------|
-| person_name | string | yes | - | Full name of the person |
-| domain | string | yes | - | Professional field to focus search |
-| search_depth | string | no | shallow | `shallow` for top results only, `deep` for exhaustive search |
+Priorizar vídeos que:
+- Têm 10+ minutos (conteúdo substancial)
+- Expert é o entrevistado principal
+- Legenda/transcrição disponível
+- Alto engagement (views, likes)
 
-## Implementation
+### 1.3 Extração de Transcrição
 
-### Step 1: Search Channel Execution
-Run searches in parallel across 6 channels:
+```yaml
+youtube_sources:
+  - id: "YT01"
+    title: ""
+    channel: ""
+    duration: ""
+    url: ""
+    transcript_status: "available|extracted|unavailable"
+    tier: 1  # Primário - expert falando
+    key_topics: []
+```
 
-1. **LinkedIn**: Search for profile, posts, articles. Extract bio, experience descriptions, published articles
-2. **GitHub**: Search for user profile, pinned repos, README files, commit messages, PR descriptions, issue comments
-3. **Medium / Blog platforms**: Search for authored articles, cross-reference with person name and domain
-4. **Twitter/X**: Search for account, recent threads, quoted tweets, replies with substantive content
-5. **YouTube**: Search for talks, interviews, panel appearances. Extract or reference transcripts
-6. **Podcasts**: Search podcast directories (Spotify, Apple Podcasts) for guest appearances. Reference transcript services
+**Ferramentas:**
+- YouTube Data API (search)
+- youtube-transcript-api (Python)
+- Whisper (se transcrição indisponível)
 
-In `deep` mode, also search:
-- Conference talk archives (SlideShare, SpeakerDeck)
-- Academic papers (Google Scholar, arXiv)
-- Company blog posts
-- Newsletter archives (Substack)
+---
 
-### Step 2: Source Quality Evaluation
-For each discovered source, assess:
-- **Authenticity**: Confidence this is actually the target person (0-100)
-- **Content richness**: Amount of usable text/content (low, medium, high)
-- **Recency**: How recent the content is
-- **Type classification**: voice-relevant, thinking-relevant, or both
-- Assign overall confidence score (0-100)
+## FASE 2: BOOK SUMMARY MINING (5 min)
 
-### Step 3: Content Acquisition
-- For publicly accessible text: download and save to `squads/squad-creator/data/sources/{slug}/`
-- For restricted content: save reference (URL, title, date) for manual acquisition
-- For multimedia: reference transcript services or note as "transcript needed"
-- Respect robots.txt and rate limits
+### 2.1 Identificar Livros do Expert
 
-### Step 4: Coverage Assessment
-- Evaluate diversity: how many source types are represented
-- Identify gaps: missing source types that would improve profile quality
-- Rate overall coverage: insufficient (< 3 sources), adequate (3-6), good (7-12), excellent (13+)
-- Generate recommendations for manual source acquisition to fill gaps
+```
+"{mind_name}" books
+"{mind_name}" author
+books by "{mind_name}"
+```
 
-## Error Handling
+### 2.2 Buscar Resumos Disponíveis
 
-- **Person not found on platform**: Log as "not found", continue with other channels
-- **Ambiguous results (multiple people)**: Use domain field to disambiguate, flag remaining ambiguity for user review
-- **Rate limited by platform**: Back off, retry once, then skip with warning
-- **No sources found at all**: Abort with message that person has insufficient public presence for auto-acquisition; suggest manual source collection
-- **Content behind paywall/login**: Save reference URL, mark as "manual acquisition needed"
-- **Privacy concerns**: Only collect publicly available content; never attempt to access private or restricted material
+Para cada livro encontrado, buscar:
 
-## Related
+```
+"{book_title}" summary
+"{book_title}" book notes
+"{book_title}" key takeaways
+"{book_title}" chapter summary
+```
 
-- `clone-mind.md` — Parent pipeline that uses acquired sources
-- `extract-voice-dna.md` — Consumes acquired sources for voice analysis
-- `extract-thinking-dna.md` — Consumes acquired sources for thinking analysis
+### 2.3 Fontes de Resumos
+
+| Fonte | Tier | Confiança |
+|-------|------|-----------|
+| Blinkist | 2 | Média (condensado) |
+| Shortform | 2 | Alta (detalhado) |
+| Four Minute Books | 3 | Baixa (muito condensado) |
+| Blog reviews | 2-3 | Varia |
+
+```yaml
+book_sources:
+  - id: "BK01"
+    title: ""
+    year: ""
+    full_book_available: true|false
+    summary_sources:
+      - source: ""
+        url: ""
+        depth: "detailed|condensed|highlights"
+    tier: 2  # Secundário até ter livro completo
+```
+
+---
+
+## FASE 3: PODCAST ARCHIVE MINING (5 min)
+
+### 3.1 Buscar Aparições em Podcasts
+
+```
+"{mind_name}" podcast guest
+"{mind_name}" appeared on
+"{mind_name}" interview episode
+site:spotify.com "{mind_name}"
+site:podcasts.apple.com "{mind_name}"
+```
+
+### 3.2 Extração de Áudio/Transcrição
+
+```yaml
+podcast_sources:
+  - id: "PD01"
+    show_name: ""
+    episode_title: ""
+    host: ""
+    duration: ""
+    url: ""
+    transcript_available: true|false
+    tier: 1  # Primário - expert falando
+```
+
+---
+
+## FASE 4: ARTICLE/BLOG MINING (5 min)
+
+### 4.1 Conteúdo Escrito pelo Expert
+
+```
+"{mind_name}" blog
+"{mind_name}" newsletter
+"{mind_name}" articles
+site:medium.com "{mind_name}"
+site:linkedin.com/pulse "{mind_name}"
+```
+
+### 4.2 Conteúdo Sobre o Expert
+
+```
+"{mind_name}" methodology
+"{mind_name}" framework explained
+"{mind_name}" principles
+"{mind_name}" biography
+```
+
+```yaml
+article_sources:
+  - id: "AR01"
+    title: ""
+    author: ""  # É o expert ou sobre o expert?
+    source: ""
+    url: ""
+    tier: 1|2  # 1 se autor é o expert, 2 se sobre
+```
+
+---
+
+## FASE 5: CONSOLIDAÇÃO
+
+### 5.1 Merge com Fontes Existentes
+
+```yaml
+acquisition_summary:
+  youtube_found: 0
+  books_found: 0
+  podcasts_found: 0
+  articles_found: 0
+  total_new: 0
+
+  by_tier:
+    tier_1: 0
+    tier_2: 0
+    tier_3: 0
+
+  estimated_content:
+    hours: 0
+    pages: 0
+```
+
+### 5.2 Priorização para Download
+
+```yaml
+download_queue:
+  priority_1_immediate:
+    - source_id: ""
+      type: ""
+      action: "download_transcript|download_pdf|save_url"
+
+  priority_2_if_time:
+    - source_id: ""
+      type: ""
+      action: ""
+
+  priority_3_backup:
+    - source_id: ""
+      type: ""
+      action: ""
+```
+
+---
+
+## OUTPUT: ACQUIRED SOURCES
+
+```yaml
+# ═══════════════════════════════════════════════════════════════
+# AUTO-ACQUIRED SOURCES - {MIND_NAME}
+# Domain: {DOMAIN}
+# Acquired: {DATE}
+# ═══════════════════════════════════════════════════════════════
+
+acquired_sources:
+  metadata:
+    mind_name: ""
+    domain: ""
+    acquisition_date: ""
+    total_found: 0
+    auto_acquired: true
+
+  # ─────────────────────────────────────────────────────────────
+  # YOUTUBE TRANSCRIPTS
+  # ─────────────────────────────────────────────────────────────
+  youtube:
+    count: 0
+    items:
+      - id: "YT01"
+        title: ""
+        url: ""
+        duration: ""
+        transcript_path: ""
+        tier: 1
+
+  # ─────────────────────────────────────────────────────────────
+  # BOOK SUMMARIES
+  # ─────────────────────────────────────────────────────────────
+  books:
+    count: 0
+    items:
+      - id: "BK01"
+        title: ""
+        year: ""
+        summary_source: ""
+        summary_path: ""
+        full_book_available: false
+        tier: 2
+
+  # ─────────────────────────────────────────────────────────────
+  # PODCASTS
+  # ─────────────────────────────────────────────────────────────
+  podcasts:
+    count: 0
+    items:
+      - id: "PD01"
+        show: ""
+        episode: ""
+        url: ""
+        transcript_path: ""
+        tier: 1
+
+  # ─────────────────────────────────────────────────────────────
+  # ARTICLES
+  # ─────────────────────────────────────────────────────────────
+  articles:
+    count: 0
+    items:
+      - id: "AR01"
+        title: ""
+        url: ""
+        content_path: ""
+        tier: 1|2
+
+# ═══════════════════════════════════════════════════════════════
+```
+
+---
+
+## INTEGRATION WITH collect-sources.md
+
+Este task roda ANTES ou DURANTE collect-sources.md:
+
+```yaml
+workflow_integration:
+  trigger: "collect-sources.md FASE 1"
+  mode: "parallel"
+  merge_point: "collect-sources.md FASE 2"
+
+  decision_tree:
+    if_yolo_mode:
+      - "Rodar auto-acquire PRIMEIRO"
+      - "Merge resultados em sources_by_tier"
+      - "Prosseguir para validação"
+
+    if_quality_mode:
+      - "Rodar auto-acquire como COMPLEMENTO"
+      - "Priorizar materiais do usuário"
+      - "Auto-acquired = backup/triangulação"
+```
+
+---
+
+## QUALITY CHECK
+
+- [ ] 5+ vídeos YouTube encontrados com transcrição
+- [ ] Livros principais identificados
+- [ ] 3+ podcasts com aparição do expert
+- [ ] Artigos escritos pelo expert encontrados
+- [ ] Fontes classificadas por tier
+- [ ] Download queue priorizada
+
+---
+
+**Squad Architect | Auto-Acquire v1.0**
+*"More sources = higher fidelity. Automate the obvious."*

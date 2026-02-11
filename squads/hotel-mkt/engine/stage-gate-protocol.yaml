@@ -1,0 +1,1384 @@
+# ═══════════════════════════════════════════════════════════════
+# STAGE-GATE PROTOCOL — hotel-mkt Squad
+# ═══════════════════════════════════════════════════════════════
+# Version: 1.0.0
+# Inspired by: Cooper Stage-Gate (P&G), Salesforce Pipeline, Toyota Andon
+# Purpose: Definir gates com critérios mensuráveis para todos os workflows
+# ═══════════════════════════════════════════════════════════════
+
+protocol:
+  name: "Hotel Marketing Stage-Gate Protocol"
+  version: "1.0.0"
+  squad: "hotel-mkt"
+  gatekeeper: "hotel-mkt-chief"
+  philosophy: |
+    Inspirado no processo de inovação da P&G: cada fase tem um GATE
+    com critérios objetivos. O gatekeeper decide: GO, KILL, HOLD ou RECYCLE.
+    Melhor matar um projeto cedo do que desperdiçar recursos em algo inviável.
+
+  # ═════════════════════════════════════════════════════════════
+  # TIPOS DE GATE
+  # ═════════════════════════════════════════════════════════════
+
+  gate_types:
+    G0:
+      name: "Idea Screen"
+      description: "Entrada — a demanda faz sentido estrategicamente?"
+      timing: "Antes de alocar recursos"
+
+    G1:
+      name: "Research Validated"
+      description: "Dados suficientes para estratégia?"
+      timing: "Após fase de pesquisa"
+
+    G2:
+      name: "Strategy Approved"
+      description: "Estratégia aprovada e budget alocado?"
+      timing: "Após definição estratégica"
+
+    G3:
+      name: "Creative Ready"
+      description: "Materiais criativos prontos para deploy?"
+      timing: "Após produção de conteúdo"
+
+    G4:
+      name: "Launch Approved"
+      description: "Tudo verificado para ir ao ar?"
+      timing: "Antes de lançamento público"
+
+    G5:
+      name: "Performance Check"
+      description: "ROI e métricas atingidas?"
+      timing: "7-14 dias após lançamento"
+
+  # ═════════════════════════════════════════════════════════════
+  # DECISÕES POSSÍVEIS
+  # ═════════════════════════════════════════════════════════════
+
+  decisions:
+    GO:
+      description: "Avança para próxima fase"
+      action: "Liberar recursos e time para fase seguinte"
+
+    KILL:
+      description: "Projeto cancelado — não é viável"
+      action: "Parar trabalho, documentar motivo, realocar recursos"
+      rationale: "Melhor matar cedo do que desperdiçar budget"
+
+    HOLD:
+      description: "Pausado — aguardando recurso/informação"
+      action: "Definir o que falta, prazo para revisão"
+      max_duration: "2 semanas (senão vira KILL)"
+
+    RECYCLE:
+      description: "Voltar para fase anterior e refazer"
+      action: "Documentar gaps, retornar para fase específica"
+      max_iterations: "2 (na terceira vira KILL)"
+
+  # ═════════════════════════════════════════════════════════════
+  # ESTRUTURA DE GATE
+  # ═════════════════════════════════════════════════════════════
+
+  gate_structure:
+    must_meet:
+      description: "Critérios binários OBRIGATÓRIOS. Se QUALQUER um falhar = BLOCK"
+      enforcement: "blocking"
+      type: "checklist"
+      pass_condition: "ALL must be true"
+
+    should_meet:
+      description: "Critérios pontuados 1-10. Média mínima 7.0 para GO"
+      enforcement: "scoring"
+      type: "weighted_score"
+      pass_condition: "average >= 7.0"
+      scoring_guide:
+        "1-3": "Muito ruim — reciclar"
+        "4-6": "Abaixo do esperado — revisar"
+        "7-8": "Bom — pode avançar"
+        "9-10": "Excelente — referência futura"
+
+    kill_criteria:
+      description: "Se QUALQUER um for verdadeiro = KILL imediato"
+      enforcement: "kill"
+      type: "red_flags"
+      trigger: "ANY true = immediate KILL decision"
+
+  # ═════════════════════════════════════════════════════════════
+  # SLA E ESCALAÇÃO
+  # ═════════════════════════════════════════════════════════════
+
+  sla:
+    max_time_at_gate: "48 horas"
+    preferred_time: "24 horas"
+    escalation_on_timeout:
+      first: "hotel-mkt-chief (owner do gate)"
+      second: "hotel-manager"
+      third: "ownership"
+    decision_logging:
+      required: true
+      format: "gate_id, workflow_id, decision, rationale, timestamp, gatekeeper"
+
+# ═══════════════════════════════════════════════════════════════
+# WORKFLOW 1: wf-seasonal-campaign
+# ═══════════════════════════════════════════════════════════════
+
+workflows:
+  - workflow_id: "wf-seasonal-campaign"
+    workflow_name: "Seasonal Campaign Launch"
+    total_phases: 7
+    total_gates: 6
+    gates:
+
+      # ─────────────────────────────────────────────────────────
+      # GATE G0: IDEA SCREEN
+      # ─────────────────────────────────────────────────────────
+
+      - gate_id: "SC-G0"
+        gate_type: "G0"
+        gate_name: "Idea Screen — Campanha Sazonal Viável?"
+        between_phases: ["Intake", "Phase 1: Research"]
+        gatekeeper: "hotel-mkt-chief"
+
+        must_meet:
+          - criteria: "Brief de campanha preenchido"
+            validation: "Documento contém: tema, datas, target audience, objetivo de ocupação"
+
+          - criteria: "Budget alocado (mínimo R$ 10.000)"
+            validation: "Valor confirmado com finance, disponível para uso"
+
+          - criteria: "Inventory disponível para período"
+            validation: "Ops confirmou que tem quartos para vender nas datas"
+
+          - criteria: "Timeline viável (mínimo 4 semanas antes do evento)"
+            validation: "Data de lançamento permite execução completa do workflow"
+
+        should_meet:
+          - criteria: "Alinhamento estratégico com posicionamento do hotel"
+            weight: 1.0
+            scoring: "1-10: quão relevante a campanha é para o brand?"
+
+          - criteria: "Potencial de ROI (projeção mínima 3:1)"
+            weight: 1.5
+            scoring: "1-10: baseado em campanhas similares anteriores"
+
+          - criteria: "Diferenciação competitiva"
+            weight: 1.0
+            scoring: "1-10: o quanto a campanha se destaca dos concorrentes?"
+
+        kill_criteria:
+          - criteria: "Sem budget disponível e sem previsão de liberação"
+            rationale: "Não adianta planejar sem recursos"
+
+          - criteria: "Hotel sem inventory (lotado ou fechado no período)"
+            rationale: "Não há o que vender"
+
+          - criteria: "Campanha idêntica já rodando por concorrente direto"
+            rationale: "Seremos vistos como cópia, sem diferenciação"
+
+          - criteria: "Timeline impossível (< 2 semanas para evento sazonal grande)"
+            rationale: "Não dá tempo de executar com qualidade"
+
+      # ─────────────────────────────────────────────────────────
+      # GATE G1: RESEARCH VALIDATED
+      # ─────────────────────────────────────────────────────────
+
+      - gate_id: "SC-G1"
+        gate_type: "G1"
+        gate_name: "Research Validated — Dados Suficientes?"
+        between_phases: ["Phase 1: Research", "Phase 2: Strategy"]
+        gatekeeper: "hotel-mkt-chief"
+
+        must_meet:
+          - criteria: "Trend report com mínimo 20 keywords validadas"
+            validation: "Arquivo trend_report.pdf contém tabela com 20+ keywords + volume de busca"
+
+          - criteria: "Competitor matrix com 10+ propriedades analisadas"
+            validation: "Arquivo competitor_matrix.xlsx tem mínimo 10 linhas (hotéis) com pricing, offers, messaging"
+
+          - criteria: "Dados de sazonalidade cobrem 90 dias futuros"
+            validation: "Pricing intelligence tem calendário de 90 dias à frente"
+
+          - criteria: "Social listening capturou 500+ menções relevantes"
+            validation: "Relatório social_listening_insights.md tem análise de 500+ posts/comentários"
+
+        should_meet:
+          - criteria: "Completude dos dados"
+            weight: 1.0
+            scoring: "1-10: todas as fontes previstas foram consultadas?"
+
+          - criteria: "Actionability dos insights"
+            weight: 1.5
+            scoring: "1-10: os insights geram ações claras para estratégia?"
+
+          - criteria: "Qualidade da análise competitiva"
+            weight: 1.0
+            scoring: "1-10: identificamos gaps claros e oportunidades?"
+
+        kill_criteria:
+          - criteria: "Dados históricos mostram ROI negativo consistente neste tipo de campanha"
+            rationale: "Evidência forte de que não funciona para este hotel"
+
+          - criteria: "Pesquisa revela que target audience não está interessado no tema"
+            validation: "Volume de busca < 100/mês ou tendência em queda acentuada"
+
+          - criteria: "Todos os concorrentes top-10 têm ofertas superiores impossíveis de bater"
+            rationale: "Não temos como competir, budget insuficiente"
+
+      # ─────────────────────────────────────────────────────────
+      # GATE G2: STRATEGY APPROVED
+      # ─────────────────────────────────────────────────────────
+
+      - gate_id: "SC-G2"
+        gate_type: "G2"
+        gate_name: "Strategy Approved — Estratégia Clara e Budget OK?"
+        between_phases: ["Phase 2: Strategy", "Phase 3: Offer Creation"]
+        gatekeeper: "hotel-mkt-chief"
+        approvers: ["hotel-manager", "finance-controller"]
+
+        must_meet:
+          - criteria: "Mínimo 3 segmentos de target audience definidos"
+            validation: "Arquivo segment_profiles.json tem 3+ segmentos com psychographics, demographics, pain points"
+
+          - criteria: "Messaging framework aprovado"
+            validation: "Documento messaging_framework.md tem pillars claros para cada segmento"
+
+          - criteria: "Budget alocado por canal (Google, Meta, Email, Outros)"
+            validation: "Planilha channel_budget_plan.xlsx soma 100% do budget e cada canal tem objetivo claro"
+
+          - criteria: "Timeline de campanha validado com operações"
+            validation: "Ops confirmou que consegue entregar (staffing, inventory, amenities)"
+
+          - criteria: "KPIs e metas definidas (ROI, ocupação, direct booking %)"
+            validation: "Dashboard config tem métricas primárias e secundárias com targets numéricos"
+
+        should_meet:
+          - criteria: "Clareza da estratégia"
+            weight: 1.5
+            scoring: "1-10: qualquer pessoa do time entende a estratégia lendo o doc?"
+
+          - criteria: "ROI projection realista"
+            weight: 2.0
+            scoring: "1-10: projeção baseada em dados históricos e benchmarks do setor? (target > 4x)"
+
+          - criteria: "Diferenciação competitiva"
+            weight: 1.0
+            scoring: "1-10: estratégia explora gaps identificados na research?"
+
+        kill_criteria:
+          - criteria: "Budget aprovado é < 50% do necessário para executar estratégia"
+            rationale: "Recursos insuficientes = vai falhar. Melhor não fazer."
+
+          - criteria: "Ops não consegue entregar as promessas da campanha"
+            validation: "Ex: campanha promete spa mas spa está em reforma"
+
+          - criteria: "Estratégia não tem objetivo claro mensurável"
+            validation: "Sem KPI primário ou meta vaga como 'aumentar awareness'"
+
+          - criteria: "Projeção de ROI < 2:1 (menor que comissão de OTA)"
+            rationale: "Melhor deixar OTAs venderem do que gastar mais que o retorno"
+
+      # ─────────────────────────────────────────────────────────
+      # GATE G3: CREATIVE READY
+      # ─────────────────────────────────────────────────────────
+
+      - gate_id: "SC-G3"
+        gate_type: "G3"
+        gate_name: "Creative Ready — Conteúdo Pronto para Deploy?"
+        between_phases: ["Phase 4: Content Production", "Phase 5: Ads Setup"]
+        gatekeeper: "hotel-mkt-chief"
+
+        must_meet:
+          - criteria: "Mínimo 150 ad variations criadas (hooks × meats × CTAs)"
+            validation: "Arquivo ad_copy_library.json tem 150+ linhas com ad_id único"
+
+          - criteria: "Landing pages criadas com copy completo"
+            validation: "Arquivo landing_page_copy.md tem hero, body, CTAs, FAQ, social proof"
+
+          - criteria: "Email sequences escritas (7-10 emails)"
+            validation: "Arquivo email_sequences.json tem 7-10 emails com subject, body, CTA"
+
+          - criteria: "Social media calendar planejado (30 dias)"
+            validation: "Planilha social_content_calendar.xlsx tem 60+ posts agendados"
+
+          - criteria: "Todos os CTAs são claros e action-oriented"
+            validation: "Review manual: cada peça tem CTA específico (Reserve Agora, Saiba Mais, etc)"
+
+        should_meet:
+          - criteria: "Readability score (Flesch Reading Ease)"
+            weight: 1.0
+            scoring: "1-10: textos são fáceis de ler? (target > 60 no Flesch)"
+
+          - criteria: "Emotional appeal score"
+            weight: 1.5
+            scoring: "1-10: copy gera emoção? Usa storytelling, proof, desire?"
+
+          - criteria: "CTA clarity"
+            weight: 1.0
+            scoring: "1-10: é óbvio o que fazer após ler? Sem ambiguidade?"
+
+          - criteria: "Brand voice consistency"
+            weight: 1.0
+            scoring: "1-10: todo conteúdo soa como o hotel? Coerente com brand guidelines?"
+
+        kill_criteria:
+          - criteria: "Copy principal tem erros graves de português ou typos críticos"
+            validation: "Ex: nome do hotel errado, preço errado, datas erradas"
+
+          - criteria: "Conteúdo é genérico e poderia ser de qualquer hotel"
+            rationale: "Sem diferenciação = campanha fraca, melhor reciclar"
+
+          - criteria: "CTAs ausentes em 30%+ das peças"
+            rationale: "Sem CTA = sem conversão. Revisar antes de gastar"
+
+          - criteria: "Mensagem principal contradiz posicionamento do hotel"
+            validation: "Ex: hotel boutique falando de 'melhor preço' ao invés de 'experiência única'"
+
+      # ─────────────────────────────────────────────────────────
+      # GATE G4: LAUNCH APPROVED
+      # ─────────────────────────────────────────────────────────
+
+      - gate_id: "SC-G4"
+        gate_type: "G4"
+        gate_name: "Launch Approved — Tudo Verificado para Ir ao Ar?"
+        between_phases: ["Phase 5: Ads Setup", "Phase 6: Email Launch", "Phase 7: Execution"]
+        gatekeeper: "hotel-mkt-chief"
+
+        must_meet:
+          - criteria: "Tracking pixels instalados e firing 100%"
+            validation: "Teste manual: Meta Pixel, Google Ads tag, GA4 events funcionando"
+
+          - criteria: "Campanhas de ads configuradas com budgets corretos"
+            validation: "Google + Meta campaigns têm budget caps e não podem gastar > planejado"
+
+          - criteria: "A/B tests configurados (landing pages, email subject lines)"
+            validation: "Mínimo 2 variações testando em cada canal crítico"
+
+          - criteria: "Landing pages carregam em < 3 segundos (mobile e desktop)"
+            validation: "PageSpeed Insights score > 80 ou tempo real < 3s"
+
+          - criteria: "Emails testados em 10+ clients (Gmail, Outlook, Apple Mail, mobile)"
+            validation: "Rendering OK, CTAs clicáveis, imagens carregam"
+
+          - criteria: "Booking engine funcionando (test bookings completados)"
+            validation: "3 test bookings end-to-end sem erros"
+
+        should_meet:
+          - criteria: "Tracking accuracy"
+            weight: 2.0
+            scoring: "1-10: conversões estão sendo atribuídas corretamente? (target 100%)"
+
+          - criteria: "Ad approval rate"
+            weight: 1.0
+            scoring: "1-10: % ads aprovadas nas plataformas sem rejeições (target > 95%)"
+
+          - criteria: "Landing page load time"
+            weight: 1.5
+            scoring: "1-10: quão rápido carrega? (< 2s = 10, < 3s = 8, > 4s = fail)"
+
+          - criteria: "Email deliverability score"
+            weight: 1.0
+            scoring: "1-10: inbox placement rate (target > 95%)"
+
+        kill_criteria:
+          - criteria: "Tracking pixels não funcionam e não há como corrigir antes do deadline"
+            rationale: "Sem tracking = dinheiro jogado fora sem dados. BLOCK absoluto."
+
+          - criteria: "Booking engine com bug crítico no checkout"
+            validation: "Usuários não conseguem completar reserva"
+
+          - criteria: "Landing pages com erro 500 ou indisponíveis"
+            rationale: "Ads vão direcionar para página quebrada = budget desperdiçado"
+
+          - criteria: "Emails marcados como spam (spam score > 5/10)"
+            rationale: "Deliverability ruim = campanha de email morta"
+
+          - criteria: "Ads violaram policies e foram rejeitadas em massa (> 30%)"
+            rationale: "Revisar toda creative antes de tentar lançar novamente"
+
+      # ─────────────────────────────────────────────────────────
+      # GATE G5: PERFORMANCE CHECK
+      # ─────────────────────────────────────────────────────────
+
+      - gate_id: "SC-G5"
+        gate_type: "G5"
+        gate_name: "Performance Check — ROI e Métricas Atingidas?"
+        between_phases: ["Phase 7: Execution (Day 7)", "Optimization / Scale / Kill"]
+        gatekeeper: "hotel-mkt-chief"
+        timing: "7 dias após lançamento (checkpoint intermediário)"
+
+        must_meet:
+          - criteria: "Mínimo 7 dias de dados coletados"
+            validation: "Campaigns rodando por 7+ dias com spend ativo"
+
+          - criteria: "ROI calculado e documentado"
+            validation: "Dashboard mostra: revenue / ad spend = ROI atual"
+
+          - criteria: "Decisão tomada: Kill, Hold, Scale"
+            validation: "Baseado nos should_meet e kill_criteria abaixo"
+
+        should_meet:
+          - criteria: "Campaign ROI"
+            weight: 3.0
+            scoring: "1-10 baseado em: <2x = 1-3, 2-3x = 4-6, 3-4x = 7-8, >4x = 9-10"
+            target: "> 4x"
+
+          - criteria: "Direct booking share"
+            weight: 2.0
+            scoring: "1-10 baseado em % direto: <40% = fail, 40-50% = 5-6, 50-60% = 7-8, >60% = 9-10"
+            target: "> 60%"
+
+          - criteria: "Email open rate"
+            weight: 1.0
+            scoring: "1-10: <20% = fail, 20-30% = 5-6, 30-40% = 7-9, >40% = 10"
+            target: "> 35%"
+
+          - criteria: "Ad ROAS"
+            weight: 2.0
+            scoring: "1-10: <200% = fail, 200-300% = 5-6, 300-400% = 7-8, >400% = 9-10"
+            target: "> 400%"
+
+          - criteria: "Social engagement rate"
+            weight: 1.0
+            scoring: "1-10: <4% = fail, 4-6% = 5-6, 6-8% = 7-8, >8% = 9-10"
+            target: "> 8%"
+
+        kill_criteria:
+          - criteria: "ROI < 2x após 7 dias de otimização"
+            rationale: "Campanha não é viável. Pausar, analisar, decidir se recicla ou mata."
+            action: "HOLD por 48h para análise profunda. Se não houver fix claro, KILL."
+
+          - criteria: "Reviews negativas spike > 3 em 48h relacionadas à campanha"
+            validation: "Ops não entregou o prometido, clientes reclamando"
+            action: "HOLD campanha, corrigir operação, retomar depois"
+
+          - criteria: "Budget gasto > 120% do planejado sem ROI proporcional"
+            rationale: "Descontrole de spend, não sustentável"
+
+          - criteria: "Conversão website < 1% após 7 dias"
+            validation: "Tráfego chegando mas não converte = funil quebrado"
+            action: "HOLD ads, corrigir landing page / booking engine"
+
+# ═══════════════════════════════════════════════════════════════
+# WORKFLOW 2: wf-direct-booking-funnel
+# ═══════════════════════════════════════════════════════════════
+
+  - workflow_id: "wf-direct-booking-funnel"
+    workflow_name: "Direct Booking Funnel Optimization (Anti-OTA)"
+    total_phases: 6
+    total_gates: 5
+    gates:
+
+      # ─────────────────────────────────────────────────────────
+      # GATE G1: AUDIT COMPLETE
+      # ─────────────────────────────────────────────────────────
+
+      - gate_id: "DBF-G1"
+        gate_type: "G1"
+        gate_name: "Audit Complete — Baseline Estabelecido?"
+        between_phases: ["Phase 1: Audit", "Phase 2: SEO Foundation"]
+        gatekeeper: "hotel-mkt-chief"
+
+        must_meet:
+          - criteria: "Baseline de % direct bookings estabelecido"
+            validation: "Relatório channel_distribution_report.pdf tem % direto atual (12 meses)"
+
+          - criteria: "CAC vs OTA commission calculado"
+            validation: "Modelo cac_commission_model.xlsx mostra CAC atual e break-even"
+
+          - criteria: "Conversion funnel mapeado com drop-off points"
+            validation: "Booking engine audit identifica onde usuários abandonam"
+
+          - criteria: "Rate parity status documentado"
+            validation: "Rate_parity_report.xlsx compara tarifas direto vs OTAs (30 dias)"
+
+        should_meet:
+          - criteria: "Completude dos dados"
+            weight: 1.5
+            scoring: "1-10: temos dados de todos os canais? Dados de 12 meses?"
+            target: "> 95%"
+
+          - criteria: "Actionability do audit"
+            weight: 1.5
+            scoring: "1-10: audit gera ações claras de otimização?"
+            target: "> 8/10"
+
+        kill_criteria:
+          - criteria: "Impossível obter dados de bookings (sistema legado sem acesso)"
+            rationale: "Sem baseline não dá pra medir progresso. Fix sistema primeiro."
+
+          - criteria: "Direct booking % já > 70% (acima da meta)"
+            rationale: "Não precisa deste workflow, focar em outras prioridades"
+
+      # ─────────────────────────────────────────────────────────
+      # GATE G2: SEO FOUNDATION
+      # ─────────────────────────────────────────────────────────
+
+      - gate_id: "DBF-G2"
+        gate_type: "G2"
+        gate_name: "SEO Foundation — Base Técnica OK?"
+        between_phases: ["Phase 2: SEO Foundation", "Phase 3: Conversion Optimization"]
+        gatekeeper: "hotel-seo-architect"
+
+        must_meet:
+          - criteria: "Keyword research com 100+ keywords mapeadas"
+            validation: "Arquivo keyword_research.xlsx tem 100+ linhas com volume, difficulty, intent"
+
+          - criteria: "Schema markup implementado (Hotel, LocalBusiness, Review)"
+            validation: "Validador schema.org mostra markup correto"
+
+          - criteria: "Google My Business otimizado e verificado"
+            validation: "Perfil GMB completo (fotos, horário, atributos, posts)"
+
+          - criteria: "Technical SEO: < 5 critical errors"
+            validation: "Audit técnico (Screaming Frog, Lighthouse) mostra < 5 erros críticos"
+
+        should_meet:
+          - criteria: "Site speed (mobile)"
+            weight: 2.0
+            scoring: "1-10: <2s = 10, <3s = 8, <4s = 6, >4s = fail"
+            target: "< 3s"
+
+          - criteria: "Core Web Vitals"
+            weight: 1.5
+            scoring: "1-10: All green = 10, 1-2 yellow = 7, 1 red = fail"
+            target: "All green"
+
+          - criteria: "Schema markup validity"
+            weight: 1.0
+            scoring: "1-10: 100% valid = 10, warnings = 7, errors = fail"
+            target: "100%"
+
+        kill_criteria:
+          - criteria: "Site speed consistentemente > 5s e impossível otimizar"
+            rationale: "SEO morto, Google não vai ranquear. Rebuild site primeiro."
+
+          - criteria: "Site não é mobile-friendly e sem previsão de fix"
+            rationale: "70%+ tráfego mobile, site desktop-only = falha"
+
+      # ─────────────────────────────────────────────────────────
+      # GATE G3: CONVERSION READY
+      # ─────────────────────────────────────────────────────────
+
+      - gate_id: "DBF-G3"
+        gate_type: "G3"
+        gate_name: "Conversion Ready — Booking Engine Otimizado?"
+        between_phases: ["Phase 3: Conversion Optimization", "Phase 4: Retargeting Setup"]
+        gatekeeper: "hotel-direct-booking"
+
+        must_meet:
+          - criteria: "Booking engine otimizado (form fields reduzidos, progress bar, guest checkout)"
+            validation: "Teste manual: checkout completo em < 3 minutos com < 10 campos"
+
+          - criteria: "Pix payment integrado"
+            validation: "Teste: consegue completar booking com Pix"
+
+          - criteria: "WhatsApp booking integration ativa"
+            validation: "Click-to-chat button em todas as páginas, templates configurados"
+
+          - criteria: "Direct booking perks visíveis"
+            validation: "Homepage e booking engine mostram: upgrade, best rate guarantee, flexible cancel"
+
+        should_meet:
+          - criteria: "Booking engine load time"
+            weight: 2.0
+            scoring: "1-10: <2s = 10, <3s = 8, >3s = fail"
+            target: "< 3s"
+
+          - criteria: "Mobile usability score"
+            weight: 1.5
+            scoring: "1-10: Google Mobile-Friendly test score"
+            target: "> 90"
+
+          - criteria: "Payment success rate"
+            weight: 1.5
+            scoring: "1-10: % transações concluídas sem erro"
+            target: "> 98%"
+
+        kill_criteria:
+          - criteria: "Booking engine quebrado e sem previsão de fix"
+            validation: "Test bookings falham > 50% das vezes"
+
+          - criteria: "Impossível integrar Pix (gateway não suporta)"
+            rationale: "Pix é crítico no Brasil, sem ele conversão cai 20-30%"
+
+      # ─────────────────────────────────────────────────────────
+      # GATE G4: RETARGETING LIVE
+      # ─────────────────────────────────────────────────────────
+
+      - gate_id: "DBF-G4"
+        gate_type: "G4"
+        gate_name: "Retargeting Live — Pixels e Audiences OK?"
+        between_phases: ["Phase 4: Retargeting Setup", "Phase 5: Email Automation"]
+        gatekeeper: "hotel-ads-specialist"
+
+        must_meet:
+          - criteria: "Meta Pixel e Google Ads tag instalados e firing 100%"
+            validation: "Teste com Pixel Helper e Tag Assistant"
+
+          - criteria: "Audiences criadas e populando (mínimo 100 users cada)"
+            validation: "Meta + Google audiences têm > 100 users (exceto new)"
+
+          - criteria: "Retargeting campaigns lançadas com budgets apropriados"
+            validation: "15-20% do budget total alocado para retargeting"
+
+          - criteria: "Frequency caps configurados (max 3-5 impressions/week)"
+            validation: "Evitar ad fatigue"
+
+        should_meet:
+          - criteria: "Pixel tracking accuracy"
+            weight: 2.0
+            scoring: "1-10: conversões tracking corretamente?"
+            target: "100%"
+
+          - criteria: "Audience size"
+            weight: 1.0
+            scoring: "1-10: audiences têm tamanho suficiente para escalar?"
+            target: "> 1000 users"
+
+        kill_criteria:
+          - criteria: "Pixels não disparam e impossível corrigir"
+            rationale: "Sem tracking = sem retargeting. Fix técnico primeiro."
+
+      # ─────────────────────────────────────────────────────────
+      # GATE G5: EMAIL AUTOMATED
+      # ─────────────────────────────────────────────────────────
+
+      - gate_id: "DBF-G5"
+        gate_type: "G5"
+        gate_name: "Email Automated — Sequences Funcionando?"
+        between_phases: ["Phase 5: Email Automation", "Phase 6: Launch & Monitor"]
+        gatekeeper: "hotel-email-maestro"
+
+        must_meet:
+          - criteria: "Abandoned cart sequence configurada e testada"
+            validation: "Trigger funciona, emails enviados em 1h, 24h, 48h"
+
+          - criteria: "Post-stay sequence ativa"
+            validation: "Email de thank you + review request + rebook offer automatizados"
+
+          - criteria: "Win-back campaign pronta"
+            validation: "Segmento de 6+ meses sem booking tem sequência 3-email"
+
+          - criteria: "Deliverability > 95%"
+            validation: "Inbox placement rate confirmado (seed list test)"
+
+        should_meet:
+          - criteria: "Email deliverability"
+            weight: 2.0
+            scoring: "1-10: inbox placement rate"
+            target: "> 95%"
+
+          - criteria: "Spam score"
+            weight: 1.5
+            scoring: "1-10: Mail Tester score (<3 = 10, 3-5 = 7, >5 = fail)"
+            target: "< 3/10"
+
+          - criteria: "Mobile rendering"
+            weight: 1.0
+            scoring: "1-10: emails render OK em iOS/Android?"
+            target: "100%"
+
+        kill_criteria:
+          - criteria: "Spam score > 5/10 e impossível corrigir"
+            rationale: "Emails vão direto pra spam, campanha morta"
+
+          - criteria: "Domain blacklistado"
+            rationale: "Fix reputação antes de enviar volume"
+
+# ═══════════════════════════════════════════════════════════════
+# WORKFLOW 3: wf-paid-ads-scale
+# ═══════════════════════════════════════════════════════════════
+
+  - workflow_id: "wf-paid-ads-scale"
+    workflow_name: "Paid Ads Scale (GOATed Ads Assembly)"
+    total_phases: 5
+    total_gates: 4
+    gates:
+
+      - gate_id: "PAS-G1"
+        gate_type: "G1"
+        gate_name: "Hooks Validated — 50+ Hooks Prontos?"
+        between_phases: ["Phase 1: Hook Generation", "Phase 2: Meat Creation"]
+        gatekeeper: "hotel-copywriter"
+
+        must_meet:
+          - criteria: "Mínimo 50 hooks geradas"
+            validation: "Hook bank spreadsheet tem 50+ linhas"
+
+          - criteria: "Hooks cobrem todos os awareness levels"
+            validation: "Unaware, Problem Aware, Solution Aware, Product Aware, Most Aware representados"
+
+          - criteria: "Todos os hooks pontuados (clarity + impact)"
+            validation: "Cada hook tem scores de 1-10"
+
+        should_meet:
+          - criteria: "Clarity score médio"
+            weight: 1.5
+            scoring: "Média dos clarity scores de todas hooks"
+            target: "> 7.0"
+
+          - criteria: "Emotional impact score médio"
+            weight: 1.5
+            scoring: "Média dos impact scores"
+            target: "> 7.0"
+
+        kill_criteria:
+          - criteria: "Hooks são genéricas e poderiam ser de qualquer hotel"
+            rationale: "Sem diferenciação = ads fracos"
+
+      - gate_id: "PAS-G2"
+        gate_type: "G2"
+        gate_name: "Meat Produced — Assets de Qualidade?"
+        between_phases: ["Phase 2: Meat Creation", "Phase 3: Ads Assembly"]
+        gatekeeper: "hotel-social-creator"
+
+        must_meet:
+          - criteria: "3-5 meat formats produzidos"
+            validation: "Vídeos/imagens em 9:16, 1:1, 16:9"
+
+          - criteria: "Assets atendem specs técnicos"
+            validation: "1080p mínimo, < 60s, formatos corretos"
+
+          - criteria: "UGC content cleared (permissões LGPD)"
+            validation: "Todas fotos de hóspedes têm consentimento documentado"
+
+        should_meet:
+          - criteria: "Quality score"
+            weight: 1.5
+            scoring: "1-10: qualidade visual e edição"
+            target: "> 8.0"
+
+          - criteria: "Brand consistency"
+            weight: 1.0
+            scoring: "1-10: alinhado com brand guidelines?"
+            target: "> 9.0"
+
+        kill_criteria:
+          - criteria: "Vídeos pixelados ou low-quality (< 720p)"
+            rationale: "Qualidade ruim = brand damage"
+
+          - criteria: "UGC sem consentimento LGPD"
+            rationale: "Problema legal grave"
+
+      - gate_id: "PAS-G3"
+        gate_type: "G3"
+        gate_name: "Ads Assembled — 150+ Variations Prontas?"
+        between_phases: ["Phase 3: Ads Assembly", "Phase 4: Platform Deployment"]
+        gatekeeper: "hotel-ads-specialist"
+
+        must_meet:
+          - criteria: "Mínimo 150 ad variations montadas"
+            validation: "Master spreadsheet tem 150+ rows com ad_id único"
+
+          - criteria: "Todas ads atendem platform specs"
+            validation: "Meta, Google, TikTok requirements cumpridos"
+
+          - criteria: "Ads taggeadas com awareness level"
+            validation: "Cada ad tem tag de targeting"
+
+        should_meet:
+          - criteria: "Platform compliance"
+            weight: 2.0
+            scoring: "1-10: ads vão passar review?"
+            target: "100%"
+
+        kill_criteria:
+          - criteria: "> 30% ads violam platform policies"
+            rationale: "Rejeição em massa, revisar creative guidelines"
+
+      - gate_id: "PAS-G4"
+        gate_type: "G4"
+        gate_name: "Campaigns Live — Tracking OK e Spending?"
+        between_phases: ["Phase 4: Deployment", "Phase 5: Kill/Scale"]
+        gatekeeper: "hotel-ads-specialist"
+
+        must_meet:
+          - criteria: "Conversion tracking 100% funcional"
+            validation: "Test conversions firing em Meta + Google + GA4"
+
+          - criteria: "Campaigns spending within 24h"
+            validation: "Budget sendo gasto, ads approved"
+
+          - criteria: "70-20-10 budget distribution implementada"
+            validation: "Scale tier 70%, Test tier 20%, Experiment tier 10%"
+
+        should_meet:
+          - criteria: "Tracking accuracy"
+            weight: 2.0
+            scoring: "1-10: conversões atribuídas corretamente?"
+            target: "100%"
+
+        kill_criteria:
+          - criteria: "Tracking quebrado e impossível corrigir antes de budget burn"
+            rationale: "Pausar tudo até corrigir"
+
+# ═══════════════════════════════════════════════════════════════
+# WORKFLOW 4: wf-content-machine
+# ═══════════════════════════════════════════════════════════════
+
+  - workflow_id: "wf-content-machine"
+    workflow_name: "Content Machine (Produção Contínua)"
+    total_phases: 4
+    total_gates: 3
+    gates:
+
+      - gate_id: "CM-G1"
+        gate_type: "G1"
+        gate_name: "Calendar Approved — 30 Dias Planejados?"
+        between_phases: ["Phase 1: Planning", "Phase 2: Production"]
+        gatekeeper: "hotel-social-creator"
+
+        must_meet:
+          - criteria: "Calendário com 30 dias de conteúdo"
+            validation: "Social_content_calendar.xlsx tem 60+ posts (2/dia)"
+
+          - criteria: "Formatos variados (feed, stories, reels, blog)"
+            validation: "Mix de formatos representado"
+
+          - criteria: "Temas alinhados com strategy"
+            validation: "Posts cobrem: awareness, consideration, conversion"
+
+        should_meet:
+          - criteria: "Variety score"
+            weight: 1.0
+            scoring: "1-10: calendário tem variedade ou é repetitivo?"
+            target: "> 7.0"
+
+          - criteria: "Engagement potential"
+            weight: 1.5
+            scoring: "1-10: conteúdo tem potencial de engajar?"
+            target: "> 7.0"
+
+        kill_criteria:
+          - criteria: "Calendário vazio ou < 15 dias planejados"
+            rationale: "Planejamento insuficiente"
+
+      - gate_id: "CM-G2"
+        gate_type: "G2"
+        gate_name: "Assets Produced — 20+ Peças/Semana Prontas?"
+        between_phases: ["Phase 2: Production", "Phase 3: Publishing"]
+        gatekeeper: "hotel-social-creator"
+
+        must_meet:
+          - criteria: "Mínimo 20 peças/semana produzidas"
+            validation: "Asset library tem 20+ arquivos novos"
+
+          - criteria: "Assets atendem specs de cada plataforma"
+            validation: "Formatos e resoluções corretos"
+
+        should_meet:
+          - criteria: "Quality score"
+            weight: 1.5
+            scoring: "1-10: qualidade visual"
+            target: "> 8.0"
+
+          - criteria: "Brand consistency"
+            weight: 1.5
+            scoring: "1-10: alinhado com brand?"
+            target: "> 9.0"
+
+        kill_criteria:
+          - criteria: "Conteúdo off-brand ou ofensivo"
+            rationale: "Brand damage risk"
+
+      - gate_id: "CM-G3"
+        gate_type: "G3"
+        gate_name: "Published & Tracked — Engagement OK?"
+        between_phases: ["Phase 3: Publishing", "Phase 4: Optimization"]
+        gatekeeper: "hotel-social-creator"
+        timing: "Após 2 semanas de publicação"
+
+        must_meet:
+          - criteria: "Conteúdo publicado on-time"
+            validation: "95%+ posts publicados nas datas planejadas"
+
+          - criteria: "Engagement sendo tracked"
+            validation: "Métricas de likes, comments, shares, saves coletadas"
+
+        should_meet:
+          - criteria: "Engagement rate médio"
+            weight: 2.0
+            scoring: "1-10: <2% = fail, 2-4% = 5-6, 4-6% = 7-8, >6% = 9-10"
+            target: "> 5%"
+
+        kill_criteria:
+          - criteria: "Engagement rate < 1% por 2 semanas consecutivas"
+            rationale: "Conteúdo não ressoa, reciclar estratégia"
+
+# ═══════════════════════════════════════════════════════════════
+# WORKFLOW 5: wf-email-lifecycle
+# ═══════════════════════════════════════════════════════════════
+
+  - workflow_id: "wf-email-lifecycle"
+    workflow_name: "Email Lifecycle (Automação Completa)"
+    total_phases: 5
+    total_gates: 4
+    gates:
+
+      - gate_id: "EL-G1"
+        gate_type: "G1"
+        gate_name: "Segments Defined — RFM e Triggers OK?"
+        between_phases: ["Phase 1: Segmentation", "Phase 2: Sequence Writing"]
+        gatekeeper: "hotel-email-maestro"
+
+        must_meet:
+          - criteria: "RFM segments definidos"
+            validation: "Segmentação de Recency, Frequency, Monetary documentada"
+
+          - criteria: "Behavioral triggers mapeados"
+            validation: "Lista de triggers: abandoned cart, post-stay, 6mo inactive, etc"
+
+        should_meet:
+          - criteria: "Segment clarity"
+            weight: 1.5
+            scoring: "1-10: segmentos são claros e actionable?"
+            target: "> 8.0"
+
+        kill_criteria:
+          - criteria: "Impossível segmentar (dados insuficientes)"
+            rationale: "Fix data collection primeiro"
+
+      - gate_id: "EL-G2"
+        gate_type: "G2"
+        gate_name: "Sequences Written — 7-10 Emails Prontos?"
+        between_phases: ["Phase 2: Writing", "Phase 3: Template Design"]
+        gatekeeper: "hotel-copywriter"
+
+        must_meet:
+          - criteria: "7-10 emails escritos por sequence"
+            validation: "Arquivo email_sequences.json completo"
+
+          - criteria: "Todos emails têm CTAs claros"
+            validation: "Review manual: cada email tem ação específica"
+
+        should_meet:
+          - criteria: "Readability score"
+            weight: 1.0
+            scoring: "1-10: Flesch Reading Ease"
+            target: "> 7.0"
+
+          - criteria: "CTA clarity"
+            weight: 1.5
+            scoring: "1-10: CTA é óbvio?"
+            target: "> 9.0"
+
+        kill_criteria:
+          - criteria: "Emails sem CTAs em 30%+ das peças"
+            rationale: "Sem CTA = sem conversão"
+
+      - gate_id: "EL-G3"
+        gate_type: "G3"
+        gate_name: "Templates Ready — Mobile e Spam Score OK?"
+        between_phases: ["Phase 3: Design", "Phase 4: Automation Setup"]
+        gatekeeper: "hotel-email-maestro"
+
+        must_meet:
+          - criteria: "Templates renderizam OK em mobile"
+            validation: "Teste em iOS + Android (Gmail, Apple Mail, Outlook)"
+
+          - criteria: "Spam score < 3/10"
+            validation: "Mail Tester ou similar"
+
+          - criteria: "Tracking links funcionam"
+            validation: "UTM parameters + click tracking OK"
+
+        should_meet:
+          - criteria: "Rendering score"
+            weight: 1.5
+            scoring: "1-10: % clients renderizando OK"
+            target: "100%"
+
+          - criteria: "Deliverability estimate"
+            weight: 2.0
+            scoring: "1-10: inbox placement rate estimado"
+            target: "> 95%"
+
+        kill_criteria:
+          - criteria: "Spam score > 5/10"
+            rationale: "Vai direto pra spam"
+
+      - gate_id: "EL-G4"
+        gate_type: "G4"
+        gate_name: "Automation Live — Triggers Funcionando?"
+        between_phases: ["Phase 4: Automation", "Phase 5: Optimization"]
+        gatekeeper: "hotel-email-maestro"
+
+        must_meet:
+          - criteria: "Triggers testados e funcionando"
+            validation: "Test automation com dummy data"
+
+          - criteria: "Emails sendo enviados"
+            validation: "Primeiros envios confirmados, sem bounces em massa"
+
+        should_meet:
+          - criteria: "Open rate"
+            weight: 1.5
+            scoring: "1-10: <15% = fail, 15-25% = 5-7, >25% = 8-10"
+            target: "> 25%"
+
+          - criteria: "Click rate"
+            weight: 1.5
+            scoring: "1-10: <2% = fail, 2-3% = 5-7, >3% = 8-10"
+            target: "> 3%"
+
+        kill_criteria:
+          - criteria: "Open rate < 10% por 2 semanas"
+            rationale: "Deliverability morta ou emails irrelevantes"
+
+# ═══════════════════════════════════════════════════════════════
+# WORKFLOW 6: wf-reputation-engine
+# ═══════════════════════════════════════════════════════════════
+
+  - workflow_id: "wf-reputation-engine"
+    workflow_name: "Reputation Engine (Reviews + Recovery)"
+    total_phases: 4
+    total_gates: 3
+    gates:
+
+      - gate_id: "RE-G1"
+        gate_type: "G1"
+        gate_name: "Monitoring Setup — Todas Plataformas Conectadas?"
+        between_phases: ["Phase 1: Setup", "Phase 2: Response Protocol"]
+        gatekeeper: "hotel-reputation-guardian"
+
+        must_meet:
+          - criteria: "Google, TripAdvisor, Booking.com conectados"
+            validation: "Alertas configurados para novos reviews"
+
+          - criteria: "Response SLA definido (< 24h)"
+            validation: "Documentado e comunicado ao time"
+
+        should_meet:
+          - criteria: "Response rate target"
+            weight: 1.5
+            scoring: "1-10: target > 95%?"
+            target: "> 95%"
+
+        kill_criteria:
+          - criteria: "Impossível acessar principais plataformas"
+            rationale: "Fix acesso técnico primeiro"
+
+      - gate_id: "RE-G2"
+        gate_type: "G2"
+        gate_name: "Response Protocol — Templates Aprovados?"
+        between_phases: ["Phase 2: Protocol", "Phase 3: Generation"]
+        gatekeeper: "hotel-reputation-guardian"
+
+        must_meet:
+          - criteria: "Templates de resposta aprovados"
+            validation: "Positivo, neutro, negativo, recovery templates"
+
+          - criteria: "Tone guidelines documentados"
+            validation: "Evitar: defensive, corporate. Usar: empathetic, personal"
+
+        should_meet:
+          - criteria: "Tone score"
+            weight: 1.5
+            scoring: "1-10: templates são empáticos?"
+            target: "> 8.0"
+
+          - criteria: "Professionalism score"
+            weight: 1.5
+            scoring: "1-10: mantém profissionalismo?"
+            target: "> 9.0"
+
+        kill_criteria:
+          - criteria: "Templates são agressivos ou defensivos"
+            rationale: "Vai piorar reputação, não melhorar"
+
+      - gate_id: "RE-G3"
+        gate_type: "G3"
+        gate_name: "Generation Active — Novos Reviews Entrando?"
+        between_phases: ["Phase 3: Generation", "Phase 4: Ongoing"]
+        gatekeeper: "hotel-reputation-guardian"
+        timing: "30 dias após lançamento"
+
+        must_meet:
+          - criteria: "Review request automation ativa"
+            validation: "Post-stay emails solicitando reviews"
+
+          - criteria: "Mínimo 10 novos reviews/mês"
+            validation: "Fluxo constante de feedback"
+
+        should_meet:
+          - criteria: "Review generation rate"
+            weight: 2.0
+            scoring: "1-10: <5/mês = fail, 5-10 = 6-7, >10 = 8-10"
+            target: "> 10/mês"
+
+        kill_criteria:
+          - criteria: "Zero novos reviews após 30 dias"
+            rationale: "Estratégia não funciona, revisar"
+
+# ═══════════════════════════════════════════════════════════════
+# WORKFLOW 7: wf-advertorial-seeding
+# ═══════════════════════════════════════════════════════════════
+
+  - workflow_id: "wf-advertorial-seeding"
+    workflow_name: "Advertorial Seeding (PR + SEO)"
+    total_phases: 4
+    total_gates: 3
+    gates:
+
+      - gate_id: "AS-G1"
+        gate_type: "G1"
+        gate_name: "Media List — 20+ Sites Mapeados?"
+        between_phases: ["Phase 1: Research", "Phase 2: Content Creation"]
+        gatekeeper: "hotel-pr-advertorial"
+
+        must_meet:
+          - criteria: "Mínimo 20 sites de turismo mapeados"
+            validation: "Lista com DA, tráfego, contatos, preços"
+
+          - criteria: "Contatos validados"
+            validation: "Emails/telefones verificados, decisores identificados"
+
+        should_meet:
+          - criteria: "Relevance score"
+            weight: 1.5
+            scoring: "1-10: sites são relevantes pro target?"
+            target: "> 7.0"
+
+          - criteria: "Authority score (DA)"
+            weight: 1.5
+            scoring: "1-10: DA médio > 30?"
+            target: "> 7.0"
+
+        kill_criteria:
+          - criteria: "Sites são spam ou irrelevantes"
+            rationale: "Backlinks ruins prejudicam SEO"
+
+      - gate_id: "AS-G2"
+        gate_type: "G2"
+        gate_name: "Content Ready — Advertoriais com Disclosure?"
+        between_phases: ["Phase 2: Creation", "Phase 3: Outreach"]
+        gatekeeper: "hotel-pr-advertorial"
+
+        must_meet:
+          - criteria: "3-5 advertoriais escritos"
+            validation: "Artigos completos, 800-1500 palavras"
+
+          - criteria: "SEO otimizado (keywords, meta, internal links)"
+            validation: "Cada artigo tem keyword target e meta description"
+
+          - criteria: "Disclosure presente (conteúdo patrocinado)"
+            validation: "Compliance com regulação de publicidade nativa"
+
+        should_meet:
+          - criteria: "Quality score"
+            weight: 1.5
+            scoring: "1-10: artigo é informativo, não puro sales pitch?"
+            target: "> 8.0"
+
+          - criteria: "SEO optimization"
+            weight: 1.0
+            scoring: "1-10: keywords bem integrados, legível?"
+            target: "> 7.0"
+
+        kill_criteria:
+          - criteria: "Sem disclosure (viola normas)"
+            rationale: "Problema legal grave"
+
+          - criteria: "Conteúdo é puro sales pitch"
+            rationale: "Sites não vão aceitar, audiência rejeita"
+
+      - gate_id: "AS-G3"
+        gate_type: "G3"
+        gate_name: "Published & Tracked — Links Live?"
+        between_phases: ["Phase 3: Outreach", "Phase 4: Amplification"]
+        gatekeeper: "hotel-pr-advertorial"
+
+        must_meet:
+          - criteria: "Mínimo 3 artigos publicados"
+            validation: "URLs live, indexados no Google"
+
+          - criteria: "Backlinks rastreados"
+            validation: "Links adicionados ao tracking (Ahrefs, SEMrush)"
+
+        should_meet:
+          - criteria: "Domain Authority médio"
+            weight: 1.5
+            scoring: "1-10: DA médio dos sites publicados"
+            target: "> 30"
+
+          - criteria: "Traffic potential"
+            weight: 1.0
+            scoring: "1-10: sites têm tráfego estimado > 1k/mês?"
+            target: "> 1k"
+
+        kill_criteria:
+          - criteria: "Todos backlinks são nofollow"
+            rationale: "Sem valor SEO, renegociar ou parar"
+
+          - criteria: "Sites removeram artigos após 30 dias"
+            rationale: "Não confiáveis, blacklist"
+
+  # ═══════════════════════════════════════════════════════════════
+  # GATES: wf-visual-production
+  # ═══════════════════════════════════════════════════════════════
+
+  - id: G-VP-01
+    workflow: wf-visual-production
+    phase: "Phase 1 → Phase 2"
+    name: "Brief Validation Gate"
+    gatekeeper: "@hotel-visual-producer"
+    must_meet:
+      - "visual_brief.json completo com todas as specs"
+      - "Brand guidelines carregados (cores, fontes, estilo)"
+      - "Tool selection definida (Nano Banana vs DALL-E por peça)"
+      - "Textos para overlay aprovados pelo @copywriter"
+    should_meet:
+      - "Referências visuais (mood board) incluídas"
+      - "Benchmark de concorrentes analisado"
+    kill_criteria:
+      - "Brief sem specs de formato/dimensão"
+    decision: "GO | HOLD | RECYCLE"
+
+  - id: G-VP-02
+    workflow: wf-visual-production
+    phase: "Phase 2 → Phase 3"
+    name: "Prompt Engineering Gate"
+    gatekeeper: "@hotel-visual-producer"
+    must_meet:
+      - "Mínimo 3 prompts distintos por tipo de peça"
+      - "Brand elements incluídos em TODOS os prompts"
+      - "Prompts Nano Banana para peças com texto"
+      - "Prompts DALL-E para peças aspiracionais"
+    should_meet:
+      - "Hooks Hormozi adaptados para hooks visuais"
+      - "Variation matrix documentada (angles × styles)"
+    kill_criteria:
+      - "Prompts genéricos sem personalização para o hotel"
+    decision: "GO | HOLD | RECYCLE"
+
+  - id: G-VP-03
+    workflow: wf-visual-production
+    phase: "Phase 3 → Phase 4"
+    name: "Generation Quality Gate"
+    gatekeeper: "@hotel-visual-producer"
+    must_meet:
+      - "Mínimo 3 variações por peça"
+      - "Resolução >= 1080p em todas as peças"
+      - "Texto legível em visualização mobile"
+      - "Sem artefatos visuais ou distorções"
+    should_meet:
+      - "5+ variações por peça principal"
+      - "Consistency check entre slides do carrossel"
+    kill_criteria:
+      - "Nenhuma variação atinge qualidade mínima → regenerar com prompts revisados"
+    decision: "GO | HOLD | RECYCLE"
+
+  - id: G-VP-04
+    workflow: wf-visual-production
+    phase: "Phase 4 → Phase 5"
+    name: "Curation Gate"
+    gatekeeper: "@hotel-visual-producer + @hotel-social-creator"
+    must_meet:
+      - "Brand compliance score >= 8/10"
+      - "Top 2-3 variações selecionadas por peça"
+      - "mockup_approval.pdf montado e revisado"
+      - "Carrossel flui logicamente (hook → content → CTA)"
+    should_meet:
+      - "Emotional impact score avaliado"
+      - "A/B test pairs identificados"
+    kill_criteria:
+      - "Brand compliance < 5/10 em mais de 50% das peças"
+    decision: "GO | HOLD | RECYCLE"
+
+  - id: G-VP-05
+    workflow: wf-visual-production
+    phase: "Phase 5 → Phase 6"
+    name: "⚠️ HUMAN APPROVAL GATE"
+    gatekeeper: "@hotel-mkt-chief + HUMANO"
+    must_meet:
+      - "⚠️ Gestor/dono do hotel APROVOU explicitamente todas as peças"
+      - "Sem erros factuais nos textos overlay"
+      - "Alinhamento com brand confirmado por humano"
+      - "approval_record.json criado com decisões do humano"
+    should_meet:
+      - "Humano selecionou variações preferidas (não apenas 'ok')"
+      - "Feedback documentado para aprendizado"
+    kill_criteria:
+      - "Humano rejeita direção criativa completamente → KILL → restart Phase 1"
+      - "2 rounds de revisão e humano ainda não aprova → KILL → replanejar"
+    decision: "GO | KILL"
+    notes: |
+      ESTE GATE NÃO PODE SER BYPASSADO.
+      Aprovação automática NÃO EXISTE neste gate.
+      Timeout de 48h com reminder, extend +24h max.
+
+  - id: G-VP-06
+    workflow: wf-visual-production
+    phase: "Phase 6 → Delivery"
+    name: "Export & Delivery Gate"
+    gatekeeper: "@hotel-visual-producer"
+    must_meet:
+      - "Assets em TODOS os formatos solicitados no brief"
+      - "Handoffs para agentes de execução completados"
+      - "Prompts arquivados para reprodução futura"
+    should_meet:
+      - "carousel_preview.html criado"
+      - "Assets nomeados com padrão: {campanha}_{canal}_{formato}_{var}.png"
+    kill_criteria:
+      - "Formatos críticos faltando (ex: sem Stories quando solicitado)"
+    decision: "GO | HOLD"
+
+# ═══════════════════════════════════════════════════════════════
+# ENFORCEMENT GUIDELINES
+# ═══════════════════════════════════════════════════════════════
+
+enforcement_guidelines:
+  gate_execution:
+    process:
+      - "Gatekeeper recebe notificação quando workflow atinge gate"
+      - "Gatekeeper tem 48h para tomar decisão (preferível 24h)"
+      - "Decisão deve ser documentada com rationale"
+      - "Se HOLD ou RECYCLE, documentar gaps específicos"
+      - "Se KILL, documentar learnings para futuro"
+
+  decision_logging:
+    required_fields:
+      - "gate_id"
+      - "workflow_id"
+      - "decision: [GO, KILL, HOLD, RECYCLE]"
+      - "rationale: string"
+      - "timestamp: ISO-8601"
+      - "gatekeeper: agent_id"
+      - "evidence: [list of validation artifacts]"
+
+    storage: "logs/gate-decisions.jsonl"
+
+  escalation_protocol:
+    - condition: "Decision not made within 48h"
+      action: "Auto-escalate to hotel-manager"
+
+    - condition: "Decision not made within 72h"
+      action: "Auto-escalate to ownership + HOLD workflow"
+
+    - condition: "3+ RECYCLEs on same workflow instance"
+      action: "Force KILL decision (cut losses)"
+
+  metrics_tracking:
+    - metric: "Gate pass rate"
+      target: "70-80%"
+      calculation: "GO decisions / total decisions"
+
+    - metric: "Gate block rate"
+      target: "15-25%"
+      calculation: "(HOLD + RECYCLE) / total decisions"
+
+    - metric: "Gate kill rate"
+      target: "5-10%"
+      calculation: "KILL decisions / total decisions"
+
+    - metric: "Time at gate (average)"
+      target: "< 24h"
+      calculation: "avg(decision_timestamp - gate_entry_timestamp)"
+
+    - metric: "First-time GO rate"
+      target: "> 60%"
+      calculation: "GO on first attempt / total workflows"
+
+# ═══════════════════════════════════════════════════════════════
+# END OF STAGE-GATE PROTOCOL
+# ═══════════════════════════════════════════════════════════════

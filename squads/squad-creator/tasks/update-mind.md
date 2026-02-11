@@ -1,92 +1,429 @@
 ---
-task: Update Mind Profile
-responsavel: "@oalanicolas"
-responsavel_type: agent
-atomic_layer: task
+task-id: update-mind
+name: Update Existing Mind DNA (Brownfield)
+version: 1.0.0
+execution_type: Human
+estimated-time: 1-2 hours
+complexity: medium
+
+inputs:
+  required:
+    - mind_slug: "Slug do mind existente (snake_case)"
+  optional:
+    - new_sources_path: "Caminho para novas fontes"
+    - focus: "voice|thinking|both (default: both)"
+    - mode: "merge|replace|selective"
+
+outputs:
+  primary:
+    - updated_dna: "mind_dna_complete.yaml atualizado"
+    - diff_report: "Relatório do que mudou"
+
 elicit: true
-Entrada: |
-  - slug: Mind profile identifier, e.g. "nicolas-oala" (string, required)
-  - new_sources: Array of new material paths or URLs to incorporate (array, required)
-Saida: |
-  - updated_profile: The updated mind profile with new patterns merged (object)
-  - delta_report: Report of what changed — new patterns detected, modified dimensions, fidelity impact (object)
-Checklist:
-  - "[ ] Load existing mind profile by slug"
-  - "[ ] Validate new sources are accessible"
-  - "[ ] Extract Voice DNA from new sources"
-  - "[ ] Extract Thinking DNA from new sources"
-  - "[ ] Compute delta between existing and new extractions"
-  - "[ ] Merge new patterns into existing profile"
-  - "[ ] Re-run smoke test on updated profile"
-  - "[ ] Save updated profile and delta report"
 ---
 
-# *update-mind
+# Update Existing Mind DNA (Brownfield)
 
-Incrementally updates an existing mind profile with new source material. Performs differential analysis to identify what changed, what new patterns emerged, and how the update affects fidelity.
+> **Princípio:** "Evolução > Revolução. Preserve o que funciona, adicione o que falta."
+>
+> **Regra:** NUNCA substituir DNA existente sem validar que o novo é melhor.
 
-## Uso
+---
 
+## FASE 0: LOAD EXISTING DNA (5 min)
+
+### 0.1 Localizar Arquivos Existentes
+
+```yaml
+existing_files:
+  mind_dna: "outputs/minds/{mind_slug}/mind_dna_complete.yaml"
+  voice_dna: "outputs/minds/{mind_slug}/voice_dna.yaml"
+  thinking_dna: "outputs/minds/{mind_slug}/thinking_dna.yaml"
+  sources_inventory: "outputs/minds/{mind_slug}/sources_inventory.yaml"
+  agent_file: "squads/{squad}/agents/{mind_slug}.md"  # Se já tem agente
 ```
-*update-mind slug="nicolas-oala" new_sources=["./transcripts/recent-talk.md", "./posts/new-blog.md"]
+
+### 0.2 Snapshot Before
+
+```yaml
+snapshot_before:
+  voice_dna:
+    power_words_count: 0
+    signature_phrases_count: 0
+    stories_count: 0
+    anti_patterns_count: 0
+
+  thinking_dna:
+    frameworks_count: 0
+    heuristics_count: 0
+    recognition_patterns_count: 0
+
+  sources:
+    total: 0
+    tier_1: 0
+
+  quality_scores:
+    voice: "X/10"
+    thinking: "X/9"
+    fidelity_estimate: "X%"
 ```
 
-## Parametros
+---
 
-| Param | Type | Required | Description |
-|-------|------|----------|-------------|
-| slug | string | yes | Identifier for the existing mind profile (kebab-case) |
-| new_sources | array | yes | Paths or URLs to new source material |
+## FASE 1: PROCESS NEW SOURCES (30 min)
 
-## Implementation
+### 1.1 Validar Novas Fontes
 
-### Step 1: Load Existing Profile
-- Load mind profile from `squads/squad-creator/data/minds/{slug}.yaml`
-- Verify profile exists and is valid
-- Record current fidelity_score as baseline
+Execute `collect-sources.md` para novas fontes APENAS:
 
-### Step 2: Source Validation
-- Validate each new source is accessible
-- Classify source types
-- Check for overlap with previously processed sources (avoid duplicate analysis)
+```yaml
+new_sources_validation:
+  sources_provided: []
+  tier_classification: {}
+  adds_to_existing: true|false
+  fills_gaps: []
+```
 
-### Step 3: Incremental Extraction
-- Run `*extract-voice-dna` on new sources only
-- Run `*extract-thinking-dna` on new sources only
-- Produce new_voice_dna and new_thinking_dna partial profiles
+### 1.2 Identificar Gaps que Novas Fontes Preenchem
 
-### Step 4: Delta Computation
-- Compare new extractions against existing profile dimensions
-- Identify: new patterns not in existing profile, reinforced patterns (higher confidence), contradicted patterns (conflicting signals), unchanged dimensions
-- Generate delta_report with categorized changes
+```yaml
+gap_analysis:
+  voice_gaps_before:
+    - "Faltavam anedotas pessoais"
+    - "Tom em situação X não documentado"
 
-### Step 5: Profile Merge
-- Apply new patterns to existing profile using weighted merge
-- Newer sources get recency weight but existing patterns retain accumulated confidence
-- Resolve contradictions: flag for user review if in quality mode, use recency bias in yolo mode
-- Update confidence scores across all dimensions
+  thinking_gaps_before:
+    - "Heurística de priorização incompleta"
+    - "Objection handling não tinha exemplos"
 
-### Step 6: Re-validate
-- Run `*smoke-test` on updated profile
-- Compare new fidelity_score against baseline
-- If fidelity dropped by more than 10 points, warn user and offer rollback
+  gaps_filled_by_new_sources:
+    - gap: ""
+      source: ""
+      confidence: "alta|média|baixa"
+```
 
-### Step 7: Save
-- Save updated profile to same path
-- Archive previous version as `{slug}.v{n}.yaml`
-- Save delta_report to `squads/squad-creator/data/minds/{slug}-delta-{date}.md`
+---
 
-## Error Handling
+## FASE 2: EXTRACT FROM NEW SOURCES (45 min)
 
-- **Profile not found**: Abort with message suggesting `*clone-mind` instead
-- **No new patterns detected**: Complete successfully but note in delta_report that sources did not add new information
-- **Fidelity regression**: If score drops more than 10 points, warn user and offer to rollback; if more than 20 points, recommend manual review
-- **Source already processed**: Skip duplicate sources, warn user
-- **Merge conflict in critical dimension**: In quality mode, pause and prompt user; in yolo mode, log decision and use recency
+### 2.1 Voice DNA Delta
 
-## Related
+Execute `extract-voice-dna.md` nas novas fontes:
 
-- `clone-mind.md` — Initial profile creation pipeline
-- `extract-voice-dna.md` — Voice extraction used for incremental analysis
-- `extract-thinking-dna.md` — Thinking extraction used for incremental analysis
-- `smoke-test-mind.md` — Validation after update
+```yaml
+voice_delta:
+  new_power_words: []
+  new_signature_phrases: []
+  new_stories: []
+  new_anti_patterns: []
+  new_contradictions: []
+
+  confirms_existing:
+    - element: ""
+      source_count: "+1"
+
+  contradicts_existing:
+    - element: ""
+      existing: ""
+      new_finding: ""
+      resolution: "keep_existing|use_new|flag_for_review"
+```
+
+### 2.2 Thinking DNA Delta
+
+Execute `extract-thinking-dna.md` nas novas fontes:
+
+```yaml
+thinking_delta:
+  new_recognition_patterns: []
+  new_heuristics: []
+  new_objection_responses: []
+  new_handoff_triggers: []
+
+  framework_updates:
+    - framework: ""
+      change_type: "new_step|clarification|example"
+      detail: ""
+
+  contradicts_existing:
+    - element: ""
+      existing: ""
+      new_finding: ""
+      resolution: ""
+```
+
+---
+
+## FASE 3: MERGE STRATEGY (15 min)
+
+### 3.1 Merge Modes
+
+| Mode | Comportamento |
+|------|---------------|
+| **merge** | Adiciona novos elementos, preserva existentes |
+| **replace** | Substitui seções onde novo é significativamente melhor |
+| **selective** | Checkpoint por seção, usuário decide |
+
+### 3.2 Merge Rules
+
+```yaml
+merge_rules:
+  # SEMPRE adicionar (não duplicar)
+  additive:
+    - power_words
+    - signature_phrases
+    - stories
+    - heuristics
+    - recognition_patterns
+
+  # NUNCA substituir sem validação
+  protected:
+    - primary_framework  # Core identity
+    - identity_statement
+    - veto_heuristics
+
+  # Substituir se novo score > existente
+  replace_if_better:
+    - diagnostic_questions
+    - objection_responses
+    - decision_pipeline
+```
+
+### 3.3 Conflict Resolution
+
+```yaml
+conflicts:
+  - section: ""
+    existing_value: ""
+    new_value: ""
+    recommendation: "keep|replace|merge"
+    rationale: ""
+
+  resolution_strategy:
+    auto_resolve:
+      - "Novo elemento não existe no atual → ADICIONAR"
+      - "Mesmo elemento com mais detalhes → ENRIQUECER"
+      - "Mesmo elemento com exemplos adicionais → ADICIONAR EXEMPLOS"
+
+    require_human:
+      - "Contradição direta em framework"
+      - "Mudança em identity_statement"
+      - "Remoção de elemento existente"
+```
+
+---
+
+## FASE 4: APPLY UPDATES (10 min)
+
+### 4.1 Generate Updated Files
+
+```yaml
+updated_files:
+  mind_dna_complete:
+    path: "outputs/minds/{mind_slug}/mind_dna_complete.yaml"
+    backup: "outputs/minds/{mind_slug}/backups/mind_dna_{timestamp}.yaml"
+
+  voice_dna:
+    path: "outputs/minds/{mind_slug}/voice_dna.yaml"
+    sections_updated: []
+
+  thinking_dna:
+    path: "outputs/minds/{mind_slug}/thinking_dna.yaml"
+    sections_updated: []
+
+  sources_inventory:
+    path: "outputs/minds/{mind_slug}/sources_inventory.yaml"
+    new_sources_added: 0
+```
+
+### 4.2 Update Agent (if exists)
+
+```yaml
+agent_update:
+  agent_exists: true|false
+  agent_path: ""
+
+  sections_to_regenerate:
+    - "voice_dna block"
+    - "thinking_dna block"
+
+  preserve:
+    - "Custom instructions"
+    - "Squad-specific config"
+    - "Handoff rules"
+```
+
+---
+
+## FASE 5: DIFF REPORT (5 min)
+
+### 5.1 Generate Diff
+
+```yaml
+diff_report:
+  summary:
+    elements_added: 0
+    elements_updated: 0
+    elements_unchanged: 0
+    conflicts_resolved: 0
+
+  voice_changes:
+    - section: "power_words"
+      before_count: 10
+      after_count: 15
+      delta: "+5"
+
+    - section: "stories"
+      before_count: 3
+      after_count: 5
+      delta: "+2"
+
+  thinking_changes:
+    - section: "heuristics"
+      before_count: 5
+      after_count: 8
+      delta: "+3"
+
+  quality_impact:
+    voice_score:
+      before: "7/10"
+      after: "9/10"
+
+    thinking_score:
+      before: "6/9"
+      after: "8/9"
+
+    fidelity_estimate:
+      before: "70%"
+      after: "85%"
+```
+
+### 5.2 Snapshot After
+
+```yaml
+snapshot_after:
+  voice_dna:
+    power_words_count: 0
+    signature_phrases_count: 0
+    stories_count: 0
+    anti_patterns_count: 0
+
+  thinking_dna:
+    frameworks_count: 0
+    heuristics_count: 0
+    recognition_patterns_count: 0
+
+  sources:
+    total: 0
+    tier_1: 0
+```
+
+---
+
+## OUTPUT: UPDATE REPORT
+
+```yaml
+# ═══════════════════════════════════════════════════════════════
+# MIND UPDATE REPORT - {MIND_NAME}
+# Updated: {DATE}
+# Mode: {merge|replace|selective}
+# ═══════════════════════════════════════════════════════════════
+
+update_report:
+  metadata:
+    mind_name: ""
+    mind_slug: ""
+    update_date: ""
+    mode: ""
+    new_sources_processed: 0
+
+  # ─────────────────────────────────────────────────────────────
+  # CHANGES SUMMARY
+  # ─────────────────────────────────────────────────────────────
+
+  changes:
+    voice_dna:
+      added: []
+      updated: []
+      unchanged: []
+
+    thinking_dna:
+      added: []
+      updated: []
+      unchanged: []
+
+  # ─────────────────────────────────────────────────────────────
+  # QUALITY IMPACT
+  # ─────────────────────────────────────────────────────────────
+
+  quality:
+    before:
+      voice_score: ""
+      thinking_score: ""
+      fidelity: ""
+
+    after:
+      voice_score: ""
+      thinking_score: ""
+      fidelity: ""
+
+    improvement: "+X%"
+
+  # ─────────────────────────────────────────────────────────────
+  # FILES MODIFIED
+  # ─────────────────────────────────────────────────────────────
+
+  files:
+    updated:
+      - path: ""
+        changes: ""
+
+    backed_up:
+      - original: ""
+        backup: ""
+
+  # ─────────────────────────────────────────────────────────────
+  # NEXT STEPS
+  # ─────────────────────────────────────────────────────────────
+
+  next_steps:
+    - "Regenerar agent.md se qualidade aumentou significativamente"
+    - "Rodar smoke tests para validar mudanças"
+    - "Atualizar squad config se necessário"
+
+# ═══════════════════════════════════════════════════════════════
+```
+
+---
+
+## COMMANDS
+
+```bash
+# Update com novas fontes
+*update-mind gary_halbert --sources /path/to/new/materials
+
+# Update apenas voice
+*update-mind gary_halbert --focus voice --sources /path/to/interviews
+
+# Update com merge manual
+*update-mind gary_halbert --mode selective
+```
+
+---
+
+## QUALITY CHECK
+
+- [ ] DNA existente carregado com sucesso
+- [ ] Snapshot "before" criado
+- [ ] Novas fontes processadas
+- [ ] Conflicts identificados e resolvidos
+- [ ] Backup criado antes de modificar
+- [ ] Diff report gerado
+- [ ] Quality scores atualizados
+
+**BLOCKING:** Não modificar arquivos sem backup criado.
+
+---
+
+**Squad Architect | Update Mind v1.0**
+*"Evolution beats revolution. Preserve what works, add what's missing."*

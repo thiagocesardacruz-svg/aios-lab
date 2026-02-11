@@ -1,0 +1,1595 @@
+# ═══════════════════════════════════════════════════════════════════════════════
+# WORKFLOW: ADVERTORIAL SEEDING - Editorial Content Placement in Travel Media
+# ═══════════════════════════════════════════════════════════════════════════════
+#
+# Purpose: Place editorial-style content (advertorials/native ads) in travel and
+#          tourism publications to build backlinks, brand authority, and referral traffic
+#
+# Target: Media Multiplier Effect (Schrager) - One placement generates PR across multiple channels
+# Duration: 2-4 weeks per placement cycle
+# Squad: hotel-mkt
+# DNA: Hormozi (volume) + Conley (storytelling) + Schrager (category design + media mastery)
+#
+# ═══════════════════════════════════════════════════════════════════════════════
+
+name: wf-advertorial-seeding
+version: 1.0.0
+squad: hotel-mkt
+category: pr-content-marketing
+
+metadata:
+  description: "Place editorial-style content in travel publications for backlinks, authority, and referral bookings"
+  author: "hotel-mkt-squad"
+  created: "2026-02-10"
+  target_publications: ["Viaje Aqui", "Melhores Destinos", "Panrotas", "Local portals", "Lifestyle magazines"]
+  placement_types: ["Organic PR", "Paid native ads", "Guest posts", "Expert contributions"]
+  expected_duration: "2-4 weeks per placement cycle"
+
+objectives:
+  primary: "Secure 6-12 high-quality editorial placements per quarter"
+  secondary:
+    - "Build 50+ high-authority backlinks (DA 40+) per year"
+    - "Drive 500+ referral visits per placement"
+    - "Increase brand search volume by 30%"
+    - "Position hotel as category leader in local market"
+    - "Create content assets that can be repurposed across channels"
+
+kpis:
+  - name: "Quarterly Placements"
+    target: "6-12 placements"
+    measurement: "Count of published articles/features"
+
+  - name: "Backlink Quality"
+    target: "DA 40+ average"
+    measurement: "Domain Authority of publishing sites (Moz/Ahrefs)"
+
+  - name: "Referral Traffic"
+    target: "500+ visits per placement"
+    measurement: "Google Analytics referral traffic from publication URLs"
+
+  - name: "Referral Bookings"
+    target: "5-10 bookings per placement"
+    measurement: "Attributed bookings from referral traffic (UTM tracking)"
+
+  - name: "Brand Search Lift"
+    target: "+30% year-over-year"
+    measurement: "Google Search Console brand queries"
+
+  - name: "Media Multiplier Effect"
+    target: "3x amplification"
+    measurement: "Secondary press mentions / Primary placements (e.g., 1 placement → 3 additional mentions)"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# PHASE 1: TREND & TOPIC RESEARCH
+# ═══════════════════════════════════════════════════════════════════════════════
+
+phases:
+  - phase: 1
+    name: "Trend & Topic Research"
+    duration: "3-5 days"
+    description: "Identify trending topics and editorial angles that align with hotel positioning"
+
+    agents:
+      - name: "hotel-trend-hunter"
+        role: "lead"
+        responsibility: "Research trending topics in travel, tourism, and lifestyle"
+      - name: "hotel-seo-architect"
+        role: "support"
+        responsibility: "Keyword research and SEO opportunity analysis"
+      - name: "hotel-pr-advertorial"
+        role: "support"
+        responsibility: "Validate editorial fit with target publications"
+
+    inputs:
+      - "Hotel unique positioning and differentiators"
+      - "Travel industry trend reports"
+      - "Target publication editorial calendars"
+      - "SEO keyword opportunity analysis"
+
+    tasks:
+      - id: "1.1"
+        name: "Travel Trend Monitoring"
+        owner: "hotel-trend-hunter"
+        description: "Identify current and emerging trends in Brazilian travel market"
+        trend_sources:
+          - "Google Trends (Brazil, travel category)"
+          - "Travel industry reports (ABIH, Ministério do Turismo)"
+          - "Social media trending topics (Instagram, TikTok travel hashtags)"
+          - "Competitor content analysis (what are they covering?)"
+          - "Travel publication recent articles (what's getting traction?)"
+        trend_categories:
+          - "Destination trends (emerging cities, underrated locations)"
+          - "Travel styles (solo travel, workation, bleisure, sustainable travel)"
+          - "Seasonal opportunities (high season, holidays, events)"
+          - "Cultural moments (festivals, anniversaries, openings)"
+          - "Problem/solution trends (travel pain points, hacks, tips)"
+        outputs:
+          - "Trend report: Top 10 trending topics relevant to hotel"
+          - "Trend-hotel alignment map (which trends fit our positioning)"
+
+      - id: "1.2"
+        name: "Editorial Angle Development"
+        owner: "hotel-pr-advertorial"
+        description: "Develop editorial angles that naturally feature hotel while providing value"
+        angle_framework:
+          - angle_type: "Destination Guide"
+            description: "Comprehensive guide to hotel's city/region featuring hotel as local expert"
+            example: "10 Experiências Imperdíveis em [City]: Guia de Quem Vive Aqui"
+            hotel_integration: "Feature hotel as 'where to stay' with unique local insider tips from staff"
+            value_to_reader: "Actionable local recommendations beyond typical tourist guides"
+
+          - angle_type: "Trend Analysis"
+            description: "Thought leadership on travel trends with hotel as case study"
+            example: "O Novo Luxo: Como Hotéis Boutique Estão Redefinindo Hospedagem no Brasil"
+            hotel_integration: "Position hotel as innovator/example of trend"
+            value_to_reader: "Industry insights and what it means for travelers"
+
+          - angle_type: "Problem/Solution"
+            description: "Address common travel pain points with hotel's approach as solution"
+            example: "Trabalho Remoto em Viagem: 5 Hotéis que Entendem o Novo Viajante"
+            hotel_integration: "Feature hotel's workation-friendly amenities as best practice"
+            value_to_reader: "Practical solutions to real traveler problems"
+
+          - angle_type: "Storytelling/Narrative"
+            description: "Compelling story about hotel's origin, design, or community impact"
+            example: "De Armazém Abandonado a Hotel de Charme: A História do [Hotel Name]"
+            hotel_integration: "Hotel is the story (founder story, transformation, design philosophy)"
+            value_to_reader: "Inspiration, human interest, emotional connection"
+
+          - angle_type: "Expert Contribution"
+            description: "Hotel owner/GM as expert contributor on hospitality or travel topic"
+            example: "5 Segredos de Hospitalidade que Aprendi em 20 Anos no Setor"
+            hotel_integration: "Byline + bio with hotel mention"
+            value_to_reader: "Expert insights from industry insider"
+
+          - angle_type: "Seasonal/Timely"
+            description: "Tie to season, holiday, or local event with hotel as destination"
+            example: "Onde Passar o Réveillon 2027: 8 Hotéis para uma Virada Inesquecível"
+            hotel_integration: "Feature in roundup or dedicated feature"
+            value_to_reader: "Timely planning inspiration"
+
+          - angle_type: "Experience-Focused"
+            description: "Highlight unique experience offered by hotel (spa, rooftop, chef)"
+            example: "Os Melhores Rooftops para Ver o Pôr do Sol em [City]"
+            hotel_integration: "Feature hotel's rooftop as top recommendation"
+            value_to_reader: "Curated experience recommendations"
+        outputs:
+          - "10-15 editorial angle concepts with trend alignment"
+          - "Angle-publication fit matrix (which angle for which publication)"
+
+      - id: "1.3"
+        name: "SEO Keyword Opportunity Analysis"
+        owner: "hotel-seo-architect"
+        description: "Identify high-value keywords to target in editorial content"
+        keyword_research_process:
+          - "Identify target keywords (branded, category, destination)"
+          - "Analyze search volume and competition"
+          - "Identify content gaps (keywords competitors aren't ranking for)"
+          - "Map keywords to editorial angles"
+        keyword_categories:
+          - category: "Destination Keywords"
+            examples: ["hotéis em [city]", "o que fazer em [city]", "melhores bairros [city]"]
+            volume: "Medium-High"
+            difficulty: "Medium"
+
+          - category: "Category Keywords"
+            examples: ["hotel boutique", "hotel charme", "hotel design", "hotel romântico"]
+            volume: "Medium"
+            difficulty: "Medium-High"
+
+          - category: "Long-Tail Opportunity Keywords"
+            examples: ["hotel para trabalho remoto [city]", "hotel pet-friendly [city]", "hotel com rooftop [city]"]
+            volume: "Low-Medium"
+            difficulty: "Low-Medium"
+
+          - category: "Trend Keywords"
+            examples: ["workation brasil", "bleisure travel", "hotéis sustentáveis"]
+            volume: "Medium"
+            difficulty: "Low"
+        outputs:
+          - "Target keyword list (30-50 keywords)"
+          - "Keyword-angle mapping (which keywords to target in which articles)"
+
+      - id: "1.4"
+        name: "Content Topic Prioritization"
+        owner: "hotel-pr-advertorial"
+        description: "Prioritize topics based on trend alignment, SEO value, and publication fit"
+        prioritization_criteria:
+          - criterion: "Trend Relevance"
+            weight: "30%"
+            scoring: "Is this topic trending? (1-10)"
+
+          - criterion: "SEO Value"
+            weight: "25%"
+            scoring: "Keyword search volume + low competition (1-10)"
+
+          - criterion: "Publication Fit"
+            weight: "25%"
+            scoring: "Does this match target publication editorial focus? (1-10)"
+
+          - criterion: "Hotel Differentiation"
+            weight: "20%"
+            scoring: "Does this showcase hotel's unique value? (1-10)"
+        outputs:
+          - "Prioritized topic list: Top 6-10 topics for next quarter"
+          - "Topic brief for each (angle, keywords, target publications)"
+
+    outputs:
+      - "Top 6-10 editorial topics ready for pitch"
+      - "Topic briefs with angles, keywords, and target publications"
+      - "Trend-topic-publication alignment map"
+
+    checkpoints:
+      - name: "Topic Validation"
+        criteria: "6-10 high-quality topics identified with clear editorial angles and publication fit"
+        approval_required: true
+        approver: "hotel-mkt-director"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# PHASE 2: PUBLICATION TARGETING
+# ═══════════════════════════════════════════════════════════════════════════════
+
+  - phase: 2
+    name: "Publication Targeting"
+    duration: "3-5 days"
+    description: "Map target publications, build editor relationships, and prepare pitch strategy"
+
+    agents:
+      - name: "hotel-pr-advertorial"
+        role: "lead"
+        responsibility: "Research publications, identify editors, build outreach strategy"
+      - name: "hotel-trend-hunter"
+        role: "support"
+        responsibility: "Monitor publication editorial calendars and trending content"
+
+    inputs:
+      - "Prioritized topic list from Phase 1"
+      - "Target publication list"
+      - "Hotel media kit and brand assets"
+
+    tasks:
+      - id: "2.1"
+        name: "Publication Research & Tiering"
+        owner: "hotel-pr-advertorial"
+        description: "Research and categorize target publications by tier and opportunity type"
+        publication_tiers:
+          - tier: "Tier 1 - National Travel Publications (Organic PR + Paid)"
+            publications:
+              - name: "Viaje Aqui"
+                reach: "National"
+                audience: "AB class travelers, 30-50 years"
+                editorial_focus: "Destination guides, hotel reviews, travel inspiration"
+                opportunity_type: "Guest posts, sponsored content, hotel features"
+                domain_authority: "DA 60+"
+
+              - name: "Melhores Destinos"
+                reach: "National"
+                audience: "Millennial/Gen Z travelers, 25-40 years"
+                editorial_focus: "Travel hacks, budget luxury, destination trends"
+                opportunity_type: "Expert contributions, sponsored guides, roundups"
+                domain_authority: "DA 65+"
+
+              - name: "Panrotas"
+                reach: "National (B2B + B2C)"
+                audience: "Travel trade + luxury travelers"
+                editorial_focus: "Industry news, hotel openings, luxury travel"
+                opportunity_type: "Press releases, thought leadership, interviews"
+                domain_authority: "DA 55+"
+
+          - tier: "Tier 2 - Regional/Local Travel Media (Organic PR)"
+            publications:
+              - name: "Local city magazines ([City] Magazine, Veja [City])"
+                reach: "Regional"
+                audience: "Local affluent residents + domestic travelers"
+                editorial_focus: "Local guides, weekend getaways, lifestyle"
+                opportunity_type: "Local expert features, neighborhood guides, event coverage"
+                domain_authority: "DA 40-50"
+
+              - name: "Regional travel blogs (top 5 in state)"
+                reach: "Regional"
+                audience: "Niche travel enthusiasts"
+                editorial_focus: "In-depth destination content, hidden gems"
+                opportunity_type: "Guest posts, hotel reviews, collaborations"
+                domain_authority: "DA 30-45"
+
+          - tier: "Tier 3 - Lifestyle & Design Publications (Brand Elevation)"
+            publications:
+              - name: "Casa Vogue, Elle Decor Brasil"
+                reach: "National"
+                audience: "Design enthusiasts, luxury lifestyle"
+                editorial_focus: "Interior design, architecture, boutique hotels"
+                opportunity_type: "Design features, hotel architecture stories"
+                domain_authority: "DA 70+"
+
+              - name: "Glamour, Marie Claire (travel sections)"
+                reach: "National"
+                audience: "Female travelers, 25-45 years"
+                editorial_focus: "Travel inspiration, romantic getaways, wellness"
+                opportunity_type: "Roundups, romantic hotel features"
+                domain_authority: "DA 65+"
+
+          - tier: "Tier 4 - Niche/Community Publications (SEO + Community)"
+            publications:
+              - name: "Pet travel blogs (if pet-friendly hotel)"
+                reach: "Niche"
+                audience: "Pet owners who travel"
+                editorial_focus: "Pet-friendly destinations and hotels"
+                opportunity_type: "Guest posts, hotel features"
+                domain_authority: "DA 20-35"
+
+              - name: "Sustainability/eco-travel blogs"
+                reach: "Niche"
+                audience: "Eco-conscious travelers"
+                editorial_focus: "Sustainable tourism, green hotels"
+                opportunity_type: "Guest posts, sustainability stories"
+                domain_authority: "DA 25-40"
+        outputs:
+          - "Publication database with tier, audience, editorial focus, DA, contact info"
+          - "Publication-topic fit matrix"
+
+      - id: "2.2"
+        name: "Editor Identification & Outreach Prep"
+        owner: "hotel-pr-advertorial"
+        description: "Identify editorial contacts and prepare personalized outreach"
+        editor_research_process:
+          - "Review publication masthead (editors, writers, contributors)"
+          - "Identify travel/lifestyle editors and writers"
+          - "Research editor's recent articles and beat (what do they cover?)"
+          - "Find contact information (email via masthead, LinkedIn, Twitter/X DM)"
+          - "Note editorial preferences (pitch guidelines, preferred topics)"
+        contact_database_fields:
+          - "Publication name"
+          - "Editor/writer name and title"
+          - "Email address"
+          - "LinkedIn profile"
+          - "Recent articles (last 3 months)"
+          - "Beat/specialty"
+          - "Pitch preferences (noted on site or in bio)"
+        outputs:
+          - "Editor contact database (30-50 contacts)"
+          - "Personalization notes for each contact"
+
+      - id: "2.3"
+        name: "Pitch Strategy Development"
+        owner: "hotel-pr-advertorial"
+        description: "Develop pitch strategy by publication type (organic PR vs. paid placement)"
+        strategy_by_opportunity_type:
+          - opportunity: "Organic PR (Guest Posts / Expert Contributions)"
+            approach: "Pitch valuable content that serves reader (not promotional)"
+            pitch_angle: "Educational, timely, newsworthy, or unique perspective"
+            hotel_mention: "Subtle (byline bio, natural mention as example)"
+            cost: "Free (value exchange: content for backlink + visibility)"
+            success_rate: "15-25%"
+            publications: "Tier 1, 2, 4 (blogs, some magazines)"
+
+          - opportunity: "Paid Native Ads / Sponsored Content"
+            approach: "Pitch editorial-style content clearly labeled as sponsored"
+            pitch_angle: "Valuable to reader but can be more hotel-focused"
+            hotel_mention: "More prominent (featured hotel, multiple mentions)"
+            cost: "R$2,000-R$15,000 depending on publication reach"
+            success_rate: "60-80% (if budget available)"
+            publications: "Tier 1, 2 (major publications)"
+
+          - opportunity: "Press Release / News Placement"
+            approach: "Newsworthy announcement (opening, renovation, award, partnership)"
+            pitch_angle: "Timely news value (new, unique, relevant)"
+            hotel_mention: "Central (hotel is the news)"
+            cost: "Free (if newsworthy)"
+            success_rate: "30-50%"
+            publications: "Tier 1 (Panrotas), Tier 2 (local news)"
+
+          - opportunity: "Hotel Review / Feature (Earned Media)"
+            approach: "Invite editor/writer for complimentary stay"
+            pitch_angle: "Unique hotel experience worth covering"
+            hotel_mention: "Full feature or review"
+            cost: "Complimentary room + amenities (trade)"
+            success_rate: "40-60%"
+            publications: "Tier 1, 2, 3 (travel + lifestyle)"
+        outputs:
+          - "Pitch strategy playbook by opportunity type"
+          - "Budget allocation for paid placements"
+
+      - id: "2.4"
+        name: "Media Kit & Asset Preparation"
+        owner: "hotel-pr-advertorial"
+        description: "Prepare media kit and supporting assets for pitches"
+        media_kit_contents:
+          - "Hotel fact sheet (1-page: location, rooms, amenities, USPs)"
+          - "High-resolution photos (20-30 images: exterior, rooms, amenities, F&B, local area)"
+          - "Hotel story / About Us (200-300 words: founding story, design philosophy, positioning)"
+          - "Founder/GM bio (150 words + headshot)"
+          - "Recent press mentions (logos + links)"
+          - "Awards and recognition"
+          - "Sample itineraries (local experiences curated by hotel)"
+          - "Contact information (PR contact, direct line)"
+        asset_formats:
+          - "PDF media kit (designed, branded)"
+          - "Google Drive folder (photos + assets for download)"
+          - "Online press page (hotel website /press)"
+        outputs:
+          - "Complete media kit (PDF + Drive folder)"
+          - "Online press page live on website"
+
+    outputs:
+      - "Publication database (30-50 target publications with contacts)"
+      - "Editor contact database (30-50 editors/writers)"
+      - "Pitch strategy playbook"
+      - "Media kit and assets ready"
+
+    checkpoints:
+      - name: "Publication Research Complete"
+        criteria: "30-50 target publications identified with editorial contacts"
+        approval_required: true
+        approver: "hotel-pr-advertorial"
+
+      - name: "Media Kit Approval"
+        criteria: "Media kit reviewed and approved for distribution"
+        approval_required: true
+        approver: "hotel-mkt-director"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# PHASE 3: CONTENT CREATION
+# ═══════════════════════════════════════════════════════════════════════════════
+
+  - phase: 3
+    name: "Content Creation"
+    duration: "5-7 days per article"
+    description: "Write editorial-style articles that provide genuine value while naturally featuring hotel"
+
+    agents:
+      - name: "hotel-pr-advertorial"
+        role: "lead"
+        responsibility: "Write and edit advertorial content"
+      - name: "hotel-copywriter"
+        role: "support"
+        responsibility: "Provide copywriting support and brand voice consistency"
+      - name: "hotel-social-creator"
+        role: "support"
+        responsibility: "Create supporting visual assets (photos, graphics)"
+      - name: "hotel-seo-architect"
+        role: "support"
+        responsibility: "SEO optimization and keyword integration"
+
+    inputs:
+      - "Prioritized topic list from Phase 1"
+      - "Target publication editorial guidelines"
+      - "SEO keyword list"
+      - "Hotel media kit and assets"
+
+    tasks:
+      - id: "3.1"
+        name: "Article Outline & Research"
+        owner: "hotel-pr-advertorial"
+        description: "Develop detailed outline with research for each article"
+        outline_structure:
+          - "Headline (SEO-optimized, compelling, 60 characters max)"
+          - "Subheadline (expand on headline, 120 characters max)"
+          - "Introduction (150-200 words: hook, context, promise of value)"
+          - "Body sections (3-5 sections, each 200-300 words)"
+          - "Hotel integration points (where/how hotel is naturally mentioned)"
+          - "Conclusion (100-150 words: summary, CTA)"
+          - "SEO metadata (title tag, meta description, target keywords)"
+        research_checklist:
+          - "Fact-check all claims (statistics, quotes, recommendations)"
+          - "Research supporting examples (other hotels, destinations, experiences)"
+          - "Gather expert quotes (if applicable: GM, local guides, industry experts)"
+          - "Identify compelling data points (trends, studies, reports)"
+        outputs:
+          - "Detailed article outline (per topic)"
+          - "Research notes and sources"
+
+      - id: "3.2"
+        name: "First Draft Writing"
+        owner: "hotel-pr-advertorial"
+        description: "Write first draft following outline with editorial standards"
+        writing_guidelines:
+          - length: "1,000-2,000 words (depending on publication)"
+          - tone: "Editorial, informative, not promotional"
+          - structure: "Clear hierarchy (H1, H2, H3), short paragraphs (3-4 sentences max)"
+          - hotel_integration: "Natural mentions (not forced), provide genuine value"
+          - storytelling: "Use narrative devices (anecdotes, examples, scenarios)"
+          - value_first: "Reader value > hotel promotion (80-20 rule)"
+        editorial_quality_standards:
+          - "No jargon or corporate speak"
+          - "Active voice > passive voice"
+          - "Specific > vague (concrete details, not generalities)"
+          - "Show, don't tell (examples, stories, visuals)"
+          - "Credible (cite sources, include data)"
+        hotel_integration_best_practices:
+          - approach: "Expert Source"
+            example: "According to Maria Silva, GM of [Hotel Name], 'The key to a great workation is...'"
+
+          - approach: "Natural Example"
+            example: "For example, [Hotel Name] offers dedicated coworking spaces with..."
+
+          - approach: "Subtle Mention in Context"
+            example: "Many boutique hotels in [City], like [Hotel Name], are embracing sustainable practices..."
+
+          - approach: "Byline Bio"
+            example: "[Author Name] is the founder of [Hotel Name], a boutique hotel in [City]."
+
+          - approach: "Where to Stay Section"
+            example: "Where to Stay: [Hotel Name] combines [unique value] with [differentiator]."
+        outputs:
+          - "First draft (1,000-2,000 words per article)"
+
+      - id: "3.3"
+        name: "SEO Optimization"
+        owner: "hotel-seo-architect"
+        description: "Optimize article for target keywords and search visibility"
+        seo_optimization_checklist:
+          - "Target keyword in H1 (headline)"
+          - "Target keyword in first 100 words"
+          - "Secondary keywords in H2 subheadings"
+          - "Keyword density: 1-2% (natural, not stuffed)"
+          - "Internal links (to hotel website: homepage, booking page, relevant pages)"
+          - "External links (to credible sources, supporting data)"
+          - "Meta title (60 characters, includes keyword)"
+          - "Meta description (155 characters, compelling, includes keyword + CTA)"
+          - "Image alt text (descriptive, includes keyword where relevant)"
+          - "URL slug (short, includes keyword, readable)"
+        seo_enhancements:
+          - "Add FAQ section (target featured snippets)"
+          - "Include data/statistics (increases shareability)"
+          - "Add compelling visuals (increases engagement, dwell time)"
+        outputs:
+          - "SEO-optimized article draft"
+          - "SEO checklist completed"
+
+      - id: "3.4"
+        name: "Visual Asset Creation"
+        owner: "hotel-social-creator"
+        description: "Create or select visuals to accompany article"
+        visual_requirements:
+          - "Hero image (1200x800px minimum, high-quality, relevant to article topic)"
+          - "Supporting images (3-5 images throughout article)"
+          - "Infographic or data visualization (if article includes data/statistics)"
+          - "Photo captions (descriptive, includes hotel mention if relevant)"
+        visual_sources:
+          - "Hotel photo library (rooms, amenities, property)"
+          - "Local destination photos (city, landmarks, experiences)"
+          - "Stock photos (if needed, high-quality only: Unsplash, Pexels)"
+          - "Custom graphics (if article needs infographic or chart)"
+        outputs:
+          - "Visual asset package (hero + 3-5 supporting images per article)"
+          - "Image alt text and captions"
+
+      - id: "3.5"
+        name: "Editing & Finalization"
+        owner: "hotel-pr-advertorial"
+        description: "Edit for clarity, brand voice, and publication standards"
+        editing_checklist:
+          - "Grammar and spelling (Grammarly, manual review)"
+          - "Brand voice consistency (matches hotel tone)"
+          - "Publication style guide (if provided by target publication)"
+          - "Fact-check all claims"
+          - "Verify all links (hotel website, sources)"
+          - "Ensure hotel integration is natural (not overly promotional)"
+          - "Read aloud test (does it flow naturally?)"
+        approval_process:
+          - "Internal review (hotel-mkt-director)"
+          - "Optional: hotel GM or owner review (for thought leadership pieces)"
+          - "Final approval before submission"
+        outputs:
+          - "Final article draft ready for submission"
+          - "Approval documentation"
+
+    outputs:
+      - "6-10 publication-ready articles (1,000-2,000 words each)"
+      - "Visual asset packages for each article"
+      - "SEO optimization completed"
+
+    checkpoints:
+      - name: "Draft Quality Check"
+        criteria: "Articles provide genuine reader value, hotel integration is natural"
+        approval_required: true
+        approver: "hotel-mkt-director"
+
+      - name: "SEO Compliance Check"
+        criteria: "All SEO checklist items completed, target keywords integrated naturally"
+        approval_required: true
+        approver: "hotel-seo-architect"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# PHASE 4: PLACEMENT & NEGOTIATION
+# ═══════════════════════════════════════════════════════════════════════════════
+
+  - phase: 4
+    name: "Placement & Negotiation"
+    duration: "1-3 weeks (depending on publication response time)"
+    description: "Pitch content to publications, negotiate placement, and finalize publication"
+
+    agents:
+      - name: "hotel-pr-advertorial"
+        role: "lead"
+        responsibility: "Pitch editors, negotiate terms, coordinate publication"
+      - name: "hotel-mkt-director"
+        role: "support"
+        responsibility: "Approve paid placement budgets and terms"
+
+    inputs:
+      - "Final article drafts from Phase 3"
+      - "Editor contact database from Phase 2"
+      - "Pitch strategy playbook from Phase 2"
+      - "Media kit and assets"
+
+    tasks:
+      - id: "4.1"
+        name: "Personalized Pitch Creation"
+        owner: "hotel-pr-advertorial"
+        description: "Create personalized pitches for each target editor"
+        pitch_email_structure:
+          - "Subject line (compelling, specific, non-generic)"
+          - "Personal greeting (use editor's name)"
+          - "Personal connection (reference their recent article or beat)"
+          - "Pitch (article concept, why it's valuable for their audience, why now)"
+          - "Credentials (why you're qualified to write this, hotel expertise)"
+          - "Offer (guest post, sponsored content, or press release)"
+          - "Call to action (ask if they're interested, offer to send draft)"
+          - "Professional signature (name, title, hotel, contact)"
+        pitch_email_best_practices:
+          - "Keep it short (150-250 words max)"
+          - "Lead with value to their readers (not hotel promotion)"
+          - "Show you know their publication (reference recent articles or editorial focus)"
+          - "Make it timely (tie to trend, season, or news)"
+          - "Include draft or outline as attachment (makes decision easy)"
+          - "One pitch per email (don't overwhelm with multiple ideas)"
+        pitch_email_example: |
+          Subject: Guest Post Idea: The Rise of Workation-Friendly Hotels in Brazil
+
+          Hi [Editor Name],
+
+          I loved your recent piece on remote work trends in Brazilian travel. As someone who's been adapting our boutique hotel for the workation boom, I thought you might be interested in a follow-up angle.
+
+          I'd like to pitch a guest post: "5 Signs a Hotel Truly Gets the Workation Traveler" – practical tips for readers planning workcations, based on what we've learned serving 200+ remote workers in the past year.
+
+          It would include actionable advice (what to look for, questions to ask) rather than promotion. I can include [Hotel Name] as a case study, but the focus would be helping your readers plan better workations.
+
+          Would this fit your editorial calendar? Happy to send a draft or outline.
+
+          Best,
+          [Name]
+          [Title], [Hotel Name]
+          [Email] | [Phone]
+        outputs:
+          - "Personalized pitches (30-50 pitches)"
+          - "Pitch tracking spreadsheet (editor, publication, date sent, status)"
+
+      - id: "4.2"
+        name: "Pitch Outreach & Follow-Up"
+        owner: "hotel-pr-advertorial"
+        description: "Send pitches and follow up strategically"
+        outreach_process:
+          - "Send initial pitch (Monday-Thursday mornings, 9-11am ideal)"
+          - "Follow up if no response in 5-7 days (gentle nudge)"
+          - "Follow up again if no response in 10-14 days (final check-in)"
+          - "Mark as 'no response' after 3 weeks, move on"
+        follow_up_email_template: |
+          Hi [Editor Name],
+
+          Just wanted to follow up on my pitch from [date] about [topic]. I know you're busy, so no worries if this doesn't fit right now.
+
+          If timing isn't right but you'd like to keep in touch for future ideas, I'm always happy to contribute.
+
+          Thanks!
+          [Name]
+        tracking_metrics:
+          - "Pitches sent"
+          - "Responses received (positive, negative, no response)"
+          - "Acceptance rate (% of pitches accepted)"
+          - "Response time (days from pitch to response)"
+        outputs:
+          - "Pitch outreach completed"
+          - "Response tracking log"
+
+      - id: "4.3"
+        name: "Paid Placement Negotiation"
+        owner: "hotel-pr-advertorial"
+        description: "Negotiate terms for paid native ads and sponsored content"
+        negotiation_process:
+          - step: 1
+            action: "Request media kit (pricing, reach, specs)"
+
+          - step: 2
+            action: "Negotiate pricing (ask for discounts: first-time advertiser, multiple placements, package deals)"
+
+          - step: 3
+            action: "Negotiate terms (editorial control, backlinks, promotion on social)"
+
+          - step: 4
+            action: "Get agreement in writing (IO, contract, or email confirmation)"
+        negotiation_leverage:
+          - "Bundle multiple placements (e.g., 'If I commit to 3 articles over 6 months, can we get 20% off?')"
+          - "Offer social promotion (e.g., 'We'll share on our social channels to amplify reach')"
+          - "Long-term partnership (e.g., 'We're looking for an ongoing content partnership, not one-off')"
+        key_terms_to_negotiate:
+          - "Price (target: 10-30% discount)"
+          - "Backlink quality (dofollow, not nofollow)"
+          - "Editorial control (approval of edits, headline)"
+          - "Promotion (will they share on social? Email newsletter?)"
+          - "Performance reporting (will they provide traffic/engagement data?)"
+        outputs:
+          - "Negotiated placements with terms in writing"
+          - "Budget allocation confirmed"
+
+      - id: "4.4"
+        name: "Article Submission & Coordination"
+        owner: "hotel-pr-advertorial"
+        description: "Submit finalized articles to publications and coordinate publication"
+        submission_process:
+          - "Submit article in requested format (Google Doc, Word, CMS upload)"
+          - "Include visual assets (images, infographics)"
+          - "Provide SEO metadata (title tag, meta description)"
+          - "Include author bio and headshot"
+          - "Specify desired anchor text for backlinks (hotel name, target keywords)"
+        coordination_checklist:
+          - "Confirm publication date"
+          - "Review draft before publication (catch errors, verify links)"
+          - "Approve final version"
+          - "Request analytics access or reporting (for paid placements)"
+        outputs:
+          - "Articles submitted to publications"
+          - "Publication dates confirmed"
+
+      - id: "4.5"
+        name: "Placement Tracking & Reporting"
+        owner: "hotel-pr-advertorial"
+        description: "Track all placements and outcomes"
+        tracking_metrics:
+          - "Placements secured (organic vs. paid)"
+          - "Publications (Tier 1, 2, 3, 4)"
+          - "Backlink quality (DA, dofollow/nofollow)"
+          - "Cost per placement (paid only)"
+          - "Publication date"
+          - "Article URL"
+        outputs:
+          - "Placement tracking spreadsheet"
+          - "Quarterly placement report"
+
+    outputs:
+      - "6-12 placements secured (mix of organic and paid)"
+      - "Articles published with high-quality backlinks"
+      - "Placement tracking dashboard"
+
+    checkpoints:
+      - name: "Quarterly Placement Target"
+        criteria: "6-12 placements secured per quarter"
+        approval_required: true
+        approver: "hotel-mkt-director"
+        frequency: "Quarterly"
+
+      - name: "Budget Compliance Check"
+        criteria: "Paid placements within approved budget"
+        approval_required: true
+        approver: "hotel-mkt-director"
+        frequency: "Per placement"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# PHASE 5: SEO INTEGRATION
+# ═══════════════════════════════════════════════════════════════════════════════
+
+  - phase: 5
+    name: "SEO Integration"
+    duration: "Ongoing (post-publication)"
+    description: "Ensure backlinks, anchor text optimization, and track referral traffic for SEO value"
+
+    agents:
+      - name: "hotel-seo-architect"
+        role: "lead"
+        responsibility: "Monitor backlinks, optimize anchor text, track SEO impact"
+      - name: "hotel-pr-advertorial"
+        role: "support"
+        responsibility: "Coordinate with publications for optimal backlinking"
+
+    inputs:
+      - "Published articles with URLs"
+      - "Target anchor text and keywords"
+      - "SEO tracking tools (Ahrefs, Moz, Google Search Console)"
+
+    tasks:
+      - id: "5.1"
+        name: "Backlink Verification & Optimization"
+        owner: "hotel-seo-architect"
+        description: "Verify backlinks are live and optimized for SEO value"
+        verification_checklist:
+          - "Backlink is live (not broken)"
+          - "Backlink is dofollow (not nofollow, unless expected)"
+          - "Anchor text is optimized (branded or keyword-rich, not 'click here')"
+          - "Link points to strategic page (homepage, booking page, or relevant content page)"
+          - "Domain Authority of publication (Moz DA or Ahrefs DR)"
+        optimization_requests:
+          - "If anchor text is generic ('click here'), request update to branded/keyword anchor"
+          - "If link is nofollow, request dofollow (if negotiated)"
+          - "If link points to wrong page, request correction"
+        outputs:
+          - "Backlink verification report (per placement)"
+          - "Optimization requests sent to publications"
+
+      - id: "5.2"
+        name: "Referral Traffic Tracking"
+        owner: "hotel-seo-architect"
+        description: "Track traffic from published articles to hotel website"
+        tracking_setup:
+          - "Ensure UTM parameters in all article links (utm_source=publication, utm_medium=referral, utm_campaign=article-title)"
+          - "Set up Google Analytics goals for referral traffic (page views, booking page visits, conversions)"
+          - "Create dashboard for referral traffic by publication"
+        metrics_to_track:
+          - "Referral visits (sessions from article link)"
+          - "Bounce rate (engagement quality)"
+          - "Pages per session (engagement depth)"
+          - "Avg session duration (time on site)"
+          - "Conversion rate (bookings attributed to referral)"
+        reporting_frequency: "Weekly for first month, then monthly"
+        outputs:
+          - "Referral traffic dashboard"
+          - "Weekly/monthly traffic reports per placement"
+
+      - id: "5.3"
+        name: "Brand Search Monitoring"
+        owner: "hotel-seo-architect"
+        description: "Monitor increase in branded search queries post-placement"
+        monitoring_process:
+          - "Track branded searches in Google Search Console (hotel name, variations)"
+          - "Compare search volume before vs. after placement"
+          - "Identify spikes in brand searches correlated with publication dates"
+        brand_search_categories:
+          - "Exact brand match ([Hotel Name])"
+          - "Brand + location ([Hotel Name] + [City])"
+          - "Brand + category ([Hotel Name] + hotel/boutique/charme)"
+        outputs:
+          - "Brand search trend report"
+          - "Placement impact analysis (correlation between placements and search lift)"
+
+      - id: "5.4"
+        name: "SEO Ranking Tracking"
+        owner: "hotel-seo-architect"
+        description: "Track improvement in keyword rankings for target keywords"
+        ranking_tracking_process:
+          - "Monitor target keyword rankings (pre- and post-placement)"
+          - "Track ranking improvements for keywords featured in articles"
+          - "Identify new keywords hotel is ranking for (long-tail from article topics)"
+        tools:
+          - "Google Search Console (organic search performance)"
+          - "Ahrefs or SEMrush (keyword rank tracking)"
+        outputs:
+          - "Keyword ranking report (monthly)"
+          - "SEO impact summary (placements → backlinks → rankings → traffic)"
+
+      - id: "5.5"
+        name: "Domain Authority Monitoring"
+        owner: "hotel-seo-architect"
+        description: "Track hotel website Domain Authority improvement over time"
+        monitoring_frequency: "Quarterly"
+        benchmarking:
+          - "Baseline DA at start of campaign"
+          - "Quarterly DA check (Moz, Ahrefs DR)"
+          - "Target: +5-10 DA points per year with consistent backlink building"
+        outputs:
+          - "Quarterly DA report"
+          - "Backlink quality vs. DA correlation analysis"
+
+    outputs:
+      - "50+ high-quality backlinks (DA 40+) per year"
+      - "Referral traffic tracked and optimized"
+      - "Brand search volume increase of 30%+ year-over-year"
+      - "Improved keyword rankings and Domain Authority"
+
+    checkpoints:
+      - name: "Backlink Quality Check"
+        criteria: "All backlinks verified as dofollow (unless agreed otherwise) and pointing to strategic pages"
+        approval_required: true
+        approver: "hotel-seo-architect"
+        frequency: "Per placement"
+
+      - name: "Quarterly SEO Impact Review"
+        criteria: "Measurable improvement in backlinks, rankings, or DA"
+        approval_required: true
+        approver: "hotel-mkt-director"
+        frequency: "Quarterly"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# PHASE 6: MEASUREMENT
+# ═══════════════════════════════════════════════════════════════════════════════
+
+  - phase: 6
+    name: "Measurement"
+    duration: "Ongoing (monthly reporting)"
+    description: "Track referral bookings, backlink value, brand mentions, and overall campaign ROI"
+
+    agents:
+      - name: "hotel-pr-advertorial"
+        role: "lead"
+        responsibility: "Compile and report on overall campaign performance"
+      - name: "hotel-direct-booking"
+        role: "support"
+        responsibility: "Provide booking attribution data"
+      - name: "hotel-seo-architect"
+        role: "support"
+        responsibility: "Provide SEO impact data"
+
+    inputs:
+      - "Referral traffic data from Phase 5"
+      - "Booking attribution data"
+      - "Backlink and SEO data from Phase 5"
+      - "Media Multiplier Effect tracking (secondary mentions)"
+
+    tasks:
+      - id: "6.1"
+        name: "Referral Booking Attribution"
+        owner: "hotel-direct-booking"
+        description: "Track bookings attributed to editorial placements"
+        attribution_methodology:
+          - "Direct attribution (UTM parameters → booking)"
+          - "Assisted attribution (referral traffic → later direct booking)"
+          - "Brand search attribution (placement → brand search → booking)"
+        tracking_setup:
+          - "UTM parameters in all article links"
+          - "Google Analytics goals for booking conversions"
+          - "CRM or PMS integration (match booking source to referral)"
+        metrics_to_track:
+          - "Direct bookings (from article link)"
+          - "Assisted bookings (viewed article, booked later)"
+          - "Revenue per placement (total booking revenue attributed)"
+          - "ROI (revenue / placement cost)"
+        outputs:
+          - "Booking attribution report per placement"
+          - "Revenue impact analysis"
+
+      - id: "6.2"
+        name: "Backlink Value Analysis"
+        owner: "hotel-seo-architect"
+        description: "Calculate SEO value of backlinks acquired"
+        backlink_value_formula:
+          - "Domain Authority of publication (Moz DA or Ahrefs DR)"
+          - "Link placement (in-content > sidebar > footer)"
+          - "Anchor text quality (branded/keyword > generic)"
+          - "Dofollow vs. nofollow"
+        estimated_value_per_backlink:
+          - "DA 70+: High value (R$5,000-R$10,000 equivalent in link building cost)"
+          - "DA 50-69: Medium value (R$2,000-R$5,000)"
+          - "DA 30-49: Low-Medium value (R$500-R$2,000)"
+          - "DA <30: Low value (R$100-R$500)"
+        outputs:
+          - "Backlink value report (estimated SEO value of all backlinks)"
+          - "Cost per backlink analysis (placement cost / backlinks acquired)"
+
+      - id: "6.3"
+        name: "Media Multiplier Effect Tracking"
+        owner: "hotel-pr-advertorial"
+        description: "Track secondary press mentions and amplification from primary placements"
+        schrager_media_multiplier_principle:
+          - "One placement in Tier 1 publication generates mentions in Tier 2-3 publications"
+          - "Example: Feature in Vogue → picked up by design blogs, local magazines, social media influencers"
+          - "Target: 3x multiplier (1 primary placement → 3 secondary mentions)"
+        tracking_methodology:
+          - "Set up Google Alerts for hotel name + new keywords introduced in article"
+          - "Monitor social media mentions (Instagram, Twitter/X, TikTok tags)"
+          - "Track inbound links in Ahrefs/Moz (who is linking to original article or hotel?)"
+          - "Monitor competitor publications (are they covering the same angle?)"
+        secondary_mention_categories:
+          - "Direct republication (article syndicated to other sites)"
+          - "Roundup features (hotel included in 'best of' lists inspired by article)"
+          - "Social media shares (influencers, travel accounts sharing article)"
+          - "Competitor response (other publications covering similar topic)"
+        outputs:
+          - "Media multiplier tracking log (primary placement → secondary mentions)"
+          - "Multiplier effect ratio (avg secondary mentions per primary placement)"
+
+      - id: "6.4"
+        name: "Brand Mention & Sentiment Analysis"
+        owner: "hotel-pr-advertorial"
+        description: "Track brand mentions across web and social media, analyze sentiment"
+        monitoring_tools:
+          - "Google Alerts (brand name mentions)"
+          - "Social listening tools (Mention, Brand24, or Cortex Social Listening)"
+          - "Manual monitoring (travel forums, Reddit, TripAdvisor forums)"
+        sentiment_analysis:
+          - "Positive mentions (praise, recommendation, aspiration)"
+          - "Neutral mentions (factual reference, listing)"
+          - "Negative mentions (criticism, complaint)"
+        metrics_to_track:
+          - "Total brand mentions (monthly)"
+          - "Sentiment distribution (% positive, neutral, negative)"
+          - "Share of voice vs. competitors (hotel mentions / total local hotel mentions)"
+        outputs:
+          - "Monthly brand mention report"
+          - "Sentiment trend analysis"
+
+      - id: "6.5"
+        name: "Campaign ROI & Performance Report"
+        owner: "hotel-pr-advertorial"
+        description: "Comprehensive quarterly report on campaign performance and ROI"
+        report_sections:
+          - section: "Placement Summary"
+            metrics:
+              - "Total placements (organic vs. paid)"
+              - "Publications (Tier 1, 2, 3, 4 breakdown)"
+              - "Placement cost (total spend on paid placements)"
+
+          - section: "SEO Impact"
+            metrics:
+              - "Backlinks acquired (total, average DA)"
+              - "Referral traffic (sessions, page views, conversions)"
+              - "Keyword ranking improvements"
+              - "Domain Authority change"
+
+          - section: "Booking Impact"
+            metrics:
+              - "Referral bookings (direct + assisted)"
+              - "Revenue attributed (total booking value)"
+              - "ROI (revenue / placement cost)"
+
+          - section: "Media Multiplier Effect"
+            metrics:
+              - "Secondary mentions (count, sources)"
+              - "Multiplier ratio (secondary / primary)"
+
+          - section: "Brand Impact"
+            metrics:
+              - "Brand search lift (%)"
+              - "Brand mentions (total, sentiment)"
+              - "Share of voice vs. competitors"
+
+          - section: "Top Performers"
+            content:
+              - "Top 3 placements by referral traffic"
+              - "Top 3 placements by bookings"
+              - "Top 3 placements by backlink value"
+
+          - section: "Insights & Recommendations"
+            content:
+              - "What worked (successful topics, publications, approaches)"
+              - "What didn't work (low-performing placements, lessons learned)"
+              - "Recommendations for next quarter"
+        report_format: "PDF + Dashboard"
+        outputs:
+          - "Quarterly advertorial campaign report"
+          - "Executive summary (1-page)"
+
+    outputs:
+      - "Referral booking attribution tracked"
+      - "Backlink value analysis completed"
+      - "Media Multiplier Effect measured (3x target)"
+      - "Quarterly campaign ROI report"
+
+    checkpoints:
+      - name: "Monthly Performance Review"
+        criteria: "Referral traffic and bookings tracked and reported monthly"
+        approval_required: true
+        approver: "hotel-pr-advertorial"
+        frequency: "Monthly"
+
+      - name: "Quarterly ROI Review"
+        criteria: "Campaign ROI positive (revenue > placement costs) or strategic value demonstrated"
+        approval_required: true
+        approver: "hotel-mkt-director"
+        frequency: "Quarterly"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# WORKFLOW OUTPUTS & SUCCESS METRICS
+# ═══════════════════════════════════════════════════════════════════════════════
+
+final_outputs:
+  - "6-12 high-quality editorial placements per quarter"
+  - "50+ high-authority backlinks (DA 40+) per year"
+  - "500+ referral visits per placement"
+  - "5-10 referral bookings per placement"
+  - "30%+ increase in brand search volume"
+  - "3x Media Multiplier Effect (1 placement → 3 secondary mentions)"
+  - "Quarterly campaign ROI reports"
+
+success_metrics:
+  - metric: "Quarterly Placements"
+    target: "6-12 placements"
+    impact: "Continuous brand visibility and authority building"
+
+  - metric: "Backlink Quality"
+    target: "DA 40+ average"
+    impact: "Improved SEO rankings and organic traffic"
+
+  - metric: "Referral Traffic"
+    target: "500+ visits per placement"
+    impact: "Direct website traffic and brand awareness"
+
+  - metric: "Referral Bookings"
+    target: "5-10 bookings per placement"
+    impact: "Direct revenue attribution"
+
+  - metric: "Brand Search Lift"
+    target: "+30% YoY"
+    impact: "Increased brand awareness and consideration"
+
+  - metric: "Media Multiplier Effect"
+    target: "3x amplification"
+    impact: "Exponential brand reach beyond primary placement"
+
+  - metric: "Campaign ROI"
+    target: "Positive ROI or strategic value"
+    impact: "Sustainable, scalable PR strategy"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# RISKS & MITIGATION
+# ═══════════════════════════════════════════════════════════════════════════════
+
+risks:
+  - risk: "Low pitch acceptance rate (organic PR)"
+    impact: "Medium"
+    mitigation: "Focus on genuine value, personalize pitches, build editor relationships over time"
+
+  - risk: "High cost of paid placements"
+    impact: "Medium"
+    mitigation: "Negotiate discounts, bundle placements, focus on high-ROI publications"
+
+  - risk: "Poor referral traffic or conversions"
+    impact: "Medium"
+    mitigation: "Optimize landing pages, use compelling CTAs in articles, track and iterate"
+
+  - risk: "Backlinks become nofollow or removed"
+    impact: "Low"
+    mitigation: "Negotiate dofollow in advance, maintain relationships with publications"
+
+  - risk: "Brand mentions are negative (Media Multiplier backfires)"
+    impact: "Low"
+    mitigation: "Monitor mentions closely, respond quickly to negative sentiment, focus on quality content"
+
+  - risk: "Content is too promotional (rejected or poor performance)"
+    impact: "Medium"
+    mitigation: "Follow 80-20 rule (80% value, 20% hotel), get editor feedback before submission"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# NOTES & BEST PRACTICES
+# ═══════════════════════════════════════════════════════════════════════════════
+
+notes:
+  - "Hormozi principle: Volume wins. Pitch 50 to land 10. Consistency beats perfection."
+  - "Conley principle: Story sells. Don't pitch features, pitch narratives and human experiences."
+  - "Schrager principle: Media Multiplier Effect. One great placement generates 3+ secondary mentions. Target Tier 1 publications for maximum multiplier."
+  - "Value-first approach: 80% reader value, 20% hotel mention. Editors smell promotion from a mile away."
+  - "Build relationships, not one-off placements. Invest in long-term editor relationships."
+  - "Editorial placements have compounding value: backlinks improve SEO over time, articles remain live for years."
+  - "Track everything: referrals, bookings, backlinks, brand searches. What gets measured gets improved."
+  - "Media Multiplier in action: One Vogue feature → design blogs → Instagram influencers → local magazines → tourism boards. Aim for 3x minimum."
+  - "Paid placements are faster but organic PR is more credible. Balance both."
+  - "Repurpose published articles across hotel's own channels (blog, social, email) for maximum ROI."
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# END OF WORKFLOW
+# ═══════════════════════════════════════════════════════════════════════════════
+
+# ════════════════════════════════════════════════════════════════
+# 🔒 ENFORCEMENT ENGINE
+# Inspirado em: Cooper's Stage-Gate (P&G) + Salesforce Pipeline + Toyota Andon
+# ════════════════════════════════════════════════════════════════
+
+enforcement_engine:
+  version: "1.0.0"
+  protocol: "stage-gate"
+
+  state_machine:
+    initial_state: "phase-1-research"
+    terminal_states: ["completed", "killed"]
+
+    transitions:
+      - from: "phase-1-research"
+        to: "phase-2-targeting"
+        gate: "G1"
+        trigger: "auto_on_gate_pass"
+
+      - from: "phase-2-targeting"
+        to: "phase-3-creation"
+        gate: "G2"
+        trigger: "auto_on_gate_pass"
+
+      - from: "phase-3-creation"
+        to: "phase-4-placement"
+        gate: "G3"
+        trigger: "auto_on_gate_pass"
+
+      - from: "phase-4-placement"
+        to: "phase-5-seo"
+        gate: "G4"
+        trigger: "auto_on_gate_pass"
+
+      - from: "phase-5-seo"
+        to: "phase-6-measurement"
+        gate: "G5"
+        trigger: "auto_on_gate_pass"
+
+      - from: "phase-6-measurement"
+        to: "completed"
+        gate: null
+        trigger: "quarterly_review"
+
+    invalid_transitions:
+      - from: "phase-1-research"
+        to: "phase-3-creation"
+        reason: "Não pode criar conteúdo sem targets definidos (Phase 2) - content deve ser customizado por publicação"
+
+      - from: "phase-2-targeting"
+        to: "phase-4-placement"
+        reason: "Não pode pitchar sem conteúdo pronto (Phase 3) - editors precisam ver draft ou outline"
+
+      - from: "phase-3-creation"
+        to: "phase-5-seo"
+        reason: "Não pode otimizar SEO sem placement confirmado (Phase 4) - backlinks dependem de publicação live"
+
+  gates:
+    G1:
+      name: "Gate 1: Topics & Trends Validated"
+      between: ["phase-1-research", "phase-2-targeting"]
+      gatekeeper: "hotel-mkt-director"
+      sla: "48h"
+
+      must_meet:
+        - id: "G1-M1"
+          criterion: "6-10 trending topics identificados com dados de search volume (Google Trends, keyword tools)"
+          validation: "Verificar topic brief - cada topic deve ter: search volume mensal, trend direction (up/down/stable), seasonal relevance"
+          on_fail: "BLOCK - trend-hunter deve enriquecer topics com dados quantitativos antes de prosseguir"
+
+        - id: "G1-M2"
+          criterion: "Topic alignment com posicionamento do hotel verificado (cada topic conecta com USP do hotel)"
+          validation: "Revisar 'trend-hotel alignment map' - cada topic deve ter connection explicada (ex: workation trend → hotel tem coworking space)"
+          on_fail: "BLOCK - eliminar topics desalinhados e substituir por topics que highlight hotel differentiators"
+
+        - id: "G1-M3"
+          criterion: "Seasonal relevance confirmada (topics são timely para próximos 60-90 dias)"
+          validation: "Verificar calendar timing - summer travel topics em junho, não em dezembro; festival topics antes do evento, não depois"
+          on_fail: "BLOCK - reordenar topics por timing ou substituir topics desatualizados"
+
+      should_meet:
+        - id: "G1-S1"
+          criterion: "Pelo menos 3 topics são contrarian ou category design (não apenas 'best hotels in X')"
+          weight: 0.8
+          min_score: 7
+          scoring: "Se 3+ topics desafiam status quo ou criam nova categoria: 10 pontos; se todos são generic roundups: 4 pontos"
+
+      kill_criteria:
+        - id: "G1-K1"
+          criterion: "Se NENHUM topic alinha com brand identity do hotel (ex: budget travel topics para luxury hotel)"
+          action: "KILL workflow + refazer research com foco em brand-aligned topics - content desalinhado = credibilidade zero"
+
+        - id: "G1-K2"
+          criterion: "Se todos os topics são evergreen generic (sem hook de trend ou timing)"
+          action: "RECYCLE - injetar 50%+ de trending/timely topics para aumentar pitch acceptance rate"
+
+      decision_options: ["GO", "KILL", "HOLD", "RECYCLE"]
+
+    G2:
+      name: "Gate 2: Publications & Editors Mapped"
+      between: ["phase-2-targeting", "phase-3-creation"]
+      gatekeeper: "hotel-pr-advertorial"
+      sla: "48h"
+
+      must_meet:
+        - id: "G2-M1"
+          criterion: "15+ target publications identificadas com DA >30 (Domain Authority via Moz ou Ahrefs)"
+          validation: "Verificar publication database - cada pub deve ter: name, tier, DA/DR score, audience size, editorial focus"
+          on_fail: "BLOCK - pr-advertorial deve completar research até atingir 15+ pubs qualificadas"
+
+        - id: "G2-M2"
+          criterion: "Editorial contacts para 10+ publications identificados (nome + email + recent articles)"
+          validation: "Editor contact database deve ter 10+ rows com: editor_name, title, email, linkedin, last_3_articles, beat"
+          on_fail: "BLOCK - research editors via LinkedIn, publication masthead, Twitter - sem contato = pitch impossível"
+
+        - id: "G2-M3"
+          criterion: "Pitch angle customizado por publicação (não generic mass pitch)"
+          validation: "Pitch strategy playbook deve ter personalization notes para cada Tier 1 publication (por que este topic fit their audience?)"
+          on_fail: "BLOCK - generic pitches têm <5% acceptance - customizar angle por pub antes de prosseguir"
+
+      should_meet:
+        - id: "G2-S1"
+          criterion: "Pelo menos 5 publications são Tier 1 (DA 60+, national reach)"
+          weight: 1.0
+          min_score: 7
+          scoring: "Contar Tier 1 pubs na database - se 5+: 10 pontos; 3-4: 7 pontos; <3: 4 pontos"
+
+      kill_criteria:
+        - id: "G2-K1"
+          criterion: "Se TODAS as target publications são pay-to-play (zero editorial credibility)"
+          action: "KILL targeting + refazer com mix de organic PR opportunities - only paid = desperdício de budget sem authority"
+
+        - id: "G2-K2"
+          criterion: "Se nenhum editor contact encontrado após 5 dias de research (dead ends)"
+          action: "HOLD + escalar para external PR agency ou networking - sem contacts = pitch rate 0%"
+
+      decision_options: ["GO", "KILL", "HOLD", "RECYCLE"]
+
+    G3:
+      name: "Gate 3: Content Ready & Editorial Quality"
+      between: ["phase-3-creation", "phase-4-placement"]
+      gatekeeper: "hotel-mkt-director"
+      sla: "72h"
+
+      must_meet:
+        - id: "G3-M1"
+          criterion: "3-5 advertorials/articles escritos (800-2000 palavras cada)"
+          validation: "Verificar content folder - deve ter 3-5 arquivos .md com wordcount 800-2000"
+          on_fail: "BLOCK - pr-advertorial deve completar drafts faltantes"
+
+        - id: "G3-M2"
+          criterion: "Cada artigo tem angle único por target publication (não one-size-fits-all)"
+          validation: "Comparar articles - cada deve ter custom intro/angle referenciando editorial focus da pub alvo"
+          on_fail: "BLOCK - reescrever intros e angles para customizar por publication (generic = rejeição certa)"
+
+        - id: "G3-M3"
+          criterion: "SEO keywords integrados naturalmente (não keyword stuffing)"
+          validation: "SEO-architect review - keyword density 1-2%, keywords em H1/H2, meta description com CTA"
+          on_fail: "BLOCK - otimizar SEO sem sacrificar readability (over-optimization = penalização Google)"
+
+        - id: "G3-M4"
+          criterion: "Disclosure language incluída ('conteúdo patrocinado' ou 'em parceria com' se paid placement)"
+          validation: "Buscar string 'patrocinado' ou 'parceria' no footer de cada article - obrigatório para transparência"
+          on_fail: "BLOCK - adicionar disclosure conforme FTC/CONAR guidelines - falta de disclosure = penalização legal"
+
+      should_meet:
+        - id: "G3-S1"
+          criterion: "Articles seguem 80-20 rule (80% reader value, 20% hotel mention)"
+          weight: 1.0
+          min_score: 8
+          scoring: "Audit cada article - contar % de parágrafos focados em hotel vs. value geral; target <= 30% hotel focus"
+
+      kill_criteria:
+        - id: "G3-K1"
+          criterion: "Se qualquer artigo faz claims inverificáveis sobre saúde/segurança ('hotel mais seguro do Brasil', 'cura insônia')"
+          action: "KILL article imediatamente + reescrever sem health claims - liability risk + platform rejection"
+
+        - id: "G3-K2"
+          criterion: "Se article é 100% promotional (press release disfarçado de editorial)"
+          action: "RECYCLE - reescrever com foco em reader value, não hotel promo - editors rejeitam promotional content"
+
+      decision_options: ["GO", "KILL", "HOLD", "RECYCLE"]
+
+    G4:
+      name: "Gate 4: Placements Secured & Published"
+      between: ["phase-4-placement", "phase-5-seo"]
+      gatekeeper: "hotel-pr-advertorial"
+      sla: "7 days"
+
+      must_meet:
+        - id: "G4-M1"
+          criterion: "Pitches enviados para 15+ publications (email pitch documentado)"
+          validation: "Verificar pitch tracking spreadsheet - deve ter 15+ rows com: pub_name, editor_email, date_sent, subject_line"
+          on_fail: "BLOCK - enviar pitches faltantes até atingir 15+ (volume necessário para estatística de acceptance)"
+
+        - id: "G4-M2"
+          criterion: "3+ placements confirmados/publicados (mix de organic + paid ok)"
+          validation: "Verificar placement log - 3+ entries com: pub_name, article_url, publish_date, type (organic/paid), status (live)"
+          on_fail: "HOLD - se <3 após 15 pitches: topic/angle falhou; revisar e re-pitch com ajustes ou considerar mais paid placements"
+
+        - id: "G4-M3"
+          criterion: "Todos os artigos publicados incluem trackable links com UTM parameters"
+          validation: "Testar links em cada article - deve ter utm_source, utm_medium, utm_campaign preenchidos"
+          on_fail: "BLOCK - solicitar update de links ou re-publish com UTM - sem tracking = ROI impossível de medir"
+
+      should_meet:
+        - id: "G4-S1"
+          criterion: "Pelo menos 1 placement é Tier 1 (DA 60+, national reach)"
+          weight: 1.0
+          min_score: 7
+          scoring: "Se 1+ Tier 1 placement: 10 pontos; só Tier 2-3: 6 pontos (ainda ok mas menor impact)"
+
+      kill_criteria:
+        - id: "G4-K1"
+          criterion: "Se ZERO acceptances após pitchar 15+ publications (100% rejection rate)"
+          action: "KILL cycle + diagnosticar: topic não relevante? Pitch approach ruim? Angle genérico? + refazer Phase 1-3 com learnings"
+
+        - id: "G4-K2"
+          criterion: "Se article publicado mas todos os links são nofollow (zero SEO value)"
+          validation: "Inspecionar HTML de published articles - se todos links têm rel='nofollow': negotiation falhou"
+          action: "RECYCLE - renegotiar com publication para dofollow OU aceitar como brand awareness play (não SEO)"
+
+      decision_options: ["GO", "KILL", "HOLD", "RECYCLE"]
+
+    G5:
+      name: "Gate 5: SEO Integration & Link Quality"
+      between: ["phase-5-seo", "phase-6-measurement"]
+      gatekeeper: "hotel-seo-architect"
+      sla: "30 days"
+
+      must_meet:
+        - id: "G5-M1"
+          criterion: "Backlinks de published pieces indexados pelo Google (verificável via Google Search Console ou Ahrefs)"
+          validation: "Rodar backlink check - links devem aparecer em GSC ou Ahrefs crawl dentro de 30 dias"
+          on_fail: "HOLD - aguardar indexação OU solicitar publication submeter URL ao Google via Search Console"
+
+        - id: "G5-M2"
+          criterion: "Internal linking do site do hotel para published pieces configurado"
+          validation: "Verificar blog ou press page do hotel - deve ter links para articles publicados (cria link relevance bidirectional)"
+          on_fail: "BLOCK - adicionar links na press page ou blog post mencionando coverage"
+
+        - id: "G5-M3"
+          criterion: "Canonical tags properly set (evitar duplicate content issues)"
+          validation: "Verificar <link rel='canonical'> em published articles - deve apontar para URL da publication, não hotel site"
+          on_fail: "BLOCK - solicitar publication corrigir canonical tag - duplicate content = penalização SEO"
+
+      should_meet:
+        - id: "G5-S1"
+          criterion: "Anchor text dos backlinks é branded ou keyword-rich (não 'click aqui')"
+          weight: 1.0
+          min_score: 7
+          scoring: "Audit anchor text - se 70%+ são branded/keywords: 10 pontos; se 70%+ generic: 4 pontos"
+
+      kill_criteria:
+        - id: "G5-K1"
+          criterion: "Se backlinks removidos pela publicação após 30 dias (links broken ou content unpublished)"
+          action: "HOLD + contact publication para restoration - se permanente: placement falhou, não contar para KPIs"
+
+        - id: "G5-K2"
+          criterion: "Se Google penalizou site do hotel por link scheme (manual action em GSC)"
+          action: "KILL workflow imediatamente + disavow links problemáticos + pause advertorial program até penalty lifted"
+
+      decision_options: ["GO", "KILL", "HOLD", "RECYCLE"]
+
+  handoffs:
+    - id: "H1"
+      from_phase: "phase-1-research"
+      to_phase: "phase-3-creation"
+      from_agent: "@hotel-trend-hunter"
+      to_agent: "@hotel-pr-advertorial"
+      trigger: "gate_G1_passed"
+
+      deliverables:
+        - name: "trending_topics_report"
+          format: "markdown"
+          required: true
+          location: "squads/hotel-mkt/campaigns/advertorial-[YYYY-QQ]/trending-topics.md"
+
+      acceptance_criteria:
+        - "Report lista 6-10 topics com: topic_name, search_volume, trend_direction, seasonal_timing, hotel_alignment_rationale"
+        - "Cada topic tem editorial angle sugerido (destination guide, trend analysis, problem/solution, etc.)"
+
+      sla: "24h"
+
+      on_timeout:
+        action: "escalate"
+        notify: "@hotel-mkt-director"
+        message: "Trending topics não entregues - content creation bloqueada"
+
+      on_reject:
+        action: "return_to_sender"
+        message: "Topics sem dados quantitativos (search volume, trends) ou desalinhados com hotel - enriquecer e reenviar"
+
+    - id: "H2"
+      from_phase: "phase-3-creation"
+      to_phase: "external"
+      from_agent: "@hotel-copywriter"
+      to_agent: "@hotel-pr-advertorial"
+      trigger: "on_request"
+
+      deliverables:
+        - name: "narrative_copy_support"
+          format: "markdown"
+          required: false
+          location: "squads/hotel-mkt/content/advertorial/[article-slug]-narrative.md"
+
+      acceptance_criteria:
+        - "Copy support inclui: storytelling hooks, emotional language suggestions, brand voice consistency check"
+
+      sla: "48h"
+
+      on_timeout:
+        action: "skip"
+        message: "Narrative support não crítico - pr-advertorial pode prosseguir sem (nice-to-have)"
+
+      on_reject:
+        action: "return_to_sender"
+        message: "Copy suggestions muito promotional ou off-brand - ajustar para editorial tone"
+
+    - id: "H3"
+      from_phase: "phase-5-seo"
+      to_phase: "external"
+      from_agent: "@hotel-pr-advertorial"
+      to_agent: "@hotel-seo-architect"
+      trigger: "post_publication"
+
+      deliverables:
+        - name: "published_backlinks_list"
+          format: "csv"
+          required: true
+          location: "squads/hotel-mkt/seo/backlinks/[YYYY-MM]-advertorial-backlinks.csv"
+
+      acceptance_criteria:
+        - "CSV lista: article_url, publication_name, backlink_url, anchor_text, link_type (dofollow/nofollow), DA_score, publish_date"
+
+      sla: "7 days"
+
+      on_timeout:
+        action: "escalate"
+        notify: "@hotel-mkt-director"
+        message: "Backlinks não documentados - SEO architect sem dados para link profile analysis"
+
+      on_reject:
+        action: "return_to_sender"
+        message: "Backlink data incompleto (falta DA score ou anchor text) - enriquecer via Ahrefs/Moz e reenviar"
+
+    - id: "H4"
+      from_phase: "phase-4-placement"
+      to_phase: "external"
+      from_agent: "@hotel-pr-advertorial"
+      to_agent: "@hotel-social-creator"
+      trigger: "post_publication"
+
+      deliverables:
+        - name: "published_articles_for_amplification"
+          format: "csv"
+          required: true
+          location: "squads/hotel-mkt/social/amplification/[YYYY-MM]-articles-to-share.csv"
+
+      acceptance_criteria:
+        - "CSV lista: article_title, publication_name, article_url, publish_date, suggested_social_copy (for sharing)"
+
+      sla: "24h"
+
+      on_timeout:
+        action: "skip"
+        message: "Amplification list atrasada - social-creator vai descobrir organicamente (não crítico)"
+
+      on_reject:
+        action: "return_to_sender"
+        message: "Social copy suggestions muito sales-y - reescrever com value angle para share authenticity"
+
+    - id: "H5"
+      from_phase: "phase-1-research"
+      to_phase: "external"
+      from_agent: "@hotel-seo-architect"
+      to_agent: "@hotel-pr-advertorial"
+      trigger: "gate_G1_passed"
+
+      deliverables:
+        - name: "keyword_targets_and_anchor_text"
+          format: "csv"
+          required: true
+          location: "squads/hotel-mkt/seo/keywords/[YYYY-QQ]-advertorial-keywords.csv"
+
+      acceptance_criteria:
+        - "CSV lista: target_keyword, search_volume, difficulty_score, suggested_anchor_text, target_landing_page (hotel site)"
+        - "Keywords mapeados para topics (cada topic tem 3-5 keywords sugeridos)"
+
+      sla: "48h"
+
+      on_timeout:
+        action: "escalate"
+        notify: "@hotel-mkt-director"
+        message: "Keyword guidance não entregue - articles vão ser criados sem SEO optimization"
+
+      on_reject:
+        action: "return_to_sender"
+        message: "Keywords muito competitive (difficulty >70) ou low volume (<100 searches/month) - ajustar para sweet spot"
+
+  auto_rollback:
+    triggers:
+      - id: "R1"
+        condition: "Pitch acceptance rate <20% após 15 pitches enviados"
+        action: "pause"
+        recovery: "Pausar outreach + diagnosticar: topics não relevantes? Pitch angle fraco? Editor contacts errados? + workshop com mkt-director para ajustar strategy"
+        notify: "@hotel-pr-advertorial + @hotel-mkt-director"
+
+      - id: "R2"
+        condition: "Published article gera zero referral traffic após 30 dias (GA4 shows 0 sessions from article URL)"
+        action: "review"
+        recovery: "Audit: (1) Link placement prominente no article? (2) CTA claro? (3) Landing page relevante? + considerar paid boost ou social amplification"
+        notify: "@hotel-seo-architect + @hotel-pr-advertorial"
+
+      - id: "R3"
+        condition: "Disclosure missing em published piece (flagged por audit ou reader complaint)"
+        action: "immediate_correction"
+        recovery: "Contatar publication IMEDIATAMENTE para adicionar disclosure ('conteúdo patrocinado') - compliance risk"
+        notify: "@hotel-mkt-director + @hotel-legal"
+
+      - id: "R4"
+        condition: "Backlink removido por publication sem aviso (broken link detected)"
+        action: "reach_out"
+        recovery: "Contatar editor para restaurar link - se technical issue: fix; se editorial decision: negotiate alternative placement"
+        notify: "@hotel-pr-advertorial"
+
+      - id: "R5"
+        condition: "Article plagiado por outro site (duplicate content detected via Copyscape)"
+        action: "dmca"
+        recovery: "Documentar plagiarism + enviar DMCA takedown notice ao site + notificar publication original"
+        notify: "@hotel-pr-advertorial + @hotel-legal"
+
+      - id: "R6"
+        condition: "Google manual action recebida por 'unnatural links' (link scheme penalty)"
+        action: "emergency_stop"
+        recovery: "PAUSAR todo advertorial program + audit all backlinks + disavow suspicious links + submit reconsideration request + aguardar penalty lift antes de retomar"
+        notify: "@hotel-seo-architect + @hotel-mkt-director"

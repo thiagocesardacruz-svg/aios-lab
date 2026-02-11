@@ -1,0 +1,1214 @@
+# ═══════════════════════════════════════════════════════════════
+# HANDOFF CONTRACTS — hotel-mkt Squad
+# ═══════════════════════════════════════════════════════════════
+# Version: 1.0.0
+# Inspired by: Salesforce Pipeline Automation
+# Purpose: Definir contratos de entrega entre todos os 13 agentes
+# Philosophy: "Handoff sem contrato é telefone sem fio."
+# ═══════════════════════════════════════════════════════════════
+
+handoff_contracts:
+  squad: "hotel-mkt"
+  version: "1.0.0"
+  total_agents: 13
+  total_contracts: 35
+  philosophy: |
+    Cada handoff entre agentes é um CONTRATO com:
+    - Deliverables específicos (formato, conteúdo mínimo)
+    - Acceptance criteria (como validar se está OK)
+    - SLA (prazo máximo)
+    - Escalation (o que fazer se atrasar)
+    - Rejection protocol (como retornar com feedback)
+
+  # ═════════════════════════════════════════════════════════════
+  # TIER 0 → TIER 1: CHIEF DISTRIBUI DEMANDAS
+  # ═════════════════════════════════════════════════════════════
+
+  - contract_id: "HC-001"
+    name: "Chief → Trend Hunter: Research Request"
+    from:
+      agent: "hotel-mkt-chief"
+      tier: 0
+    to:
+      agent: "hotel-trend-hunter"
+      tier: 1
+
+    deliverables:
+      - name: "trend_report.pdf"
+        format: "PDF"
+        min_content:
+          - "20+ keywords relevantes com search volume e tendência"
+          - "10+ competitors analisados (pricing, offers, messaging)"
+          - "Social listening com 500+ menções"
+          - "Pricing intelligence 90 dias futuros"
+        sections_required:
+          - "Executive Summary"
+          - "Keyword Analysis (tabela)"
+          - "Competitor Matrix (tabela)"
+          - "Social Insights"
+          - "Recommendations"
+
+      - name: "competitor_matrix.xlsx"
+        format: "Excel/CSV"
+        columns_required:
+          - "hotel_name"
+          - "location"
+          - "avg_rate"
+          - "offer_description"
+          - "messaging_angle"
+          - "unique_selling_points"
+
+    acceptance_criteria:
+      - "Relatório cobre mínimo 20 keywords relevantes para campanha"
+      - "Competitor matrix inclui pelo menos 10 propriedades"
+      - "Dados de sazonalidade cobrem 90 dias à frente"
+      - "Recomendações são actionable (não genéricas)"
+
+    sla:
+      delivery: "3 dias úteis após solicitação"
+      response_time: "4 horas para confirmar recebimento da demanda"
+
+    on_timeout:
+      first_action: "Chief envia lembrete"
+      second_action: "Escalar para hotel-manager (após 4 dias)"
+      final_action: "Reatribuir para backup researcher (após 5 dias)"
+
+    on_reject:
+      action: "Trend Hunter recebe notas específicas de gaps"
+      sla_revision: "24h para corrigir e reenviar"
+      max_revisions: 2
+
+  # ─────────────────────────────────────────────────────────────
+
+  - contract_id: "HC-002"
+    name: "Chief → Offer Architect: Offer Design Request"
+    from:
+      agent: "hotel-mkt-chief"
+      tier: 0
+    to:
+      agent: "hotel-offer-architect"
+      tier: 1
+
+    deliverables:
+      - name: "grand_slam_offer.json"
+        format: "JSON"
+        required_fields:
+          - "offer_name: string"
+          - "target_segment: string"
+          - "core_package: object (accommodation + inclusions)"
+          - "bonuses: array (high-value add-ons)"
+          - "scarcity: object (inventory limit, deadline)"
+          - "urgency: object (countdown, limited-time)"
+          - "guarantee: object (cancellation policy, best rate)"
+          - "pricing_tiers: array (standard, premium, VIP)"
+
+      - name: "pricing_strategy.xlsx"
+        format: "Excel"
+        required_sheets:
+          - "Pricing Tiers (com margin analysis)"
+          - "Competitor Comparison"
+          - "Early Bird Discounts"
+          - "Flash Sale Mechanics"
+
+    acceptance_criteria:
+      - "Offer aplica framework SUBGN (Scarcity, Urgency, Bonus, Guarantee, Naming)"
+      - "Margin analysis mostra profitability > 40%"
+      - "Offer passa 'no-brainer test' (Chief would buy)"
+      - "Pricing tiers claramente diferenciados"
+
+    sla:
+      delivery: "3-5 dias após receber briefing"
+      response_time: "2 horas para confirmar"
+
+    on_timeout:
+      first_action: "Lembrete + check-in (dia 4)"
+      second_action: "Escalar (dia 6)"
+
+    on_reject:
+      action: "Feedback detalhado: o que falta, o que ajustar"
+      sla_revision: "2 dias"
+      max_revisions: 2
+
+  # ─────────────────────────────────────────────────────────────
+
+  - contract_id: "HC-003"
+    name: "Chief → Guest Strategist: Segmentation Request"
+    from:
+      agent: "hotel-mkt-chief"
+      tier: 0
+    to:
+      agent: "hotel-guest-strategist"
+      tier: 1
+
+    deliverables:
+      - name: "segment_profiles.json"
+        format: "JSON"
+        min_segments: 3
+        required_per_segment:
+          - "segment_name"
+          - "demographics: object"
+          - "psychographics: object (desires, fears, values)"
+          - "behavioral_traits: array"
+          - "emotional_triggers: array"
+          - "messaging_pillars: array (3-5)"
+
+      - name: "guest_journey_map.pdf"
+        format: "PDF/Diagram"
+        required_stages:
+          - "Awareness"
+          - "Consideration"
+          - "Decision"
+          - "Experience"
+          - "Post-Stay"
+          - "Advocacy"
+
+    acceptance_criteria:
+      - "Mínimo 3 segmentos definidos com clareza"
+      - "Cada segmento tem emotional triggers mapeados"
+      - "Journey map identifica touchpoints críticos"
+      - "Messaging pillars são específicos (não genéricos)"
+
+    sla:
+      delivery: "5-7 dias após solicitação"
+      response_time: "4 horas"
+
+    on_timeout:
+      first_action: "Check-in (dia 6)"
+      second_action: "Escalar (dia 8)"
+
+    on_reject:
+      action: "Feedback: quais segmentos estão vagos, o que melhorar"
+      sla_revision: "3 dias"
+      max_revisions: 2
+
+  # ═════════════════════════════════════════════════════════════
+  # TIER 1 → TIER 2: ESTRATÉGIA VIRA EXECUÇÃO
+  # ═════════════════════════════════════════════════════════════
+
+  - contract_id: "HC-004"
+    name: "Trend Hunter → Copywriter: Trend Insights for Copy"
+    from:
+      agent: "hotel-trend-hunter"
+      tier: 1
+    to:
+      agent: "hotel-copywriter"
+      tier: 2
+
+    deliverables:
+      - name: "trend_briefing.md"
+        format: "Markdown"
+        required_sections:
+          - "Top 10 trending keywords (para hooks)"
+          - "Cultural moments relevantes (para trend-jacking)"
+          - "Guest pain points identificados (para problem-aware copy)"
+          - "Emerging desires (para desire-based hooks)"
+
+    acceptance_criteria:
+      - "Briefing identifica 10+ keywords acionáveis para copy"
+      - "Cultural moments têm contexto claro (não apenas lista)"
+      - "Pain points são específicos (não 'querem bom atendimento')"
+
+    sla:
+      delivery: "1 dia após completar research"
+      response_time: "2 horas"
+
+    on_timeout:
+      first_action: "Copywriter solicita diretamente"
+      second_action: "Chief intervém"
+
+    on_reject:
+      action: "Copywriter explica que insights são muito vagos"
+      sla_revision: "4 horas"
+      max_revisions: 1
+
+  # ─────────────────────────────────────────────────────────────
+
+  - contract_id: "HC-005"
+    name: "Trend Hunter → Social Creator: Trending Content Angles"
+    from:
+      agent: "hotel-trend-hunter"
+      tier: 1
+    to:
+      agent: "hotel-social-creator"
+      tier: 2
+
+    deliverables:
+      - name: "trending_topics_social.json"
+        format: "JSON"
+        required_fields:
+          - "trending_hashtags: array (top 20)"
+          - "viral_formats: array (Reels trends, TikTok sounds)"
+          - "competitor_top_posts: array (5+ posts com engagement)"
+          - "content_gaps: array (o que competitors não estão fazendo)"
+
+    acceptance_criteria:
+      - "Hashtags são relevantes para turismo/hospitalidade"
+      - "Viral formats têm exemplos com links"
+      - "Content gaps são oportunidades claras"
+
+    sla:
+      delivery: "2 dias após research"
+      response_time: "2 horas"
+
+    on_timeout:
+      first_action: "Social Creator pede update"
+      second_action: "Chief intervém"
+
+    on_reject:
+      action: "Social Creator explica que trends não são visuais o suficiente"
+      sla_revision: "4 horas"
+      max_revisions: 1
+
+  # ─────────────────────────────────────────────────────────────
+
+  - contract_id: "HC-006"
+    name: "Offer Architect → Copywriter: Offer Details for Copy"
+    from:
+      agent: "hotel-offer-architect"
+      tier: 1
+    to:
+      agent: "hotel-copywriter"
+      tier: 2
+
+    deliverables:
+      - name: "offer_copy_brief.json"
+        format: "JSON"
+        required_fields:
+          - "offer_name: string"
+          - "core_value_proposition: string"
+          - "bonuses_list: array (cada bonus com value perception)"
+          - "scarcity_angle: string (como comunicar)"
+          - "urgency_angle: string (deadline, countdown)"
+          - "guarantee_text: string (risk reversal)"
+          - "target_emotion: string (main emotional trigger)"
+
+    acceptance_criteria:
+      - "Value proposition é clara em 1 frase"
+      - "Cada bonus tem perceived value descrito"
+      - "Scarcity e urgency são específicos (não 'vagas limitadas')"
+
+    sla:
+      delivery: "1 dia após finalizar offer"
+      response_time: "2 horas"
+
+    on_timeout:
+      first_action: "Copywriter solicita"
+      second_action: "Chief intervém"
+
+    on_reject:
+      action: "Copywriter explica que falta clareza em algum elemento"
+      sla_revision: "4 horas"
+      max_revisions: 1
+
+  # ─────────────────────────────────────────────────────────────
+
+  - contract_id: "HC-007"
+    name: "Offer Architect → Ads Specialist: Offer for Ad Campaigns"
+    from:
+      agent: "hotel-offer-architect"
+      tier: 1
+    to:
+      agent: "hotel-ads-specialist"
+      tier: 2
+
+    deliverables:
+      - name: "offer_ad_package.json"
+        format: "JSON"
+        required_fields:
+          - "offer_headline: string (hook-ready)"
+          - "key_benefits: array (3-5 bullets)"
+          - "pricing_tiers: array (com labels claros)"
+          - "cta_suggestions: array (3+ CTAs)"
+          - "visual_assets_needed: array (what to show)"
+
+    acceptance_criteria:
+      - "Headline é hook-ready (< 125 chars)"
+      - "Benefits são benefit-driven (não feature-dump)"
+      - "CTAs são action-oriented"
+
+    sla:
+      delivery: "1 dia após offer approval"
+      response_time: "2 horas"
+
+    on_timeout:
+      first_action: "Ads Specialist solicita"
+      second_action: "Chief intervém"
+
+    on_reject:
+      action: "Ads Specialist explica que headline/benefits não são ad-friendly"
+      sla_revision: "4 horas"
+      max_revisions: 1
+
+  # ─────────────────────────────────────────────────────────────
+
+  - contract_id: "HC-008"
+    name: "Guest Strategist → Copywriter: Messaging Framework"
+    from:
+      agent: "hotel-guest-strategist"
+      tier: 1
+    to:
+      agent: "hotel-copywriter"
+      tier: 2
+
+    deliverables:
+      - name: "messaging_framework.md"
+        format: "Markdown"
+        required_per_segment:
+          - "Segment name"
+          - "Core desire (what they want)"
+          - "Core pain (what they fear/avoid)"
+          - "Messaging pillars (3-5 angles)"
+          - "Tone guidance (formal/casual, emotional/rational)"
+          - "Proof points to use (testimonials, data)"
+
+    acceptance_criteria:
+      - "Cada segmento tem desires e pains específicos"
+      - "Messaging pillars são diferenciados por segmento"
+      - "Tone guidance é clara (com exemplos)"
+
+    sla:
+      delivery: "1 dia após finalizar segmentation"
+      response_time: "2 horas"
+
+    on_timeout:
+      first_action: "Copywriter solicita"
+      second_action: "Chief intervém"
+
+    on_reject:
+      action: "Copywriter explica que messaging é muito vago ou genérico"
+      sla_revision: "1 dia"
+      max_revisions: 1
+
+  # ─────────────────────────────────────────────────────────────
+
+  - contract_id: "HC-009"
+    name: "Guest Strategist → Email Maestro: Lifecycle Segmentation"
+    from:
+      agent: "hotel-guest-strategist"
+      tier: 1
+    to:
+      agent: "hotel-email-maestro"
+      tier: 2
+
+    deliverables:
+      - name: "email_segments.json"
+        format: "JSON"
+        required_segments:
+          - "new_subscribers"
+          - "past_guests_recent (0-6mo)"
+          - "past_guests_inactive (6-12mo)"
+          - "past_guests_lapsed (12mo+)"
+          - "high_value_guests (RFM top 20%)"
+        required_per_segment:
+          - "segment_name"
+          - "size_estimate"
+          - "behavioral_triggers: array"
+          - "email_cadence_recommendation"
+          - "content_themes: array"
+
+    acceptance_criteria:
+      - "Todos os lifecycle stages cobertos"
+      - "Triggers são específicos e trackable"
+      - "Cadence recommendations são realistas"
+
+    sla:
+      delivery: "2 dias após finalizar journey map"
+      response_time: "4 horas"
+
+    on_timeout:
+      first_action: "Email Maestro solicita"
+      second_action: "Chief intervém"
+
+    on_reject:
+      action: "Email Maestro explica que faltam triggers ou cadence não é clara"
+      sla_revision: "1 dia"
+      max_revisions: 1
+
+  # ═════════════════════════════════════════════════════════════
+  # TIER 2 → TIER 2: COORDENAÇÃO ENTRE EXECUTORES
+  # ═════════════════════════════════════════════════════════════
+
+  - contract_id: "HC-010"
+    name: "Copywriter → Social Creator: Copy for Social Posts"
+    from:
+      agent: "hotel-copywriter"
+      tier: 2
+    to:
+      agent: "hotel-social-creator"
+      tier: 2
+
+    deliverables:
+      - name: "social_copy_pack.json"
+        format: "JSON"
+        min_posts: 20
+        required_per_post:
+          - "post_id"
+          - "caption: string (with hashtags)"
+          - "hook_line: string (first 3 words)"
+          - "cta: string"
+          - "tone: string (playful, inspirational, educational)"
+          - "visual_suggestion: string (what to show)"
+
+    acceptance_criteria:
+      - "Captions têm hook forte nos primeiros 3 words"
+      - "CTAs são claros (não apenas 'link in bio')"
+      - "Visual suggestions são específicas (não 'foto do hotel')"
+
+    sla:
+      delivery: "3 dias para 20+ posts"
+      response_time: "4 horas"
+
+    on_timeout:
+      first_action: "Social Creator lembrete"
+      second_action: "Chief intervém"
+
+    on_reject:
+      action: "Social Creator explica que captions são muito longas ou hooks fracos"
+      sla_revision: "1 dia"
+      max_revisions: 1
+
+  # ─────────────────────────────────────────────────────────────
+
+  - contract_id: "HC-011"
+    name: "Copywriter → Ads Specialist: Ad Copy Library"
+    from:
+      agent: "hotel-copywriter"
+      tier: 2
+    to:
+      agent: "hotel-ads-specialist"
+      tier: 2
+
+    deliverables:
+      - name: "ad_copy_library.json"
+        format: "JSON"
+        min_variations: 150
+        required_per_ad:
+          - "ad_id"
+          - "hook: string"
+          - "body: string"
+          - "cta: string"
+          - "awareness_level: enum"
+          - "platform: enum (Meta, Google, TikTok)"
+          - "character_count: int"
+
+    acceptance_criteria:
+      - "Mínimo 150 variations (hooks × meats × CTAs)"
+      - "Character limits respeitados por platform"
+      - "Awareness levels corretamente taggeados"
+
+    sla:
+      delivery: "3-5 dias para 150+ ads"
+      response_time: "4 horas"
+
+    on_timeout:
+      first_action: "Ads Specialist lembrete (dia 4)"
+      second_action: "Chief intervém (dia 6)"
+
+    on_reject:
+      action: "Ads Specialist explica que ads violam policies ou character limits"
+      sla_revision: "2 dias"
+      max_revisions: 1
+
+  # ─────────────────────────────────────────────────────────────
+
+  - contract_id: "HC-012"
+    name: "Copywriter → Email Maestro: Email Sequences Copy"
+    from:
+      agent: "hotel-copywriter"
+      tier: 2
+    to:
+      agent: "hotel-email-maestro"
+      tier: 2
+
+    deliverables:
+      - name: "email_sequences.json"
+        format: "JSON"
+        min_sequences: 3
+        min_emails_per_sequence: 7
+        required_per_email:
+          - "email_id"
+          - "subject_line: string"
+          - "preview_text: string"
+          - "body: string (HTML-ready)"
+          - "cta_text: string"
+          - "cta_url: string"
+          - "personalization_tags: array"
+
+    acceptance_criteria:
+      - "Subject lines < 60 chars"
+      - "Preview text complementa subject (não repete)"
+      - "Body copy tem estrutura clara (hook → value → CTA)"
+      - "CTAs são específicos e trackable"
+
+    sla:
+      delivery: "2-3 dias por sequence"
+      response_time: "4 horas"
+
+    on_timeout:
+      first_action: "Email Maestro lembrete"
+      second_action: "Chief intervém"
+
+    on_reject:
+      action: "Email Maestro explica que emails são muito longos ou CTAs não claros"
+      sla_revision: "1 dia"
+      max_revisions: 1
+
+  # ─────────────────────────────────────────────────────────────
+
+  - contract_id: "HC-013"
+    name: "Social Creator → UGC Curator: Social Performance Data"
+    from:
+      agent: "hotel-social-creator"
+      tier: 2
+    to:
+      agent: "hotel-ugc-curator"
+      tier: 3
+
+    deliverables:
+      - name: "social_performance_report.json"
+        format: "JSON"
+        frequency: "Weekly"
+        required_fields:
+          - "top_performing_posts: array (top 10 by engagement)"
+          - "trending_hashtags_used: array"
+          - "guest_mentions: array (users who tagged hotel)"
+          - "ugc_opportunities: array (posts que poderiam virar UGC)"
+
+    acceptance_criteria:
+      - "Top posts incluem engagement metrics"
+      - "Guest mentions têm links para posts originais"
+      - "UGC opportunities são curated (não lista crua)"
+
+    sla:
+      delivery: "Toda segunda-feira (referente à semana anterior)"
+      response_time: "N/A (regular cadence)"
+
+    on_timeout:
+      first_action: "UGC Curator solicita"
+      second_action: "Chief intervém se atraso > 3 dias"
+
+    on_reject:
+      action: "UGC Curator explica que faltam métricas ou links quebrados"
+      sla_revision: "1 dia"
+      max_revisions: 1
+
+  # ═════════════════════════════════════════════════════════════
+  # TIER 2 → TIER 3: EXECUÇÃO ATIVA ESPECIALISTAS
+  # ═════════════════════════════════════════════════════════════
+
+  - contract_id: "HC-014"
+    name: "Ads Specialist → Direct Booking: Traffic & Lead Data"
+    from:
+      agent: "hotel-ads-specialist"
+      tier: 2
+    to:
+      agent: "hotel-direct-booking"
+      tier: 3
+
+    deliverables:
+      - name: "ad_traffic_report.json"
+        format: "JSON"
+        frequency: "Daily (during campaigns)"
+        required_fields:
+          - "date"
+          - "total_clicks"
+          - "total_impressions"
+          - "ctr: float"
+          - "cpc: float"
+          - "conversions: int"
+          - "conversion_rate: float"
+          - "top_performing_ads: array (ad_id + metrics)"
+          - "traffic_by_source: object (Google, Meta, etc)"
+
+    acceptance_criteria:
+      - "Dados são do dia anterior (D-1)"
+      - "Conversões estão reconciliadas com GA4"
+      - "Top performing ads identificados claramente"
+
+    sla:
+      delivery: "Diariamente às 9h (durante campanhas ativas)"
+      response_time: "N/A"
+
+    on_timeout:
+      first_action: "Direct Booking solicita (após 10h)"
+      second_action: "Chief intervém se atraso > 24h"
+
+    on_reject:
+      action: "Direct Booking explica que dados não batem com GA4"
+      sla_revision: "2 horas"
+      max_revisions: 1
+
+  # ─────────────────────────────────────────────────────────────
+
+  - contract_id: "HC-015"
+    name: "Email Maestro → Direct Booking: Email Lead Data"
+    from:
+      agent: "hotel-email-maestro"
+      tier: 2
+    to:
+      agent: "hotel-direct-booking"
+      tier: 3
+
+    deliverables:
+      - name: "email_leads_report.json"
+        format: "JSON"
+        frequency: "Weekly"
+        required_fields:
+          - "week_start_date"
+          - "new_subscribers: int"
+          - "email_opens: int"
+          - "email_clicks: int"
+          - "email_driven_bookings: int"
+          - "top_performing_emails: array (subject + metrics)"
+          - "segment_performance: object (RFM breakdown)"
+
+    acceptance_criteria:
+      - "Email-driven bookings são trackable via UTMs"
+      - "Segment performance mostra qual RFM converte melhor"
+
+    sla:
+      delivery: "Toda segunda-feira (referente à semana anterior)"
+      response_time: "N/A"
+
+    on_timeout:
+      first_action: "Direct Booking solicita"
+      second_action: "Chief intervém se atraso > 3 dias"
+
+    on_reject:
+      action: "Direct Booking explica que UTMs não estão consistentes"
+      sla_revision: "1 dia"
+      max_revisions: 1
+
+  # ─────────────────────────────────────────────────────────────
+
+  - contract_id: "HC-016"
+    name: "Email Maestro → Reputation Guardian: Feedback Loop Data"
+    from:
+      agent: "hotel-email-maestro"
+      tier: 2
+    to:
+      agent: "hotel-reputation-guardian"
+      tier: 3
+
+    deliverables:
+      - name: "post_stay_feedback.json"
+        format: "JSON"
+        frequency: "Weekly"
+        required_fields:
+          - "week_start_date"
+          - "review_requests_sent: int"
+          - "review_responses: int (guests who left review)"
+          - "response_rate: float"
+          - "sentiment_breakdown: object (positive, neutral, negative)"
+          - "feedback_themes: array (common mentions)"
+
+    acceptance_criteria:
+      - "Todos review requests trackados"
+      - "Sentiment é categorizado (não raw text dump)"
+      - "Feedback themes são summarized"
+
+    sla:
+      delivery: "Toda segunda-feira"
+      response_time: "N/A"
+
+    on_timeout:
+      first_action: "Reputation Guardian solicita"
+      second_action: "Chief intervém"
+
+    on_reject:
+      action: "Reputation Guardian explica que sentiment não está categorizado"
+      sla_revision: "1 dia"
+      max_revisions: 1
+
+  # ═════════════════════════════════════════════════════════════
+  # TIER 3 SPECIALISTS → TIER 1/2: FEEDBACK LOOP
+  # ═════════════════════════════════════════════════════════════
+
+  - contract_id: "HC-017"
+    name: "Reputation Guardian → Guest Strategist: Sentiment Insights"
+    from:
+      agent: "hotel-reputation-guardian"
+      tier: 3
+    to:
+      agent: "hotel-guest-strategist"
+      tier: 1
+
+    deliverables:
+      - name: "sentiment_insights_report.json"
+        format: "JSON"
+        frequency: "Monthly"
+        required_fields:
+          - "month"
+          - "total_reviews: int"
+          - "average_rating: float"
+          - "sentiment_breakdown: object"
+          - "top_positive_mentions: array (what guests love)"
+          - "top_negative_mentions: array (pain points)"
+          - "unrecognized_needs: array (things guests didn't expect but loved)"
+
+    acceptance_criteria:
+      - "Positive/negative mentions são categorizados (não raw)"
+      - "Unrecognized needs identificam oportunidades para messaging"
+
+    sla:
+      delivery: "Primeira semana do mês (referente ao mês anterior)"
+      response_time: "N/A"
+
+    on_timeout:
+      first_action: "Guest Strategist solicita"
+      second_action: "Chief intervém"
+
+    on_reject:
+      action: "Guest Strategist explica que insights são muito superficiais"
+      sla_revision: "2 dias"
+      max_revisions: 1
+
+  # ─────────────────────────────────────────────────────────────
+
+  - contract_id: "HC-018"
+    name: "UGC Curator → Social Creator: Curated UGC Assets"
+    from:
+      agent: "hotel-ugc-curator"
+      tier: 3
+    to:
+      agent: "hotel-social-creator"
+      tier: 2
+
+    deliverables:
+      - name: "ugc_asset_pack.zip"
+        format: "ZIP (images/videos + metadata JSON)"
+        frequency: "Weekly"
+        min_assets: 10
+        required_per_asset:
+          - "filename"
+          - "source_url: string (original post)"
+          - "guest_username: string"
+          - "consent_status: enum (granted, pending, denied)"
+          - "caption_suggestion: string"
+          - "best_use: enum (feed, stories, reels)"
+
+    acceptance_criteria:
+      - "Mínimo 10 assets curated/semana"
+      - "TODOS assets têm consent_status = granted"
+      - "Caption suggestions são contextualizadas"
+
+    sla:
+      delivery: "Toda sexta-feira (para uso na semana seguinte)"
+      response_time: "N/A"
+
+    on_timeout:
+      first_action: "Social Creator solicita"
+      second_action: "Chief intervém se atraso > 3 dias"
+
+    on_reject:
+      action: "Social Creator explica que assets não têm consent ou qualidade ruim"
+      sla_revision: "2 dias"
+      max_revisions: 1
+
+  # ─────────────────────────────────────────────────────────────
+
+  - contract_id: "HC-019"
+    name: "UGC Curator → Copywriter: Testimonials & Social Proof"
+    from:
+      agent: "hotel-ugc-curator"
+      tier: 3
+    to:
+      agent: "hotel-copywriter"
+      tier: 2
+
+    deliverables:
+      - name: "testimonials_pack.json"
+        format: "JSON"
+        frequency: "Bi-weekly"
+        min_testimonials: 10
+        required_per_testimonial:
+          - "guest_name: string (first name only)"
+          - "location: string (city, state)"
+          - "rating: int (1-5)"
+          - "quote: string (< 200 chars)"
+          - "full_review_url: string"
+          - "themes: array (spa, food, service, view, etc)"
+
+    acceptance_criteria:
+      - "Quotes são concisas (< 200 chars para ads)"
+      - "Themes categorizados para uso em copy específico"
+      - "Guest consent confirmado"
+
+    sla:
+      delivery: "A cada 2 semanas (segunda-feira)"
+      response_time: "N/A"
+
+    on_timeout:
+      first_action: "Copywriter solicita"
+      second_action: "Chief intervém"
+
+    on_reject:
+      action: "Copywriter explica que quotes são muito longas ou genéricas"
+      sla_revision: "2 dias"
+      max_revisions: 1
+
+  # ─────────────────────────────────────────────────────────────
+
+  - contract_id: "HC-020"
+    name: "Direct Booking → Email Maestro: Booking Data for Nurture"
+    from:
+      agent: "hotel-direct-booking"
+      tier: 3
+    to:
+      agent: "hotel-email-maestro"
+      tier: 2
+
+    deliverables:
+      - name: "booking_data_export.csv"
+        format: "CSV"
+        frequency: "Weekly"
+        required_columns:
+          - "booking_id"
+          - "guest_email"
+          - "booking_date"
+          - "check_in_date"
+          - "check_out_date"
+          - "total_value"
+          - "booking_source: enum (direct, OTA, etc)"
+          - "first_booking: boolean"
+
+    acceptance_criteria:
+      - "Dados são de bookings confirmados (não pending)"
+      - "Emails são válidos e opt-in confirmado"
+      - "Privacy compliance (LGPD) verificado"
+
+    sla:
+      delivery: "Toda segunda-feira (bookings da semana anterior)"
+      response_time: "N/A"
+
+    on_timeout:
+      first_action: "Email Maestro solicita"
+      second_action: "Chief intervém"
+
+    on_reject:
+      action: "Email Maestro explica que faltam campos ou opt-in status unclear"
+      sla_revision: "1 dia"
+      max_revisions: 1
+
+  # ─────────────────────────────────────────────────────────────
+
+  - contract_id: "HC-021"
+    name: "Direct Booking → Guest Strategist: Conversion Data for Optimization"
+    from:
+      agent: "hotel-direct-booking"
+      tier: 3
+    to:
+      agent: "hotel-guest-strategist"
+      tier: 1
+
+    deliverables:
+      - name: "conversion_funnel_analysis.json"
+        format: "JSON"
+        frequency: "Monthly"
+        required_fields:
+          - "month"
+          - "total_visitors: int"
+          - "booking_engine_starts: int"
+          - "checkouts_completed: int"
+          - "conversion_rate: float"
+          - "drop_off_points: array (stage + % lost)"
+          - "segment_performance: object (which segments convert best)"
+
+    acceptance_criteria:
+      - "Drop-off points identificam onde usuários abandonam"
+      - "Segment performance mostra qual messaging converte melhor"
+
+    sla:
+      delivery: "Primeira semana do mês"
+      response_time: "N/A"
+
+    on_timeout:
+      first_action: "Guest Strategist solicita"
+      second_action: "Chief intervém"
+
+    on_reject:
+      action: "Guest Strategist explica que faltam insights de por que users abandonam"
+      sla_revision: "2 dias"
+      max_revisions: 1
+
+  # ═════════════════════════════════════════════════════════════
+  # SPECIALIST-TO-SPECIALIST: COORDENAÇÃO TIER 3
+  # ═════════════════════════════════════════════════════════════
+
+  - contract_id: "HC-022"
+    name: "Reputation Guardian → PR Advertorial: Positive Case Studies"
+    from:
+      agent: "hotel-reputation-guardian"
+      tier: 3
+    to:
+      agent: "hotel-pr-advertorial"
+      tier: 3
+
+    deliverables:
+      - name: "positive_case_studies.json"
+        format: "JSON"
+        frequency: "Monthly"
+        min_cases: 3
+        required_per_case:
+          - "guest_story: string (narrative)"
+          - "transformation: string (before → after)"
+          - "quote: string"
+          - "photo_available: boolean"
+          - "consent_for_pr: boolean"
+
+    acceptance_criteria:
+      - "Stories são narrativas (não apenas 'ficaram felizes')"
+      - "Transformação é clara (problema → solução → resultado)"
+      - "Consent para PR confirmado"
+
+    sla:
+      delivery: "Primeira semana do mês"
+      response_time: "N/A"
+
+    on_timeout:
+      first_action: "PR Advertorial solicita"
+      second_action: "Chief intervém"
+
+    on_reject:
+      action: "PR explica que stories não têm narrative arc suficiente"
+      sla_revision: "3 dias"
+      max_revisions: 1
+
+  # ═══════════════════════════════════════════════════════════════
+  # VISUAL PRODUCTION HANDOFFS
+  # ═══════════════════════════════════════════════════════════════
+
+  - id: H-VP-01
+    name: "Brief → Visual Producer"
+    from: "@hotel-social-creator OR @hotel-ads-specialist OR @hotel-email-maestro"
+    to: "@hotel-visual-producer"
+    trigger: "Peça visual precisa ser criada com IA"
+    deliverables:
+      - visual_brief.json (formato, dimensões, quantidade, estilo, textos)
+      - brand_guidelines (cores, fontes, estilo fotográfico)
+      - campaign_context (objetivo, público, canal)
+    acceptance_criteria:
+      - "Brief tem todas as specs de formato (px)"
+      - "Brand guidelines com hex codes das cores"
+      - "Textos finais para overlay já aprovados pelo @copywriter"
+    sla: "12h"
+    on_timeout: "escalate_to: @hotel-mkt-chief"
+    on_reject: "return_to_sender com items faltantes"
+
+  - id: H-VP-02
+    name: "Visual Producer → Mockup Approval"
+    from: "@hotel-visual-producer"
+    to: "@hotel-mkt-chief"
+    trigger: "Peças visuais geradas e curadas"
+    deliverables:
+      - mockup_approval.pdf (todas as peças em preview)
+      - carousel_preview.html (preview interativo)
+      - prompts_used.md (prompts documentados)
+    acceptance_criteria:
+      - "Mínimo 3 variações por peça"
+      - "Resolução >= 1080p"
+      - "Texto legível em mobile"
+      - "Brand compliance >= 8/10"
+    sla: "24h"
+    on_timeout: "escalate_to: @hotel-mkt-chief"
+    on_reject: "return com feedback específico para regeneração"
+
+  - id: H-VP-03
+    name: "Chief → Aprovação Humana"
+    from: "@hotel-mkt-chief"
+    to: "HUMANO (gestor/dono do hotel)"
+    trigger: "Mockup pronto para revisão humana"
+    deliverables:
+      - mockup_approval.pdf
+      - campaign_summary.md (contexto da campanha)
+      - options_presentation (variações com recomendação)
+    acceptance_criteria:
+      - "Humano selecionou variações preferidas"
+      - "Humano confirmou alinhamento com brand"
+      - "Sem erros factuais nos textos"
+    sla: "48h"
+    on_timeout: "reminder ao humano via email/WhatsApp, extend +24h"
+    on_reject: "return com feedback escrito → @hotel-visual-producer regenera (max 2 rounds)"
+
+  - id: H-VP-04
+    name: "Peças Aprovadas → Agentes de Execução"
+    from: "@hotel-visual-producer"
+    to: "@hotel-social-creator + @hotel-ads-specialist + @hotel-email-maestro + @hotel-direct-booking"
+    trigger: "Aprovação humana obtida"
+    deliverables:
+      - final_assets.zip (organizados por canal: social/, ads/, email/, landing/)
+      - asset_specs.json (dimensões, formatos, variações)
+      - prompts_archive.md (para reprodução futura)
+    acceptance_criteria:
+      - "Assets em todos os formatos solicitados"
+      - "Nomeação padronizada: {campanha}_{canal}_{formato}_{variacao}.png"
+      - "Prompts documentados para iteração"
+    sla: "12h"
+    on_timeout: "escalate_to: @hotel-mkt-chief"
+    on_reject: "return com formato específico faltante"
+
+  # ─────────────────────────────────────────────────────────────
+
+  - contract_id: "HC-023"
+    name: "PR Advertorial → SEO Architect: Backlink Report"
+    from:
+      agent: "hotel-pr-advertorial"
+      tier: 3
+    to:
+      agent: "hotel-seo-architect"
+      tier: 2
+
+    deliverables:
+      - name: "backlink_report.json"
+        format: "JSON"
+        frequency: "Monthly"
+        required_fields:
+          - "month"
+          - "new_backlinks: array (url, domain, DA, anchor_text)"
+          - "total_referring_domains: int"
+          - "average_domain_authority: float"
+          - "nofollow_vs_dofollow: object"
+
+    acceptance_criteria:
+      - "Todos backlinks têm DA verificado"
+      - "Anchor text diversity documentada"
+
+    sla:
+      delivery: "Primeira semana do mês"
+      response_time: "N/A"
+
+    on_timeout:
+      first_action: "SEO Architect solicita"
+      second_action: "Chief intervém"
+
+    on_reject:
+      action: "SEO explica que faltam DAs ou anchor texts"
+      sla_revision: "2 dias"
+      max_revisions: 1
+
+  # ─────────────────────────────────────────────────────────────
+
+  - contract_id: "HC-024"
+    name: "SEO Architect → Direct Booking: Organic Traffic Data"
+    from:
+      agent: "hotel-seo-architect"
+      tier: 2
+    to:
+      agent: "hotel-direct-booking"
+      tier: 3
+
+    deliverables:
+      - name: "organic_traffic_report.json"
+        format: "JSON"
+        frequency: "Weekly"
+        required_fields:
+          - "week_start_date"
+          - "total_organic_sessions: int"
+          - "new_users: int"
+          - "top_landing_pages: array (url + sessions)"
+          - "top_keywords: array (keyword + impressions + clicks)"
+          - "keyword_rankings: array (keyword + position)"
+
+    acceptance_criteria:
+      - "Dados são de GA4 (não estimativas)"
+      - "Top keywords incluem position tracking"
+
+    sla:
+      delivery: "Toda segunda-feira"
+      response_time: "N/A"
+
+    on_timeout:
+      first_action: "Direct Booking solicita"
+      second_action: "Chief intervém"
+
+    on_reject:
+      action: "Direct Booking explica que faltam CTRs ou position data"
+      sla_revision: "1 dia"
+      max_revisions: 1
+
+  # ═════════════════════════════════════════════════════════════
+  # ADVANCED SPECIALISTS: NICHE HANDOFFS
+  # ═════════════════════════════════════════════════════════════
+
+  - contract_id: "HC-025"
+    name: "PR Advertorial → Social Creator: PR Content for Amplification"
+    from:
+      agent: "hotel-pr-advertorial"
+      tier: 3
+    to:
+      agent: "hotel-social-creator"
+      tier: 2
+
+    deliverables:
+      - name: "pr_content_pack.json"
+        format: "JSON"
+        frequency: "Ad-hoc (when PR published)"
+        required_fields:
+          - "article_title"
+          - "article_url"
+          - "publication_name"
+          - "publication_date"
+          - "key_quotes: array"
+          - "social_angle: string (how to promote)"
+          - "hashtags_suggested: array"
+
+    acceptance_criteria:
+      - "Social angle é específico (não apenas 'compartilhe o link')"
+      - "Key quotes são pull-ready para graphics"
+
+    sla:
+      delivery: "24h após PR publicação"
+      response_time: "2 horas"
+
+    on_timeout:
+      first_action: "Social Creator solicita"
+      second_action: "Chief intervém se urgente"
+
+    on_reject:
+      action: "Social Creator explica que falta angle criativo"
+      sla_revision: "4 horas"
+      max_revisions: 1
+
+# ═══════════════════════════════════════════════════════════════
+# CONTRACT ENFORCEMENT GUIDELINES
+# ═══════════════════════════════════════════════════════════════
+
+enforcement_guidelines:
+  contract_validation:
+    on_delivery:
+      - "Receiving agent tem 24h para aceitar ou rejeitar"
+      - "Se não responder em 24h = auto-accept"
+      - "Se reject, deve documentar gaps específicos"
+
+  escalation_matrix:
+    level_1: "Peer-to-peer resolution (sender + receiver)"
+    level_2: "Chief mediation (if not resolved in 48h)"
+    level_3: "Manager intervention (if recurring issue)"
+
+  metrics_tracking:
+    - metric: "On-time delivery rate"
+      target: "> 85%"
+      calculation: "Deliveries within SLA / total deliveries"
+
+    - metric: "First-time acceptance rate"
+      target: "> 75%"
+      calculation: "Accepted on first submit / total deliveries"
+
+    - metric: "Rejection rate"
+      target: "< 20%"
+      calculation: "Rejected deliveries / total deliveries"
+
+    - metric: "Escalation rate"
+      target: "< 10%"
+      calculation: "Escalated handoffs / total handoffs"
+
+  continuous_improvement:
+    review_cadence: "Monthly contract performance review"
+    update_triggers:
+      - "Rejection rate > 30% for same contract"
+      - "Consistent SLA misses (> 3 consecutive)"
+      - "Agent feedback on contract clarity"
+
+# ═══════════════════════════════════════════════════════════════
+# END OF HANDOFF CONTRACTS
+# ═══════════════════════════════════════════════════════════════

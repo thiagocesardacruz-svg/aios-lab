@@ -1,98 +1,211 @@
-# Por Onde Comecar
+# Por Onde Começar
 
-> Guia de navegacao para iniciantes no squad-creator v2.6
-> Ultima atualizacao: 2026-02-04
-
----
-
-## O que e o squad-creator?
-
-O squad-creator e um meta-squad do Synkra AIOS que cria, gerencia e evolui squads de agentes de IA. Ele segue a **arquitetura task-first**, onde tudo comeca por tarefas executaveis e os agentes existem para serve-las. Na versao 2.6, o squad-creator vai muito alem da criacao basica de squads. Ele oferece tres capacidades avancadas que o diferenciam:
-
-1. **Mind Cloning** -- Captura a essencia de como uma pessoa comunica (Voice DNA) e pensa (Thinking DNA) para criar personas de agentes com alta fidelidade. Suporta dois modos: YOLO (rapido, 60-75% de fidelidade) e QUALITY (completo, 85-95% de fidelidade).
-
-2. **Deep Tool Discovery** -- Busca ferramentas em 5 canais paralelos (MCP, APIs, CLI, bibliotecas, GitHub), avalia cada uma com frameworks RICE e WSJF, aplica gates de seguranca e prova social, e classifica em tiers para decisao final.
-
-3. **SOP Extraction** -- Extrai Procedimentos Operacionais Padrao de qualquer material fonte e estrutura no formato SC-PE-001 (11 partes), com classificacao cognitiva baseada na taxonomia de Bloom e analise de automacao PV_PM_001.
+> **Primeira vez aqui?** Este guia mostra exatamente o que fazer.
 
 ---
 
-## Quem sao os agentes?
-
-O squad-creator opera com 1 agente base e 4 agentes especialistas:
-
-| Agente | Nome | Papel |
-|--------|------|-------|
-| **squad-creator** (Craft) | Agente base | Criacao e gerenciamento de squads |
-| **squad-architect** (Atlas) | Estrategista | Composicao de squads, quality dashboard, tool discovery |
-| **sop-extractor** (Scribe) | Analista | Extracao de SOPs, taxonomia cognitiva, automacao |
-| **oalanicolas** (Mirror) | Empatico | Mind Cloning, Voice DNA, Thinking DNA |
-| **pedro-valerio** (Forge) | Engenheiro | Design de workflows, checklists, condicoes de veto |
-
-Para ativar um sub-agente, use a sintaxe `@squad-creator:nome-do-agente`. Por exemplo: `@squad-creator:oalanicolas` ativa o Mirror para mind cloning.
-
----
-
-## Meu primeiro dia: por onde comeco?
-
-### Caminho 1: "Quero criar meu primeiro squad"
-1. Leia o [QUICK-START.md](./QUICK-START.md) -- crie seu primeiro squad em 5 minutos
-2. Depois consulte o [COMMANDS.md](./COMMANDS.md) para ver todos os comandos disponiveis
-3. Se algo nao funcionar, veja o [TROUBLESHOOTING.md](./TROUBLESHOOTING.md)
-
-### Caminho 2: "Quero entender os conceitos antes de comecar"
-1. Leia o [CONCEPTS.md](./CONCEPTS.md) -- conceitos profundos de Voice DNA, Thinking DNA, tiers e gates
-2. Veja os [ARCHITECTURE-DIAGRAMS.md](./ARCHITECTURE-DIAGRAMS.md) para visualizar os fluxos
-3. Depois siga o [TUTORIAL-COMPLETO.md](./TUTORIAL-COMPLETO.md) passo a passo
-
-### Caminho 3: "Tenho duvidas sobre termos e conceitos"
-1. Consulte o [FAQ.md](./FAQ.md) -- perguntas frequentes e glossario
-2. Aprofunde-se no [CONCEPTS.md](./CONCEPTS.md) para detalhes tecnicos
-
-### Caminho 4: "Quero entender o controle humano (HITL)"
-1. Leia o [HITL-FLOW.md](./HITL-FLOW.md) -- quando e como o humano intervem nos fluxos
-2. Complemente com os [ARCHITECTURE-DIAGRAMS.md](./ARCHITECTURE-DIAGRAMS.md)
-
----
-
-## Mapa completo da documentacao
-
-| Documento | O que encontro la | Para quem |
-|-----------|------------------|-----------|
-| [POR-ONDE-COMECAR.md](./POR-ONDE-COMECAR.md) | Este guia de navegacao | Iniciantes |
-| [QUICK-START.md](./QUICK-START.md) | Primeiro squad em 5 minutos | Quem quer comecar rapido |
-| [TUTORIAL-COMPLETO.md](./TUTORIAL-COMPLETO.md) | Tutorial passo a passo com exemplos | Quem quer aprender fazendo |
-| [CONCEPTS.md](./CONCEPTS.md) | Conceitos profundos e frameworks | Quem quer entender a teoria |
-| [COMMANDS.md](./COMMANDS.md) | Referencia completa de comandos | Consulta diaria |
-| [FAQ.md](./FAQ.md) | Perguntas frequentes e glossario | Duvidas pontuais |
-| [ARCHITECTURE-DIAGRAMS.md](./ARCHITECTURE-DIAGRAMS.md) | Diagramas Mermaid dos fluxos | Visualizacao de arquitetura |
-| [HITL-FLOW.md](./HITL-FLOW.md) | Fluxos Human-in-the-Loop | Controle e governanca |
-| [TROUBLESHOOTING.md](./TROUBLESHOOTING.md) | Problemas comuns e solucoes | Quando algo da errado |
-
----
-
-## Fluxo tipico de trabalho
-
-Uma sessao tipica com o squad-creator segue este fluxo:
+## Checklist do Primeiro Uso
 
 ```
-1. Ativar o agente ........... @squad-creator
-2. Criar um squad ............ *create-squad meu-squad
-3. Clonar uma mente .......... *clone-mind --person "Nome" --mode yolo
-4. Descobrir ferramentas ...... *discover-tools "dominio"
-5. Extrair SOPs .............. *extract-sop --source ./docs/processo.md
-6. Validar o squad ........... *validate-squad meu-squad
-7. Verificar qualidade ....... *quality-dashboard meu-squad
+ANTES DE COMEÇAR
+□ Tenho Claude Code funcionando
+□ Estou no diretório do meu projeto
+□ Sei qual domínio quero criar (ex: copywriting, legal, marketing)
+
+CRIAR MEU PRIMEIRO SQUAD
+□ 1. Ler este documento (2 min)
+□ 2. Ler o FAQ básico (5 min)
+□ 3. Seguir o Tutorial Completo (15-30 min)
+□ 4. Criar meu squad!
+
+SE TIVER PROBLEMAS
+□ Consultar FAQ
+□ Consultar Troubleshooting
 ```
 
-Nao e necessario seguir todos os passos em uma unica sessao. Cada comando e independente e pode ser executado quando necessario. O importante e que o squad tenha sido criado antes de tentar validar ou rodar o dashboard de qualidade.
+---
+
+## Passo 1: Verifique os Pré-requisitos
+
+### Obrigatório
+- [ ] **Claude Code funcionando** - Você consegue rodar `@aios-master`?
+- [ ] **Projeto AIOS** - Você está no diretório do seu projeto?
+
+### Opcional (mas recomendado)
+- [ ] **Materiais dos experts** - PDFs, livros, transcrições
+- [ ] **Conhecimento do domínio** - Saber quem são os experts da área
+
+### Não precisa
+- [ ] ~~Saber programar~~
+- [ ] ~~Configuração especial~~
+- [ ] ~~Conta paga~~
 
 ---
 
-## Proximos passos recomendados
+## Passo 2: Entenda o Básico (5 minutos)
 
-Se voce leu ate aqui, recomendo seguir para o [QUICK-START.md](./QUICK-START.md) para colocar a mao na massa imediatamente. Se preferir ir devagar, comece pelo [FAQ.md](./FAQ.md) para tirar duvidas basicas, e depois avance para o [TUTORIAL-COMPLETO.md](./TUTORIAL-COMPLETO.md) quando estiver pronto para praticar.
+Leia APENAS estas perguntas do [FAQ](./FAQ.md):
+
+1. **O que é um Squad?** - Entenda o conceito básico
+2. **O que é um Elite Mind?** - Entenda quem são os experts
+3. **YOLO ou QUALITY?** - Entenda os modos
+4. **Quanto tempo demora?** - Saiba o que esperar
+
+**Não precisa ler o FAQ inteiro agora.** Volte depois se tiver dúvidas.
 
 ---
 
-*squad-creator docs v2.6.0 -- Synkra AIOS*
+## Passo 3: Siga o Tutorial (15-30 minutos)
+
+Abra o [TUTORIAL-COMPLETO](./TUTORIAL-COMPLETO.md) e siga passo a passo.
+
+O tutorial mostra:
+- Exatamente o que digitar
+- Exatamente o que você vai ver
+- O que fazer em cada momento
+- Como usar o squad criado
+
+---
+
+## Passo 4: Crie Seu Squad!
+
+Após o tutorial, você está pronto. Execute:
+
+```
+@squad-creator
+"Quero um squad de {seu domínio}"
+```
+
+---
+
+## Mapa da Documentação
+
+### Para Iniciantes (leia nesta ordem)
+
+```
+1. POR-ONDE-COMECAR.md  ← Você está aqui
+   ↓
+2. FAQ.md (seções Básico e Modos)
+   ↓
+3. TUTORIAL-COMPLETO.md
+   ↓
+4. Criar seu primeiro squad!
+```
+
+### Para Referência (consulte quando precisar)
+
+```
+• FAQ.md ────────────── Dúvidas sobre qualquer coisa
+• COMMANDS.md ───────── Lista de todos os comandos
+• TROUBLESHOOTING.md ── Quando algo dá errado
+• QUICK-START.md ────── Resumo rápido do fluxo
+```
+
+### Para Aprofundar (opcional, avançado)
+
+```
+• CONCEPTS.md ────────────────── Como funciona por dentro
+• AGENT-COLLABORATION.md ────── Como os 3 agentes colaboram
+• ARCHITECTURE-DIAGRAMS.md ──── Diagramas técnicos
+• HITL-FLOW.md ──────────────── Fluxo de checkpoints
+```
+
+---
+
+## Qual Modo Escolher?
+
+```
+Você tem livros/PDFs dos experts?
+│
+├── NÃO ──→ Use YOLO (mais rápido, 60-75% fidelidade)
+│
+├── SIM, de todos ──→ Use QUALITY (mais lento, 85-95% fidelidade)
+│
+└── SIM, de alguns ──→ Use HYBRID (mistura dos dois)
+```
+
+**Na dúvida?** Comece com YOLO. Você pode melhorar depois.
+
+---
+
+## Exemplos de Squads por Domínio
+
+| Eu quero criar squad de... | O que digitar |
+|---------------------------|---------------|
+| Copywriting | "Quero um squad de copywriting" |
+| Marketing | "Quero um squad de marketing" |
+| Vendas | "Quero um squad de vendas" |
+| Jurídico | "Quero um squad jurídico" |
+| Finanças | "Quero um squad de finanças pessoais" |
+| Produtividade | "Quero um squad de produtividade" |
+| Liderança | "Quero um squad de liderança" |
+| Negociação | "Quero um squad de negociação" |
+
+O sistema encontra automaticamente os melhores experts do domínio.
+
+---
+
+## Perguntas Comuns de Primeira Vez
+
+### "E se eu não conhecer nenhum expert da área?"
+
+Tudo bem! O sistema pesquisa e sugere automaticamente.
+
+### "E se eu errar alguma coisa?"
+
+Nada é salvo até você aprovar no final. Pode cancelar a qualquer momento com `*exit`.
+
+### "Quanto tempo demora?"
+
+- YOLO mode: 15-30 minutos
+- QUALITY mode: 30-60 minutos
+
+### "Posso parar no meio e continuar depois?"
+
+Não recomendado. Complete em uma sessão só.
+
+### "E se der erro?"
+
+Veja [TROUBLESHOOTING.md](./TROUBLESHOOTING.md) ou [FAQ.md](./FAQ.md).
+
+---
+
+## Próximos Passos
+
+Depois de criar seu primeiro squad:
+
+1. **Use o squad:** `@{nome-do-squad}`
+2. **Valide a qualidade:** `*validate-squad {nome}`
+3. **Melhore a fidelidade:** `*update-mind {expert} --sources ./materiais/`
+4. **Crie mais squads!**
+
+---
+
+## Resumo
+
+```
+┌─────────────────────────────────────────────────────────┐
+│                   RECEITA DE SUCESSO                     │
+├─────────────────────────────────────────────────────────┤
+│                                                         │
+│  1. Claude Code funcionando? ✓                          │
+│  2. Leu FAQ básico? ✓                                   │
+│  3. Seguiu Tutorial Completo? ✓                         │
+│  4. @squad-creator                                      │
+│  5. "Quero um squad de {domínio}"                       │
+│  6. Escolher modo (YOLO recomendado para primeira vez)  │
+│  7. Aprovar minds                                       │
+│  8. Aguardar                                            │
+│  9. @{seu-squad} 🎉                                     │
+│                                                         │
+└─────────────────────────────────────────────────────────┘
+```
+
+---
+
+**Pronto para começar?** Abra o [TUTORIAL-COMPLETO](./TUTORIAL-COMPLETO.md)!
+
+---
+
+**Squad Creator | Por Onde Começar v1.0**
+*"Do zero ao squad em 30 minutos."*
