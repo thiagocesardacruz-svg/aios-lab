@@ -1,221 +1,162 @@
-# Synkra AIOS Development Rules for Claude Code
+# CLAUDE.md
 
-You are working with Synkra AIOS, an AI-Orchestrated System for Full Stack Development.
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-## Core Framework Understanding
+## Project Overview
 
-Synkra AIOS is a meta-framework that orchestrates AI agents to handle complex development workflows. Always recognize and work within this architecture.
+Synkra AIOS Lab is an AI-Orchestrated System (AIOS) meta-framework that coordinates AI agents through a hierarchical squad system for full-stack product development. Currently deployed for Travel Tech Digital's AI OS V3.1 MVP (single-segment SaaS for Hotels).
+
+## Core Principle
+
+**All execution happens via Squad.** No task, analysis, or output exists outside a squad context. Every formal execution is a Service Order (OS-YYYY-NNNN) tracked in Kanban.
 
 ## Agent System
 
-### Agent Activation
-- Agents are activated with @agent-name syntax: @dev, @qa, @architect, @pm, @po, @sm, @analyst
-- The master agent is activated with @aios-master
-- Agent commands use the * prefix: *help, *create-story, *task, *exit
+### Activation
+- Agents: `@dev`, `@qa`, `@architect`, `@pm`, `@po`, `@sm`, `@analyst`
+- Master: `@aios-master`
+- Commands: `*help`, `*create-story`, `*task {name}`, `*workflow {name}`, `*exit`
 
-### Agent Context
-When an agent is active:
-- Follow that agent's specific persona and expertise
-- Use the agent's designated workflow patterns
-- Maintain the agent's perspective throughout the interaction
+### Agent Hierarchy
+```
+Director (Thiago)
+    ↓
+Board Advisor (Consultivo - NÃO executa)
+    ↓
+AIOS Master (Orquestração - Orion)
+    ↓
+Squad Leads (Execução por domínio)
+    ↓
+Agents (Execução de tasks)
+```
+
+## Repository Structure
+
+```
+aios-lab/
+├── .aios/                  # Framework config (AIOS 2.1.0)
+├── .claude/                # Claude Code integration
+│   ├── commands/AIOS/      # Agent activation profiles
+│   ├── rules/              # MCP governance, usage rules
+│   └── skills/             # Claude Code skills
+├── governance/             # RED-classified rules (constitution, boundaries, costs)
+├── docs/                   # Stories, PRDs, architecture, guides
+├── squads/                 # Operational units (17 squads)
+│   ├── _template/          # Blueprint for new squads
+│   ├── board/              # Strategic advisors (8 mind clones)
+│   ├── ops/                # AIOS Master orchestration
+│   ├── tech/               # Infrastructure & development
+│   ├── design-system/      # UI tokens, components (100% independent)
+│   └── ...                 # finance, marketing, growth, qa, etc.
+└── projects/               # Active development
+    ├── ai-os-v3-1-mvp/     # Main product (Next.js + Supabase)
+    └── traveltech-aios/    # Reference implementation
+```
+
+### Squad Structure Pattern
+Each squad follows: `squad.yaml` + `README.md` + `agents/` + `workflows/` + `tasks/` + `templates/` + `checklists/` + `data/`
 
 ## Development Methodology
 
 ### Story-Driven Development
-1. **Work from stories** - All development starts with a story in `docs/stories/`
-2. **Update progress** - Mark checkboxes as tasks complete: [ ] → [x]
-3. **Track changes** - Maintain the File List section in the story
-4. **Follow criteria** - Implement exactly what the acceptance criteria specify
+1. Work from stories in `docs/stories/`
+2. Update checkboxes: `[ ]` → `[x]`
+3. Maintain File List section
+4. Follow acceptance criteria exactly
 
-### Code Standards
-- Write clean, self-documenting code
-- Follow existing patterns in the codebase
-- Include comprehensive error handling
-- Add unit tests for all new functionality
-- Use TypeScript/JavaScript best practices
+### Git Conventions
+- Conventional commits: `feat:`, `fix:`, `docs:`, `chore:`
+- Reference story: `feat: implement IDE detection [Story 2.1]`
 
-### Testing Requirements
-- Run all tests before marking tasks complete
-- Ensure linting passes: `npm run lint`
-- Verify type checking: `npm run typecheck`
-- Add tests for new features
-- Test edge cases and error scenarios
+## Commands
 
-## AIOS Framework Structure
-
-```
-aios-core/
-├── agents/         # Agent persona definitions (YAML/Markdown)
-├── tasks/          # Executable task workflows
-├── workflows/      # Multi-step workflow definitions
-├── templates/      # Document and code templates
-├── checklists/     # Validation and review checklists
-└── rules/          # Framework rules and patterns
-
-docs/
-├── stories/        # Development stories (numbered)
-├── prd/            # Product requirement documents
-├── architecture/   # System architecture documentation
-└── guides/         # User and developer guides
-```
-
-## Workflow Execution
-
-### Task Execution Pattern
-1. Read the complete task/workflow definition
-2. Understand all elicitation points
-3. Execute steps sequentially
-4. Handle errors gracefully
-5. Provide clear feedback
-
-### Interactive Workflows
-- Workflows with `elicit: true` require user input
-- Present options clearly
-- Validate user responses
-- Provide helpful defaults
-
-## Best Practices
-
-### When implementing features:
-- Check existing patterns first
-- Reuse components and utilities
-- Follow naming conventions
-- Keep functions focused and testable
-- Document complex logic
-
-### When working with agents:
-- Respect agent boundaries
-- Use appropriate agent for each task
-- Follow agent communication patterns
-- Maintain agent context
-
-### When handling errors:
-```javascript
-try {
-  // Operation
-} catch (error) {
-  console.error(`Error in ${operation}:`, error);
-  // Provide helpful error message
-  throw new Error(`Failed to ${operation}: ${error.message}`);
-}
-```
-
-## Git & GitHub Integration
-
-### Commit Conventions
-- Use conventional commits: `feat:`, `fix:`, `docs:`, `chore:`, etc.
-- Reference story ID: `feat: implement IDE detection [Story 2.1]`
-- Keep commits atomic and focused
-
-### GitHub CLI Usage
-- Ensure authenticated: `gh auth status`
-- Use for PR creation: `gh pr create`
-- Check org access: `gh api user/memberships`
-
-## AIOS-Specific Patterns
-
-### Working with Templates
-```javascript
-const template = await loadTemplate('template-name');
-const rendered = await renderTemplate(template, context);
-```
-
-### Agent Command Handling
-```javascript
-if (command.startsWith('*')) {
-  const agentCommand = command.substring(1);
-  await executeAgentCommand(agentCommand, args);
-}
-```
-
-### Story Updates
-```javascript
-// Update story progress
-const story = await loadStory(storyId);
-story.updateTask(taskId, { status: 'completed' });
-await story.save();
-```
-
-## Environment Setup
-
-### Required Tools
-- Node.js 18+ 
-- GitHub CLI
-- Git
-- Your preferred package manager (npm/yarn/pnpm)
-
-### Configuration Files
-- `.aios/config.yaml` - Framework configuration
-- `.env` - Environment variables
-- `aios.config.js` - Project-specific settings
-
-## Common Commands
-
-### AIOS Master Commands
-- `*help` - Show available commands
-- `*create-story` - Create new story
-- `*task {name}` - Execute specific task
-- `*workflow {name}` - Run workflow
-
-### Development Commands
-- `npm run dev` - Start development
-- `npm test` - Run tests
-- `npm run lint` - Check code style
-- `npm run build` - Build project
-
-## Debugging
-
-### Enable Debug Mode
+### MVP Project (projects/ai-os-v3-1-mvp)
 ```bash
-export AIOS_DEBUG=true
+# Start Supabase locally
+npx supabase start
+
+# Run migrations
+npx supabase db reset
+
+# Start Next.js dev
+cd projects/ai-os-v3-1-mvp/app && npm run dev
 ```
 
-### View Agent Logs
+### Validation (when package.json exists)
 ```bash
-tail -f .aios/logs/agent.log
+npm run lint
+npm run typecheck
+npm test
 ```
 
-### Trace Workflow Execution
-```bash
-npm run trace -- workflow-name
-```
+## Tech Stack
 
-## Claude Code Specific Configuration
+| Layer | Technologies |
+|-------|-------------|
+| Frontend | Next.js 16, React 19, TypeScript 5, Tailwind 4, shadcn/ui |
+| Backend | Supabase (PostgreSQL 15, Auth, Edge Functions) |
+| Infrastructure | Vercel, GitHub, Docker |
+| Automation | n8n, GoHighLevel |
+| AI | Claude, GPT (routed by AI Ops) |
 
-### Performance Optimization
-- Prefer batched tool calls when possible for better performance
-- Use parallel execution for independent operations
-- Cache frequently accessed data in memory during sessions
+## Governance Rules
 
-### Tool Usage Guidelines
-- Always use the Grep tool for searching, never `grep` or `rg` in bash
-- Use the Task tool for complex multi-step operations
-- Batch file reads/writes when processing multiple files
-- Prefer editing existing files over creating new ones
+### Budget Limits
+| Limit | Value | Action |
+|-------|-------|--------|
+| Monthly | £400 (~€470) | Hard limit |
+| Daily Alert | €15 | Notification |
+| Daily Hard | €20 | SAFE MODE |
+| Per Task | €10 | Approval required |
 
-### Session Management
-- Track story progress throughout the session
-- Update checkboxes immediately after completing tasks
-- Maintain context of the current story being worked on
-- Save important state before long-running operations
+### Prohibited Actions (NEVER)
+- Display credentials in plaintext
+- Execute `DROP DATABASE` or mass `DELETE`
+- Deploy to production without approval
+- Send external communications without approval
+- Modify IAM or infrastructure without PR
 
-### Error Recovery
-- Always provide recovery suggestions for failures
-- Include error context in messages to user
-- Suggest rollback procedures when appropriate
-- Document any manual fixes required
+### Autonomous Actions (OK)
+- Create/update OS in Kanban
+- Read files, health checks
+- Generate reports
+- Update documentation
+- Execute approved workflows
 
-### Testing Strategy
-- Run tests incrementally during development
-- Always verify lint and typecheck before marking complete
-- Test edge cases for each new feature
-- Document test scenarios in story files
+## MCP Usage
 
-### Documentation
-- Update relevant docs when changing functionality
-- Include code examples in documentation
-- Keep README synchronized with actual behavior
-- Document breaking changes prominently
+### Native Claude Code Tools (ALWAYS preferred)
+- `Read` - read files (not docker-gateway)
+- `Edit` - modify files (not docker-gateway)
+- `Bash` - run commands (not docker-gateway)
+- `Glob` - find files (not docker-gateway)
+- `Grep` - search content (not docker-gateway)
+
+### Docker MCPs (only when needed)
+- **EXA** - web search, research
+- **Context7** - library documentation
+- **Apify** - web scraping, social media data
+
+### Direct MCPs
+- **playwright** - browser automation, screenshots, web testing
+- **desktop-commander** - Docker container operations
+
+**CRITICAL:** Avoid docker-gateway for local file operations - causes path mismatches.
+
+## Key Architectural Decisions
+
+### Design System Coupling
+- Design System defines: tokens, components, states, layouts
+- Tech implements: real code, performance, accessibility
+- Neither invents UI independently
+
+### MVP Philosophy (AI OS V3.1)
+- NOT a content generator or chatbot
+- IS an execution orchestrator
+- Generates contextualized prompts (user executes in ChatGPT/GPT Experts)
+- 80% hardcoded templates + 20% Business DNA personalization
+- Lazy rendering, zero unnecessary AI calls
+- Mobile-first, one task at a time (Execution Tunnel)
 
 ---
-*Synkra AIOS Claude Code Configuration v2.0* 
+*Synkra AIOS Claude Code Configuration v3.0*
