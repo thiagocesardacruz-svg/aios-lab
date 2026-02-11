@@ -1,0 +1,1977 @@
+# ============================================================================
+# SYNKRA AIOS - COMMAND LIBRARY
+# ============================================================================
+# Biblioteca unificada de comandos disponíveis em todos os squads.
+# Cada comando mapeia para um agente específico e define inputs/outputs.
+#
+# Uso:
+#   @{squad}/{command} [args]
+#   Exemplo: @marketing/grand-slam --market "SaaS B2B"
+#
+# Categorias:
+#   - strategy: Decisões estratégicas e planejamento
+#   - execution: Implementação e criação
+#   - analysis: Análise e reports
+#   - review: Validação e aprovação
+#   - coordination: Orquestração e routing
+# ============================================================================
+
+version: "1.0"
+updated: "2025-02-11"
+
+# ============================================================================
+# OPS - Orquestração e Coordenação
+# ============================================================================
+ops:
+  description: "Orquestração central, routing de tarefas, status e escalonamento"
+
+  commands:
+    # ops-lead (Hybrid)
+    - name: status
+      agent: ops-lead
+      category: analysis
+      description: System-wide status overview
+      input:
+        - name: scope
+          type: text
+          required: false
+          description: "all | squad:{name} | project:{id}"
+      output: status_report (md)
+
+    - name: prioritize
+      agent: ops-lead
+      category: strategy
+      description: Define global priorities
+      input:
+        - name: initiatives
+          type: list
+          required: true
+        - name: criteria
+          type: yaml
+          required: false
+      output: priority_matrix (md)
+
+    - name: escalate
+      agent: ops-lead
+      category: coordination
+      description: Escalate decision to Director
+      input:
+        - name: issue
+          type: text
+          required: true
+        - name: context
+          type: md
+          required: false
+      output: escalation_request (md)
+
+    - name: authorize
+      agent: ops-lead
+      category: coordination
+      description: Authorize critical execution
+      input:
+        - name: action
+          type: text
+          required: true
+        - name: justification
+          type: text
+          required: true
+      output: authorization (md)
+
+    - name: route
+      agent: ops-lead
+      category: coordination
+      description: Route OS to appropriate squad
+      input:
+        - name: os_request
+          type: yaml
+          required: true
+      output: routing_decision (md)
+
+    # ops-manager (Operational)
+    - name: new-task
+      agent: ops-manager
+      category: execution
+      description: Cria nova OS a partir de pedido
+      quick: true
+
+    - name: blocked
+      agent: ops-manager
+      category: coordination
+      description: Registra bloqueio em OS
+      quick: true
+
+    - name: update-status
+      agent: ops-manager
+      category: coordination
+      description: Atualiza status de OS
+      quick: true
+
+# ============================================================================
+# TECH - Arquitetura e Implementação
+# ============================================================================
+tech:
+  description: "Decisões técnicas, arquitetura, implementação e automação"
+
+  commands:
+    # tech-lead (Hybrid)
+    - name: review
+      agent: tech-lead
+      category: review
+      description: Technical architecture review
+      input:
+        - name: code_path
+          type: path
+          required: true
+        - name: scope
+          type: text
+          required: false
+      output: review_report (md)
+
+    - name: decide
+      agent: tech-lead
+      category: strategy
+      description: Make technical decision (ADR)
+      input:
+        - name: options
+          type: list
+          required: true
+        - name: criteria
+          type: yaml
+          required: false
+      output: decision_record (md)
+
+    - name: standards
+      agent: tech-lead
+      category: strategy
+      description: Define code standards
+      input:
+        - name: domain
+          type: text
+          required: true
+        - name: rules
+          type: yaml
+          required: false
+      output: standards_doc (md)
+
+    - name: evaluate
+      agent: tech-lead
+      category: analysis
+      description: Evaluate technology option
+      input:
+        - name: technology
+          type: text
+          required: true
+        - name: use_case
+          type: text
+          required: true
+      output: evaluation_report (md)
+
+    # application-developer (Operational)
+    - name: implement
+      agent: application-developer
+      category: execution
+      description: Implement component/feature
+      input:
+        - name: spec
+          type: md
+          required: true
+      output: implementation (code)
+
+    - name: connect
+      agent: application-developer
+      category: execution
+      description: Connect to external API
+      input:
+        - name: api_spec
+          type: yaml
+          required: true
+      output: integration (code)
+
+    - name: test
+      agent: application-developer
+      category: execution
+      description: Write tests for component
+      quick: true
+
+    # ai-ops (Operational)
+    - name: analyze-ai
+      agent: ai-ops
+      category: analysis
+      description: Analyze AI usage and costs
+      output: ai_cost_report (md)
+
+    - name: optimize-prompts
+      agent: ai-ops
+      category: execution
+      description: Optimize prompts and routing
+      output: optimization_plan (md)
+
+    # automation-engineer (Operational)
+    - name: create-workflow
+      agent: automation-engineer
+      category: execution
+      description: Create n8n/automation workflow
+      input:
+        - name: trigger
+          type: text
+          required: true
+        - name: actions
+          type: list
+          required: true
+      output: workflow_config (yaml)
+
+    - name: integrate
+      agent: automation-engineer
+      category: execution
+      description: Integrate tools via API
+      input:
+        - name: source
+          type: text
+          required: true
+        - name: target
+          type: text
+          required: true
+      output: integration_spec (yaml)
+
+    - name: sync
+      agent: automation-engineer
+      category: execution
+      description: Setup data sync between systems
+      quick: true
+
+    # ghl-specialist (Operational)
+    - name: setup-crm
+      agent: ghl-specialist
+      category: execution
+      description: Setup CRM structure in GHL
+      output: crm_config (yaml)
+
+    - name: create-pipeline
+      agent: ghl-specialist
+      category: execution
+      description: Create sales pipeline in GHL
+      output: pipeline_config (yaml)
+
+    - name: snapshot
+      agent: ghl-specialist
+      category: execution
+      description: Create/deploy GHL snapshot
+      quick: true
+
+# ============================================================================
+# MARKETING - Go-to-Market e Conversão
+# ============================================================================
+marketing:
+  description: "Campanhas, copy, funis, ofertas, SEO e performance"
+
+  commands:
+    # marketing-lead (Hybrid)
+    - name: plan-campaign
+      agent: marketing-lead
+      category: strategy
+      description: Create campaign strategy
+      input:
+        - name: objective
+          type: text
+          required: true
+        - name: audience
+          type: yaml
+          required: true
+        - name: budget
+          type: number
+          required: false
+      output: campaign_plan (md)
+
+    - name: review-creative
+      agent: marketing-lead
+      category: review
+      description: Review creative assets for brand alignment
+      input:
+        - name: assets
+          type: files
+          required: true
+        - name: guidelines
+          type: md
+          required: false
+      output: review_report (md)
+
+    - name: analyze-performance
+      agent: marketing-lead
+      category: analysis
+      description: Analyze campaign metrics
+      input:
+        - name: campaign_id
+          type: text
+          required: true
+        - name: date_range
+          type: text
+          required: false
+      output: performance_report (md)
+
+    - name: coordinate
+      agent: marketing-lead
+      category: coordination
+      description: Coordinate cross-channel execution
+      input:
+        - name: campaign_plan
+          type: md
+          required: true
+        - name: channels
+          type: list
+          required: true
+      output: execution_schedule (yaml)
+
+    - name: brief
+      agent: marketing-lead
+      category: execution
+      description: Create creative brief for content team
+      input:
+        - name: objective
+          type: text
+          required: true
+        - name: context
+          type: md
+          required: false
+      output: creative_brief (md)
+
+    # content-strategist (Operational)
+    - name: research
+      agent: content-strategist
+      category: analysis
+      description: Pesquisa ICP e mercado
+      output: research_report (md)
+
+    - name: angles
+      agent: content-strategist
+      category: strategy
+      description: Define ângulos de conteúdo
+      output: content_angles (md)
+
+    - name: calendar
+      agent: content-strategist
+      category: strategy
+      description: Cria calendário editorial
+      output: editorial_calendar (yaml)
+
+    # copy-specialist (Operational)
+    - name: write-copy
+      agent: copy-specialist
+      category: execution
+      description: Escreve copy para qualquer formato
+      input:
+        - name: format
+          type: text
+          required: true
+          description: "ad | email | landing | social | vsl"
+        - name: brief
+          type: md
+          required: true
+      output: copy (md)
+
+    - name: headline
+      agent: copy-specialist
+      category: execution
+      description: Cria variações de headline
+      input:
+        - name: topic
+          type: text
+          required: true
+        - name: count
+          type: number
+          required: false
+          default: 10
+      output: headlines (list)
+      quick: true
+
+    - name: cta
+      agent: copy-specialist
+      category: execution
+      description: Cria CTAs de alta conversão
+      quick: true
+
+    - name: rewrite
+      agent: copy-specialist
+      category: execution
+      description: Melhora copy existente
+      input:
+        - name: original
+          type: md
+          required: true
+        - name: goal
+          type: text
+          required: false
+      output: improved_copy (md)
+
+    # funnel-architect (Operational)
+    - name: design-funnel
+      agent: funnel-architect
+      category: strategy
+      description: Desenha funil completo
+      input:
+        - name: goal
+          type: text
+          required: true
+        - name: traffic_source
+          type: text
+          required: false
+      output: funnel_design (md)
+
+    - name: map-journey
+      agent: funnel-architect
+      category: analysis
+      description: Mapeia jornada do cliente
+      output: customer_journey (md)
+
+    - name: optimize-funnel
+      agent: funnel-architect
+      category: analysis
+      description: Sugere otimizações de funil
+      input:
+        - name: funnel_data
+          type: yaml
+          required: true
+      output: optimization_plan (md)
+
+    # offer-engine (Operational)
+    - name: offer-review
+      agent: offer-engine
+      category: review
+      description: Analisa e melhora oferta existente
+      input:
+        - name: offer
+          type: md
+          required: true
+      output: offer_analysis (md)
+
+    - name: grand-slam
+      agent: offer-engine
+      category: execution
+      description: Cria Grand Slam Offer do zero
+      input:
+        - name: market
+          type: text
+          required: true
+        - name: avatar
+          type: yaml
+          required: false
+      output: grand_slam_offer (md)
+
+    - name: pricing
+      agent: offer-engine
+      category: strategy
+      description: Define estratégia de preço com value stacking
+      input:
+        - name: offer
+          type: md
+          required: true
+      output: pricing_strategy (md)
+
+    # seo-specialist (Operational)
+    - name: keyword-research
+      agent: seo-specialist
+      category: analysis
+      description: Pesquisa de keywords
+      input:
+        - name: topic
+          type: text
+          required: true
+        - name: intent
+          type: text
+          required: false
+      output: keyword_report (md)
+
+    - name: seo-brief
+      agent: seo-specialist
+      category: execution
+      description: Brief SEO para artigo
+      input:
+        - name: keyword
+          type: text
+          required: true
+      output: seo_brief (md)
+
+    - name: audit-seo
+      agent: seo-specialist
+      category: analysis
+      description: Auditoria SEO de página
+      input:
+        - name: url
+          type: text
+          required: true
+      output: seo_audit (md)
+
+    - name: cluster
+      agent: seo-specialist
+      category: strategy
+      description: Cria cluster de conteúdo
+      input:
+        - name: pillar_topic
+          type: text
+          required: true
+      output: content_cluster (md)
+
+# ============================================================================
+# SALES - Pipeline e Fechamento
+# ============================================================================
+sales:
+  description: "Estratégia comercial, prospecção, qualificação e fechamento"
+
+  commands:
+    # sales-lead (Hybrid)
+    - name: strategy
+      agent: sales-lead
+      category: strategy
+      description: Define sales strategy
+      input:
+        - name: market
+          type: text
+          required: true
+        - name: period
+          type: text
+          required: true
+      output: sales_strategy (md)
+
+    - name: review-deal
+      agent: sales-lead
+      category: review
+      description: Review specific deal
+      input:
+        - name: deal_data
+          type: yaml
+          required: true
+        - name: stage
+          type: text
+          required: false
+      output: deal_review (md)
+
+    - name: coach
+      agent: sales-lead
+      category: execution
+      description: Coach on specific sales situation
+      input:
+        - name: scenario
+          type: text
+          required: true
+        - name: context
+          type: md
+          required: false
+      output: coaching_advice (md)
+
+    - name: forecast
+      agent: sales-lead
+      category: analysis
+      description: Generate sales forecast
+      input:
+        - name: pipeline_data
+          type: yaml
+          required: true
+        - name: period
+          type: text
+          required: true
+      output: forecast_report (md)
+
+    - name: qualify
+      agent: sales-lead
+      category: analysis
+      description: Evaluate lead qualification
+      input:
+        - name: lead_data
+          type: yaml
+          required: true
+      output: qualification_report (md)
+
+    # closer (Operational)
+    - name: discovery
+      agent: closer
+      category: execution
+      description: Run discovery session framework
+      input:
+        - name: prospect_info
+          type: yaml
+          required: false
+      output: discovery_script (md)
+
+    - name: objection
+      agent: closer
+      category: execution
+      description: Handle specific objection
+      input:
+        - name: objection
+          type: text
+          required: true
+      output: response_script (md)
+      quick: true
+
+    - name: close
+      agent: closer
+      category: execution
+      description: Closing strategies for scenario
+      input:
+        - name: deal_context
+          type: md
+          required: true
+      output: closing_plan (md)
+
+    # sdr (Operational)
+    - name: prospect
+      agent: sdr
+      category: execution
+      description: Find and qualify prospects
+      input:
+        - name: icp
+          type: yaml
+          required: true
+      output: prospect_list (yaml)
+
+    - name: outreach
+      agent: sdr
+      category: execution
+      description: Create outreach sequence
+      input:
+        - name: channel
+          type: text
+          required: true
+          description: "email | linkedin | cold-call"
+        - name: persona
+          type: yaml
+          required: true
+      output: outreach_sequence (md)
+
+    # sales-analyst (Operational)
+    - name: pipeline-review
+      agent: sales-analyst
+      category: analysis
+      description: Full pipeline analysis
+      input:
+        - name: pipeline_data
+          type: yaml
+          required: true
+      output: pipeline_analysis (md)
+
+    - name: win-loss
+      agent: sales-analyst
+      category: analysis
+      description: Win/loss analysis
+      input:
+        - name: deals
+          type: yaml
+          required: true
+        - name: period
+          type: text
+          required: false
+      output: win_loss_report (md)
+
+# ============================================================================
+# DESIGN - Criação Visual
+# ============================================================================
+design:
+  description: "Direção criativa, sistemas visuais, ads e motion"
+
+  commands:
+    # design-lead (Hybrid)
+    - name: review
+      agent: design-lead
+      category: review
+      description: Review creative for approval
+      input:
+        - name: assets
+          type: files
+          required: true
+        - name: brief
+          type: md
+          required: false
+      output: review_report (md)
+
+    - name: direction
+      agent: design-lead
+      category: strategy
+      description: Set creative direction
+      input:
+        - name: project
+          type: text
+          required: true
+        - name: objectives
+          type: yaml
+          required: false
+      output: creative_direction (md)
+
+    - name: standards
+      agent: design-lead
+      category: strategy
+      description: Define visual standards
+      input:
+        - name: client
+          type: text
+          required: true
+        - name: brand_guidelines
+          type: md
+          required: false
+      output: visual_standards (md)
+
+    - name: approve
+      agent: design-lead
+      category: review
+      description: Final approval for deliverable
+      input:
+        - name: asset
+          type: file
+          required: true
+        - name: checklist
+          type: yaml
+          required: false
+      output: approval_decision (md)
+
+    # visual-systems-designer (Operational)
+    - name: carousel
+      agent: visual-systems-designer
+      category: execution
+      description: Create carousel system
+      input:
+        - name: content
+          type: md
+          required: true
+        - name: platform
+          type: text
+          required: false
+      output: carousel_design (md)
+
+    - name: infographic
+      agent: visual-systems-designer
+      category: execution
+      description: Create infographic
+      input:
+        - name: data
+          type: yaml
+          required: true
+      output: infographic_spec (md)
+
+    - name: template
+      agent: visual-systems-designer
+      category: execution
+      description: Create reusable template
+      input:
+        - name: type
+          type: text
+          required: true
+      output: template_spec (md)
+
+    # performance-designer (Operational)
+    - name: create-ad
+      agent: performance-designer
+      category: execution
+      description: Create ad creative
+      input:
+        - name: brief
+          type: md
+          required: true
+        - name: platform
+          type: text
+          required: true
+      output: ad_creative (md)
+
+    - name: variants
+      agent: performance-designer
+      category: execution
+      description: Generate creative variants
+      input:
+        - name: original
+          type: file
+          required: true
+        - name: count
+          type: number
+          required: false
+      output: variant_specs (md)
+
+    - name: adapt
+      agent: performance-designer
+      category: execution
+      description: Adapt creative for platform
+      input:
+        - name: original
+          type: file
+          required: true
+        - name: target_platform
+          type: text
+          required: true
+      output: adapted_spec (md)
+      quick: true
+
+    # motion-video-specialist (Operational)
+    - name: vsl-structure
+      agent: motion-video-specialist
+      category: execution
+      description: Create VSL visual structure
+      input:
+        - name: script
+          type: md
+          required: true
+      output: vsl_storyboard (md)
+
+    - name: video-ad
+      agent: motion-video-specialist
+      category: execution
+      description: Create video ad
+      input:
+        - name: brief
+          type: md
+          required: true
+        - name: duration
+          type: number
+          required: false
+      output: video_spec (md)
+
+    - name: reel
+      agent: motion-video-specialist
+      category: execution
+      description: Create reel/short format
+      input:
+        - name: hook
+          type: text
+          required: true
+      output: reel_spec (md)
+      quick: true
+
+# ============================================================================
+# CUSTOMER - Sucesso do Cliente
+# ============================================================================
+customer:
+  description: "Customer success, onboarding, health e expansão"
+
+  commands:
+    # customer-lead (Hybrid)
+    - name: health
+      agent: customer-lead
+      category: analysis
+      description: Customer health check
+      input:
+        - name: customer_id
+          type: text
+          required: true
+        - name: metrics
+          type: yaml
+          required: false
+      output: health_report (md)
+
+    - name: risk
+      agent: customer-lead
+      category: analysis
+      description: Identify at-risk customers
+      input:
+        - name: period
+          type: text
+          required: false
+        - name: threshold
+          type: number
+          required: false
+      output: risk_report (md)
+
+    - name: expand
+      agent: customer-lead
+      category: strategy
+      description: Find expansion opportunities
+      input:
+        - name: customer_id
+          type: text
+          required: true
+        - name: usage_data
+          type: yaml
+          required: false
+      output: expansion_plan (md)
+
+    - name: intervene
+      agent: customer-lead
+      category: execution
+      description: Plan intervention for at-risk customer
+      input:
+        - name: customer_id
+          type: text
+          required: true
+        - name: issue
+          type: text
+          required: true
+      output: intervention_plan (md)
+
+    # onboarding-architect (Operational)
+    - name: design-onboarding
+      agent: onboarding-architect
+      category: strategy
+      description: Design onboarding flow
+      input:
+        - name: product
+          type: text
+          required: true
+        - name: segments
+          type: list
+          required: false
+      output: onboarding_design (md)
+
+    - name: optimize-onboarding
+      agent: onboarding-architect
+      category: analysis
+      description: Optimize existing onboarding
+      input:
+        - name: current_flow
+          type: yaml
+          required: true
+        - name: metrics
+          type: yaml
+          required: false
+      output: optimization_plan (md)
+
+    - name: sequence
+      agent: onboarding-architect
+      category: execution
+      description: Create onboarding email sequence
+      input:
+        - name: journey_stage
+          type: text
+          required: true
+      output: email_sequence (md)
+
+# ============================================================================
+# GROWTH - Experimentação e Escala
+# ============================================================================
+growth:
+  description: "Growth experiments, análise de dados, waves de crescimento"
+
+  commands:
+    # growth-lead (Hybrid)
+    - name: prioritize
+      agent: growth-lead
+      category: strategy
+      description: Prioritize growth initiatives (ICE/RICE)
+      input:
+        - name: initiatives
+          type: list
+          required: true
+        - name: criteria
+          type: yaml
+          required: false
+      output: priority_matrix (md)
+
+    - name: experiment
+      agent: growth-lead
+      category: strategy
+      description: Design growth experiment
+      input:
+        - name: hypothesis
+          type: text
+          required: true
+        - name: metrics
+          type: list
+          required: true
+      output: experiment_design (md)
+
+    - name: wave
+      agent: growth-lead
+      category: strategy
+      description: Create coordinated growth wave
+      input:
+        - name: target
+          type: text
+          required: true
+        - name: timeline
+          type: text
+          required: true
+      output: wave_plan (md)
+
+    - name: analyze-experiment
+      agent: growth-lead
+      category: analysis
+      description: Analyze experiment results
+      input:
+        - name: experiment_id
+          type: text
+          required: true
+        - name: data
+          type: yaml
+          required: true
+      output: analysis_report (md)
+
+    # data-analyst (Operational)
+    - name: analyze
+      agent: data-analyst
+      category: analysis
+      description: Analyze specific metric or funnel
+      input:
+        - name: metric
+          type: text
+          required: true
+        - name: period
+          type: text
+          required: false
+      output: metric_analysis (md)
+
+    - name: cohort
+      agent: data-analyst
+      category: analysis
+      description: Run cohort analysis
+      input:
+        - name: cohort_definition
+          type: yaml
+          required: true
+      output: cohort_report (md)
+
+    - name: ab-result
+      agent: data-analyst
+      category: analysis
+      description: Analyze A/B test results
+      input:
+        - name: test_data
+          type: yaml
+          required: true
+      output: ab_analysis (md)
+
+# ============================================================================
+# QA - Qualidade e Validação
+# ============================================================================
+qa:
+  description: "Quality gates, auditorias, validação e compliance"
+
+  commands:
+    # qa-lead (Operational)
+    - name: run-gate
+      agent: qa-lead
+      category: review
+      description: Execute release quality gate
+      input:
+        - name: artifact
+          type: any
+          required: true
+        - name: artifact_type
+          type: text
+          required: true
+      output: gate_report (md)
+
+    - name: validate
+      agent: qa-lead
+      category: review
+      description: Validate deliverable against DoD
+      input:
+        - name: deliverable
+          type: any
+          required: true
+        - name: dod_id
+          type: text
+          required: true
+      output: validation_report (md)
+
+    - name: audit
+      agent: qa-lead
+      category: analysis
+      description: Audit process or artifact for compliance
+      input:
+        - name: target
+          type: path
+          required: true
+        - name: audit_type
+          type: text
+          required: true
+      output: audit_report (md)
+
+    - name: define-standard
+      agent: qa-lead
+      category: strategy
+      description: Create or update quality standard
+      input:
+        - name: domain
+          type: text
+          required: true
+        - name: criteria
+          type: yaml
+          required: false
+      output: standard_doc (md)
+
+    # content-reviewer (Operational)
+    - name: review-content
+      agent: content-reviewer
+      category: review
+      description: Review content piece for quality
+      input:
+        - name: content
+          type: md
+          required: true
+        - name: content_type
+          type: text
+          required: true
+      output: review_report (md)
+
+    - name: verify
+      agent: content-reviewer
+      category: review
+      description: Verify specific claims in content
+      input:
+        - name: claims
+          type: list
+          required: true
+        - name: sources
+          type: list
+          required: false
+      output: verification_report (md)
+
+    - name: feedback
+      agent: content-reviewer
+      category: review
+      description: Provide detailed feedback on content
+      input:
+        - name: content
+          type: md
+          required: true
+        - name: focus_areas
+          type: list
+          required: false
+      output: feedback_doc (md)
+
+    # process-auditor (Operational)
+    - name: audit-process
+      agent: process-auditor
+      category: analysis
+      description: Audit a workflow or process
+      input:
+        - name: process_id
+          type: text
+          required: true
+        - name: audit_scope
+          type: text
+          required: false
+      output: audit_findings (md)
+
+    - name: verify-compliance
+      agent: process-auditor
+      category: review
+      description: Check compliance against requirements
+      input:
+        - name: deliverable
+          type: any
+          required: true
+        - name: requirements
+          type: yaml
+          required: true
+      output: compliance_report (md)
+
+    - name: analyze-logs
+      agent: process-auditor
+      category: analysis
+      description: Analyze activity logs for patterns
+      input:
+        - name: log_data
+          type: path
+          required: true
+        - name: analysis_type
+          type: text
+          required: false
+      output: log_analysis (md)
+
+# ============================================================================
+# FINANCE - Controle Financeiro
+# ============================================================================
+finance:
+  description: "Reports financeiros, pricing, unit economics, forecasts"
+
+  commands:
+    # finance-lead (Operational)
+    - name: report
+      agent: finance-lead
+      category: analysis
+      description: Generate financial report
+      input:
+        - name: period
+          type: text
+          required: true
+        - name: report_type
+          type: text
+          required: true
+          description: "daily | weekly | monthly | quarterly"
+      output: financial_report (md)
+
+    - name: approve-expense
+      agent: finance-lead
+      category: review
+      description: Approve expenditure request
+      input:
+        - name: amount
+          type: number
+          required: true
+        - name: category
+          type: text
+          required: true
+        - name: justification
+          type: text
+          required: true
+      output: approval_decision (md)
+
+    - name: forecast
+      agent: finance-lead
+      category: analysis
+      description: Generate revenue/cost forecast
+      input:
+        - name: period
+          type: text
+          required: true
+        - name: assumptions
+          type: yaml
+          required: false
+      output: forecast_report (md)
+
+    - name: alert
+      agent: finance-lead
+      category: coordination
+      description: Trigger budget alert
+      input:
+        - name: threshold
+          type: text
+          required: true
+        - name: current_spend
+          type: number
+          required: true
+      output: alert_notification (md)
+
+    # financial-analyst (Operational)
+    - name: unit-economics
+      agent: financial-analyst
+      category: analysis
+      description: Calculate unit economics (CAC, LTV, etc)
+      input:
+        - name: revenue_data
+          type: yaml
+          required: true
+        - name: cost_data
+          type: yaml
+          required: true
+      output: unit_economics_report (md)
+
+    - name: viability
+      agent: financial-analyst
+      category: analysis
+      description: Assess financial viability
+      input:
+        - name: business_model
+          type: yaml
+          required: true
+        - name: assumptions
+          type: yaml
+          required: false
+      output: viability_report (md)
+
+    - name: scenario
+      agent: financial-analyst
+      category: analysis
+      description: Run financial scenarios (best/worst/base)
+      input:
+        - name: base_case
+          type: yaml
+          required: true
+        - name: variables
+          type: list
+          required: true
+      output: scenario_analysis (md)
+
+    - name: kpi-report
+      agent: financial-analyst
+      category: analysis
+      description: Generate KPI dashboard
+      input:
+        - name: period
+          type: text
+          required: true
+        - name: metrics
+          type: list
+          required: false
+      output: kpi_report (md)
+
+    # pricing-strategist (Operational)
+    - name: review-pricing
+      agent: pricing-strategist
+      category: review
+      description: Review pricing strategy
+      input:
+        - name: current_pricing
+          type: yaml
+          required: true
+        - name: market_data
+          type: yaml
+          required: false
+      output: pricing_review (md)
+
+    - name: tier
+      agent: pricing-strategist
+      category: strategy
+      description: Design pricing tiers
+      input:
+        - name: value_props
+          type: yaml
+          required: true
+        - name: segments
+          type: list
+          required: true
+      output: tier_design (md)
+
+    - name: test-price
+      agent: pricing-strategist
+      category: strategy
+      description: Design price test
+      input:
+        - name: hypothesis
+          type: text
+          required: true
+        - name: metrics
+          type: list
+          required: true
+      output: test_plan (md)
+
+    - name: elasticity
+      agent: pricing-strategist
+      category: analysis
+      description: Analyze pricing elasticity
+      input:
+        - name: price_changes
+          type: yaml
+          required: true
+        - name: volume_data
+          type: yaml
+          required: true
+      output: elasticity_report (md)
+
+# ============================================================================
+# TRANSLATOR - Localização
+# ============================================================================
+translator:
+  description: "Tradução, localização, glossários e adaptação cultural"
+
+  commands:
+    # translation-lead (Operational)
+    - name: coordinate
+      agent: translation-lead
+      category: coordination
+      description: Coordinate translation project
+      input:
+        - name: source_content
+          type: md
+          required: true
+        - name: target_languages
+          type: list
+          required: true
+      output: project_plan (md)
+
+    - name: glossary
+      agent: translation-lead
+      category: execution
+      description: Manage terminology glossary
+      input:
+        - name: action
+          type: text
+          required: true
+          description: "add | update | query"
+        - name: terms
+          type: yaml
+          required: false
+      output: glossary_update (md)
+
+    - name: review-translation
+      agent: translation-lead
+      category: review
+      description: Review translation quality
+      input:
+        - name: translation
+          type: md
+          required: true
+        - name: source
+          type: md
+          required: true
+        - name: language
+          type: text
+          required: true
+      output: review_report (md)
+
+    - name: localize
+      agent: translation-lead
+      category: execution
+      description: Adapt content for specific market
+      input:
+        - name: content
+          type: md
+          required: true
+        - name: market
+          type: text
+          required: true
+      output: localized_content (md)
+
+# ============================================================================
+# BOARD - Conselho Estratégico (Expert Agents)
+# ============================================================================
+board:
+  description: "Conselho de experts para decisões estratégicas de alto nível"
+
+  commands:
+    # charlie-munger (Expert)
+    - name: mental-models
+      agent: charlie-munger
+      category: analysis
+      description: Analyze using mental models checklist
+      input:
+        - name: decision
+          type: md
+          required: true
+      output: models_analysis (md)
+
+    - name: invert
+      agent: charlie-munger
+      category: analysis
+      description: Apply inversion to problem
+      input:
+        - name: problem
+          type: text
+          required: true
+      output: inversion_memo (md)
+
+    - name: risk-blindspots
+      agent: charlie-munger
+      category: analysis
+      description: Identify psychological blindspots
+      input:
+        - name: proposal
+          type: md
+          required: true
+      output: blindspots_memo (md)
+
+    # steve-jobs (Expert)
+    - name: product-review
+      agent: steve-jobs
+      category: review
+      description: Product experience review
+      input:
+        - name: product
+          type: md
+          required: true
+      output: product_memo (md)
+
+    - name: simplify
+      agent: steve-jobs
+      category: analysis
+      description: Radical simplification analysis
+      input:
+        - name: design
+          type: md
+          required: true
+      output: simplification_memo (md)
+
+    - name: vision
+      agent: steve-jobs
+      category: strategy
+      description: Product vision articulation
+      input:
+        - name: context
+          type: md
+          required: true
+      output: vision_memo (md)
+
+    # alex-hormozi (Expert)
+    - name: offer-review
+      agent: alex-hormozi
+      category: review
+      description: Analyze offer using value equation
+      input:
+        - name: offer
+          type: md
+          required: true
+        - name: market
+          type: text
+          required: false
+      output: offer_memo (md)
+
+    - name: value-equation
+      agent: alex-hormozi
+      category: analysis
+      description: Score offer against value equation
+      input:
+        - name: offer
+          type: md
+          required: true
+      output: value_score (md)
+
+    - name: grand-slam
+      agent: alex-hormozi
+      category: execution
+      description: Design grand slam offer from scratch
+      input:
+        - name: market
+          type: text
+          required: true
+        - name: avatar
+          type: yaml
+          required: false
+      output: grand_slam_offer (md)
+
+    # dan-kennedy (Expert)
+    - name: positioning-review
+      agent: dan-kennedy
+      category: review
+      description: Analyze positioning strength
+      input:
+        - name: brand
+          type: text
+          required: true
+        - name: market
+          type: text
+          required: true
+      output: positioning_memo (md)
+
+    - name: message-clarity
+      agent: dan-kennedy
+      category: review
+      description: Assess message clarity
+      input:
+        - name: copy
+          type: md
+          required: true
+        - name: audience
+          type: text
+          required: false
+      output: clarity_report (md)
+
+    - name: sophistication
+      agent: dan-kennedy
+      category: analysis
+      description: Analyze market sophistication level (1-5)
+      input:
+        - name: market
+          type: text
+          required: true
+        - name: competitors
+          type: list
+          required: false
+      output: sophistication_analysis (md)
+
+    # elon-musk (Expert)
+    - name: first-principles
+      agent: elon-musk
+      category: analysis
+      description: First principles analysis
+      input:
+        - name: problem
+          type: text
+          required: true
+      output: principles_analysis (md)
+
+    - name: cost-decompose
+      agent: elon-musk
+      category: analysis
+      description: Break down costs to physics floor
+      input:
+        - name: item
+          type: text
+          required: true
+        - name: current_cost
+          type: number
+          required: true
+      output: cost_analysis (md)
+
+    - name: system-review
+      agent: elon-musk
+      category: review
+      description: First principles system analysis
+      input:
+        - name: system
+          type: md
+          required: true
+        - name: constraints
+          type: yaml
+          required: false
+      output: system_memo (md)
+
+    # peter-thiel (Expert)
+    - name: moat-review
+      agent: peter-thiel
+      category: review
+      description: Competitive moat analysis
+      input:
+        - name: business
+          type: md
+          required: true
+        - name: market
+          type: text
+          required: false
+      output: moat_analysis (md)
+
+    - name: secret-find
+      agent: peter-thiel
+      category: analysis
+      description: Identify non-obvious advantages
+      input:
+        - name: situation
+          type: text
+          required: true
+      output: secret_assessment (md)
+
+    - name: zero-to-one
+      agent: peter-thiel
+      category: analysis
+      description: Evaluate if opportunity is truly new
+      input:
+        - name: opportunity
+          type: md
+          required: true
+      output: innovation_analysis (md)
+
+    # ray-dalio (Expert)
+    - name: principles-check
+      agent: ray-dalio
+      category: review
+      description: Check alignment with principles
+      input:
+        - name: decision
+          type: text
+          required: true
+        - name: principles
+          type: yaml
+          required: false
+      output: alignment_report (md)
+
+    - name: root-cause
+      agent: ray-dalio
+      category: analysis
+      description: Deep root cause analysis (5 whys)
+      input:
+        - name: problem
+          type: text
+          required: true
+        - name: context
+          type: md
+          required: false
+      output: root_cause_analysis (md)
+
+    - name: encode-principle
+      agent: ray-dalio
+      category: execution
+      description: Create new principle from learning
+      input:
+        - name: situation
+          type: text
+          required: true
+        - name: outcome
+          type: text
+          required: true
+      output: new_principle (md)
+
+    # bill-gates (Expert)
+    - name: platform-direction
+      agent: bill-gates
+      category: strategy
+      description: Platform strategy analysis
+      input:
+        - name: business
+          type: md
+          required: true
+        - name: market
+          type: text
+          required: false
+      output: platform_memo (md)
+
+    - name: network-effect
+      agent: bill-gates
+      category: analysis
+      description: Analyze network effect potential
+      input:
+        - name: model
+          type: md
+          required: true
+      output: network_analysis (md)
+
+    - name: long-term-review
+      agent: bill-gates
+      category: review
+      description: 5-10 year strategic review
+      input:
+        - name: current_state
+          type: md
+          required: true
+        - name: trends
+          type: yaml
+          required: false
+      output: long_term_memo (md)
+
+# ============================================================================
+# DESIGN-SYSTEM - Atomic Design (Brad Frost)
+# ============================================================================
+design-system:
+  description: "Design system, tokens, componentes atômicos e migração"
+
+  commands:
+    # design-system (Expert - Brad Frost)
+    - name: audit
+      agent: design-system
+      category: analysis
+      description: Scan codebase for UI pattern redundancies
+      input:
+        - name: path
+          type: path
+          required: true
+      output: audit_report (md)
+
+    - name: consolidate
+      agent: design-system
+      category: execution
+      description: Reduce redundancy using clustering
+      input:
+        - name: audit_report
+          type: md
+          required: true
+      output: consolidation_plan (md)
+
+    - name: tokenize
+      agent: design-system
+      category: execution
+      description: Generate design token system
+      input:
+        - name: patterns
+          type: yaml
+          required: true
+      output: tokens (yaml)
+
+    - name: migrate
+      agent: design-system
+      category: strategy
+      description: Create phased migration strategy
+      input:
+        - name: current_state
+          type: md
+          required: true
+      output: migration_plan (md)
+
+    - name: calculate-roi
+      agent: design-system
+      category: analysis
+      description: Cost analysis and savings projection
+      input:
+        - name: scope
+          type: yaml
+          required: true
+      output: roi_report (md)
+
+    - name: shock-report
+      agent: design-system
+      category: analysis
+      description: Generate visual HTML report showing UI chaos + ROI
+      output: shock_report (html)
+
+    - name: setup
+      agent: design-system
+      category: execution
+      description: Initialize design system structure
+      output: ds_scaffold (files)
+
+    - name: build
+      agent: design-system
+      category: execution
+      description: Generate production-ready component
+      input:
+        - name: component_spec
+          type: yaml
+          required: true
+      output: component (code)
+
+    - name: compose
+      agent: design-system
+      category: execution
+      description: Build molecule from existing atoms
+      input:
+        - name: atoms
+          type: list
+          required: true
+      output: molecule_spec (yaml)
+
+    - name: ds-health
+      agent: design-system
+      category: analysis
+      description: Generate comprehensive health dashboard
+      output: health_dashboard (md)
+
+    - name: dead-code
+      agent: design-system
+      category: analysis
+      description: Find unused tokens and components
+      input:
+        - name: path
+          type: path
+          required: true
+      output: dead_code_report (md)
+
+    - name: refactor-plan
+      agent: design-system
+      category: strategy
+      description: Analyze codebase for refactoring candidates
+      input:
+        - name: path
+          type: path
+          required: true
+      output: refactor_plan (md)
+
+# ============================================================================
+# INDEX - Busca rápida por categoria
+# ============================================================================
+_index:
+  by_category:
+    strategy:
+      - ops/prioritize
+      - tech/decide
+      - tech/standards
+      - marketing/plan-campaign
+      - marketing/angles
+      - marketing/calendar
+      - marketing/design-funnel
+      - marketing/pricing
+      - marketing/cluster
+      - sales/strategy
+      - design/direction
+      - design/standards
+      - customer/expand
+      - growth/prioritize
+      - growth/experiment
+      - growth/wave
+      - qa/define-standard
+      - finance/tier
+      - finance/test-price
+      - board/vision
+      - board/platform-direction
+      - design-system/migrate
+      - design-system/refactor-plan
+
+    execution:
+      - ops/new-task
+      - tech/implement
+      - tech/connect
+      - tech/test
+      - tech/create-workflow
+      - tech/integrate
+      - tech/sync
+      - tech/setup-crm
+      - tech/create-pipeline
+      - tech/snapshot
+      - marketing/brief
+      - marketing/write-copy
+      - marketing/headline
+      - marketing/cta
+      - marketing/rewrite
+      - marketing/grand-slam
+      - marketing/seo-brief
+      - sales/coach
+      - sales/discovery
+      - sales/objection
+      - sales/close
+      - sales/outreach
+      - design/carousel
+      - design/infographic
+      - design/template
+      - design/create-ad
+      - design/variants
+      - design/adapt
+      - design/vsl-structure
+      - design/video-ad
+      - design/reel
+      - customer/intervene
+      - customer/sequence
+      - translator/glossary
+      - translator/localize
+      - board/grand-slam
+      - board/encode-principle
+      - design-system/consolidate
+      - design-system/tokenize
+      - design-system/setup
+      - design-system/build
+      - design-system/compose
+
+    analysis:
+      - ops/status
+      - tech/evaluate
+      - tech/analyze-ai
+      - marketing/research
+      - marketing/map-journey
+      - marketing/optimize-funnel
+      - marketing/keyword-research
+      - marketing/audit-seo
+      - marketing/analyze-performance
+      - sales/forecast
+      - sales/qualify
+      - sales/pipeline-review
+      - sales/win-loss
+      - customer/health
+      - customer/risk
+      - growth/analyze-experiment
+      - growth/analyze
+      - growth/cohort
+      - growth/ab-result
+      - qa/audit
+      - qa/audit-process
+      - qa/analyze-logs
+      - finance/report
+      - finance/forecast
+      - finance/unit-economics
+      - finance/viability
+      - finance/scenario
+      - finance/kpi-report
+      - finance/elasticity
+      - board/mental-models
+      - board/invert
+      - board/risk-blindspots
+      - board/simplify
+      - board/value-equation
+      - board/sophistication
+      - board/first-principles
+      - board/cost-decompose
+      - board/secret-find
+      - board/zero-to-one
+      - board/root-cause
+      - board/network-effect
+      - design-system/audit
+      - design-system/calculate-roi
+      - design-system/shock-report
+      - design-system/ds-health
+      - design-system/dead-code
+
+    review:
+      - tech/review
+      - marketing/review-creative
+      - marketing/offer-review
+      - sales/review-deal
+      - design/review
+      - design/approve
+      - qa/run-gate
+      - qa/validate
+      - qa/review-content
+      - qa/verify
+      - qa/feedback
+      - qa/verify-compliance
+      - finance/approve-expense
+      - finance/review-pricing
+      - translator/review-translation
+      - board/product-review
+      - board/offer-review
+      - board/positioning-review
+      - board/message-clarity
+      - board/system-review
+      - board/moat-review
+      - board/principles-check
+      - board/long-term-review
+
+    coordination:
+      - ops/escalate
+      - ops/authorize
+      - ops/route
+      - ops/blocked
+      - ops/update-status
+      - marketing/coordinate
+      - finance/alert
+      - translator/coordinate
+
+  quick_commands:
+    - ops/new-task
+    - ops/blocked
+    - ops/update-status
+    - tech/test
+    - tech/sync
+    - tech/snapshot
+    - marketing/headline
+    - marketing/cta
+    - sales/objection
+    - design/adapt
+    - design/reel

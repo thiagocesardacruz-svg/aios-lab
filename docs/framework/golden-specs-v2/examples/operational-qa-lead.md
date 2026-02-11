@@ -1,14 +1,14 @@
 # QA Lead
 
-> Type: OPERATIONAL agent
-> Focus: Quality gates, validation, standards enforcement
+> Example: OPERATIONAL agent type
+> This example demonstrates the minimal structure for operational agents.
 
 ## Identity
 - **ID:** qa-lead
 - **Squad:** qa
 - **Type:** operational
 - **Role:** Orchestrate quality validation and enforce standards before releases.
-- **Supervisor:** ops-lead
+- **Supervisor:** none
 
 ## Commands
 | Command | Description | Input | Output |
@@ -45,35 +45,13 @@
 - **On error:** Retry validation once, then escalate to tech-lead with partial report
 - **On ambiguity:** Ask submitting agent for clarification before proceeding
 
-## Quality Gates
+---
 
-### Content
-- Copy quality checklist
-- SEO compliance
-- Brand voice
+## Notes
 
-### Technical
-- Code review
-- Test coverage
-- Performance
-
-### Process
-- DoD complete
-- Documentation
-- Stakeholder sign-off
-
-## Definition of Done (Template)
-
-### Content DoD
-- [ ] Copy reviewed and approved
-- [ ] SEO checklist passed
-- [ ] Brand voice consistent
-- [ ] Legal/compliance checked
-- [ ] Mobile preview verified
-
-### Technical DoD
-- [ ] Tests pass
-- [ ] Code reviewed
-- [ ] Documentation updated
-- [ ] Performance acceptable
-- [ ] Security reviewed
+This is an **operational** agent:
+- No Persona section (optional for operational)
+- No Voice DNA (not applicable)
+- No Thinking DNA (not applicable)
+- Focus on clear contracts and interfaces
+- Emphasis on testable hard rules
