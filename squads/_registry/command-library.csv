@@ -1,147 +1,147 @@
-Squad,Command,Agent,Category,Description,Input,Output,Quick
-ops,status,ops-lead,analysis,System-wide status overview,scope (text),status_report (md),no
-ops,prioritize,ops-lead,strategy,Define global priorities,initiatives (list) + criteria (yaml),priority_matrix (md),no
-ops,escalate,ops-lead,coordination,Escalate decision to Director,issue (text) + context (md),escalation_request (md),no
-ops,authorize,ops-lead,coordination,Authorize critical execution,action (text) + justification (text),authorization (md),no
-ops,route,ops-lead,coordination,Route OS to appropriate squad,os_request (yaml),routing_decision (md),no
-ops,new-task,ops-manager,execution,Cria nova OS a partir de pedido,-,-,yes
-ops,blocked,ops-manager,coordination,Registra bloqueio em OS,-,-,yes
-ops,update-status,ops-manager,coordination,Atualiza status de OS,-,-,yes
-tech,review,tech-lead,review,Technical architecture review,code_path (path) + scope (text),review_report (md),no
-tech,decide,tech-lead,strategy,Make technical decision (ADR),options (list) + criteria (yaml),decision_record (md),no
-tech,standards,tech-lead,strategy,Define code standards,domain (text) + rules (yaml),standards_doc (md),no
-tech,evaluate,tech-lead,analysis,Evaluate technology option,technology (text) + use_case (text),evaluation_report (md),no
-tech,implement,application-developer,execution,Implement component/feature,spec (md),implementation (code),no
-tech,connect,application-developer,execution,Connect to external API,api_spec (yaml),integration (code),no
-tech,test,application-developer,execution,Write tests for component,-,-,yes
-tech,analyze-ai,ai-ops,analysis,Analyze AI usage and costs,-,ai_cost_report (md),no
-tech,optimize-prompts,ai-ops,execution,Optimize prompts and routing,-,optimization_plan (md),no
-tech,create-workflow,automation-engineer,execution,Create n8n/automation workflow,trigger (text) + actions (list),workflow_config (yaml),no
-tech,integrate,automation-engineer,execution,Integrate tools via API,source (text) + target (text),integration_spec (yaml),no
-tech,sync,automation-engineer,execution,Setup data sync between systems,-,-,yes
-tech,setup-crm,ghl-specialist,execution,Setup CRM structure in GHL,-,crm_config (yaml),no
-tech,create-pipeline,ghl-specialist,execution,Create sales pipeline in GHL,-,pipeline_config (yaml),no
-tech,snapshot,ghl-specialist,execution,Create/deploy GHL snapshot,-,-,yes
-marketing,plan-campaign,marketing-lead,strategy,Create campaign strategy,objective (text) + audience (yaml) + budget (number),campaign_plan (md),no
-marketing,review-creative,marketing-lead,review,Review creative assets for brand alignment,assets (files) + guidelines (md),review_report (md),no
-marketing,analyze-performance,marketing-lead,analysis,Analyze campaign metrics,campaign_id (text) + date_range (text),performance_report (md),no
-marketing,coordinate,marketing-lead,coordination,Coordinate cross-channel execution,campaign_plan (md) + channels (list),execution_schedule (yaml),no
-marketing,brief,marketing-lead,execution,Create creative brief for content team,objective (text) + context (md),creative_brief (md),no
-marketing,research,content-strategist,analysis,Pesquisa ICP e mercado,-,research_report (md),no
-marketing,angles,content-strategist,strategy,Define angulos de conteudo,-,content_angles (md),no
-marketing,calendar,content-strategist,strategy,Cria calendario editorial,-,editorial_calendar (yaml),no
-marketing,write-copy,copy-specialist,execution,Escreve copy para qualquer formato,format (text) + brief (md),copy (md),no
-marketing,headline,copy-specialist,execution,Cria variacoes de headline,topic (text) + count (number),headlines (list),yes
-marketing,cta,copy-specialist,execution,Cria CTAs de alta conversao,-,-,yes
-marketing,rewrite,copy-specialist,execution,Melhora copy existente,original (md) + goal (text),improved_copy (md),no
-marketing,design-funnel,funnel-architect,strategy,Desenha funil completo,goal (text) + traffic_source (text),funnel_design (md),no
-marketing,map-journey,funnel-architect,analysis,Mapeia jornada do cliente,-,customer_journey (md),no
-marketing,optimize-funnel,funnel-architect,analysis,Sugere otimizacoes de funil,funnel_data (yaml),optimization_plan (md),no
-marketing,offer-review,offer-engine,review,Analisa e melhora oferta existente,offer (md),offer_analysis (md),no
-marketing,grand-slam,offer-engine,execution,Cria Grand Slam Offer do zero,market (text) + avatar (yaml),grand_slam_offer (md),no
-marketing,pricing,offer-engine,strategy,Define estrategia de preco com value stacking,offer (md),pricing_strategy (md),no
-marketing,keyword-research,seo-specialist,analysis,Pesquisa de keywords,topic (text) + intent (text),keyword_report (md),no
-marketing,seo-brief,seo-specialist,execution,Brief SEO para artigo,keyword (text),seo_brief (md),no
-marketing,audit-seo,seo-specialist,analysis,Auditoria SEO de pagina,url (text),seo_audit (md),no
-marketing,cluster,seo-specialist,strategy,Cria cluster de conteudo,pillar_topic (text),content_cluster (md),no
-sales,strategy,sales-lead,strategy,Define sales strategy,market (text) + period (text),sales_strategy (md),no
-sales,review-deal,sales-lead,review,Review specific deal,deal_data (yaml) + stage (text),deal_review (md),no
-sales,coach,sales-lead,execution,Coach on specific sales situation,scenario (text) + context (md),coaching_advice (md),no
-sales,forecast,sales-lead,analysis,Generate sales forecast,pipeline_data (yaml) + period (text),forecast_report (md),no
-sales,qualify,sales-lead,analysis,Evaluate lead qualification,lead_data (yaml),qualification_report (md),no
-sales,discovery,closer,execution,Run discovery session framework,prospect_info (yaml),discovery_script (md),no
-sales,objection,closer,execution,Handle specific objection,objection (text),response_script (md),yes
-sales,close,closer,execution,Closing strategies for scenario,deal_context (md),closing_plan (md),no
-sales,prospect,sdr,execution,Find and qualify prospects,icp (yaml),prospect_list (yaml),no
-sales,outreach,sdr,execution,Create outreach sequence,channel (text) + persona (yaml),outreach_sequence (md),no
-sales,pipeline-review,sales-analyst,analysis,Full pipeline analysis,pipeline_data (yaml),pipeline_analysis (md),no
-sales,win-loss,sales-analyst,analysis,Win/loss analysis,deals (yaml) + period (text),win_loss_report (md),no
-design,review,design-lead,review,Review creative for approval,assets (files) + brief (md),review_report (md),no
-design,direction,design-lead,strategy,Set creative direction,project (text) + objectives (yaml),creative_direction (md),no
-design,standards,design-lead,strategy,Define visual standards,client (text) + brand_guidelines (md),visual_standards (md),no
-design,approve,design-lead,review,Final approval for deliverable,asset (file) + checklist (yaml),approval_decision (md),no
-design,carousel,visual-systems-designer,execution,Create carousel system,content (md) + platform (text),carousel_design (md),no
-design,infographic,visual-systems-designer,execution,Create infographic,data (yaml),infographic_spec (md),no
-design,template,visual-systems-designer,execution,Create reusable template,type (text),template_spec (md),no
-design,create-ad,performance-designer,execution,Create ad creative,brief (md) + platform (text),ad_creative (md),no
-design,variants,performance-designer,execution,Generate creative variants,original (file) + count (number),variant_specs (md),no
-design,adapt,performance-designer,execution,Adapt creative for platform,original (file) + target_platform (text),adapted_spec (md),yes
-design,vsl-structure,motion-video-specialist,execution,Create VSL visual structure,script (md),vsl_storyboard (md),no
-design,video-ad,motion-video-specialist,execution,Create video ad,brief (md) + duration (number),video_spec (md),no
-design,reel,motion-video-specialist,execution,Create reel/short format,hook (text),reel_spec (md),yes
-customer,health,customer-lead,analysis,Customer health check,customer_id (text) + metrics (yaml),health_report (md),no
-customer,risk,customer-lead,analysis,Identify at-risk customers,period (text) + threshold (number),risk_report (md),no
-customer,expand,customer-lead,strategy,Find expansion opportunities,customer_id (text) + usage_data (yaml),expansion_plan (md),no
-customer,intervene,customer-lead,execution,Plan intervention for at-risk customer,customer_id (text) + issue (text),intervention_plan (md),no
-customer,design-onboarding,onboarding-architect,strategy,Design onboarding flow,product (text) + segments (list),onboarding_design (md),no
-customer,optimize-onboarding,onboarding-architect,analysis,Optimize existing onboarding,current_flow (yaml) + metrics (yaml),optimization_plan (md),no
-customer,sequence,onboarding-architect,execution,Create onboarding email sequence,journey_stage (text),email_sequence (md),no
-growth,prioritize,growth-lead,strategy,Prioritize growth initiatives (ICE/RICE),initiatives (list) + criteria (yaml),priority_matrix (md),no
-growth,experiment,growth-lead,strategy,Design growth experiment,hypothesis (text) + metrics (list),experiment_design (md),no
-growth,wave,growth-lead,strategy,Create coordinated growth wave,target (text) + timeline (text),wave_plan (md),no
-growth,analyze-experiment,growth-lead,analysis,Analyze experiment results,experiment_id (text) + data (yaml),analysis_report (md),no
-growth,analyze,data-analyst,analysis,Analyze specific metric or funnel,metric (text) + period (text),metric_analysis (md),no
-growth,cohort,data-analyst,analysis,Run cohort analysis,cohort_definition (yaml),cohort_report (md),no
-growth,ab-result,data-analyst,analysis,Analyze A/B test results,test_data (yaml),ab_analysis (md),no
-qa,run-gate,qa-lead,review,Execute release quality gate,artifact (any) + artifact_type (text),gate_report (md),no
-qa,validate,qa-lead,review,Validate deliverable against DoD,deliverable (any) + dod_id (text),validation_report (md),no
-qa,audit,qa-lead,analysis,Audit process or artifact for compliance,target (path) + audit_type (text),audit_report (md),no
-qa,define-standard,qa-lead,strategy,Create or update quality standard,domain (text) + criteria (yaml),standard_doc (md),no
-qa,review-content,content-reviewer,review,Review content piece for quality,content (md) + content_type (text),review_report (md),no
-qa,verify,content-reviewer,review,Verify specific claims in content,claims (list) + sources (list),verification_report (md),no
-qa,feedback,content-reviewer,review,Provide detailed feedback on content,content (md) + focus_areas (list),feedback_doc (md),no
-qa,audit-process,process-auditor,analysis,Audit a workflow or process,process_id (text) + audit_scope (text),audit_findings (md),no
-qa,verify-compliance,process-auditor,review,Check compliance against requirements,deliverable (any) + requirements (yaml),compliance_report (md),no
-qa,analyze-logs,process-auditor,analysis,Analyze activity logs for patterns,log_data (path) + analysis_type (text),log_analysis (md),no
-finance,report,finance-lead,analysis,Generate financial report,period (text) + report_type (text),financial_report (md),no
-finance,approve-expense,finance-lead,review,Approve expenditure request,amount (number) + category (text) + justification (text),approval_decision (md),no
-finance,forecast,finance-lead,analysis,Generate revenue/cost forecast,period (text) + assumptions (yaml),forecast_report (md),no
-finance,alert,finance-lead,coordination,Trigger budget alert,threshold (text) + current_spend (number),alert_notification (md),no
-finance,unit-economics,financial-analyst,analysis,Calculate unit economics (CAC LTV etc),revenue_data (yaml) + cost_data (yaml),unit_economics_report (md),no
-finance,viability,financial-analyst,analysis,Assess financial viability,business_model (yaml) + assumptions (yaml),viability_report (md),no
-finance,scenario,financial-analyst,analysis,Run financial scenarios (best/worst/base),base_case (yaml) + variables (list),scenario_analysis (md),no
-finance,kpi-report,financial-analyst,analysis,Generate KPI dashboard,period (text) + metrics (list),kpi_report (md),no
-finance,review-pricing,pricing-strategist,review,Review pricing strategy,current_pricing (yaml) + market_data (yaml),pricing_review (md),no
-finance,tier,pricing-strategist,strategy,Design pricing tiers,value_props (yaml) + segments (list),tier_design (md),no
-finance,test-price,pricing-strategist,strategy,Design price test,hypothesis (text) + metrics (list),test_plan (md),no
-finance,elasticity,pricing-strategist,analysis,Analyze pricing elasticity,price_changes (yaml) + volume_data (yaml),elasticity_report (md),no
-translator,coordinate,translation-lead,coordination,Coordinate translation project,source_content (md) + target_languages (list),project_plan (md),no
-translator,glossary,translation-lead,execution,Manage terminology glossary,action (text) + terms (yaml),glossary_update (md),no
-translator,review-translation,translation-lead,review,Review translation quality,translation (md) + source (md) + language (text),review_report (md),no
-translator,localize,translation-lead,execution,Adapt content for specific market,content (md) + market (text),localized_content (md),no
-board,mental-models,charlie-munger,analysis,Analyze using mental models checklist,decision (md),models_analysis (md),no
-board,invert,charlie-munger,analysis,Apply inversion to problem,problem (text),inversion_memo (md),no
-board,risk-blindspots,charlie-munger,analysis,Identify psychological blindspots,proposal (md),blindspots_memo (md),no
-board,product-review,steve-jobs,review,Product experience review,product (md),product_memo (md),no
-board,simplify,steve-jobs,analysis,Radical simplification analysis,design (md),simplification_memo (md),no
-board,vision,steve-jobs,strategy,Product vision articulation,context (md),vision_memo (md),no
-board,offer-review,alex-hormozi,review,Analyze offer using value equation,offer (md) + market (text),offer_memo (md),no
-board,value-equation,alex-hormozi,analysis,Score offer against value equation,offer (md),value_score (md),no
-board,grand-slam,alex-hormozi,execution,Design grand slam offer from scratch,market (text) + avatar (yaml),grand_slam_offer (md),no
-board,positioning-review,dan-kennedy,review,Analyze positioning strength,brand (text) + market (text),positioning_memo (md),no
-board,message-clarity,dan-kennedy,review,Assess message clarity,copy (md) + audience (text),clarity_report (md),no
-board,sophistication,dan-kennedy,analysis,Analyze market sophistication level (1-5),market (text) + competitors (list),sophistication_analysis (md),no
-board,first-principles,elon-musk,analysis,First principles analysis,problem (text),principles_analysis (md),no
-board,cost-decompose,elon-musk,analysis,Break down costs to physics floor,item (text) + current_cost (number),cost_analysis (md),no
-board,system-review,elon-musk,review,First principles system analysis,system (md) + constraints (yaml),system_memo (md),no
-board,moat-review,peter-thiel,review,Competitive moat analysis,business (md) + market (text),moat_analysis (md),no
-board,secret-find,peter-thiel,analysis,Identify non-obvious advantages,situation (text),secret_assessment (md),no
-board,zero-to-one,peter-thiel,analysis,Evaluate if opportunity is truly new,opportunity (md),innovation_analysis (md),no
-board,principles-check,ray-dalio,review,Check alignment with principles,decision (text) + principles (yaml),alignment_report (md),no
-board,root-cause,ray-dalio,analysis,Deep root cause analysis (5 whys),problem (text) + context (md),root_cause_analysis (md),no
-board,encode-principle,ray-dalio,execution,Create new principle from learning,situation (text) + outcome (text),new_principle (md),no
-board,platform-direction,bill-gates,strategy,Platform strategy analysis,business (md) + market (text),platform_memo (md),no
-board,network-effect,bill-gates,analysis,Analyze network effect potential,model (md),network_analysis (md),no
-board,long-term-review,bill-gates,review,5-10 year strategic review,current_state (md) + trends (yaml),long_term_memo (md),no
-design-system,audit,design-system,analysis,Scan codebase for UI pattern redundancies,path (path),audit_report (md),no
-design-system,consolidate,design-system,execution,Reduce redundancy using clustering,audit_report (md),consolidation_plan (md),no
-design-system,tokenize,design-system,execution,Generate design token system,patterns (yaml),tokens (yaml),no
-design-system,migrate,design-system,strategy,Create phased migration strategy,current_state (md),migration_plan (md),no
-design-system,calculate-roi,design-system,analysis,Cost analysis and savings projection,scope (yaml),roi_report (md),no
-design-system,shock-report,design-system,analysis,Generate visual HTML report showing UI chaos + ROI,-,shock_report (html),no
-design-system,setup,design-system,execution,Initialize design system structure,-,ds_scaffold (files),no
-design-system,build,design-system,execution,Generate production-ready component,component_spec (yaml),component (code),no
-design-system,compose,design-system,execution,Build molecule from existing atoms,atoms (list),molecule_spec (yaml),no
-design-system,ds-health,design-system,analysis,Generate comprehensive health dashboard,-,health_dashboard (md),no
-design-system,dead-code,design-system,analysis,Find unused tokens and components,path (path),dead_code_report (md),no
-design-system,refactor-plan,design-system,strategy,Analyze codebase for refactoring candidates,path (path),refactor_plan (md),no
+Objetivo,Command,Squad,Tipo,Responsável,Cross-Squad
+Criar nova OS e roteá-la,/ops/new-task,Ops,Workflow,Ops Manager,Todos
+Resumo global de execução,/ops/status,Ops,Workflow,Ops Lead,Todos
+Definir prioridades globais,/ops/prioritize,Ops,Workflow,Ops Lead,Todos
+Escalar decisão para Director,/ops/escalate,Ops,Workflow,Ops Lead,Board
+Autorizar execução crítica,/ops/authorize,Ops,Workflow,Ops Lead,Todos
+Rotear OS para squad correto,/ops/route,Ops,Workflow,Ops Lead,Todos
+Registrar bloqueio em OS,/ops/blocked,Ops,Quick,Ops Manager,Todos
+Atualizar status de OS,/ops/update-status,Ops,Quick,Ops Manager,Todos
+Review de arquitetura técnica,/tech/review,Tech,Review,Tech Lead,QA
+Decisão técnica (ADR),/tech/decide,Tech,Strategy,Tech Lead,Ops
+Definir padrões de código,/tech/standards,Tech,Strategy,Tech Lead,QA
+Avaliar tecnologia,/tech/evaluate,Tech,Analysis,Tech Lead,Ops
+Implementar componente/feature,/tech/implement,Tech,Execution,Application Developer,QA
+Conectar API externa,/tech/connect,Tech,Execution,Application Developer,Ops
+Escrever testes,/tech/test,Tech,Quick,Application Developer,QA
+Analisar custos de AI,/tech/analyze-ai,Tech,Analysis,AI Ops,Finance
+Otimizar prompts e routing,/tech/optimize-prompts,Tech,Execution,AI Ops,Ops
+Criar workflow n8n,/tech/create-workflow,Tech,Execution,Automation Engineer,Ops
+Integrar ferramentas via API,/tech/integrate,Tech,Execution,Automation Engineer,Ops
+Sincronizar dados entre sistemas,/tech/sync,Tech,Quick,Automation Engineer,Ops
+Setup estrutura CRM no GHL,/tech/setup-crm,Tech,Execution,GHL Specialist,Sales
+Criar pipeline de vendas GHL,/tech/create-pipeline,Tech,Execution,GHL Specialist,Sales
+Criar/deploy snapshot GHL,/tech/snapshot,Tech,Quick,GHL Specialist,Sales
+Criar estratégia de campanha,/marketing/plan-campaign,Marketing,Strategy,Marketing Lead,Sales + Design
+Revisar criativos para brand,/marketing/review-creative,Marketing,Review,Marketing Lead,Design
+Analisar métricas de campanha,/marketing/analyze-performance,Marketing,Analysis,Marketing Lead,Finance
+Coordenar execução cross-channel,/marketing/coordinate,Marketing,Workflow,Marketing Lead,Design + Sales
+Criar brief criativo,/marketing/brief,Marketing,Execution,Marketing Lead,Design
+Pesquisar ICP e mercado,/marketing/research,Marketing,Analysis,Content Strategist,Sales
+Definir ângulos de conteúdo,/marketing/angles,Marketing,Strategy,Content Strategist,Design
+Criar calendário editorial,/marketing/calendar,Marketing,Strategy,Content Strategist,Design
+Escrever copy (qualquer formato),/marketing/write-copy,Marketing,Execution,Copy Specialist,Design
+Criar variações de headline,/marketing/headline,Marketing,Quick,Copy Specialist,Design
+Criar CTAs de alta conversão,/marketing/cta,Marketing,Quick,Copy Specialist,Sales
+Melhorar copy existente,/marketing/rewrite,Marketing,Execution,Copy Specialist,QA
+Desenhar funil completo,/marketing/design-funnel,Marketing,Strategy,Funnel Architect,Sales + Tech
+Mapear jornada do cliente,/marketing/map-journey,Marketing,Analysis,Funnel Architect,Customer
+Otimizar funil existente,/marketing/optimize-funnel,Marketing,Analysis,Funnel Architect,Growth
+Analisar e melhorar oferta,/marketing/offer-review,Marketing,Review,Offer Engine,Board
+Criar Grand Slam Offer,/marketing/grand-slam,Marketing,Execution,Offer Engine,Board + Sales
+Definir estratégia de preço,/marketing/pricing,Marketing,Strategy,Offer Engine,Finance
+Pesquisa de keywords,/marketing/keyword-research,Marketing,Analysis,SEO Specialist,Tech
+Criar brief SEO para artigo,/marketing/seo-brief,Marketing,Execution,SEO Specialist,QA
+Auditoria SEO de página,/marketing/audit-seo,Marketing,Analysis,SEO Specialist,Tech
+Criar cluster de conteúdo,/marketing/cluster,Marketing,Strategy,SEO Specialist,Design
+Definir estratégia de vendas,/sales/strategy,Sales,Strategy,Sales Lead,Marketing
+Revisar deal específico,/sales/review-deal,Sales,Review,Sales Lead,Finance
+Coaching situação de vendas,/sales/coach,Sales,Execution,Sales Lead,Ops
+Gerar forecast de vendas,/sales/forecast,Sales,Analysis,Sales Lead,Finance
+Qualificar lead,/sales/qualify,Sales,Analysis,Sales Lead,Marketing
+Rodar sessão de discovery,/sales/discovery,Sales,Execution,Closer,Marketing
+Lidar com objeção específica,/sales/objection,Sales,Quick,Closer,Marketing
+Estratégias de fechamento,/sales/close,Sales,Execution,Closer,Finance
+Encontrar e qualificar prospects,/sales/prospect,Sales,Execution,SDR,Marketing
+Criar sequência de outreach,/sales/outreach,Sales,Execution,SDR,Marketing
+Análise completa de pipeline,/sales/pipeline-review,Sales,Analysis,Sales Analyst,Finance
+Análise win/loss,/sales/win-loss,Sales,Analysis,Sales Analyst,Marketing
+Revisar criativo para aprovação,/design/review,Design,Review,Design Lead,Marketing
+Definir direção criativa,/design/direction,Design,Strategy,Design Lead,Marketing
+Definir padrões visuais,/design/standards,Design,Strategy,Design Lead,Design-System
+Aprovação final de entrega,/design/approve,Design,Review,Design Lead,QA
+Criar sistema de carousel,/design/carousel,Design,Execution,Visual Systems Designer,Marketing
+Criar infográfico,/design/infographic,Design,Execution,Visual Systems Designer,Marketing
+Criar template reutilizável,/design/template,Design,Execution,Visual Systems Designer,Design-System
+Criar criativo de ad,/design/create-ad,Design,Execution,Performance Designer,Marketing
+Gerar variantes de criativo,/design/variants,Design,Execution,Performance Designer,Growth
+Adaptar criativo para plataforma,/design/adapt,Design,Quick,Performance Designer,Marketing
+Criar estrutura visual VSL,/design/vsl-structure,Design,Execution,Motion Video Specialist,Marketing
+Criar video ad,/design/video-ad,Design,Execution,Motion Video Specialist,Marketing
+Criar reel/short,/design/reel,Design,Quick,Motion Video Specialist,Marketing
+Health check de cliente,/customer/health,Customer,Analysis,Customer Lead,Sales
+Identificar clientes em risco,/customer/risk,Customer,Analysis,Customer Lead,Sales
+Encontrar oportunidades de expansão,/customer/expand,Customer,Strategy,Customer Lead,Sales
+Planejar intervenção cliente risco,/customer/intervene,Customer,Execution,Customer Lead,Sales
+Desenhar fluxo de onboarding,/customer/design-onboarding,Customer,Strategy,Onboarding Architect,Tech
+Otimizar onboarding existente,/customer/optimize-onboarding,Customer,Analysis,Onboarding Architect,Growth
+Criar sequência email onboarding,/customer/sequence,Customer,Execution,Onboarding Architect,Marketing
+Priorizar iniciativas (ICE/RICE),/growth/prioritize,Growth,Strategy,Growth Lead,Ops
+Desenhar experimento growth,/growth/experiment,Growth,Strategy,Growth Lead,Tech
+Criar wave coordenada growth,/growth/wave,Growth,Strategy,Growth Lead,Marketing + Sales
+Analisar resultado experimento,/growth/analyze-experiment,Growth,Analysis,Growth Lead,Finance
+Analisar métrica ou funil,/growth/analyze,Growth,Analysis,Data Analyst,Marketing
+Rodar análise de cohort,/growth/cohort,Growth,Analysis,Data Analyst,Finance
+Analisar resultado teste A/B,/growth/ab-result,Growth,Analysis,Data Analyst,Marketing
+Gate de qualidade release,/qa/run-gate,QA,Review,QA Lead,Todos
+Validar entrega contra DoD,/qa/validate,QA,Review,QA Lead,Todos
+Auditar processo/artefato,/qa/audit,QA,Analysis,QA Lead,Ops
+Criar/atualizar padrão qualidade,/qa/define-standard,QA,Strategy,QA Lead,Todos
+Revisar conteúdo para qualidade,/qa/review-content,QA,Review,Content Reviewer,Marketing
+Verificar claims no conteúdo,/qa/verify,QA,Review,Content Reviewer,Marketing
+Feedback detalhado conteúdo,/qa/feedback,QA,Review,Content Reviewer,Marketing
+Auditar workflow/processo,/qa/audit-process,QA,Analysis,Process Auditor,Ops
+Verificar compliance requisitos,/qa/verify-compliance,QA,Review,Process Auditor,Ops
+Analisar logs por padrões,/qa/analyze-logs,QA,Analysis,Process Auditor,Tech
+Gerar relatório financeiro,/finance/report,Finance,Analysis,Finance Lead,Ops
+Aprovar despesa,/finance/approve-expense,Finance,Review,Finance Lead,Ops
+Gerar forecast receita/custo,/finance/forecast,Finance,Analysis,Finance Lead,Sales
+Trigger alerta orçamento,/finance/alert,Finance,Workflow,Finance Lead,Ops
+Calcular unit economics,/finance/unit-economics,Finance,Analysis,Financial Analyst,Sales
+Avaliar viabilidade financeira,/finance/viability,Finance,Analysis,Financial Analyst,Ops
+Rodar cenários financeiros,/finance/scenario,Finance,Analysis,Financial Analyst,Ops
+Gerar dashboard KPIs,/finance/kpi-report,Finance,Analysis,Financial Analyst,Todos
+Revisar estratégia de pricing,/finance/review-pricing,Finance,Review,Pricing Strategist,Sales
+Desenhar tiers de preço,/finance/tier,Finance,Strategy,Pricing Strategist,Sales
+Desenhar teste de preço,/finance/test-price,Finance,Strategy,Pricing Strategist,Growth
+Analisar elasticidade preço,/finance/elasticity,Finance,Analysis,Pricing Strategist,Sales
+Coordenar projeto tradução,/translator/coordinate,Translator,Workflow,Translation Lead,Marketing
+Gerenciar glossário termos,/translator/glossary,Translator,Execution,Translation Lead,Marketing
+Revisar qualidade tradução,/translator/review-translation,Translator,Review,Translation Lead,QA
+Adaptar conteúdo para mercado,/translator/localize,Translator,Execution,Translation Lead,Marketing
+Análise com mental models,/board/mental-models,Board,Analysis,Charlie Munger,Todos
+Aplicar inversão ao problema,/board/invert,Board,Analysis,Charlie Munger,Todos
+Identificar blindspots psicológicos,/board/risk-blindspots,Board,Analysis,Charlie Munger,Todos
+Review experiência produto,/board/product-review,Board,Review,Steve Jobs,Design + Tech
+Simplificação radical,/board/simplify,Board,Analysis,Steve Jobs,Tech
+Articular visão de produto,/board/vision,Board,Strategy,Steve Jobs,Marketing
+Analisar oferta (value equation),/board/offer-review,Board,Review,Alex Hormozi,Marketing + Sales
+Score value equation,/board/value-equation,Board,Analysis,Alex Hormozi,Marketing
+Criar grand slam offer,/board/grand-slam,Board,Execution,Alex Hormozi,Marketing + Sales
+Analisar força posicionamento,/board/positioning-review,Board,Review,Dan Kennedy,Marketing
+Avaliar clareza da mensagem,/board/message-clarity,Board,Review,Dan Kennedy,Marketing
+Analisar nível sofisticação mercado,/board/sophistication,Board,Analysis,Dan Kennedy,Marketing
+Análise first principles,/board/first-principles,Board,Analysis,Elon Musk,Tech
+Decompor custos até física,/board/cost-decompose,Board,Analysis,Elon Musk,Finance
+Review sistema first principles,/board/system-review,Board,Review,Elon Musk,Tech
+Análise de moat competitivo,/board/moat-review,Board,Review,Peter Thiel,Sales
+Identificar vantagens não óbvias,/board/secret-find,Board,Analysis,Peter Thiel,Todos
+Avaliar se é zero-to-one,/board/zero-to-one,Board,Analysis,Peter Thiel,Todos
+Verificar alinhamento princípios,/board/principles-check,Board,Review,Ray Dalio,Ops
+Análise root cause (5 whys),/board/root-cause,Board,Analysis,Ray Dalio,Ops
+Codificar princípio de learning,/board/encode-principle,Board,Execution,Ray Dalio,Ops
+Análise estratégia plataforma,/board/platform-direction,Board,Strategy,Bill Gates,Tech
+Analisar potencial network effect,/board/network-effect,Board,Analysis,Bill Gates,Growth
+Review estratégico 5-10 anos,/board/long-term-review,Board,Review,Bill Gates,Todos
+Scan redundâncias UI,/design-system/audit,Design-System,Analysis,Brad Frost,Design + Tech
+Reduzir redundância clustering,/design-system/consolidate,Design-System,Execution,Brad Frost,Tech
+Gerar design tokens,/design-system/tokenize,Design-System,Execution,Brad Frost,Design
+Criar estratégia migração,/design-system/migrate,Design-System,Strategy,Brad Frost,Tech
+Análise ROI design system,/design-system/calculate-roi,Design-System,Analysis,Brad Frost,Finance
+Relatório visual caos UI + ROI,/design-system/shock-report,Design-System,Analysis,Brad Frost,Ops
+Inicializar estrutura DS,/design-system/setup,Design-System,Execution,Brad Frost,Tech
+Gerar componente produção,/design-system/build,Design-System,Execution,Brad Frost,Tech
+Compor molécula de átomos,/design-system/compose,Design-System,Execution,Brad Frost,Design
+Health dashboard DS,/design-system/ds-health,Design-System,Analysis,Brad Frost,QA
+Encontrar tokens/componentes mortos,/design-system/dead-code,Design-System,Analysis,Brad Frost,Tech
+Plano de refactor codebase,/design-system/refactor-plan,Design-System,Strategy,Brad Frost,Tech
