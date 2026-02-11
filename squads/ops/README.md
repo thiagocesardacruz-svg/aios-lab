@@ -9,7 +9,8 @@ O OPS Squad é o núcleo operacional do sistema AIOS da Travel Tech Digital. Res
 - Coordenação global entre squads
 - Roteamento de trabalho via Service Orders
 - Monitoramento de custos e status
-- Sincronização com sistemas externos (Notion)
+- **ClickUp Command Center** - Central de gestão de projetos e tarefas
+- Sincronização automática de tarefas AI ↔ ClickUp
 
 ## Agentes
 
@@ -38,11 +39,16 @@ Pedido → /ops/new-task → OS criada → Squad responsável → Execução →
 
 ```
 ops/
-├── squad.yaml          # Configuração do squad
+├── squad.yaml                    # Configuração do squad
+├── README.md
 ├── agents/
-│   ├── ops-lead.md     # Orion
-│   ├── ops-manager.md  # Maxwell
-│   └── clawdbot.md     # Executor
+│   ├── ops-lead.md               # Orion
+│   ├── ops-manager.md            # Maxwell
+│   └── clawdbot.md               # Executor
+├── scripts/                      # Command Center Scripts
+│   ├── clickup-sync.mjs          # Task CRUD (create, start, done, comment)
+│   ├── command-center.mjs        # Cost/token tracking
+│   └── dashboard.mjs             # Dashboard & Goals sync
 ├── workflows/
 │   ├── status.yaml
 │   ├── new-task.yaml
@@ -52,9 +58,9 @@ ops/
 │   └── os-template.yaml
 ├── checklists/
 │   └── os-validation.md
-├── data/
-│   └── squad-registry.yaml
-└── README.md
+└── data/
+    ├── squad-registry.yaml
+    └── command-center-data.json  # Usage tracking
 ```
 
 ## Uso
@@ -74,8 +80,53 @@ ops/
 /ops/cost-report --period=month --breakdown=squad
 ```
 
+## ClickUp Command Center
+
+Central de gestão de projetos integrada com ClickUp.
+
+### Scripts
+
+| Script | Função | Comando |
+|--------|--------|---------|
+| `clickup-sync.mjs` | CRUD de tarefas | `node scripts/clickup-sync.mjs create "Task" --agent=@dev` |
+| `command-center.mjs` | Tracking de custos/tokens | `node scripts/command-center.mjs track <id> <in> <out>` |
+| `dashboard.mjs` | Sync dashboard e Goals | `node scripts/dashboard.mjs sync` |
+
+### Workspace Structure
+
+```
+THIAGO OS (Workspace)
+├── PERSONAL (Finance, Goals, Health, Leisure, Courses, Love)
+├── WORK (Travel Tech Digital, Tripwix)
+├── AI OPS (Inbox, In Progress, Awaiting Human, Completed)
+└── RESOURCES (Knowledge Base, Templates, Documentation, Archived)
+```
+
+### Budget Governance
+
+| Limite | Valor | Ação |
+|--------|-------|------|
+| Daily | €20 | SAFE MODE |
+| Monthly | €468 | Hard limit |
+| Per Task | €10 | Approval required |
+
+### Goals (ClickUp Dashboard)
+
+- Daily Budget: https://app.clickup.com/90152366829/goals/1
+- Monthly Budget: https://app.clickup.com/90152366829/goals/2
+- Token Usage: https://app.clickup.com/90152366829/goals/3
+
+Dashboard: https://app.clickup.com/t/86c86bz0w
+
+### Files
+
+| Arquivo | Propósito |
+|---------|-----------|
+| `data/command-center-data.json` | Dados de uso (tokens, custos) |
+| `../project-management-clickup/data/clickup-workspace-ids.json` | IDs do workspace |
+
 ## Integrações
 
-- **Notion**: Sync automático de OS e custos
+- **ClickUp**: Command Center, sync de tarefas e custos
 - **Filesystem**: Source of truth local
 - **Todos os squads**: Roteamento e coordenação
