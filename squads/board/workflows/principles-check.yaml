@@ -1,0 +1,150 @@
+# /board/principles-check Workflow
+# Principles alignment review (Dalio)
+
+workflow:
+  id: principles-check
+  name: Principles Check
+  description: "Principles alignment check for governance and recurring decisions"
+  version: "1.0.0"
+  squad: board
+  type: advisory
+
+inputs:
+  - name: situation
+    type: string
+    required: true
+    description: "Situation or decision to evaluate"
+  - name: context
+    type: string
+    required: true
+    description: "Context and background"
+  - name: stakeholders
+    type: array
+    required: false
+    description: "Stakeholders involved"
+  - name: recurring
+    type: boolean
+    required: false
+    description: "Is this a recurring situation?"
+
+outputs:
+  - name: decision-memo
+    type: markdown
+    path: "docs/board-memos/{date}-principles-check.md"
+
+advisors:
+  - ray-dalio
+
+sequence:
+  - phase: 0
+    name: Situation Analysis
+    description: "Analyze situation against principles"
+    actions:
+      - advisor: ray-dalio
+        focus: "Identify which principles apply to this situation"
+
+  - phase: 1
+    name: Principles Mapping
+    description: "Map situation to relevant principles"
+    actions:
+      - advisor: ray-dalio
+        output: |
+          - Applicable principles
+          - Principle conflicts
+          - Historical precedents
+          - Governance implications
+
+  - phase: 2
+    name: Recommendation
+    description: "Generate principled recommendation"
+    actions:
+      - advisor: ray-dalio
+        output: |
+          - Recommended decision
+          - Principle justification
+          - New principle proposal (if needed)
+          - System update for recurring situations
+
+  - phase: 3
+    name: Decision Memo
+    description: "Generate final principles memo"
+    action: generate_memo
+    template: templates/decision-memo.md
+    creates:
+      - decision-memo.md
+
+output_format: |
+  # Principles Check Memo: {situation}
+
+  ## Situation
+  {situation_description}
+
+  ## Context
+  {context}
+
+  ## Advisor Consulted
+  - Ray Dalio (Principles & Governance)
+
+  ## Applicable Principles
+
+  | Principle | Relevance | Application |
+  |-----------|-----------|-------------|
+  {principles_table}
+
+  ## Principle Conflicts
+  {conflicts}
+
+  ## Historical Precedents
+  {precedents}
+
+  ## Analysis
+
+  ### What the Principles Say
+  {principles_analysis}
+
+  ### Governance Implications
+  {governance_implications}
+
+  ## Recommendation
+  {recommendation}
+
+  ## Justification
+  {justification}
+
+  ## Recurring Situation?
+  **{is_recurring}**
+
+  ### If Recurring, Proposed System
+  {proposed_system}
+
+  ### New Principle Proposal
+  {new_principle}
+
+  ## Action Items
+  1. {action_1}
+  2. {action_2}
+  3. {action_3}
+
+  ---
+  *This memo does not execute. To proceed, create OS via /ops/new-task*
+
+principles_reference:
+  life_principles:
+    - "Embrace reality and deal with it"
+    - "Use the 5-step process to get what you want"
+    - "Be radically open-minded"
+    - "Understand that people are wired very differently"
+
+  work_principles:
+    - "Trust in radical truth and transparency"
+    - "Cultivate meaningful work and relationships"
+    - "Create a culture of mistakes and learning"
+    - "Get and stay in sync"
+    - "Believability weight your decision making"
+    - "Recognize how to get beyond disagreements"
+
+  decision_principles:
+    - "Recognize that the biggest threat is ego and blind spots"
+    - "Make your decision as expected value calculations"
+    - "Prioritize by weighing value against probability"
+    - "Synthesize the situation at hand"

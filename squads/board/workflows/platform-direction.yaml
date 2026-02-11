@@ -1,0 +1,157 @@
+# /board/platform-direction Workflow
+# Multi-advisor platform strategy (Gates + Musk + Thiel)
+
+workflow:
+  id: platform-direction
+  name: Platform Direction
+  description: "Multi-advisor platform strategy for infrastructure and long-term decisions"
+  version: "1.0.0"
+  squad: board
+  type: advisory
+
+inputs:
+  - name: topic
+    type: string
+    required: true
+    description: "Platform topic or decision"
+  - name: current_state
+    type: string
+    required: true
+    description: "Current platform state"
+  - name: options
+    type: array
+    required: false
+    description: "Options being considered"
+  - name: timeline
+    type: string
+    required: false
+    description: "Decision timeline (5-10 years)"
+
+outputs:
+  - name: decision-memo
+    type: markdown
+    path: "docs/board-memos/{date}-platform-direction.md"
+
+advisors:
+  - bill-gates
+  - elon-musk
+  - peter-thiel
+
+sequence:
+  - phase: 0
+    name: Platform Analysis
+    description: "Each advisor analyzes platform from their lens"
+    parallel: true
+    actions:
+      - advisor: bill-gates
+        focus: "Long-term platform implications and ecosystem"
+      - advisor: elon-musk
+        focus: "System architecture and cost physics"
+      - advisor: peter-thiel
+        focus: "Moat building and competition avoidance"
+
+  - phase: 1
+    name: Strategic Views
+    description: "Each advisor provides strategic direction"
+    parallel: true
+    actions:
+      - advisor: bill-gates
+        output: |
+          - 10-year platform vision
+          - Ecosystem lock-in opportunities
+          - API and integration strategy
+          - Build vs buy analysis
+      - advisor: elon-musk
+        output: |
+          - Architecture simplification
+          - Cost reduction paths
+          - Vertical integration opportunities
+          - First principles redesign
+      - advisor: peter-thiel
+        output: |
+          - Competitive moat analysis
+          - Secrets and asymmetric advantages
+          - Focus vs diversification
+          - Zero-to-one opportunities
+
+  - phase: 2
+    name: Synthesis
+    description: "Identify conflicts and synthesize direction"
+    action: synthesize
+    inputs:
+      - all position statements
+    creates:
+      - conflicts (memory)
+      - synthesis (memory)
+
+  - phase: 3
+    name: Decision Memo
+    description: "Generate final platform memo"
+    action: generate_memo
+    template: templates/decision-memo.md
+    creates:
+      - decision-memo.md
+
+output_format: |
+  # Platform Direction Memo: {topic}
+
+  ## Current State
+  {current_state}
+
+  ## Advisors Consulted
+  - Bill Gates (Platform & Long-Term Strategy)
+  - Elon Musk (Systems & First Principles)
+  - Peter Thiel (Moat & Asymmetry)
+
+  ## Long-Term Vision (Gates)
+
+  ### 10-Year Platform View
+  {gates_vision}
+
+  ### Ecosystem Strategy
+  {ecosystem_strategy}
+
+  ### Build vs Buy
+  {build_buy_analysis}
+
+  ## Architecture Direction (Musk)
+
+  ### Current Complexity
+  {complexity_analysis}
+
+  ### Simplification Path
+  {simplification_path}
+
+  ### Cost Physics
+  {cost_analysis}
+
+  ## Competitive Moat (Thiel)
+
+  ### Current Moat
+  {current_moat}
+
+  ### Moat Building Opportunities
+  {moat_opportunities}
+
+  ### Zero-to-One Possibilities
+  {zero_to_one}
+
+  ## Conflicts of View
+  {conflicts}
+
+  ## Synthesis
+  {synthesis}
+
+  ## Recommended Direction
+  {recommendation}
+
+  ## Milestones
+  | Year | Milestone | Success Metric |
+  |------|-----------|----------------|
+  {milestones}
+
+  ## Conditions for Execution
+  {conditions}
+
+  ---
+  *This memo does not execute. To proceed, create OS via /ops/new-task*

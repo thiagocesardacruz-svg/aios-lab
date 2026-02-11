@@ -1,0 +1,207 @@
+# Platform Specs - Design Squad
+# Image and video specifications by platform
+# Version: 1.0.0
+
+metadata:
+  version: "1.0.0"
+  last_updated: "2026-02-11"
+  owner: "design-lead"
+
+# Facebook / Meta
+facebook:
+  feed:
+    image:
+      recommended: "1080x1080"
+      aspect_ratio: "1:1"
+      min_width: 600
+      max_file_size: "30MB"
+      formats: ["jpg", "png"]
+      text_limit: "20% recommended"
+    video:
+      recommended: "1080x1080"
+      aspect_ratio: "1:1, 4:5, 16:9"
+      duration: "1s-240min"
+      max_file_size: "4GB"
+      formats: ["mp4", "mov"]
+
+  story:
+    image:
+      recommended: "1080x1920"
+      aspect_ratio: "9:16"
+      safe_zone: "250px top/bottom"
+    video:
+      recommended: "1080x1920"
+      aspect_ratio: "9:16"
+      duration: "1s-60s"
+
+  cover:
+    recommended: "820x312"
+    display_desktop: "820x312"
+    display_mobile: "640x360"
+
+  profile:
+    recommended: "170x170"
+    display: "circular crop"
+
+# Instagram
+instagram:
+  feed_square:
+    recommended: "1080x1080"
+    aspect_ratio: "1:1"
+
+  feed_portrait:
+    recommended: "1080x1350"
+    aspect_ratio: "4:5"
+
+  feed_landscape:
+    recommended: "1080x566"
+    aspect_ratio: "1.91:1"
+
+  story:
+    recommended: "1080x1920"
+    aspect_ratio: "9:16"
+    safe_zone: "250px top, 336px bottom"
+
+  reels:
+    recommended: "1080x1920"
+    aspect_ratio: "9:16"
+    duration: "15s-90s"
+
+  carousel:
+    max_slides: 10
+    sizes: "Same as feed"
+
+  profile:
+    recommended: "320x320"
+    display: "110x110 circular"
+
+# LinkedIn
+linkedin:
+  feed:
+    image:
+      recommended: "1200x627"
+      aspect_ratio: "1.91:1"
+      alt: "1080x1080 for square"
+    video:
+      recommended: "1920x1080"
+      aspect_ratio: "16:9, 1:1, 9:16"
+      duration: "3s-10min"
+      max_file_size: "5GB"
+
+  cover:
+    personal: "1584x396"
+    company: "1128x191"
+
+  profile:
+    personal: "400x400"
+    company: "300x300"
+
+  document:
+    recommended: "1080x1080"
+    max_pages: 300
+    format: "pdf"
+
+# TikTok
+tiktok:
+  video:
+    recommended: "1080x1920"
+    aspect_ratio: "9:16"
+    duration: "5s-10min"
+    max_file_size: "287.6MB"
+    formats: ["mp4", "mov"]
+
+  safe_zones:
+    top: "150px"
+    bottom: "440px"
+    sides: "44px"
+
+# YouTube
+youtube:
+  video:
+    standard: "1920x1080"
+    aspect_ratio: "16:9"
+    formats: ["mp4", "mov", "avi"]
+    max_file_size: "256GB"
+
+  shorts:
+    recommended: "1080x1920"
+    aspect_ratio: "9:16"
+    duration: "15s-60s"
+
+  thumbnail:
+    recommended: "1280x720"
+    min_width: 640
+    max_file_size: "2MB"
+    formats: ["jpg", "png"]
+
+  channel_banner:
+    recommended: "2560x1440"
+    safe_area: "1546x423 center"
+
+  profile:
+    recommended: "800x800"
+
+# Google Ads
+google_ads:
+  display:
+    sizes:
+      - "300x250"   # Medium Rectangle
+      - "336x280"   # Large Rectangle
+      - "728x90"    # Leaderboard
+      - "300x600"   # Half Page
+      - "320x100"   # Large Mobile Banner
+      - "160x600"   # Wide Skyscraper
+    formats: ["jpg", "png", "gif"]
+    max_file_size: "150KB"
+
+  responsive_display:
+    landscape: "1200x628"
+    square: "1200x1200"
+    logo_landscape: "1200x300"
+    logo_square: "1200x1200"
+
+# Twitter / X
+twitter:
+  feed:
+    single_image: "1200x675"
+    aspect_ratio: "16:9"
+    two_images: "700x800 each"
+
+  video:
+    recommended: "1920x1080"
+    aspect_ratio: "16:9, 1:1"
+    duration: "0.5s-140s"
+    max_file_size: "512MB"
+
+  header:
+    recommended: "1500x500"
+
+  profile:
+    recommended: "400x400"
+
+# General Guidelines
+general:
+  file_formats:
+    preferred_raster: "png"
+    compressed_raster: "jpg"
+    vector: "svg"
+    video: "mp4"
+    animation: "gif, mp4"
+
+  color_profile:
+    web: "sRGB"
+    print: "CMYK"
+
+  resolution:
+    web: "72dpi"
+    print: "300dpi"
+    retina: "144dpi or @2x"
+
+  compression:
+    jpg_quality: "80-90%"
+    png: "Use tinypng/similar"
+    video: "H.264 codec"
+
+  naming_convention:
+    pattern: "{brand}_{platform}_{type}_{size}_{version}"
+    example: "ttd_facebook_ad_1080x1080_v1.png"

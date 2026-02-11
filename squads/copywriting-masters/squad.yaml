@@ -1,120 +1,283 @@
+# Copywriting Masters Squad
+# Travel Tech Digital AIOS
+# Version: 1.1.0
+
 name: copywriting-masters
-version: 1.0.0
-description: "Squad de elite com os 22 maiores copywriters do mundo. Cada agente incorpora frameworks documentados, processos step-by-step e artefatos mentais extraiveis de mestres reais do copywriting."
-author: Virginia
-license: MIT
-slashPrefix: copy
+version: "1.1.0"
+description: "Squad de elite com os 22 maiores copywriters do mundo. Cada agente incorpora frameworks documentados, processos step-by-step e artefatos mentais extraíveis de mestres reais do copywriting."
 
 aios:
   minVersion: "2.1.0"
   type: squad
+  domain: copywriting-excellence
+
+config:
+  slashPrefix: "copy"
+  entry_point: "tasks/chief-routing.md"
+  default_language: "pt-BR"
+
+lead:
+  agent: "copy-chief"
+  role: "Copy Chief"
+  name: "Maverick"
+
+agents:
+  # Chief / Orchestrator
+  - id: "copy-chief"
+    file: "agents/copy-chief.md"
+    role: "Orchestrator, routing, quality control"
+    name: "Maverick"
+
+  # Direct Response Masters
+  - id: "gary-halbert"
+    file: "agents/gary-halbert.md"
+    role: "Direct mail, sales letters"
+    specialty: "Boron Letters, A-pile copy"
+  - id: "dan-kennedy"
+    file: "agents/dan-kennedy.md"
+    role: "Info-marketing, direct response"
+    specialty: "No B.S., Magnetic Marketing"
+  - id: "john-carlton"
+    file: "agents/john-carlton.md"
+    role: "Long-form sales copy"
+    specialty: "Kick-Ass Copywriting"
+  - id: "clayton-makepeace"
+    file: "agents/clayton-makepeace.md"
+    role: "Financial copy, controls"
+    specialty: "The Total Package"
+
+  # Email Marketing Masters
+  - id: "ben-settle"
+    file: "agents/ben-settle.md"
+    role: "Daily emails, personality"
+    specialty: "Email Players, Infotainment"
+  - id: "andre-chaperon"
+    file: "agents/andre-chaperon.md"
+    role: "Email sequences, storytelling"
+    specialty: "Autoresponder Madness, Soap Opera Sequence"
+  - id: "laura-belgray"
+    file: "agents/laura-belgray.md"
+    role: "Voice, personality, humor"
+    specialty: "Talking Shrimp, Brand Voice"
+
+  # Sales Pages & Long-form
+  - id: "joe-sugarman"
+    file: "agents/joe-sugarman.md"
+    role: "Print ads, triggers"
+    specialty: "Advertising Secrets, Psychological Triggers"
+  - id: "robert-collier"
+    file: "agents/robert-collier.md"
+    role: "Sales letters, desire"
+    specialty: "The Robert Collier Letter Book"
+
+  # Headlines & Market Awareness
+  - id: "eugene-schwartz"
+    file: "agents/eugene-schwartz.md"
+    role: "Headlines, awareness levels"
+    specialty: "Breakthrough Advertising, 5 Levels"
+  - id: "john-caples"
+    file: "agents/john-caples.md"
+    role: "Headlines, testing"
+    specialty: "Tested Advertising Methods"
+
+  # VSL / Script Writing
+  - id: "jon-benson"
+    file: "agents/jon-benson.md"
+    role: "VSL invention, scripts"
+    specialty: "Video Sales Letter, Sellerator"
+  - id: "stefan-georgi"
+    file: "agents/stefan-georgi.md"
+    role: "VSL, supplement copy"
+    specialty: "RMBC Method"
+
+  # Funnels & Launch
+  - id: "russell-brunson"
+    file: "agents/russell-brunson.md"
+    role: "Funnels, webinars"
+    specialty: "DotCom Secrets, Perfect Webinar"
+  - id: "jeff-walker"
+    file: "agents/jeff-walker.md"
+    role: "Product launches"
+    specialty: "Product Launch Formula"
+  - id: "frank-kern"
+    file: "agents/frank-kern.md"
+    role: "Quick cash, ascension"
+    specialty: "Mass Control, Intent-Based Branding"
+
+  # Conversion & SEO
+  - id: "joanna-wiebe"
+    file: "agents/joanna-wiebe.md"
+    role: "Conversion copy, testing"
+    specialty: "Copyhackers, Voice of Customer"
+  - id: "brian-dean"
+    file: "agents/brian-dean.md"
+    role: "SEO content, link building"
+    specialty: "Backlinko, Skyscraper Technique"
+  - id: "ann-handley"
+    file: "agents/ann-handley.md"
+    role: "Content marketing, storytelling"
+    specialty: "Everybody Writes"
+
+  # Strategy & Science
+  - id: "perry-marshall"
+    file: "agents/perry-marshall.md"
+    role: "80/20, Google Ads"
+    specialty: "80/20 Sales & Marketing"
+  - id: "robert-cialdini"
+    file: "agents/robert-cialdini.md"
+    role: "Persuasion science"
+    specialty: "Influence, 6 Principles"
+  - id: "drayton-bird"
+    file: "agents/drayton-bird.md"
+    role: "Direct marketing"
+    specialty: "Commonsense Direct Marketing"
 
 components:
   agents:
-    # Chief / Orchestrator
-    - copy-chief.md
-
-    # Direct Response Masters
-    - gary-halbert.md
-    - dan-kennedy.md
-    - john-carlton.md
-    - clayton-makepeace.md
-
-    # Email Marketing Masters
-    - ben-settle.md
-    - andre-chaperon.md
-    - laura-belgray.md
-
-    # Sales Pages & Long-form
-    - joe-sugarman.md
-    - robert-collier.md
-
-    # Headlines & Market Awareness
-    - eugene-schwartz.md
-    - john-caples.md
-
-    # VSL / Script Writing
-    - jon-benson.md
-    - stefan-georgi.md
-
-    # Funnels & Launch
-    - russell-brunson.md
-    - jeff-walker.md
-    - frank-kern.md
-
-    # Conversion & SEO
-    - joanna-wiebe.md
-    - brian-dean.md
-    - ann-handley.md
-
-    # Strategy & Science
-    - perry-marshall.md
-    - robert-cialdini.md
-    - drayton-bird.md
-
+    - "copy-chief.md"
+    - "gary-halbert.md"
+    - "dan-kennedy.md"
+    - "john-carlton.md"
+    - "clayton-makepeace.md"
+    - "ben-settle.md"
+    - "andre-chaperon.md"
+    - "laura-belgray.md"
+    - "joe-sugarman.md"
+    - "robert-collier.md"
+    - "eugene-schwartz.md"
+    - "john-caples.md"
+    - "jon-benson.md"
+    - "stefan-georgi.md"
+    - "russell-brunson.md"
+    - "jeff-walker.md"
+    - "frank-kern.md"
+    - "joanna-wiebe.md"
+    - "brian-dean.md"
+    - "ann-handley.md"
+    - "perry-marshall.md"
+    - "robert-cialdini.md"
+    - "drayton-bird.md"
   tasks:
-    - chief-routing.md
-    - write-sales-letter.md
-    - write-email-sequence.md
-    - write-vsl-script.md
-    - write-headlines.md
-    - write-landing-page.md
-    - write-launch-sequence.md
-    - write-funnel-copy.md
-    - write-seo-content.md
-    - copy-review.md
-    - persuasion-audit.md
-
-  workflows: []
-  checklists: []
-  templates: []
-  tools: []
-  scripts: []
-
-config:
-  extends: extend
-  coding-standards: config/copy-standards.md
-  tech-stack: config/tech-stack.md
-  source-tree: config/source-tree.md
-
-routing:
-  entrypoint: copy-chief
-  description: "O Copy Chief (Maverick) e o ponto de entrada. Ele analisa a missao e roteia para o especialista correto."
-
-specialist-map:
-  sales-letter: [dan-kennedy, gary-halbert, clayton-makepeace, robert-collier]
-  email-single: [ben-settle, laura-belgray]
-  email-sequence: [andre-chaperon, ben-settle, laura-belgray]
-  vsl: [jon-benson, stefan-georgi]
-  sales-page: [joe-sugarman, joanna-wiebe, clayton-makepeace]
-  headlines: [john-caples, eugene-schwartz]
-  market-analysis: [eugene-schwartz, robert-cialdini]
-  product-launch: [jeff-walker, russell-brunson, frank-kern]
-  funnel-copy: [russell-brunson, jeff-walker, frank-kern]
-  seo-content: [brian-dean, ann-handley]
-  content-marketing: [ann-handley, brian-dean]
-  persuasion-audit: [robert-cialdini, eugene-schwartz]
-  brand-voice: [laura-belgray, ann-handley]
-  quick-cash: [frank-kern, dan-kennedy]
-  conversion-optimization: [joanna-wiebe, perry-marshall]
-  webinar-script: [russell-brunson, jon-benson]
-  strategy-8020: [perry-marshall, dan-kennedy]
-  direct-marketing: [drayton-bird, dan-kennedy]
-  copy-review: [john-carlton, clayton-makepeace, joanna-wiebe]
-
-dependencies:
-  node: []
-  python: []
-  squads: []
+    - "chief-routing.md"
+    - "write-sales-letter.md"
+    - "write-email-sequence.md"
+    - "write-vsl-script.md"
+    - "write-headlines.md"
+    - "write-landing-page.md"
+    - "write-launch-sequence.md"
+    - "write-funnel-copy.md"
+    - "write-seo-content.md"
+    - "copy-review.md"
+    - "persuasion-audit.md"
+  workflows:
+    - "master-consultation.yaml"
+    - "copy-battle.yaml"
+  checklists:
+    - "copy-quality-masters.md"
+  config:
+    - "copy-standards.md"
+    - "source-tree.md"
+    - "tech-stack.md"
 
 tags:
-  - copywriting
-  - marketing
-  - direct-response
-  - email-marketing
-  - sales-copy
-  - content-marketing
-  - persuasion
-  - funnels
-  - launch
-  - vsl
+  - "copywriting"
+  - "marketing"
+  - "direct-response"
+  - "email-marketing"
+  - "sales-copy"
+  - "content-marketing"
+  - "persuasion"
+  - "funnels"
+  - "launch"
+  - "vsl"
+
+commands:
+  - name: "consult"
+    workflow: "workflows/master-consultation.yaml"
+    description: "Consulta estruturada com mestres"
+    visibility: "full"
+  - name: "battle"
+    workflow: "workflows/copy-battle.yaml"
+    description: "Copy battle entre mestres"
+    visibility: "full"
+  - name: "sales-letter"
+    task: "tasks/write-sales-letter.md"
+    description: "Escrever sales letter"
+    visibility: "full"
+  - name: "email-sequence"
+    task: "tasks/write-email-sequence.md"
+    description: "Criar sequência de emails"
+    visibility: "full"
+  - name: "vsl-script"
+    task: "tasks/write-vsl-script.md"
+    description: "Escrever script de VSL"
+    visibility: "full"
+  - name: "headlines"
+    task: "tasks/write-headlines.md"
+    description: "Gerar headlines de impacto"
+    visibility: "full"
+  - name: "landing-page"
+    task: "tasks/write-landing-page.md"
+    description: "Copy de landing page"
+    visibility: "full"
+  - name: "launch-sequence"
+    task: "tasks/write-launch-sequence.md"
+    description: "Sequência de lançamento"
+    visibility: "full"
+  - name: "review"
+    task: "tasks/copy-review.md"
+    description: "Review de copy por mestres"
+    visibility: "full"
+  - name: "persuasion-audit"
+    task: "tasks/persuasion-audit.md"
+    description: "Auditoria de persuasão (Cialdini)"
+    visibility: "full"
+
+routing:
+  entrypoint: "copy-chief"
+  description: "O Copy Chief (Maverick) é o ponto de entrada. Ele analisa a missão e roteia para o especialista correto."
+
+specialist-map:
+  sales-letter: ["dan-kennedy", "gary-halbert", "clayton-makepeace", "robert-collier"]
+  email-single: ["ben-settle", "laura-belgray"]
+  email-sequence: ["andre-chaperon", "ben-settle", "laura-belgray"]
+  vsl: ["jon-benson", "stefan-georgi"]
+  sales-page: ["joe-sugarman", "joanna-wiebe", "clayton-makepeace"]
+  headlines: ["john-caples", "eugene-schwartz"]
+  market-analysis: ["eugene-schwartz", "robert-cialdini"]
+  product-launch: ["jeff-walker", "russell-brunson", "frank-kern"]
+  funnel-copy: ["russell-brunson", "jeff-walker", "frank-kern"]
+  seo-content: ["brian-dean", "ann-handley"]
+  content-marketing: ["ann-handley", "brian-dean"]
+  persuasion-audit: ["robert-cialdini", "eugene-schwartz"]
+  brand-voice: ["laura-belgray", "ann-handley"]
+  quick-cash: ["frank-kern", "dan-kennedy"]
+  conversion-optimization: ["joanna-wiebe", "perry-marshall"]
+  webinar-script: ["russell-brunson", "jon-benson"]
+  strategy-8020: ["perry-marshall", "dan-kennedy"]
+  direct-marketing: ["drayton-bird", "dan-kennedy"]
+  copy-review: ["john-carlton", "clayton-makepeace", "joanna-wiebe"]
+
+interface:
+  inputs:
+    - "Tipo de copy desejado"
+    - "Contexto/brief do projeto"
+    - "Mestre específico (opcional)"
+    - "Avatar/público-alvo"
+    - "Produto/oferta"
+  outputs:
+    - "Copy no estilo do mestre selecionado"
+    - "Frameworks aplicados"
+    - "Notas de implementação"
+    - "Variações (se solicitado)"
+
+quality:
+  checklist: "checklists/copy-quality-masters.md"
+  metrics:
+    - "framework_adherence"
+    - "master_style_match"
+    - "persuasion_score"
+    - "readability_score"
+
+author: "Virginia"
+license: "MIT"

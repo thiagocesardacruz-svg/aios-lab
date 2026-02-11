@@ -1,9 +1,9 @@
 # Tech Squad
 # Travel Tech Digital AIOS
-# Version: 2.0.0
+# Version: 2.1.0
 
 name: tech
-version: "2.0.0"
+version: "2.1.0"
 description: "Transform design, decisions, and workflows into stable, scalable, and cheap-to-operate systems."
 
 aios:
@@ -15,7 +15,7 @@ config:
   slashPrefix: "tech"
   entry_point: null
 
-# Golden Rule
+# Golden Rules
 rules:
   - "No UI enters production without passing through Design System"
   - "No Design System exists without technical adherence"
@@ -23,23 +23,29 @@ rules:
 
 lead:
   agent: "tech-lead"
+  name: "Forge"
   role: "Tech Lead"
 
 agents:
   - id: "tech-lead"
     file: "agents/tech-lead.md"
+    name: "Forge"
     role: "Technical architecture, code quality, stack decisions"
   - id: "automation-engineer"
     file: "agents/automation-engineer.md"
+    name: "Circuit"
     role: "n8n, integrations, workflows, data pipelines"
   - id: "ghl-specialist"
     file: "agents/ghl-specialist.md"
+    name: "Funnel"
     role: "GoHighLevel CRM, funnels, commercial ops"
   - id: "ai-ops"
     file: "agents/ai-ops.md"
+    name: "Token"
     role: "AI optimization, costs, prompt engineering"
   - id: "application-developer"
     file: "agents/application-developer.md"
+    name: "Code"
     role: "Component implementation, API integration"
 
 components:
@@ -49,6 +55,12 @@ components:
     - "ghl-specialist.md"
     - "ai-ops.md"
     - "application-developer.md"
+  tasks:
+    - "review-architecture.md"
+    - "create-component.md"
+    - "setup-n8n-workflow.md"
+    - "optimize-prompt.md"
+    - "configure-ghl.md"
   workflows:
     - "app-setup.yaml"
     - "component-implementation.yaml"
@@ -57,6 +69,19 @@ components:
     - "ai-cost-optimization.yaml"
     - "create-automation.yaml"
     - "ghl-setup.yaml"
+  templates:
+    - "adr-tmpl.md"
+    - "component-spec-tmpl.md"
+    - "automation-spec-tmpl.yaml"
+    - "cost-report-tmpl.md"
+  checklists:
+    - "code-review.md"
+    - "deploy.md"
+    - "component-qa.md"
+  data:
+    - "tech-stack.yaml"
+    - "coding-standards.yaml"
+    - "ai-pricing.yaml"
 
 tags:
   - "tech"
@@ -66,6 +91,7 @@ tags:
   - "infrastructure"
 
 commands:
+  # App Development
   - name: "app-setup"
     workflow: "workflows/app-setup.yaml"
     description: "Create app base connected to Design System"
@@ -82,10 +108,14 @@ commands:
     workflow: "workflows/ui-refactor.yaml"
     description: "Eliminate UI/code inconsistencies"
     visibility: "full"
+
+  # AI & Optimization
   - name: "ai-cost-optimization"
     workflow: "workflows/ai-cost-optimization.yaml"
     description: "Optimize AI costs without losing quality"
     visibility: "full"
+
+  # Automation & CRM
   - name: "create-automation"
     workflow: "workflows/create-automation.yaml"
     description: "Create n8n automation workflow"
@@ -94,6 +124,20 @@ commands:
     workflow: "workflows/ghl-setup.yaml"
     description: "Setup GHL funnel/CRM"
     visibility: "full"
+
+  # Tasks (direct execution)
+  - name: "review"
+    task: "tasks/review-architecture.md"
+    description: "Technical architecture review"
+    visibility: "quick"
+  - name: "create-component"
+    task: "tasks/create-component.md"
+    description: "Create UI component from spec"
+    visibility: "quick"
+  - name: "optimize-prompt"
+    task: "tasks/optimize-prompt.md"
+    description: "Optimize AI prompt for cost"
+    visibility: "quick"
 
 interface:
   receives_from:
@@ -128,3 +172,9 @@ coupling:
       - "Complexity vs value"
       - "Vibe Coding patterns"
       - "Componentization strategy"
+
+quality:
+  min_checklist_coverage: 90
+  require_qa_gate: true
+  require_documentation: true
+  code_review_required: true

@@ -1,9 +1,9 @@
 # Finance Squad
 # Travel Tech Digital AIOS
-# Version: 1.0.0
+# Version: 1.1.0
 
 name: finance
-version: "1.0.0"
+version: "1.1.0"
 description: "Finance squad responsible for financial viability, pricing strategy, budget management, and monthly financial controls."
 
 aios:
@@ -13,48 +13,83 @@ aios:
 
 config:
   slashPrefix: "finance"
-  entry_point: "workflows/report.yaml"
+  entry_point: "workflows/monthly-report.yaml"
 
 lead:
   agent: "finance-lead"
+  name: "Sterling"
   role: "Finance Lead"
 
 agents:
   - id: "finance-lead"
     file: "agents/finance-lead.md"
+    name: "Sterling"
     role: "Financial management, decisions"
   - id: "financial-analyst"
     file: "agents/financial-analyst.md"
+    name: "Morgan"
     role: "Unit economics, viability, KPIs"
   - id: "pricing-strategist"
     file: "agents/pricing-strategist.md"
+    name: "Price"
     role: "Pricing, margins, value narrative"
+  - id: "controller"
+    file: "agents/controller.md"
+    name: "Ledger"
+    role: "Cost control, budget enforcement, compliance"
 
 components:
   agents:
     - "finance-lead.md"
     - "financial-analyst.md"
     - "pricing-strategist.md"
+    - "controller.md"
+  tasks:
+    - "track-expenses.md"
+    - "forecast-revenue.md"
+    - "project-cashflow.md"
+    - "analyze-unit-economics.md"
+    - "calculate-runway.md"
+    - "audit-costs.md"
+    - "review-pricing-model.md"
+    - "classify-os-costs.md"
   workflows:
-    - "report.yaml"
-    - "kpi.yaml"
+    - "monthly-report.yaml"
+    - "kpi-dashboard.yaml"
     - "pricing-review.yaml"
     - "budget-check.yaml"
+  templates:
+    - "financial-report-tmpl.md"
+    - "budget-template-tmpl.yaml"
+    - "pricing-model-tmpl.md"
+    - "cashflow-projection-tmpl.md"
+    - "unit-economics-tmpl.md"
+  checklists:
+    - "month-end-close.md"
+    - "expense-approval.md"
+    - "pricing-change.md"
+    - "budget-review.md"
+  data:
+    - "financial-metrics.yaml"
+    - "cost-categories.yaml"
+    - "budget-limits.yaml"
 
 tags:
   - "finance"
   - "pricing"
   - "budget"
   - "kpi"
+  - "compliance"
 
 commands:
+  # Workflows
   - name: "report"
-    workflow: "workflows/report.yaml"
-    description: "Financial report"
+    workflow: "workflows/monthly-report.yaml"
+    description: "Monthly financial report"
     visibility: "full"
   - name: "kpi"
-    workflow: "workflows/kpi.yaml"
-    description: "KPI analysis"
+    workflow: "workflows/kpi-dashboard.yaml"
+    description: "KPI dashboard and analysis"
     visibility: "full"
   - name: "pricing-review"
     workflow: "workflows/pricing-review.yaml"
@@ -64,3 +99,52 @@ commands:
     workflow: "workflows/budget-check.yaml"
     description: "Budget check and alerts"
     visibility: "full"
+
+  # Tasks (direct execution)
+  - name: "track-expenses"
+    task: "tasks/track-expenses.md"
+    description: "Track and categorize expenses"
+    visibility: "quick"
+  - name: "forecast"
+    task: "tasks/forecast-revenue.md"
+    description: "Revenue forecast"
+    visibility: "quick"
+  - name: "cashflow"
+    task: "tasks/project-cashflow.md"
+    description: "Cashflow projection"
+    visibility: "quick"
+  - name: "unit-economics"
+    task: "tasks/analyze-unit-economics.md"
+    description: "Unit economics analysis"
+    visibility: "quick"
+  - name: "runway"
+    task: "tasks/calculate-runway.md"
+    description: "Calculate financial runway"
+    visibility: "quick"
+  - name: "audit"
+    task: "tasks/audit-costs.md"
+    description: "Audit costs and expenses"
+    visibility: "quick"
+  - name: "classify"
+    task: "tasks/classify-os-costs.md"
+    description: "Classify OS costs"
+    visibility: "quick"
+
+interface:
+  receives_from:
+    - squad: "ops"
+      type: "cost_data"
+      required: ["os_costs", "token_usage"]
+  delivers_to:
+    - squad: "ops"
+      type: "reports"
+      outputs: ["financial_report", "budget_status"]
+    - squad: "board"
+      type: "advisory"
+      outputs: ["financial_health", "pricing_decisions"]
+
+quality:
+  min_checklist_coverage: 90
+  require_qa_gate: true
+  require_documentation: true
+  budget_compliance_required: true

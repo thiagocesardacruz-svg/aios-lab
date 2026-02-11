@@ -1,0 +1,103 @@
+# Market Research Workflow
+# Deep market research and analysis
+# Version: 1.0.0
+
+name: market-research
+version: "1.0.0"
+description: "Conduct comprehensive market research for growth opportunities"
+
+trigger:
+  command: "/growth/market-research"
+  inputs:
+    - name: market
+      type: string
+      required: true
+      description: "Target market or segment"
+    - name: focus
+      type: string
+      required: false
+      description: "Specific focus area"
+    - name: depth
+      type: string
+      required: false
+      description: "quick/standard/deep"
+
+steps:
+  - id: scope
+    name: "Define Scope"
+    agent: growth-lead
+    task: define-research-scope
+    inputs:
+      market: "{{inputs.market}}"
+      focus: "{{inputs.focus}}"
+    outputs:
+      - research_questions
+      - data_sources
+
+  - id: size
+    name: "Market Sizing"
+    agent: data-analyst
+    task: estimate-market-size
+    inputs:
+      market: "{{inputs.market}}"
+    outputs:
+      - tam
+      - sam
+      - som
+      - growth_rate
+
+  - id: trends
+    name: "Trend Analysis"
+    agent: data-analyst
+    task: analyze-trends
+    inputs:
+      market: "{{inputs.market}}"
+    outputs:
+      - trends
+      - signals
+      - opportunities
+
+  - id: customers
+    name: "Customer Research"
+    agent: pmf-specialist
+    task: research-customers
+    inputs:
+      market: "{{inputs.market}}"
+    outputs:
+      - customer_segments
+      - pain_points
+      - buying_behavior
+
+  - id: competitors
+    name: "Competitive Landscape"
+    agent: growth-lead
+    task: map-competitors
+    inputs:
+      market: "{{inputs.market}}"
+    outputs:
+      - competitor_map
+      - positioning_gaps
+
+  - id: synthesize
+    name: "Synthesize Findings"
+    agent: growth-lead
+    task: synthesize-research
+    inputs:
+      sizing: "{{size}}"
+      trends: "{{trends}}"
+      customers: "{{customers}}"
+      competitors: "{{competitors}}"
+    outputs:
+      - research_report
+      - opportunities
+      - recommendations
+
+outputs:
+  - research_report
+  - opportunities
+  - recommendations
+
+quality:
+  require_data_sources: true
+  require_sizing: true
+  require_validation: true

@@ -1,9 +1,9 @@
 # Customer Squad
 # Travel Tech Digital AIOS
-# Version: 1.0.0
+# Version: 1.1.0
 
 name: customer
-version: "1.0.0"
+version: "1.1.0"
 description: "Customer success squad focused on post-sale experience, onboarding, retention, and maximizing customer lifetime value."
 
 aios:
@@ -13,7 +13,7 @@ aios:
 
 config:
   slashPrefix: "customer"
-  entry_point: null
+  entry_point: "workflows/onboarding-sequence.yaml"
 
 lead:
   agent: "customer-lead"
@@ -39,12 +39,32 @@ components:
     - "onboarding-sequence.yaml"
     - "retention-system.yaml"
     - "upsell-campaign.yaml"
+  tasks:
+    - "design-onboarding.md"
+    - "analyze-churn.md"
+    - "create-health-score.md"
+    - "design-upsell.md"
+    - "handle-escalation.md"
+    - "create-playbook.md"
+  templates:
+    - "onboarding-sequence-tmpl.md"
+    - "customer-health-tmpl.md"
+    - "churn-analysis-tmpl.md"
+    - "upsell-campaign-tmpl.md"
+  checklists:
+    - "onboarding-checklist.md"
+    - "churn-prevention-checklist.md"
+  data:
+    - "customer-lifecycle.yaml"
+    - "health-score-model.yaml"
 
 tags:
   - "customer-success"
   - "retention"
   - "onboarding"
   - "ltv"
+  - "churn"
+  - "health-score"
 
 commands:
   - name: "onboarding-sequence"
@@ -59,3 +79,41 @@ commands:
     workflow: "workflows/upsell-campaign.yaml"
     description: "Create upsell campaign"
     visibility: "full"
+  - name: "analyze-churn"
+    task: "tasks/analyze-churn.md"
+    description: "Analyze churn patterns"
+    visibility: "full"
+  - name: "health-score"
+    task: "tasks/create-health-score.md"
+    description: "Create health score model"
+    visibility: "full"
+  - name: "escalation"
+    task: "tasks/handle-escalation.md"
+    description: "Handle customer escalation"
+    visibility: "full"
+  - name: "playbook"
+    task: "tasks/create-playbook.md"
+    description: "Create CS playbook"
+    visibility: "full"
+
+interface:
+  inputs:
+    - "Customer usage data"
+    - "Support ticket history"
+    - "NPS/CSAT surveys"
+    - "Payment/billing data"
+  outputs:
+    - "Onboarding sequences"
+    - "Health score reports"
+    - "Churn analysis"
+    - "Upsell campaigns"
+    - "CS playbooks"
+
+quality:
+  checklist: "checklists/onboarding-checklist.md"
+  metrics:
+    - "activation_rate"
+    - "time_to_value"
+    - "churn_rate"
+    - "nps_score"
+    - "expansion_revenue"

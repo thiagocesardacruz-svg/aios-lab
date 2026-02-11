@@ -1,0 +1,73 @@
+id: daily-standup
+name: Daily Standup
+squad: ops
+version: "1.0"
+description: Generate daily digest of OS status, blockers, and costs at end of business day.
+
+trigger:
+  type: scheduled
+  source: system
+  condition: Every business day at 18:00 London time
+
+participants:
+  - agent: ops-manager
+    role: Executes status checks and generates report
+  - agent: ops-lead
+    role: Reviews report and addresses issues
+
+steps:
+  - id: step-01
+    name: Monitor SLA status
+    agent: ops-manager
+    task: monitor-sla
+    input: active_os_list, sla_definitions
+    output: sla_status_report, escalation_triggers
+    depends_on: []
+    on_fail: skip
+
+  - id: step-02
+    name: Calculate daily cost
+    agent: ops-manager
+    task: calculate-daily-cost
+    input: date, os_activity_log
+    output: daily_cost_summary, cost_alerts
+    depends_on: []
+    on_fail: retry
+
+  - id: step-03
+    name: Sync to Notion
+    agent: ops-manager
+    task: sync-to-notion
+    input: os_records, notion_db_id
+    output: sync_result
+    depends_on: []
+    on_fail: skip
+
+  - id: step-04
+    name: Generate status report
+    agent: ops-manager
+    task: generate-status-report
+    input: report_type=daily, os_records, cost_summary from step-02, sla_status from step-01
+    output: status_report
+    depends_on: [step-01, step-02]
+    on_fail: retry
+
+  - id: step-05
+    name: Run daily close checklist
+    agent: ops-manager
+    task: validate-os
+    input: daily-close checklist
+    output: checklist_result
+    depends_on: [step-04]
+    on_fail: escalate
+
+completion:
+  condition: Daily report generated and checklist passed
+  output: Daily status report (md)
+  notify: ops-lead
+
+constraints:
+  max_steps: 6
+  timeout_minutes: 30
+  retry_policy: 2
+  cost_ceiling: none

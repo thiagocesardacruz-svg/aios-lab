@@ -1,0 +1,150 @@
+# ICP Profiles - Marketing Squad
+# Ideal Customer Profile definitions
+# Version: 1.0.0
+
+metadata:
+  version: "1.0.0"
+  last_updated: "2026-02-11"
+  owner: "marketing-lead"
+
+# Primary ICP for Hotel AIOS MVP
+hotel_manager:
+  name: "Hotel Manager"
+  segment: "Small Independent Hotels"
+
+  demographics:
+    age_range: "35-55"
+    gender_split: "60% male, 40% female"
+    location: "Europe (focus: Portugal, Spain, UK)"
+    income: "€40,000-80,000/year"
+    education: "Bachelor's or hospitality degree"
+    job_title:
+      - "Hotel Manager"
+      - "Hotel Owner"
+      - "General Manager"
+      - "Operations Director"
+    company_size: "10-100 rooms"
+    industry: "Hospitality"
+
+  psychographics:
+    values:
+      - "Guest satisfaction"
+      - "Operational efficiency"
+      - "Revenue growth"
+      - "Work-life balance"
+    lifestyle: "Busy, always on-call, tech-curious but not tech-native"
+    personality: "Practical, results-oriented, skeptical of new tech"
+    interests:
+      - "Industry trends"
+      - "Revenue management"
+      - "Guest experience"
+      - "Automation"
+
+  pain_points:
+    primary: "Too many manual tasks eating time"
+    secondary:
+      - "Difficulty competing with chains"
+      - "Staff training and turnover"
+      - "Managing multiple platforms"
+      - "Inconsistent guest communication"
+    emotional: "Overwhelmed, feel like always behind"
+    cost_of_inaction: "Lost revenue, burnout, poor reviews"
+
+  desires:
+    dream_outcome: "Hotel runs smoothly with minimal intervention"
+    success_metrics:
+      - "More 5-star reviews"
+      - "Higher occupancy"
+      - "Less time on admin"
+      - "Better work-life balance"
+    timeline: "Want results in 30-90 days"
+    budget_range: "€100-500/month for right solution"
+
+  buying_behavior:
+    decision_process: "Research online, seek peer recommendations, need demos"
+    influencers:
+      - "Other hotel managers"
+      - "Industry consultants"
+      - "Online reviews"
+    objections:
+      - "Is it worth the cost?"
+      - "Will my team use it?"
+      - "Is it complicated?"
+      - "What if it doesn't work?"
+    preferred_channels:
+      - "LinkedIn"
+      - "Industry newsletters"
+      - "Google search"
+      - "Hotel management forums"
+
+  messaging_angles:
+    headline_hooks:
+      - "Run your hotel, not your inbox"
+      - "What if guests rated you 5 stars automatically?"
+      - "Stop drowning in admin work"
+    pain_agitation:
+      - "Every hour on spreadsheets is an hour away from guests"
+      - "Your competitors are automating—are you?"
+    desire_amplification:
+      - "Imagine waking up to 5-star reviews instead of complaints"
+      - "What would you do with 10 extra hours per week?"
+
+# Secondary ICP
+hotel_marketing_manager:
+  name: "Hotel Marketing Manager"
+  segment: "Mid-size Hotels"
+
+  demographics:
+    age_range: "28-45"
+    job_title:
+      - "Marketing Manager"
+      - "Digital Marketing Specialist"
+      - "Revenue Manager"
+    company_size: "50-200 rooms"
+
+  pain_points:
+    primary: "Difficulty creating consistent marketing content"
+    secondary:
+      - "Limited budget vs chains"
+      - "No time for social media"
+      - "Can't measure ROI"
+
+  desires:
+    dream_outcome: "Professional marketing without agency costs"
+    budget_range: "€200-800/month"
+
+  messaging_angles:
+    headline_hooks:
+      - "Chain-level marketing on boutique budget"
+      - "Your content calendar, done"
+
+# Future ICP: Travel Agency
+travel_agency_owner:
+  name: "Travel Agency Owner"
+  segment: "Independent Travel Agencies"
+  status: "future"
+
+  demographics:
+    age_range: "40-60"
+    job_title:
+      - "Agency Owner"
+      - "Travel Consultant"
+    company_size: "1-10 employees"
+
+  pain_points:
+    primary: "OTAs eating market share"
+    secondary:
+      - "Manual itinerary creation"
+      - "Slow quote turnaround"
+
+  desires:
+    dream_outcome: "Compete with OTAs through personalization"
+
+# Negative ICP (who NOT to target)
+negative_icp:
+  - segment: "Large hotel chains"
+    reason: "Have enterprise solutions, long sales cycles"
+  - segment: "Hostels <10 beds"
+    reason: "Budget too limited, different needs"
+  - segment: "Non-English speakers"
+    reason: "Product currently English-only"

@@ -1,0 +1,202 @@
+# Automation Specification Template
+# Tech Squad - n8n Workflow Spec
+
+metadata:
+  name: "{AUTOMATION_NAME}"
+  version: "1.0.0"
+  author: "{AUTHOR}"
+  date: "{DATE}"
+  status: "draft"  # draft | ready | deployed
+
+# Overview
+overview:
+  purpose: |
+    [Brief description of what this automation does]
+
+  business_value: |
+    [Why this automation matters]
+
+  trigger_summary: "[What triggers this workflow]"
+
+  output_summary: "[What this workflow produces]"
+
+# Trigger Configuration
+trigger:
+  type: "webhook"  # webhook | schedule | manual | event
+
+  # For webhook
+  webhook:
+    method: "POST"
+    path: "/webhooks/{name}"
+    auth: "header"  # none | header | query
+
+  # For schedule
+  schedule:
+    cron: "0 9 * * 1-5"  # 9 AM weekdays
+    timezone: "Europe/London"
+
+  # Expected payload (for webhook)
+  payload_schema:
+    required:
+      - field_name: "id"
+        type: "string"
+        description: "Unique identifier"
+    optional:
+      - field_name: "metadata"
+        type: "object"
+        description: "Additional data"
+
+# Workflow Steps
+steps:
+  - id: "step-01"
+    name: "Validate Input"
+    type: "if"
+    description: "Check if input is valid"
+    input: "trigger.payload"
+    condition: "{{ $json.id != null }}"
+    on_true: "step-02"
+    on_false: "error-invalid-input"
+
+  - id: "step-02"
+    name: "Fetch Data"
+    type: "http_request"
+    description: "Get data from external API"
+    config:
+      method: "GET"
+      url: "https://api.example.com/data/{{ $json.id }}"
+      headers:
+        Authorization: "Bearer {{ $credentials.api_key }}"
+    output: "fetched_data"
+    on_error: "error-fetch-failed"
+
+  - id: "step-03"
+    name: "Transform Data"
+    type: "set"
+    description: "Transform data for output"
+    transform: |
+      {
+        "id": {{ $json.id }},
+        "processed_at": "{{ $now }}",
+        "data": {{ $json.data }}
+      }
+    output: "transformed_data"
+
+  - id: "step-04"
+    name: "Send to Destination"
+    type: "http_request"
+    description: "Send processed data"
+    config:
+      method: "POST"
+      url: "https://api.destination.com/receive"
+      body: "{{ $json }}"
+    on_error: "error-send-failed"
+
+  - id: "step-05"
+    name: "Notify Success"
+    type: "notification"
+    description: "Send success notification"
+    config:
+      channel: "slack"  # slack | email | webhook
+      message: "Automation completed for {{ $json.id }}"
+
+# Error Handling
+error_handlers:
+  - id: "error-invalid-input"
+    name: "Invalid Input Error"
+    actions:
+      - type: "log"
+        level: "error"
+        message: "Invalid input received"
+      - type: "notify"
+        channel: "slack"
+        message: "Automation failed: Invalid input"
+      - type: "respond"
+        status: 400
+        body: { "error": "Invalid input" }
+
+  - id: "error-fetch-failed"
+    name: "Fetch Failed Error"
+    actions:
+      - type: "retry"
+        max_attempts: 3
+        delay_seconds: 5
+      - type: "notify"
+        channel: "slack"
+        message: "Automation failed: Could not fetch data"
+
+  - id: "error-send-failed"
+    name: "Send Failed Error"
+    actions:
+      - type: "retry"
+        max_attempts: 3
+        delay_seconds: 10
+      - type: "queue"
+        queue_name: "dead_letter"
+      - type: "notify"
+        channel: "slack"
+        message: "Automation failed: Could not send data"
+
+# Integrations Required
+integrations:
+  - name: "External API"
+    type: "http"
+    auth_type: "api_key"
+    credential_name: "external_api_key"
+
+  - name: "Destination API"
+    type: "http"
+    auth_type: "bearer"
+    credential_name: "destination_token"
+
+  - name: "Slack"
+    type: "slack"
+    auth_type: "oauth"
+    credential_name: "slack_bot"
+
+# Testing
+testing:
+  test_cases:
+    - name: "Happy path"
+      input: { "id": "test-123" }
+      expected_output: "success"
+
+    - name: "Invalid input"
+      input: { }
+      expected_output: "error-invalid-input"
+
+    - name: "API failure"
+      input: { "id": "fail-test" }
+      mock: { "step-02": "error" }
+      expected_output: "error-fetch-failed"
+
+# Monitoring
+monitoring:
+  metrics:
+    - name: "execution_count"
+      type: "counter"
+    - name: "execution_duration"
+      type: "histogram"
+    - name: "error_count"
+      type: "counter"
+
+  alerts:
+    - name: "High error rate"
+      condition: "error_rate > 10%"
+      channel: "slack"
+    - name: "Slow execution"
+      condition: "duration > 30s"
+      channel: "slack"
+
+# Documentation
+documentation:
+  runbook: |
+    ## How to troubleshoot
+    1. Check n8n execution logs
+    2. Verify credentials are valid
+    3. Check external API status
+
+  changelog:
+    - version: "1.0.0"
+      date: "{DATE}"
+      changes:
+        - "Initial version"

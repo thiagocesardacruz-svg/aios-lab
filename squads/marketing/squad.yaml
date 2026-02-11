@@ -1,10 +1,10 @@
 # Marketing Squad
 # Travel Tech Digital AIOS
-# Versão: 1.0.0
+# Version: 1.1.0
 
 name: marketing
-version: "1.0.0"
-description: "Squad de Marketing Digital responsável por estratégia de go-to-market, conteúdo, SEO, copywriting, funis e campanhas de ads."
+version: "1.1.0"
+description: "Digital Marketing squad responsible for go-to-market strategy, content, SEO, copywriting, funnels, and ad campaigns."
 
 aios:
   minVersion: "2.1.0"
@@ -17,27 +17,34 @@ config:
 
 lead:
   agent: "marketing-lead"
+  name: "Aurora"
   role: "Marketing Lead"
 
 agents:
   - id: "marketing-lead"
     file: "agents/marketing-lead.md"
-    role: "Estratégia e coordenação"
+    name: "Aurora"
+    role: "Strategy and coordination"
   - id: "offer-engine"
     file: "agents/offer-engine.md"
-    role: "Arquitetura de ofertas (Hormozi)"
+    name: "Viktor"
+    role: "Offer architecture (Hormozi methodology)"
   - id: "content-strategist"
     file: "agents/content-strategist.md"
-    role: "Estratégia de conteúdo"
+    name: "Luna"
+    role: "Content strategy and ICP research"
   - id: "copy-specialist"
     file: "agents/copy-specialist.md"
-    role: "Copywriting"
+    name: "Marcus"
+    role: "Copywriting and persuasion"
   - id: "seo-specialist"
     file: "agents/seo-specialist.md"
-    role: "SEO e keywords"
+    name: "Atlas"
+    role: "SEO, keywords, organic growth"
   - id: "funnel-architect"
     file: "agents/funnel-architect.md"
-    role: "Arquitetura de funis"
+    name: "Nova"
+    role: "Funnel design and automation"
 
 components:
   agents:
@@ -102,42 +109,91 @@ tags:
   - "seo"
   - "ads"
   - "funnels"
+  - "copywriting"
 
 commands:
+  # Workflows
   - name: "market-research"
     workflow: "workflows/market-research.yaml"
-    description: "Pesquisa de mercado e ICP"
+    description: "Complete market and ICP research"
     visibility: "full"
   - name: "seo-plan"
     workflow: "workflows/seo-plan.yaml"
-    description: "Plano de SEO com keywords"
+    description: "SEO plan with keywords and calendar"
     visibility: "full"
   - name: "create-funnel"
     workflow: "workflows/create-funnel.yaml"
-    description: "Criar funil completo"
+    description: "Design complete funnel"
     visibility: "full"
   - name: "landing-page"
     workflow: "workflows/landing-page.yaml"
-    description: "Criar landing page"
+    description: "Create landing page with copy"
     visibility: "full"
   - name: "article"
     workflow: "workflows/article.yaml"
-    description: "Criar artigo SEO"
+    description: "Create SEO-optimized article"
     visibility: "full"
   - name: "email-sequence"
     workflow: "workflows/email-sequence.yaml"
-    description: "Criar sequência de emails"
+    description: "Create email sequence"
     visibility: "full"
   - name: "social-calendar"
     workflow: "workflows/social-calendar.yaml"
-    description: "Calendário de 30 dias"
+    description: "30-day social media calendar"
     visibility: "quick"
   - name: "ad-creative-pack"
     workflow: "workflows/ad-creative-pack.yaml"
-    description: "Pack de criativos para ads"
+    description: "Ad creative pack for any platform"
     visibility: "full"
+
+  # Tasks (direct execution)
+  - name: "analyze-icp"
+    task: "tasks/analyze-icp.md"
+    description: "Analyze Ideal Customer Profile"
+    visibility: "quick"
+  - name: "keyword-research"
+    task: "tasks/keyword-research.md"
+    description: "Keyword research and clustering"
+    visibility: "quick"
+  - name: "write-copy"
+    task: "tasks/write-copy.md"
+    description: "Write marketing copy"
+    visibility: "quick"
+  - name: "create-brief"
+    task: "tasks/create-brief.md"
+    description: "Create marketing brief"
+    visibility: "quick"
+  - name: "design-funnel"
+    task: "tasks/design-funnel.md"
+    description: "Design funnel structure"
+    visibility: "quick"
+  - name: "create-email"
+    task: "tasks/create-email.md"
+    description: "Create email copy"
+    visibility: "quick"
+  - name: "create-ad"
+    task: "tasks/create-ad.md"
+    description: "Create ad copy"
+    visibility: "quick"
+
+interface:
+  receives_from:
+    - squad: "deep-research"
+      type: "research"
+      required: ["market_analysis", "competitor_data"]
+    - squad: "design"
+      type: "assets"
+      required: ["visuals", "brand_guidelines"]
+  delivers_to:
+    - squad: "sales-pages"
+      type: "content"
+      outputs: ["copy", "structure", "messaging"]
+    - squad: "tech"
+      type: "specs"
+      outputs: ["page_specs", "funnel_logic"]
 
 quality:
   min_checklist_coverage: 85
   require_qa_gate: true
   require_documentation: true
+  copy_review_required: true

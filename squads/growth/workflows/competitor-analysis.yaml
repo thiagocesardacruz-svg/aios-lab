@@ -1,0 +1,109 @@
+# Competitor Analysis Workflow
+# Deep-dive analysis of competitors
+# Version: 1.0.0
+
+name: competitor-analysis
+version: "1.0.0"
+description: "Comprehensive competitor analysis for strategic positioning"
+
+trigger:
+  command: "/growth/competitor-analysis"
+  inputs:
+    - name: competitor
+      type: string
+      required: true
+      description: "Competitor name or list"
+    - name: focus
+      type: string
+      required: false
+      description: "pricing/product/marketing/all"
+
+steps:
+  - id: identify
+    name: "Identify Competitors"
+    agent: growth-lead
+    task: identify-competitors
+    inputs:
+      primary: "{{inputs.competitor}}"
+    outputs:
+      - direct_competitors
+      - indirect_competitors
+      - substitutes
+
+  - id: profile
+    name: "Build Profiles"
+    agent: data-analyst
+    task: build-competitor-profiles
+    inputs:
+      competitors: "{{identify.direct_competitors}}"
+    outputs:
+      - profiles
+      - funding_history
+      - team_size
+
+  - id: product
+    name: "Product Analysis"
+    agent: growth-lead
+    task: analyze-competitor-product
+    inputs:
+      competitors: "{{identify.direct_competitors}}"
+    outputs:
+      - feature_comparison
+      - ux_analysis
+      - tech_stack
+
+  - id: pricing
+    name: "Pricing Analysis"
+    agent: data-analyst
+    task: analyze-competitor-pricing
+    inputs:
+      competitors: "{{identify.direct_competitors}}"
+    outputs:
+      - pricing_models
+      - price_points
+      - packaging
+
+  - id: marketing
+    name: "Marketing Analysis"
+    agent: growth-lead
+    task: analyze-competitor-marketing
+    inputs:
+      competitors: "{{identify.direct_competitors}}"
+    outputs:
+      - channels
+      - messaging
+      - content_strategy
+
+  - id: gaps
+    name: "Identify Gaps"
+    agent: growth-lead
+    task: identify-competitive-gaps
+    inputs:
+      product: "{{product}}"
+      pricing: "{{pricing}}"
+      marketing: "{{marketing}}"
+    outputs:
+      - gaps
+      - opportunities
+      - threats
+
+  - id: report
+    name: "Create Report"
+    agent: data-analyst
+    task: create-competitor-report
+    inputs:
+      profiles: "{{profile.profiles}}"
+      analysis: "{{gaps}}"
+    outputs:
+      - competitor_report
+      - battlecards
+
+outputs:
+  - competitor_report
+  - battlecards
+  - opportunities
+
+quality:
+  require_direct_competitors: true
+  require_feature_comparison: true
+  require_pricing: true

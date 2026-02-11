@@ -1,0 +1,63 @@
+# Severity Definitions
+#
+# Meta:
+#   id: severity-definitions
+#   squad: qa
+#   consumed_by: [qa-lead, process-auditor, content-reviewer, validate-deliverable]
+#   token_estimate: 320
+#   last_updated: 2026-02-11
+
+severity_levels:
+  - id: critical
+    label: Critical
+    description: Blocks release or causes significant harm
+    response_time: immediate
+    resolution_time_hours: 4
+    requires_stakeholder_notification: true
+    examples:
+      - Security vulnerability
+      - Data loss
+      - Production down
+      - Legal/compliance violation
+
+  - id: major
+    label: Major
+    description: Significant impact on functionality or quality
+    response_time: same_day
+    resolution_time_hours: 24
+    requires_stakeholder_notification: false
+    examples:
+      - Feature not working as specified
+      - Performance degradation >50%
+      - Accessibility violation (WCAG A)
+      - Broken user flow
+
+  - id: minor
+    label: Minor
+    description: Limited impact, workaround available
+    response_time: within_48h
+    resolution_time_hours: 72
+    requires_stakeholder_notification: false
+    examples:
+      - UI inconsistency
+      - Minor copy error
+      - Edge case not handled
+      - Performance degradation 10-50%
+
+  - id: observation
+    label: Observation
+    description: Improvement opportunity, not a defect
+    response_time: backlog
+    resolution_time_hours: null
+    requires_stakeholder_notification: false
+    examples:
+      - Code style suggestion
+      - Documentation improvement
+      - UX enhancement idea
+      - Refactoring opportunity
+
+escalation_matrix:
+  critical: qa-lead → ops-lead → user
+  major: qa-lead
+  minor: assigned-agent
+  observation: backlog

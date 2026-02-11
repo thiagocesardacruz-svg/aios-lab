@@ -1,0 +1,308 @@
+# Retention Benchmarks Reference
+# Squad: growth
+# Version: 1.0.0
+
+# =============================================================================
+# RETENTION BENCHMARKS BY INDUSTRY
+# =============================================================================
+
+retention_by_industry:
+
+  saas_b2b:
+    description: "B2B SaaS products"
+    day_1: "80%"
+    day_7: "60%"
+    day_14: "50%"
+    day_30: "40%"
+    day_60: "35%"
+    day_90: "30%"
+    steady_state: "25-30%"
+    notes: "Higher due to business need and switching costs"
+
+  saas_b2c:
+    description: "B2C SaaS products"
+    day_1: "60%"
+    day_7: "40%"
+    day_14: "30%"
+    day_30: "25%"
+    day_60: "20%"
+    day_90: "15%"
+    steady_state: "10-15%"
+    notes: "Lower barriers to churn, more alternatives"
+
+  consumer_apps:
+    description: "Consumer mobile apps"
+    day_1: "40%"
+    day_7: "20%"
+    day_14: "15%"
+    day_30: "10%"
+    day_60: "8%"
+    day_90: "5%"
+    steady_state: "3-5%"
+    notes: "Very competitive, low switching costs"
+
+  social_apps:
+    description: "Social media and networking"
+    day_1: "35%"
+    day_7: "25%"
+    day_14: "20%"
+    day_30: "15%"
+    day_60: "12%"
+    day_90: "10%"
+    steady_state: "8-10%"
+    notes: "Network effects help long-term retention"
+
+  ecommerce:
+    description: "E-commerce and marketplaces"
+    day_1: "30%"
+    day_7: "15%"
+    day_14: "12%"
+    day_30: "10%"
+    day_60: "8%"
+    day_90: "6%"
+    steady_state: "5-8%"
+    notes: "Transaction-based, not daily use"
+
+  fintech:
+    description: "Financial technology apps"
+    day_1: "70%"
+    day_7: "55%"
+    day_14: "45%"
+    day_30: "40%"
+    day_60: "35%"
+    day_90: "30%"
+    steady_state: "25-30%"
+    notes: "High trust requirements, sticky if good"
+
+  gaming:
+    description: "Mobile and casual games"
+    day_1: "35%"
+    day_7: "15%"
+    day_14: "10%"
+    day_30: "5%"
+    day_60: "3%"
+    day_90: "2%"
+    steady_state: "1-3%"
+    notes: "Highly competitive, entertainment value"
+
+  health_fitness:
+    description: "Health and fitness apps"
+    day_1: "45%"
+    day_7: "25%"
+    day_14: "18%"
+    day_30: "12%"
+    day_60: "8%"
+    day_90: "5%"
+    steady_state: "3-5%"
+    notes: "Motivation-dependent, New Year spike"
+
+  education:
+    description: "EdTech and learning platforms"
+    day_1: "50%"
+    day_7: "35%"
+    day_14: "25%"
+    day_30: "20%"
+    day_60: "15%"
+    day_90: "12%"
+    steady_state: "10-15%"
+    notes: "Goal-driven usage patterns"
+
+# =============================================================================
+# TRAVEL TECH SPECIFIC (AI OS TARGET VERTICAL)
+# =============================================================================
+
+travel_tech:
+
+  hotel_management:
+    description: "Hotel management SaaS"
+    day_1: "85%"
+    day_7: "70%"
+    day_14: "60%"
+    day_30: "50%"
+    day_60: "45%"
+    day_90: "40%"
+    steady_state: "35-40%"
+    notes: "High switching costs, operational dependency"
+
+  booking_platforms:
+    description: "Travel booking platforms"
+    day_1: "25%"
+    day_7: "12%"
+    day_14: "8%"
+    day_30: "5%"
+    day_60: "4%"
+    day_90: "3%"
+    steady_state: "2-4%"
+    notes: "Transaction-based, seasonal"
+
+  property_management:
+    description: "Property management systems"
+    day_1: "80%"
+    day_7: "65%"
+    day_14: "55%"
+    day_30: "45%"
+    day_60: "40%"
+    day_90: "35%"
+    steady_state: "30-35%"
+    notes: "High integration depth increases retention"
+
+# =============================================================================
+# RETENTION QUALITY TIERS
+# =============================================================================
+
+quality_tiers:
+
+  world_class:
+    description: "Top 10% of products"
+    characteristics:
+      - "Day 30 retention > 2x industry average"
+      - "Flat retention curve after day 30"
+      - "High organic acquisition (>40%)"
+      - "NPS > 70"
+    examples:
+      - "Slack"
+      - "Notion"
+      - "Figma"
+
+  good:
+    description: "Above average performance"
+    characteristics:
+      - "Day 30 retention at or above benchmark"
+      - "Gradual decline, not steep drop"
+      - "Some organic acquisition (20-40%)"
+      - "NPS 30-70"
+    examples:
+      - "Most successful SaaS"
+      - "Established B2B tools"
+
+  average:
+    description: "Industry standard"
+    characteristics:
+      - "Day 30 retention near benchmark"
+      - "Typical decay curve"
+      - "Mostly paid acquisition"
+      - "NPS 0-30"
+    notes: "Typical for pre-PMF or early-stage products"
+
+  concerning:
+    description: "Below benchmark"
+    characteristics:
+      - "Day 30 retention below benchmark"
+      - "Steep early drop-off"
+      - "Heavy reliance on paid acquisition"
+      - "Negative NPS"
+    action: "Focus on activation and aha moment"
+
+  critical:
+    description: "Significant retention issues"
+    characteristics:
+      - "Day 7 retention below industry day 30"
+      - "Leaky bucket problem"
+      - "No organic growth"
+      - "High churn rate"
+    action: "Pause growth, focus on product"
+
+# =============================================================================
+# RETENTION CURVE PATTERNS
+# =============================================================================
+
+curve_patterns:
+
+  healthy:
+    description: "Normal retention curve"
+    shape: "Steep initial drop, then flattens"
+    visual: |
+      100% ████████████████████████████████
+       80% ████████████████
+       60% ███████████
+       40% ████████
+       30% ███████
+       30% ███████ (steady state)
+    interpretation: "Finding and retaining core users"
+
+  leaky_bucket:
+    description: "Continuous decline"
+    shape: "Steady decline without flattening"
+    visual: |
+      100% ████████████████████████████████
+       70% ███████████████████
+       40% ████████████
+       20% ██████
+       10% ███
+        5% ██ (still declining)
+    interpretation: "No product-market fit, keep iterating"
+
+  cliff:
+    description: "Sharp early drop"
+    shape: "Major drop in first days, then stable"
+    visual: |
+      100% ████████████████████████████████
+       20% ██████
+       18% █████
+       16% █████
+       15% █████ (stable at low level)
+    interpretation: "Activation problem - great for some, bad for most"
+
+  hockey_stick:
+    description: "Improving retention over time"
+    shape: "Later cohorts retain better"
+    visual: |
+      Cohort 1: 10% steady state
+      Cohort 2: 15% steady state
+      Cohort 3: 22% steady state
+      Cohort 4: 30% steady state
+    interpretation: "Product improving, approaching PMF"
+
+# =============================================================================
+# CHURN BENCHMARKS
+# =============================================================================
+
+churn_benchmarks:
+
+  monthly_churn:
+    excellent: "<2%"
+    good: "2-5%"
+    average: "5-7%"
+    concerning: "7-10%"
+    critical: ">10%"
+
+  annual_churn:
+    excellent: "<5%"
+    good: "5-10%"
+    average: "10-20%"
+    concerning: "20-30%"
+    critical: ">30%"
+
+  revenue_churn:
+    net_negative: "< 0% (expansion exceeds churn)"
+    excellent: "0-2%"
+    good: "2-5%"
+    average: "5-8%"
+    concerning: ">8%"
+
+# =============================================================================
+# ACTIVATION BENCHMARKS
+# =============================================================================
+
+activation_benchmarks:
+
+  description: "Time to activation matters as much as retention"
+
+  time_to_value:
+    excellent: "< 5 minutes"
+    good: "5-30 minutes"
+    average: "30 min - 2 hours"
+    concerning: "2-24 hours"
+    critical: "> 24 hours"
+
+  activation_rate:
+    saas_b2b: "40-60%"
+    saas_b2c: "20-40%"
+    consumer: "15-30%"
+
+  aha_moment_examples:
+    slack: "Send first message in a channel"
+    dropbox: "Store first file"
+    twitter: "Follow 30 users"
+    notion: "Create first page with content"
+    zoom: "Host first meeting"

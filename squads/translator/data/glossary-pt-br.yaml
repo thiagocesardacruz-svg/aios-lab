@@ -1,0 +1,195 @@
+# Portuguese (Brazil) Glossary
+# Squad: translator
+# Version: 1.0.0
+
+metadata:
+  language: "PT-BR"
+  version: "1.0.0"
+  last_updated: "2026-02-11"
+  maintainer: "translator-squad"
+
+# Style Guide
+style_guide:
+  formality: "Varies by content type"
+  você_vs_tu: "Use 'voce' (standard Brazilian)"
+  contractions: "Use natural contractions (pra, pro, ta)"
+  anglicisms: "Avoid when Portuguese equivalent exists"
+
+# Format Standards
+formats:
+  date: "DD/MM/YYYY"
+  time: "HH:MM (24h preferred)"
+  currency: "R$ 1.000,00"
+  decimal_separator: ","
+  thousand_separator: "."
+  phone: "+55 (XX) XXXXX-XXXX"
+
+# Common Terms
+terms:
+  # UI Elements
+  - source: "Submit"
+    translation: "Enviar"
+    context: "Form button"
+    do_not_use: ["Submeter"]
+
+  - source: "Cancel"
+    translation: "Cancelar"
+    context: "Action button"
+
+  - source: "Save"
+    translation: "Salvar"
+    context: "Save action"
+    do_not_use: ["Guardar"]
+
+  - source: "Delete"
+    translation: "Excluir"
+    context: "Delete action"
+    alternatives: ["Apagar", "Remover"]
+
+  - source: "Edit"
+    translation: "Editar"
+    context: "Edit action"
+
+  - source: "Settings"
+    translation: "Configuracoes"
+    context: "App settings"
+    do_not_use: ["Definicoes"]
+
+  - source: "Search"
+    translation: "Buscar"
+    context: "Search action"
+    alternatives: ["Pesquisar"]
+
+  - source: "Loading"
+    translation: "Carregando"
+    context: "Loading state"
+
+  - source: "Error"
+    translation: "Erro"
+    context: "Error message"
+
+  - source: "Success"
+    translation: "Sucesso"
+    context: "Success message"
+
+  # E-commerce
+  - source: "Checkout"
+    translation: "Finalizar compra"
+    context: "Purchase completion"
+    do_not_use: ["Checkout", "Check-out"]
+
+  - source: "Add to cart"
+    translation: "Adicionar ao carrinho"
+    context: "Shopping action"
+
+  - source: "Buy now"
+    translation: "Comprar agora"
+    context: "Purchase CTA"
+
+  - source: "Free shipping"
+    translation: "Frete gratis"
+    context: "Shipping offer"
+
+  - source: "In stock"
+    translation: "Em estoque"
+    context: "Availability"
+
+  - source: "Out of stock"
+    translation: "Esgotado"
+    context: "Unavailable"
+    alternatives: ["Fora de estoque"]
+
+  # Account
+  - source: "Sign in"
+    translation: "Entrar"
+    context: "Login action"
+    do_not_use: ["Logar", "Sign in"]
+
+  - source: "Sign up"
+    translation: "Criar conta"
+    context: "Registration"
+    alternatives: ["Cadastrar-se"]
+
+  - source: "Log out"
+    translation: "Sair"
+    context: "Logout action"
+    do_not_use: ["Deslogar"]
+
+  - source: "Forgot password"
+    translation: "Esqueci minha senha"
+    context: "Password recovery"
+
+  - source: "Profile"
+    translation: "Perfil"
+    context: "User profile"
+
+  # Marketing
+  - source: "Learn more"
+    translation: "Saiba mais"
+    context: "CTA button"
+
+  - source: "Get started"
+    translation: "Comecar"
+    context: "CTA button"
+    alternatives: ["Comece agora"]
+
+  - source: "Contact us"
+    translation: "Fale conosco"
+    context: "Contact CTA"
+    alternatives: ["Entre em contato"]
+
+  - source: "Subscribe"
+    translation: "Inscrever-se"
+    context: "Newsletter signup"
+    do_not_use: ["Subscrever"]
+
+  - source: "Download"
+    translation: "Baixar"
+    context: "Download action"
+    do_not_use: ["Download"]
+
+  # Hospitality (Travel Tech)
+  - source: "Book now"
+    translation: "Reserve agora"
+    context: "Booking CTA"
+
+  - source: "Check-in"
+    translation: "Check-in"
+    context: "Hotel arrival"
+    notes: "Kept in English (industry standard)"
+
+  - source: "Check-out"
+    translation: "Check-out"
+    context: "Hotel departure"
+    notes: "Kept in English (industry standard)"
+
+  - source: "Room"
+    translation: "Quarto"
+    context: "Hotel room"
+    alternatives: ["Acomodacao"]
+
+  - source: "Guest"
+    translation: "Hospede"
+    context: "Hotel guest"
+
+  - source: "Amenities"
+    translation: "Comodidades"
+    context: "Hotel facilities"
+    alternatives: ["Amenidades"]
+
+# Common Phrases
+phrases:
+  - source: "Welcome back"
+    translation: "Bem-vindo de volta"
+
+  - source: "Thank you for your purchase"
+    translation: "Obrigado pela sua compra"
+
+  - source: "Your order has been confirmed"
+    translation: "Seu pedido foi confirmado"
+
+  - source: "Please try again"
+    translation: "Por favor, tente novamente"
+
+  - source: "Something went wrong"
+    translation: "Algo deu errado"

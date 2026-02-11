@@ -1,0 +1,64 @@
+# Cost Categories
+#
+# Meta:
+#   id: cost-categories
+#   squad: finance
+#   consumed_by: [controller, ops-manager, calculate-daily-cost, classify-os-costs]
+#   token_estimate: 400
+#   last_updated: 2026-02-11
+
+categories:
+  - id: BASE
+    name: Base Execution
+    description: Standard task execution without special resources
+    rate_per_1k_tokens: 0.003
+    budget_allocation_percent: 40
+
+  - id: EXEC
+    name: Execution with Tools
+    description: Tasks using external tools or APIs
+    rate_per_1k_tokens: 0.008
+    budget_allocation_percent: 25
+
+  - id: VRFY
+    name: Verification
+    description: QA, validation, and review tasks
+    rate_per_1k_tokens: 0.004
+    budget_allocation_percent: 10
+
+  - id: RCVR
+    name: Recovery
+    description: Error handling and retry operations
+    rate_per_1k_tokens: 0.005
+    budget_allocation_percent: 5
+
+  - id: EXTA
+    name: External API
+    description: Third-party API calls (EXA, Apify, etc.)
+    rate_per_call: 0.01
+    budget_allocation_percent: 10
+
+  - id: EXTM
+    name: External MCP
+    description: MCP server operations
+    rate_per_call: 0.005
+    budget_allocation_percent: 5
+
+  - id: DEV_
+    name: Development
+    description: Code generation and technical tasks
+    rate_per_1k_tokens: 0.010
+    budget_allocation_percent: 5
+
+budget_limits:
+  daily:
+    alert_threshold_eur: 15
+    hard_limit_eur: 20
+  monthly:
+    total_gbp: 400
+    per_squad_max_percent: 25
+
+cost_tracking:
+  log_location: notion/databases/cost-log
+  sync_frequency: real-time
+  retention_days: 90

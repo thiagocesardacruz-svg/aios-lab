@@ -1,9 +1,9 @@
 # Design Squad
 # Travel Tech Digital AIOS
-# Version: 1.0.0
+# Version: 1.1.0
 
 name: design
-version: "1.0.0"
+version: "1.1.0"
 description: "Creative design squad for conversion-focused visual assets. Ads, social content, VSLs, brand kits, landing visuals."
 
 aios:
@@ -13,24 +13,29 @@ aios:
 
 config:
   slashPrefix: "design"
-  entry_point: null
+  entry_point: "workflows/ad-creative-pack.yaml"
 
 lead:
   agent: "design-lead"
+  name: "Pixel"
   role: "Design Lead"
 
 agents:
   - id: "design-lead"
     file: "agents/design-lead.md"
+    name: "Pixel"
     role: "Creative direction, brand QA, final approvals"
   - id: "performance-designer"
     file: "agents/performance-designer.md"
+    name: "Blaze"
     role: "Conversion-focused ads and creatives"
   - id: "motion-video-specialist"
     file: "agents/motion-video-specialist.md"
+    name: "Flux"
     role: "VSLs, video ads, reels, motion graphics"
   - id: "visual-systems-designer"
     file: "agents/visual-systems-designer.md"
+    name: "Grid"
     role: "Carousels, infographics, templates, slides"
 
 components:
@@ -39,19 +44,28 @@ components:
     - "performance-designer.md"
     - "motion-video-specialist.md"
     - "visual-systems-designer.md"
+  tasks:
+    - "design-ad-creative.md"
+    - "design-social-post.md"
+    - "design-vsl-slides.md"
+    - "review-creative.md"
+    - "create-brand-assets.md"
   workflows:
     - "ad-creative-pack.yaml"
     - "social-content-pack.yaml"
     - "vsl-kit.yaml"
     - "brand-kit.yaml"
     - "landing-visual.yaml"
+  templates:
+    - "creative-brief.md"
+    - "brand-guidelines.md"
   checklists:
     - "creative-conversion.md"
     - "brand-consistency.md"
     - "visual-hierarchy.md"
-  templates:
-    - "creative-brief.md"
-    - "brand-guidelines.md"
+  data:
+    - "platform-specs.yaml"
+    - "design-tokens.yaml"
 
 tags:
   - "design"
@@ -60,8 +74,10 @@ tags:
   - "social"
   - "video"
   - "conversion"
+  - "brand"
 
 commands:
+  # Workflows
   - name: "ad-creative-pack"
     workflow: "workflows/ad-creative-pack.yaml"
     description: "Create complete ad creative pack"
@@ -82,6 +98,28 @@ commands:
     workflow: "workflows/landing-visual.yaml"
     description: "Landing page visual design"
     visibility: "full"
+
+  # Tasks (direct execution)
+  - name: "ad-creative"
+    task: "tasks/design-ad-creative.md"
+    description: "Design single ad creative"
+    visibility: "quick"
+  - name: "social-post"
+    task: "tasks/design-social-post.md"
+    description: "Design social media post"
+    visibility: "quick"
+  - name: "vsl-slides"
+    task: "tasks/design-vsl-slides.md"
+    description: "Design VSL slides"
+    visibility: "quick"
+  - name: "review"
+    task: "tasks/review-creative.md"
+    description: "Review creative assets"
+    visibility: "quick"
+  - name: "brand-assets"
+    task: "tasks/create-brand-assets.md"
+    description: "Create brand assets"
+    visibility: "quick"
 
 # Interface rules
 interface:
@@ -111,3 +149,9 @@ boundaries:
     - "Run media/ads (Growth)"
     - "Build UI components (Design System squad)"
     - "Implement code (Tech)"
+
+quality:
+  min_checklist_coverage: 90
+  require_qa_gate: true
+  require_brand_review: true
+  conversion_focus_required: true

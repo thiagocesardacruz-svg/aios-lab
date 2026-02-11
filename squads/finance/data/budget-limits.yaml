@@ -1,0 +1,74 @@
+# Budget Limits
+#
+# Meta:
+#   id: budget-limits
+#   squad: finance
+#   consumed_by: [controller, finance-lead, budget-check workflow]
+#   token_estimate: 300
+#   last_updated: 2026-02-11
+
+global_limits:
+  monthly_total:
+    amount: 400
+    currency: GBP
+    enforcement: hard
+
+  daily_total:
+    alert_amount: 15
+    hard_limit_amount: 20
+    currency: EUR
+    enforcement: hard
+
+squad_allocations:
+  - squad: ops
+    monthly_max_gbp: 60
+    percent_of_total: 15
+
+  - squad: tech
+    monthly_max_gbp: 100
+    percent_of_total: 25
+
+  - squad: marketing
+    monthly_max_gbp: 80
+    percent_of_total: 20
+
+  - squad: design
+    monthly_max_gbp: 40
+    percent_of_total: 10
+
+  - squad: sales
+    monthly_max_gbp: 60
+    percent_of_total: 15
+
+  - squad: customer
+    monthly_max_gbp: 30
+    percent_of_total: 7.5
+
+  - squad: qa
+    monthly_max_gbp: 20
+    percent_of_total: 5
+
+  - squad: finance
+    monthly_max_gbp: 10
+    percent_of_total: 2.5
+
+alert_thresholds:
+  - level: warning
+    percent_of_budget: 80
+    action: notify-controller
+
+  - level: critical
+    percent_of_budget: 95
+    action: notify-finance-lead
+
+  - level: breach
+    percent_of_budget: 100
+    action: block-and-escalate
+
+exceptions:
+  approval_required_from: user
+  documentation_required: true
+  valid_reasons:
+    - emergency-fix
+    - approved-project
+    - one-time-spike

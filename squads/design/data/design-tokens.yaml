@@ -1,0 +1,252 @@
+# Design Tokens - Travel Tech Digital
+# Brand design tokens for consistent visual design
+# Version: 1.0.0
+
+metadata:
+  version: "1.0.0"
+  last_updated: "2026-02-11"
+  owner: "design-lead"
+  brand: "Travel Tech Digital"
+
+# Color Tokens
+colors:
+  # Primary Brand Colors
+  primary:
+    default:
+      hex: "#2563EB"
+      rgb: "37, 99, 235"
+      hsl: "217, 91%, 53%"
+      usage: "Primary actions, links, key elements"
+    light:
+      hex: "#3B82F6"
+      usage: "Hover states, lighter accent"
+    dark:
+      hex: "#1D4ED8"
+      usage: "Active states, emphasis"
+
+  # Secondary Colors
+  secondary:
+    default:
+      hex: "#7C3AED"
+      rgb: "124, 58, 237"
+      usage: "Secondary actions, accents"
+    light:
+      hex: "#8B5CF6"
+    dark:
+      hex: "#6D28D9"
+
+  # Accent Colors
+  accent:
+    success:
+      hex: "#10B981"
+      usage: "Success states, positive feedback"
+    warning:
+      hex: "#F59E0B"
+      usage: "Warnings, attention needed"
+    error:
+      hex: "#EF4444"
+      usage: "Errors, destructive actions"
+    info:
+      hex: "#3B82F6"
+      usage: "Information, neutral alerts"
+
+  # Neutral Colors
+  neutral:
+    900:
+      hex: "#111827"
+      usage: "Primary text, dark backgrounds"
+    800:
+      hex: "#1F2937"
+      usage: "Secondary text"
+    700:
+      hex: "#374151"
+      usage: "Tertiary text"
+    600:
+      hex: "#4B5563"
+      usage: "Placeholder text"
+    500:
+      hex: "#6B7280"
+      usage: "Disabled text"
+    400:
+      hex: "#9CA3AF"
+      usage: "Borders"
+    300:
+      hex: "#D1D5DB"
+      usage: "Light borders"
+    200:
+      hex: "#E5E7EB"
+      usage: "Dividers"
+    100:
+      hex: "#F3F4F6"
+      usage: "Light backgrounds"
+    50:
+      hex: "#F9FAFB"
+      usage: "Subtle backgrounds"
+    white:
+      hex: "#FFFFFF"
+      usage: "White backgrounds"
+
+  # Background Colors
+  background:
+    primary: "#FFFFFF"
+    secondary: "#F9FAFB"
+    tertiary: "#F3F4F6"
+    dark: "#111827"
+    overlay: "rgba(0, 0, 0, 0.5)"
+
+# Typography Tokens
+typography:
+  fonts:
+    primary:
+      name: "Inter"
+      fallback: "system-ui, -apple-system, sans-serif"
+      source: "https://fonts.google.com/specimen/Inter"
+    secondary:
+      name: "Inter"
+      note: "Using Inter for both - clean and versatile"
+
+  weights:
+    light: 300
+    regular: 400
+    medium: 500
+    semibold: 600
+    bold: 700
+
+  sizes:
+    display:
+      xl: "72px"
+      lg: "60px"
+      md: "48px"
+      sm: "36px"
+    heading:
+      h1: "36px"
+      h2: "30px"
+      h3: "24px"
+      h4: "20px"
+      h5: "18px"
+      h6: "16px"
+    body:
+      lg: "18px"
+      md: "16px"
+      sm: "14px"
+      xs: "12px"
+    caption: "12px"
+
+  line_heights:
+    tight: 1.2
+    snug: 1.375
+    normal: 1.5
+    relaxed: 1.625
+    loose: 2
+
+  letter_spacing:
+    tighter: "-0.05em"
+    tight: "-0.025em"
+    normal: "0"
+    wide: "0.025em"
+    wider: "0.05em"
+    widest: "0.1em"
+
+# Spacing Tokens
+spacing:
+  base: "4px"
+  scale:
+    0: "0"
+    1: "4px"
+    2: "8px"
+    3: "12px"
+    4: "16px"
+    5: "20px"
+    6: "24px"
+    8: "32px"
+    10: "40px"
+    12: "48px"
+    16: "64px"
+    20: "80px"
+    24: "96px"
+
+# Border Radius
+radius:
+  none: "0"
+  sm: "4px"
+  md: "8px"
+  lg: "12px"
+  xl: "16px"
+  2xl: "24px"
+  full: "9999px"
+
+# Shadows
+shadows:
+  sm: "0 1px 2px rgba(0, 0, 0, 0.05)"
+  md: "0 4px 6px rgba(0, 0, 0, 0.1)"
+  lg: "0 10px 15px rgba(0, 0, 0, 0.1)"
+  xl: "0 20px 25px rgba(0, 0, 0, 0.15)"
+  inner: "inset 0 2px 4px rgba(0, 0, 0, 0.05)"
+  none: "none"
+
+# Transitions
+transitions:
+  fast: "150ms ease"
+  normal: "200ms ease"
+  slow: "300ms ease"
+  properties:
+    default: "all"
+    colors: "color, background-color, border-color"
+    transform: "transform"
+    opacity: "opacity"
+
+# Z-Index Scale
+z_index:
+  dropdown: 1000
+  sticky: 1020
+  fixed: 1030
+  modal_backdrop: 1040
+  modal: 1050
+  popover: 1060
+  tooltip: 1070
+
+# Breakpoints
+breakpoints:
+  sm: "640px"
+  md: "768px"
+  lg: "1024px"
+  xl: "1280px"
+  2xl: "1536px"
+
+# Grid
+grid:
+  columns: 12
+  gutter:
+    mobile: "16px"
+    tablet: "24px"
+    desktop: "32px"
+  max_width: "1280px"
+
+# Component Tokens
+components:
+  button:
+    height:
+      sm: "32px"
+      md: "40px"
+      lg: "48px"
+    padding:
+      sm: "0 12px"
+      md: "0 16px"
+      lg: "0 24px"
+    font_size:
+      sm: "14px"
+      md: "16px"
+      lg: "18px"
+    border_radius: "8px"
+
+  input:
+    height: "40px"
+    padding: "0 12px"
+    border_radius: "8px"
+    border_color: "#D1D5DB"
+    focus_ring: "0 0 0 2px rgba(37, 99, 235, 0.2)"
+
+  card:
+    padding: "24px"
+    border_radius: "12px"
+    shadow: "0 4px 6px rgba(0, 0, 0, 0.1)"

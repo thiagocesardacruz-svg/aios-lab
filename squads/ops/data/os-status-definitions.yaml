@@ -1,0 +1,72 @@
+# OS Status Definitions
+#
+# Meta:
+#   id: os-status-definitions
+#   squad: ops
+#   consumed_by: [ops-manager, track-os-status, validate-os, create-os]
+#   token_estimate: 280
+#   last_updated: 2026-02-11
+
+statuses:
+  - id: draft
+    label: Draft
+    description: OS created but not yet submitted
+    allowed_transitions: [submitted, cancelled]
+    requires_assignee: false
+
+  - id: submitted
+    label: Submitted
+    description: OS submitted for routing
+    allowed_transitions: [assigned, rejected]
+    requires_assignee: false
+
+  - id: assigned
+    label: Assigned
+    description: OS assigned to agent/squad
+    allowed_transitions: [in-progress, blocked, reassigned]
+    requires_assignee: true
+
+  - id: in-progress
+    label: In Progress
+    description: Active work being done
+    allowed_transitions: [review, blocked, completed]
+    requires_assignee: true
+
+  - id: blocked
+    label: Blocked
+    description: Waiting on dependency or input
+    allowed_transitions: [in-progress, escalated, cancelled]
+    requires_assignee: true
+    requires_blocker_reason: true
+
+  - id: review
+    label: In Review
+    description: Awaiting QA or approval
+    allowed_transitions: [completed, in-progress]
+    requires_assignee: true
+
+  - id: completed
+    label: Completed
+    description: Work done and accepted
+    allowed_transitions: [archived]
+    requires_assignee: true
+    is_terminal: false
+
+  - id: archived
+    label: Archived
+    description: OS closed and archived
+    allowed_transitions: []
+    is_terminal: true
+
+  - id: cancelled
+    label: Cancelled
+    description: OS cancelled before completion
+    allowed_transitions: []
+    is_terminal: true
+    requires_cancellation_reason: true
+
+  - id: escalated
+    label: Escalated
+    description: Escalated to higher authority
+    allowed_transitions: [assigned, in-progress, cancelled]
+    requires_assignee: true

@@ -1,107 +1,301 @@
+# Project Management ClickUp Squad
+# Travel Tech Digital AIOS
+# Version: 2.1.0
+
 name: project-management-clickup
-version: 2.0.0
-description: "ClickUp-based project management and operations specialists"
-
-squad_type: hybrid
-domain: project-management
-
-author: rafaelscosta
-license: MIT
+version: "2.1.0"
+description: "Squad especialista em gestão de projetos com domínio avançado do ClickUp, combinando GTD, PARA e metodologias Ágeis para infoprodutos e SaaS."
 
 aios:
   minVersion: "2.1.0"
   type: squad
+  domain: project-management
+
+config:
+  slashPrefix: "pm"
+  entry_point: "tasks/diagnose-process.md"
+  squad_type: "hybrid"
+
+lead:
+  agent: "pm-orchestrator"
+  role: "PM Orchestrator"
+
+agents:
+  # Orchestrator
+  - id: "pm-orchestrator"
+    file: "agents/pm-orchestrator.md"
+    role: "Ponto de entrada, roteia demandas para especialistas"
+    tier: 0
+
+  # Tier 0 - Diagnóstico
+  - id: "process-diagnostician"
+    file: "agents/process-diagnostician.md"
+    role: "Mapeia e documenta processos não formalizados"
+    tier: 0
+
+  # Tier 1 - Arquitetura
+  - id: "clickup-architect"
+    file: "agents/clickup-architect.md"
+    role: "Estrutura workspaces, folders, views, custom fields"
+    tier: 1
+  - id: "automation-engineer"
+    file: "agents/automation-engineer.md"
+    role: "Cria automações, time tracking, dependencies"
+    tier: 1
+
+  # Tier 2 - Operações
+  - id: "launch-operations-manager"
+    file: "agents/launch-operations-manager.md"
+    role: "Gerencia operações de lançamentos"
+    tier: 2
+  - id: "content-operations-manager"
+    file: "agents/content-operations-manager.md"
+    role: "Pipeline de produção de conteúdo"
+    tier: 2
+  - id: "crm-builder"
+    file: "agents/crm-builder.md"
+    role: "Estrutura CRM e pipeline de vendas"
+    tier: 2
+
+  # Tier 3 - Especialistas
+  - id: "saas-operations-specialist"
+    file: "agents/saas-operations-specialist.md"
+    role: "Roadmap, sprints, bugs, releases"
+    tier: 3
+  - id: "support-operations-specialist"
+    file: "agents/support-operations-specialist.md"
+    role: "Sistema de tickets e atendimento"
+    tier: 3
 
 components:
   agents:
-    - pm-orchestrator                  # Project management orchestrator
-    - clickup-architect                # ClickUp workspace design
-    - automation-engineer              # Automation creation
-    - process-diagnostician            # Process analysis
-    - crm-builder                      # CRM setup
-    - content-operations-manager       # Content ops
-    - launch-operations-manager        # Launch ops
-    - saas-operations-specialist       # SaaS operations
-    - support-operations-specialist    # Support operations
-
+    - "pm-orchestrator.md"
+    - "clickup-architect.md"
+    - "automation-engineer.md"
+    - "process-diagnostician.md"
+    - "crm-builder.md"
+    - "content-operations-manager.md"
+    - "launch-operations-manager.md"
+    - "saas-operations-specialist.md"
+    - "support-operations-specialist.md"
   tasks:
-    - setup-clickup-workspace    # Workspace setup
-    - create-automations         # Create automations
-    - diagnose-process           # Process diagnostics
-    - configure-crm              # CRM configuration
-    - setup-content-pipeline     # Content pipeline
-    - setup-launch-workspace     # Launch workspace
-    - setup-saas-workspace       # SaaS workspace setup
-    - setup-support-system       # Support system setup
-    - weekly-review              # Weekly GTD review
-
+    - "setup-clickup-workspace.md"
+    - "create-automations.md"
+    - "diagnose-process.md"
+    - "configure-crm.md"
+    - "setup-content-pipeline.md"
+    - "setup-launch-workspace.md"
+    - "setup-saas-workspace.md"
+    - "setup-support-system.md"
+    - "weekly-review.md"
   workflows:
-    - wf-clickup-advanced-setup
-    - wf-process-documentation
-    - wf-crm-implementation
-    - wf-content-operations
-    - wf-launch-operations
-    - wf-support-setup
-
+    - "wf-clickup-advanced-setup.yaml"
+    - "wf-process-documentation.yaml"
+    - "wf-crm-implementation.yaml"
+    - "wf-content-operations.yaml"
+    - "wf-launch-operations.yaml"
+    - "wf-support-setup.yaml"
   checklists:
-    - clickup-workspace-checklist
-    - crm-implementation-checklist
-    - process-documentation-checklist
-    - launch-readiness-checklist
-    - content-production-checklist
-    - release-checklist
-    - ticket-resolution-checklist
-
+    - "clickup-workspace-checklist.md"
+    - "crm-implementation-checklist.md"
+    - "process-documentation-checklist.md"
+    - "launch-readiness-checklist.md"
+    - "content-production-checklist.md"
+    - "release-checklist.md"
+    - "ticket-resolution-checklist.md"
   templates:
-    - template-project-brief
-    - template-task-complete
-    - template-crm-deal
-    - template-content-calendar
-    - template-launch-tracker
-    - template-space-structure
-    - response-templates
-    - automation-documentation
-    - user-story-template
-
-  tools: []
-
+    - "template-project-brief.md"
+    - "template-task-complete.md"
+    - "template-crm-deal.md"
+    - "template-content-calendar.md"
+    - "template-launch-tracker.md"
+    - "template-space-structure.yaml"
+    - "response-templates.md"
+    - "automation-documentation.md"
+    - "user-story-template.md"
+  knowledge:
+    - "README.md"
+    - "CLICKUP-BEST-PRACTICES.md"
+    - "AUTOMATION-PATTERNS.md"
+    - "N8N-WORKFLOW-API-RULES.md"
+  data:
+    - "project-management-clickup-kb.md"
+    - "clickup-workspace-ids.json"
+    - "custom-fields-library.yaml"
+    - "automation-patterns-library.yaml"
+    - "launch-models-library.yaml"
+    - "lead-scoring-rules.yaml"
+    - "process-documentation-template.md"
+    - "knowledge-base-articles.md"
+    - "crm-natalia-tanaka-config.md"
+    - "crm-clickup-ids.json"
+    - "crm-webhooks.json"
+    - "n8n-workflows.json"
+    - "n8n-workflows-smart-routing.json"
+    - "mission-control-n8n-workflows.json"
+    - "mission-control-ids.json"
+    - "mission-control-automations-guide.md"
+    - "whatsapp-groups-mapping.json"
+    - "notification-routing-strategy.md"
   scripts:
-    - setup-crm-clickup.cjs
-    - webhook-server.cjs
-    - setup-crm-webhooks.cjs
-    - setup-n8n-workflows.cjs
-    - test-crm-lead.cjs
-    - check-n8n-executions.cjs
-    - setup-mission-control.cjs
-    - setup-mission-control-views.cjs
-    - setup-mission-control-n8n.cjs
-    - notification-router.cjs
-    - deploy-smart-routing.cjs
-    - implement-smart-routing-n8n.mjs
-    - test-mission-control-v2.sh
-    - mission-control-fix-n8n.sh
-
-capabilities:
-  - ClickUp workspace design
-  - Automation creation
-  - Process documentation
-  - CRM implementation
-  - Content operations
-  - Launch management
-  - Support ticketing
-
-clickup_features:
-  - Spaces and folders
-  - Custom fields
-  - Automations
-  - Dashboards
-  - Time tracking
-  - Forms
-  - Integrations
+    - "setup-crm-clickup.cjs"
+    - "webhook-server.cjs"
+    - "setup-crm-webhooks.cjs"
+    - "setup-n8n-workflows.cjs"
+    - "test-crm-lead.cjs"
+    - "check-n8n-executions.cjs"
+    - "setup-mission-control.cjs"
+    - "setup-mission-control-views.cjs"
+    - "setup-mission-control-n8n.cjs"
+    - "notification-router.cjs"
+    - "deploy-smart-routing.cjs"
+    - "implement-smart-routing-n8n.mjs"
+    - "test-mission-control-v2.sh"
+    - "mission-control-fix-n8n.sh"
+  docs:
+    - "setup-crm-clickup-passo-a-passo.md"
+    - "automacoes-crm-guia.md"
+    - "n8n-workflows-crm.md"
 
 tags:
-  - project-management
-  - clickup
-  - operations
-  - automation
-  - crm
+  - "project-management"
+  - "clickup"
+  - "operations"
+  - "automation"
+  - "crm"
+  - "gtd"
+  - "para"
+  - "agile"
+  - "n8n"
+
+commands:
+  # Geral
+  - name: "status"
+    description: "Visão geral de projetos"
+    visibility: "full"
+  - name: "weekly-review"
+    task: "tasks/weekly-review.md"
+    description: "Review semanal GTD"
+    visibility: "full"
+
+  # Processos
+  - name: "diagnose"
+    task: "tasks/diagnose-process.md"
+    description: "Diagnosticar processo não documentado"
+    visibility: "full"
+  - name: "setup-clickup"
+    task: "tasks/setup-clickup-workspace.md"
+    description: "Configurar ClickUp para uma área"
+    visibility: "full"
+  - name: "automate"
+    task: "tasks/create-automations.md"
+    description: "Criar automação"
+    visibility: "full"
+
+  # Lançamentos
+  - name: "launch-setup"
+    task: "tasks/setup-launch-workspace.md"
+    description: "Preparar workspace de lançamento"
+    visibility: "full"
+  - name: "launch-ops"
+    workflow: "workflows/wf-launch-operations.yaml"
+    description: "Workflow completo de lançamento"
+    visibility: "full"
+
+  # Conteúdo
+  - name: "content-ops"
+    task: "tasks/setup-content-pipeline.md"
+    description: "Estruturar operações de conteúdo"
+    visibility: "full"
+
+  # CRM
+  - name: "crm"
+    task: "tasks/configure-crm.md"
+    description: "Configurar/gerenciar CRM"
+    visibility: "full"
+  - name: "crm-workflow"
+    workflow: "workflows/wf-crm-implementation.yaml"
+    description: "Workflow completo de CRM"
+    visibility: "full"
+
+  # SaaS
+  - name: "saas-ops"
+    task: "tasks/setup-saas-workspace.md"
+    description: "Operações do produto SaaS"
+    visibility: "full"
+
+  # Suporte
+  - name: "support"
+    task: "tasks/setup-support-system.md"
+    description: "Estruturar sistema de suporte"
+    visibility: "full"
+  - name: "support-workflow"
+    workflow: "workflows/wf-support-setup.yaml"
+    description: "Workflow completo de suporte"
+    visibility: "full"
+
+interface:
+  inputs:
+    - "Descrição do processo/área"
+    - "Contexto do negócio (infoproduto/SaaS)"
+    - "Modelo de lançamento (PLF, Perpétuo, High Ticket)"
+    - "Integrações necessárias (n8n, webhooks)"
+  outputs:
+    - "Workspace ClickUp configurado"
+    - "Automações implementadas"
+    - "Documentação de processos"
+    - "Scripts de setup"
+    - "Dashboards e views"
+
+quality:
+  checklist: "checklists/clickup-workspace-checklist.md"
+  metrics:
+    - "processos_documentados"
+    - "automacoes_ativas"
+    - "tasks_por_sprint"
+    - "csat_suporte"
+    - "conversao_pipeline"
+
+capabilities:
+  - "ClickUp workspace design"
+  - "Automation creation (ClickUp + n8n)"
+  - "Process documentation"
+  - "CRM implementation"
+  - "Content operations"
+  - "Launch management (PLF, Perpétuo, High Ticket)"
+  - "Support ticketing"
+  - "SaaS operations (Roadmap, Sprints, Bugs)"
+
+clickup_features:
+  - "Spaces and folders"
+  - "Custom fields"
+  - "Automations"
+  - "Dashboards"
+  - "Time tracking"
+  - "Forms"
+  - "Integrations"
+  - "Goals"
+  - "Docs"
+
+methodologies:
+  - name: "GTD"
+    description: "Getting Things Done - Capture, Clarify, Organize, Reflect, Engage"
+  - name: "PARA"
+    description: "Projects, Areas, Resources, Archives"
+  - name: "Scrum"
+    description: "Sprints de 2 semanas para desenvolvimento"
+  - name: "Kanban"
+    description: "Fluxo contínuo para operações"
+  - name: "PLF"
+    description: "Product Launch Formula para lançamentos"
+
+mcp_tools:
+  - name: "clickup"
+    tools: 12
+    description: "CRUD de tasks, comments, time entries, docs"
+  - name: "mission-control"
+    tools: 6
+    description: "Webhook automations, routing rules"
+
+author: "rafaelscosta"
+license: "MIT"

@@ -1,0 +1,73 @@
+id: review-content
+name: Review Content
+squad: qa
+version: "1.0"
+description: Comprehensive content review for quality, brand compliance, and functionality.
+
+trigger:
+  type: manual
+  source: marketing-lead
+  condition: Content ready for review before publication
+
+participants:
+  - agent: content-reviewer
+    role: Executes all content checks
+  - agent: qa-lead
+    role: Reviews findings and makes decision
+
+steps:
+  - id: step-01
+    name: Review content quality
+    agent: content-reviewer
+    task: review-content-quality
+    input: content, content_brief
+    output: quality_review
+    depends_on: []
+    on_fail: retry
+
+  - id: step-02
+    name: Check brand compliance
+    agent: content-reviewer
+    task: check-brand-compliance
+    input: content, brand_guidelines
+    output: brand_compliance
+    depends_on: []
+    on_fail: retry
+
+  - id: step-03
+    name: Verify links and forms
+    agent: content-reviewer
+    task: verify-links-and-forms
+    input: content_url
+    output: link_report
+    depends_on: []
+    on_fail: retry
+
+  - id: step-04
+    name: Run content review checklist
+    agent: content-reviewer
+    task: validate-deliverable
+    input: content-review checklist
+    output: checklist_result
+    depends_on: [step-01, step-02, step-03]
+    on_fail: abort
+
+  - id: step-05
+    name: Generate QA report
+    agent: qa-lead
+    task: validate-deliverable
+    input: all findings, qa-report-tmpl
+    output: final_qa_report
+    depends_on: [step-04]
+    on_fail: retry
+
+completion:
+  condition: Content review checklist passes
+  output: QA report with approval or rejection
+  notify: marketing-lead
+
+constraints:
+  max_steps: 6
+  timeout_minutes: 30
+  retry_policy: 2
+  cost_ceiling: none

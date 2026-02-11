@@ -1,0 +1,204 @@
+# Translation Style Guides
+# Squad: translator
+# Version: 1.0.0
+
+metadata:
+  version: "1.0.0"
+  last_updated: "2026-02-11"
+  maintainer: "translator-squad"
+
+# Content Type Guidelines
+content_types:
+  marketing:
+    description: "Promotional and persuasive content"
+    tone: "Engaging, persuasive, action-oriented"
+    guidelines:
+      - "Preserve emotional impact"
+      - "Adapt CTAs for cultural effectiveness"
+      - "Maintain brand voice"
+      - "Use active voice"
+      - "Keep sentences short and punchy"
+    priority: "Impact over literal accuracy"
+    example:
+      EN: "Transform your business today!"
+      PT-BR: "Transforme seu negocio hoje!"
+      ES: "Transforma tu negocio hoy!"
+
+  technical:
+    description: "Documentation, guides, specifications"
+    tone: "Clear, precise, instructional"
+    guidelines:
+      - "Accuracy is paramount"
+      - "Use consistent terminology"
+      - "Preserve technical terms (with translation in parentheses if needed)"
+      - "Follow industry conventions"
+      - "Keep formatting intact"
+    priority: "Accuracy over style"
+    example:
+      EN: "Click the Settings icon to configure your API key."
+      PT-BR: "Clique no icone Configuracoes para configurar sua chave de API."
+      ES: "Haz clic en el icono Configuracion para configurar tu clave de API."
+
+  legal:
+    description: "Terms, contracts, compliance"
+    tone: "Formal, precise, unambiguous"
+    guidelines:
+      - "Never paraphrase legal terms"
+      - "Maintain exact meaning"
+      - "Use formal register"
+      - "Flag ambiguities for review"
+      - "Consult legal glossary"
+    priority: "Legal accuracy, no creative interpretation"
+    example:
+      EN: "By using this service, you agree to our Terms of Service."
+      PT-BR: "Ao utilizar este servico, voce concorda com nossos Termos de Servico."
+      ES: "Al utilizar este servicio, usted acepta nuestros Terminos de Servicio."
+
+  ui:
+    description: "Interface strings, buttons, labels"
+    tone: "Concise, clear, action-oriented"
+    guidelines:
+      - "Keep it short"
+      - "Follow platform conventions"
+      - "Preserve placeholders exactly"
+      - "Consider character limits"
+      - "Use imperative mood for actions"
+    priority: "Clarity and brevity"
+    example:
+      EN: "Save changes"
+      PT-BR: "Salvar"
+      ES: "Guardar"
+
+  support:
+    description: "Help articles, FAQs, customer communication"
+    tone: "Friendly, helpful, empathetic"
+    guidelines:
+      - "Use conversational tone"
+      - "Be empathetic"
+      - "Provide clear instructions"
+      - "Anticipate questions"
+      - "End with clear next steps"
+    priority: "Helpfulness and clarity"
+    example:
+      EN: "We're sorry you're having trouble. Let's fix this together."
+      PT-BR: "Sentimos muito pelo problema. Vamos resolver isso juntos."
+      ES: "Lamentamos el inconveniente. Vamos a resolverlo juntos."
+
+# Language-Specific Guidelines
+languages:
+  PT-BR:
+    name: "Portuguese (Brazil)"
+    formality:
+      formal: "Use 'voce' + formal vocabulary"
+      informal: "Use 'voce' + casual contractions"
+    common_mistakes:
+      - issue: "Using Portugal Portuguese"
+        correct: "Use Brazilian Portuguese exclusively"
+      - issue: "Translating 'you' as 'tu'"
+        correct: "Use 'voce' in Brazilian Portuguese"
+      - issue: "Keeping English terms unnecessarily"
+        correct: "Translate when good Portuguese exists"
+    punctuation:
+      - "Quotation marks: 'aspas simples' or \"aspas duplas\""
+      - "Decimal: 1.000,00 (comma for decimals)"
+
+  ES-LATAM:
+    name: "Spanish (Latin America)"
+    formality:
+      formal: "Use 'usted'"
+      informal: "Use 'tu' (never vosotros)"
+    common_mistakes:
+      - issue: "Using Spain Spanish"
+        correct: "Use neutral Latin American Spanish"
+      - issue: "Using vosotros"
+        correct: "Use ustedes for plural you"
+      - issue: "Regional slang"
+        correct: "Use neutral vocabulary"
+    punctuation:
+      - "Opening punctuation: ¿ and ¡"
+      - "Quotation marks: 'comillas simples' or \"comillas dobles\""
+
+  FR:
+    name: "French"
+    formality:
+      formal: "Use 'vous'"
+      informal: "Use 'tu' (only when explicitly requested)"
+    common_mistakes:
+      - issue: "Using English terms"
+        correct: "French strongly prefers French terms"
+      - issue: "Wrong formality"
+        correct: "Default to 'vous' in business contexts"
+    punctuation:
+      - "Space before : ; ! ?"
+      - "Quotation marks: guillemets"
+
+  DE:
+    name: "German"
+    formality:
+      formal: "Use 'Sie'"
+      informal: "Use 'du' (only for young/casual brands)"
+    common_mistakes:
+      - issue: "Wrong formality"
+        correct: "Default to 'Sie' in business contexts"
+      - issue: "Compound word errors"
+        correct: "German creates compound words (Zusammengesetzte Worter)"
+    punctuation:
+      - "Quotation marks: 'deutsche Anfuhrungszeichen'"
+      - "Decimal: 1.000,00"
+
+# Quality Standards
+quality_standards:
+  accuracy:
+    description: "Meaning is correctly conveyed"
+    weight: 30
+    criteria:
+      - "No omissions"
+      - "No additions"
+      - "Correct meaning"
+      - "Numbers/data correct"
+
+  fluency:
+    description: "Natural in target language"
+    weight: 25
+    criteria:
+      - "Grammatically correct"
+      - "Natural word order"
+      - "Appropriate register"
+      - "No awkward phrasing"
+
+  terminology:
+    description: "Consistent term usage"
+    weight: 20
+    criteria:
+      - "Glossary terms used"
+      - "Technical terms correct"
+      - "Brand terms consistent"
+
+  style:
+    description: "Matches content type requirements"
+    weight: 15
+    criteria:
+      - "Appropriate tone"
+      - "Correct formality"
+      - "Brand voice maintained"
+
+  cultural:
+    description: "Culturally appropriate"
+    weight: 10
+    criteria:
+      - "No offensive content"
+      - "Idioms adapted"
+      - "Local conventions followed"
+
+# Review Process
+review_process:
+  levels:
+    light:
+      when: "Low-risk content, experienced translator"
+      steps: ["Self-review", "Spot check"]
+    standard:
+      when: "Most content"
+      steps: ["Self-review", "Peer review", "Final check"]
+    thorough:
+      when: "High-risk, legal, or public-facing"
+      steps: ["Self-review", "Peer review", "Native review", "Back-translation", "Final approval"]

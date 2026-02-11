@@ -1,10 +1,10 @@
 # Translator Squad
 # Travel Tech Digital AIOS
-# Version: 1.0.0
+# Version: 1.1.0
 
 name: translator
-version: "1.0.0"
-description: "Translation and localization squad for multilingual products. Handles translation, cultural adaptation, and terminology consistency."
+version: "1.1.0"
+description: "Translation and localization squad for multilingual products. Handles translation, cultural adaptation, and terminology consistency across EN, PT-BR, ES, FR, DE, IT, AR."
 
 aios:
   minVersion: "2.1.0"
@@ -13,53 +13,156 @@ aios:
 
 config:
   slashPrefix: "translate"
-  entry_point: null
+  entry_point: "agents/translation-lead.md"
+  squad_type: "service"
+  default_language: "EN"
 
 lead:
   agent: "translation-lead"
   role: "Translation Lead"
+  name: "Lingua"
 
 agents:
   - id: "translation-lead"
     file: "agents/translation-lead.md"
-    role: "Coordination, glossaries, standards"
+    role: "Coordination, glossaries, quality standards"
+    tier: 0
   - id: "translators"
     file: "agents/translators.md"
-    role: "EN, PT-BR, ES, FR, DE, IT, AR"
+    role: "Language specialists (EN, PT-BR, ES, FR, DE, IT, AR)"
+    tier: 1
   - id: "localization-specialist"
     file: "agents/localization-specialist.md"
     role: "Cultural adaptation, market fit"
+    tier: 2
 
 components:
   agents:
     - "translation-lead.md"
     - "translators.md"
     - "localization-specialist.md"
+  tasks:
+    - "translate-document.md"
+    - "review-translation.md"
+    - "create-glossary.md"
+    - "localize-ui.md"
   workflows:
     - "localize-content.yaml"
     - "translate-batch.yaml"
     - "review.yaml"
     - "glossary-update.yaml"
+  templates:
+    - "translation-brief-tmpl.md"
+    - "glossary-entry-tmpl.md"
+    - "review-report-tmpl.md"
+  checklists:
+    - "translation-quality-checklist.md"
+    - "localization-checklist.md"
+  data:
+    - "glossary-pt-br.yaml"
+    - "glossary-es.yaml"
+    - "style-guides.yaml"
 
 tags:
   - "translation"
   - "localization"
   - "multilingual"
+  - "i18n"
+  - "l10n"
+  - "globalization"
 
 commands:
-  - name: "localize-content"
+  # Content Localization
+  - name: "localize"
     workflow: "workflows/localize-content.yaml"
-    description: "Translate and localize content"
+    description: "Full localization pipeline (translate + adapt)"
     visibility: "full"
-  - name: "translate-batch"
+
+  # Translation
+  - name: "translate"
+    task: "tasks/translate-document.md"
+    description: "Translate document or content"
+    visibility: "full"
+  - name: "batch"
     workflow: "workflows/translate-batch.yaml"
-    description: "Batch translation"
+    description: "Batch translation for multiple items"
     visibility: "full"
+  - name: "ui"
+    task: "tasks/localize-ui.md"
+    description: "Localize UI strings"
+    visibility: "full"
+
+  # Quality
   - name: "review"
     workflow: "workflows/review.yaml"
     description: "Review translation quality"
     visibility: "full"
+
+  # Glossary
+  - name: "glossary"
+    task: "tasks/create-glossary.md"
+    description: "Create terminology glossary"
+    visibility: "full"
   - name: "glossary-update"
     workflow: "workflows/glossary-update.yaml"
-    description: "Update terminology glossary"
+    description: "Update existing glossary"
     visibility: "quick"
+
+interface:
+  inputs:
+    - "Source content (text, file, or strings)"
+    - "Source language"
+    - "Target language(s)"
+    - "Content type (marketing, technical, legal, UI)"
+    - "Glossary (optional)"
+    - "Style guide (optional)"
+  outputs:
+    - "Translated content"
+    - "Localization notes"
+    - "Quality report"
+    - "Glossary updates"
+
+quality:
+  checklist: "checklists/translation-quality-checklist.md"
+  metrics:
+    - "accuracy_score"
+    - "fluency_score"
+    - "terminology_consistency"
+    - "cultural_appropriateness"
+
+languages:
+  primary:
+    - code: "EN"
+      name: "English"
+      role: "Source language"
+    - code: "PT-BR"
+      name: "Portuguese (Brazil)"
+      role: "Primary target"
+    - code: "ES"
+      name: "Spanish (Latin America)"
+      role: "Primary target"
+  secondary:
+    - code: "FR"
+      name: "French"
+    - code: "DE"
+      name: "German"
+    - code: "IT"
+      name: "Italian"
+    - code: "AR"
+      name: "Arabic"
+      notes: "RTL support required"
+
+translation_principles:
+  - name: "Meaning Over Words"
+    description: "Translate concepts, not literal words"
+  - name: "Tone Preservation"
+    description: "Maintain the emotional impact"
+  - name: "Cultural Adaptation"
+    description: "Adapt references for target culture"
+  - name: "Terminology Consistency"
+    description: "Use glossary terms consistently"
+  - name: "Native Quality"
+    description: "Should feel written by native speaker"
+
+author: "Travel Tech Digital"
+license: "MIT"

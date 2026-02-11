@@ -1,0 +1,338 @@
+# Hotel Marketing Squad
+# Travel Tech Digital AIOS
+# Version: 1.1.0
+
+name: hotel-mkt
+version: "1.1.0"
+description: "Squad especializado em marketing digital para hotéis e pousadas do Brasil, focado no público classe AB. Opera com DNA triplo: Hormozi (conversão) + Conley (hospitalidade) + Schrager (desejo visual)."
+
+aios:
+  minVersion: "2.1.0"
+  type: squad
+  domain: hotel-marketing
+
+config:
+  slashPrefix: "hotel"
+  entry_point: "agents/hotel-mkt-chief.md"
+  squad_type: "vertical"
+  default_language: "pt-BR"
+
+lead:
+  agent: "hotel-mkt-chief"
+  role: "Hotel Marketing Chief"
+
+agents:
+  # Tier 0 - Orchestrator
+  - id: "hotel-mkt-chief"
+    file: "agents/hotel-mkt-chief.md"
+    role: "Orquestra todo o squad, diagnostica, roteia demandas"
+    tier: 0
+
+  # Tier 1 - Estratégico
+  - id: "hotel-trend-hunter"
+    file: "agents/hotel-trend-hunter.md"
+    role: "Pesquisa tendências, buscas, sazonalidade, destinos"
+    tier: 1
+  - id: "hotel-offer-architect"
+    file: "agents/hotel-offer-architect.md"
+    role: "Engenheiro de ofertas e pacotes irresistíveis (Grand Slam)"
+    tier: 1
+  - id: "hotel-guest-strategist"
+    file: "agents/hotel-guest-strategist.md"
+    role: "Estrategista da jornada emocional do hóspede"
+    tier: 1
+
+  # Tier 2 - Execução
+  - id: "hotel-copywriter"
+    file: "agents/hotel-copywriter.md"
+    role: "Copy emocional para todos os canais"
+    tier: 2
+  - id: "hotel-social-creator"
+    file: "agents/hotel-social-creator.md"
+    role: "Conteúdo Instagram, Reels, TikTok, blog"
+    tier: 2
+  - id: "hotel-ads-specialist"
+    file: "agents/hotel-ads-specialist.md"
+    role: "Campanhas Meta, Google, Bing, TikTok Ads"
+    tier: 2
+  - id: "hotel-email-maestro"
+    file: "agents/hotel-email-maestro.md"
+    role: "Sequências de email lifecycle completo"
+    tier: 2
+  - id: "hotel-seo-architect"
+    file: "agents/hotel-seo-architect.md"
+    role: "SEO para competir com OTAs na busca"
+    tier: 2
+  - id: "hotel-visual-producer"
+    file: "agents/hotel-visual-producer.md"
+    role: "Produção visual com Nano Banana e DALL-E"
+    tier: 2
+
+  # Tier 3 - Especialistas
+  - id: "hotel-reputation-guardian"
+    file: "agents/hotel-reputation-guardian.md"
+    role: "Gerencia TripAdvisor, Google Reviews, reputação online"
+    tier: 3
+  - id: "hotel-ugc-curator"
+    file: "agents/hotel-ugc-curator.md"
+    role: "Incentiva e curadoria de conteúdo de hóspedes"
+    tier: 3
+  - id: "hotel-direct-booking"
+    file: "agents/hotel-direct-booking.md"
+    role: "Conversão direta, anti-OTA, WhatsApp, Pix"
+    tier: 3
+  - id: "hotel-pr-advertorial"
+    file: "agents/hotel-pr-advertorial.md"
+    role: "Matérias, advertoriais, native ads em sites de turismo"
+    tier: 3
+
+components:
+  agents:
+    - "hotel-mkt-chief.md"
+    - "hotel-trend-hunter.md"
+    - "hotel-offer-architect.md"
+    - "hotel-guest-strategist.md"
+    - "hotel-copywriter.md"
+    - "hotel-social-creator.md"
+    - "hotel-ads-specialist.md"
+    - "hotel-email-maestro.md"
+    - "hotel-seo-architect.md"
+    - "hotel-visual-producer.md"
+    - "hotel-reputation-guardian.md"
+    - "hotel-ugc-curator.md"
+    - "hotel-direct-booking.md"
+    - "hotel-pr-advertorial.md"
+  workflows:
+    - "wf-seasonal-campaign.yaml"
+    - "wf-direct-booking-funnel.yaml"
+    - "wf-content-machine.yaml"
+    - "wf-email-lifecycle.yaml"
+    - "wf-paid-ads-scale.yaml"
+    - "wf-reputation-engine.yaml"
+    - "wf-advertorial-seeding.yaml"
+    - "wf-visual-production.yaml"
+  data:
+    # Mind DNAs
+    - "minds/hormozi-voice-dna.yaml"
+    - "minds/hormozi-thinking-dna.yaml"
+    - "minds/hormozi-ads_dna.yaml"
+    - "minds/hormozi-content_dna.yaml"
+    - "minds/hormozi-copy_dna.yaml"
+    - "minds/hormozi-hooks_dna.yaml"
+    - "minds/hormozi-leads_dna.yaml"
+    - "minds/hormozi-models_dna.yaml"
+    - "minds/hormozi-offers_dna.yaml"
+    - "minds/hormozi-pricing_dna.yaml"
+    - "minds/hormozi-retention_dna.yaml"
+    - "minds/hormozi-launch_dna.yaml"
+    - "minds/hormozi-advisor_dna.yaml"
+    - "minds/hormozi-audit_dna.yaml"
+    - "minds/hormozi-closer_dna.yaml"
+    - "minds/hormozi-scale_dna.yaml"
+    - "minds/hormozi-workshop_dna.yaml"
+    - "minds/conley-hospitality-dna.yaml"
+    - "minds/schrager-theater-dna.yaml"
+    # Hormozi Source Library
+    - "hormozi-source/agents/"
+    - "hormozi-source/tasks/"
+    - "hormozi-source/templates/"
+    - "hormozi-source/checklists/"
+    - "hormozi-source/docs/frameworks/"
+
+tags:
+  - "hotel-marketing"
+  - "hospitality"
+  - "tourism"
+  - "direct-booking"
+  - "reputation-management"
+  - "content-marketing"
+  - "paid-ads"
+  - "email-lifecycle"
+  - "seo"
+  - "hormozi"
+  - "conley"
+  - "schrager"
+
+commands:
+  # Campanhas
+  - name: "campaign"
+    description: "Inicia campanha sazonal completa"
+    workflow: "workflows/wf-seasonal-campaign.yaml"
+    visibility: "full"
+
+  # Tendências
+  - name: "trend-report"
+    description: "Gera relatório de tendências"
+    agent: "hotel-trend-hunter"
+    visibility: "full"
+
+  # Ofertas
+  - name: "create-offer"
+    description: "Cria pacote/oferta Grand Slam"
+    agent: "hotel-offer-architect"
+    visibility: "full"
+
+  # Email
+  - name: "email-sequence"
+    description: "Cria sequência de emails lifecycle"
+    workflow: "workflows/wf-email-lifecycle.yaml"
+    visibility: "full"
+
+  # Ads
+  - name: "create-ads"
+    description: "Cria set de 150+ variações de ads"
+    workflow: "workflows/wf-paid-ads-scale.yaml"
+    visibility: "full"
+
+  # SEO
+  - name: "seo-audit"
+    description: "Auditoria SEO anti-OTA completa"
+    agent: "hotel-seo-architect"
+    visibility: "full"
+
+  # Reputação
+  - name: "reputation-report"
+    description: "Relatório de reputação online"
+    workflow: "workflows/wf-reputation-engine.yaml"
+    visibility: "full"
+
+  # UGC
+  - name: "ugc-campaign"
+    description: "Programa de UGC para hóspedes"
+    agent: "hotel-ugc-curator"
+    visibility: "full"
+
+  # Reserva Direta
+  - name: "direct-booking-audit"
+    description: "Auditoria de reservas diretas"
+    workflow: "workflows/wf-direct-booking-funnel.yaml"
+    visibility: "full"
+
+  # PR/Advertorial
+  - name: "advertorial"
+    description: "Cria matéria/advertorial para sites de turismo"
+    workflow: "workflows/wf-advertorial-seeding.yaml"
+    visibility: "full"
+
+  # Conteúdo
+  - name: "content-calendar"
+    description: "Gera calendário de conteúdo multi-canal"
+    workflow: "workflows/wf-content-machine.yaml"
+    visibility: "full"
+
+  # Visual
+  - name: "visual-production"
+    description: "Pipeline de produção visual com IA"
+    workflow: "workflows/wf-visual-production.yaml"
+    visibility: "full"
+
+interface:
+  inputs:
+    - "Nome/descrição do hotel"
+    - "Público-alvo (segmento AB)"
+    - "Região/destino"
+    - "Tipo de campanha (sazonal, always-on)"
+    - "Diferencial do hotel"
+    - "Budget disponível"
+  outputs:
+    - "Campanhas completas multi-canal"
+    - "Ofertas Grand Slam estruturadas"
+    - "Sequências de email lifecycle"
+    - "Sets de 150+ variações de ads"
+    - "Calendário de conteúdo"
+    - "Relatórios de performance"
+
+quality:
+  mode: "quality"
+  agent_min_lines: 500
+  workflow_min_lines: 300
+  metrics:
+    - "direct_booking_ratio"
+    - "ltv_cac_ratio"
+    - "review_response_rate"
+    - "email_open_rate"
+    - "ad_variations_count"
+    - "content_pieces_weekly"
+    - "whatsapp_conversion_rate"
+    - "organic_traffic_growth"
+
+mind_dna:
+  primary:
+    - name: "Alex Hormozi"
+      weight: 0.50
+      contribution: "Frameworks de conversão, ofertas, ads, copy, retenção"
+      frameworks:
+        - "Grand Slam Offer"
+        - "Value Equation"
+        - "GOATed Ads (50x3x1)"
+        - "Hook-Meat-CTA"
+        - "Proof > Promise > Plan"
+        - "Core Four Lead Generation"
+        - "4 Pillars of Nurture"
+        - "LTV:CAC 3:1"
+        - "Rule of 100"
+        - "70-20-10 Testing"
+    - name: "Chip Conley"
+      weight: 0.30
+      contribution: "Alma da hospitalidade, jornada emocional, identity refreshment"
+      frameworks:
+        - "Peak Pyramid (Survival > Success > Transformation)"
+        - "Customer Transformation Pyramid"
+        - "5 Adjectives Brand Identity"
+        - "Identity Refreshment"
+        - "Psychographics Over Demographics"
+        - "H2H (Human-to-Human)"
+        - "Unrecognized Needs Discovery"
+        - "Emotional Equations"
+    - name: "Ian Schrager"
+      weight: 0.20
+      contribution: "Desejo visual, atmosfera, FOMO, hotel as theater"
+      frameworks:
+        - "Hotel as Theater"
+        - "Lobby as Marketing Engine"
+        - "Velvet Rope (FOMO Creation)"
+        - "Democratization of Luxury"
+        - "Design as Marketing Tool"
+        - "Media Multiplier Effect"
+        - "Visual Storytelling"
+
+exclusive_frameworks:
+  - name: "Emotional Value Equation"
+    formula: "Valor = (Sonho x Certeza x Identidade) / (Esforco + Tempo + Risco)"
+    sources: ["Hormozi (Value Equation)", "Conley (Identity Refreshment)"]
+
+  - name: "Theater Content Framework"
+    formula: "Conteudo = Atmosfera (Schrager) + Hook-Retain-Reward (Hormozi)"
+    description: "Capturar o SENTIMENTO + Estrutura que CONVERTE"
+
+  - name: "Direct Booking Funnel (Anti-OTA)"
+    formula: "SEO/Social > WhatsApp/AI > Qualifica > Oferta > Pix > Reserva"
+    target: "60%+ reservas diretas"
+
+  - name: "Reputation = Revenue"
+    formula: "+1 estrela TripAdvisor = +5-9% receita"
+    kpis: ["MRR 95%+", "Resposta <48h", "Review Generation"]
+
+  - name: "Guest Transformation Journey"
+    formula: "Expectativa > Desejo > Necessidade Nao-Reconhecida > EVANGELISTA"
+    source: "Conley (Customer Transformation Pyramid)"
+
+kpis:
+  direct_booking_ratio: "60%+ (vs OTA)"
+  ltv_cac_ratio: "3:1 minimo"
+  review_response_rate: "95%+"
+  email_open_rate: "25%+"
+  ad_variations_per_campaign: "150+"
+  content_pieces_per_week: "20+"
+  whatsapp_conversion_rate: "25-40%"
+  organic_traffic_growth: "20-35% em 6 meses"
+
+target_audience:
+  demographics: "Classe AB brasileira, 25-55 anos"
+  psychographics: "Viajantes que buscam experiencias, status, descanso, romance, aventura"
+  behavior: "Pesquisam no Google/Instagram, reservam via OTA ou WhatsApp, compartilham experiencias"
+
+philosophy: "Nao vendemos quartos. Vendemos sonhos, memorias e sentimentos."
+
+author: "Travel Tech Digital"
+license: "MIT"
