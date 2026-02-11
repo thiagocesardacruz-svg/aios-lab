@@ -173,6 +173,61 @@ npm test
 - Update documentation
 - Execute approved workflows
 
+## ClickUp Command Center
+
+ClickUp is the **central project management hub** for AIOS. All tasks, costs, and workflows are tracked here.
+
+### Workspace Structure
+
+| Space | Purpose |
+|-------|---------|
+| **PERSONAL** | Personal life (Finance, Goals, Health, Leisure, Courses, Love) |
+| **WORK** | Professional projects (Travel Tech Digital, Tripwix) |
+| **AI OPS** | AI agent operations (Inbox, In Progress, Awaiting Human, Completed) |
+| **RESOURCES** | Knowledge Base, Templates, Documentation, Archived |
+
+### Command Center Scripts
+
+Located in `squads/ops/scripts/`:
+
+| Script | Purpose | Usage |
+|--------|---------|-------|
+| `clickup-sync.mjs` | Task CRUD | `node clickup-sync.mjs create "Task" --agent=@dev` |
+| `command-center.mjs` | Cost/token tracking | `node command-center.mjs track <task_id> <tokens>` |
+| `dashboard.mjs` | Dashboard & Goals sync | `node dashboard.mjs sync` |
+
+### Automatic Task Sync
+
+Agents MUST sync tasks to ClickUp (see `.claude/rules/clickup-auto-sync.md`):
+
+```bash
+# Create task
+node squads/ops/scripts/clickup-sync.mjs create "[Feature] Task name" --agent=@dev --priority=2
+
+# Start work
+node squads/ops/scripts/clickup-sync.mjs start <task_id>
+
+# Mark done
+node squads/ops/scripts/clickup-sync.mjs done <task_id> "Summary"
+```
+
+### Budget Tracking (Goals)
+
+ClickUp Goals track budget in real-time:
+- **Daily Budget**: €20 limit (alert at €15)
+- **Monthly Budget**: €468 limit
+- **Token Usage**: Total tokens consumed
+
+Dashboard: https://app.clickup.com/t/86c86bz0w
+
+### Key Files
+
+| File | Purpose |
+|------|---------|
+| `squads/project-management-clickup/data/clickup-workspace-ids.json` | All Space, List, Field, Goal IDs |
+| `squads/ops/data/command-center-data.json` | Usage tracking data |
+| `.claude/rules/clickup-auto-sync.md` | Agent sync rules |
+
 ## MCP Usage
 
 ### Native Claude Code Tools (ALWAYS preferred)
