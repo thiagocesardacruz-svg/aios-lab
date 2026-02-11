@@ -1,0 +1,54 @@
+{
+  "tasks": {
+    "86c86bxdy": {
+      "created": "2026-02-11T19:49:25.010Z",
+      "tokens": {
+        "input": 15000,
+        "output": 3000
+      },
+      "cost": 0.44999999999999996,
+      "entries": [
+        {
+          "timestamp": "2026-02-11T19:49:25.010Z",
+          "inputTokens": 15000,
+          "outputTokens": 3000,
+          "cost": 0.44999999999999996,
+          "model": "claude-opus-4"
+        }
+      ]
+    }
+  },
+  "dailyUsage": {
+    "2026-02-11": {
+      "tokens": {
+        "input": 15000,
+        "output": 3000
+      },
+      "cost": 0.44999999999999996,
+      "tasks": [
+        "86c86bxdy"
+      ]
+    }
+  },
+  "monthlyUsage": {
+    "2026-02": {
+      "tokens": {
+        "input": 15000,
+        "output": 3000
+      },
+      "cost": 0.44999999999999996,
+      "tasks": [
+        "86c86bxdy"
+      ]
+    }
+  },
+  "totals": {
+    "tokens": {
+      "input": 15000,
+      "output": 3000
+    },
+    "cost": 0.44999999999999996,
+    "tasks": 0
+  },
+  "lastUpdated": "2026-02-11T19:49:25.010Z"
+}
