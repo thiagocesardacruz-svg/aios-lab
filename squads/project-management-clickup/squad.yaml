@@ -1,0 +1,107 @@
+name: project-management-clickup
+version: 2.0.0
+description: "ClickUp-based project management and operations specialists"
+
+squad_type: hybrid
+domain: project-management
+
+author: rafaelscosta
+license: MIT
+
+aios:
+  minVersion: "2.1.0"
+  type: squad
+
+components:
+  agents:
+    - pm-orchestrator                  # Project management orchestrator
+    - clickup-architect                # ClickUp workspace design
+    - automation-engineer              # Automation creation
+    - process-diagnostician            # Process analysis
+    - crm-builder                      # CRM setup
+    - content-operations-manager       # Content ops
+    - launch-operations-manager        # Launch ops
+    - saas-operations-specialist       # SaaS operations
+    - support-operations-specialist    # Support operations
+
+  tasks:
+    - setup-clickup-workspace    # Workspace setup
+    - create-automations         # Create automations
+    - diagnose-process           # Process diagnostics
+    - configure-crm              # CRM configuration
+    - setup-content-pipeline     # Content pipeline
+    - setup-launch-workspace     # Launch workspace
+    - setup-saas-workspace       # SaaS workspace setup
+    - setup-support-system       # Support system setup
+    - weekly-review              # Weekly GTD review
+
+  workflows:
+    - wf-clickup-advanced-setup
+    - wf-process-documentation
+    - wf-crm-implementation
+    - wf-content-operations
+    - wf-launch-operations
+    - wf-support-setup
+
+  checklists:
+    - clickup-workspace-checklist
+    - crm-implementation-checklist
+    - process-documentation-checklist
+    - launch-readiness-checklist
+    - content-production-checklist
+    - release-checklist
+    - ticket-resolution-checklist
+
+  templates:
+    - template-project-brief
+    - template-task-complete
+    - template-crm-deal
+    - template-content-calendar
+    - template-launch-tracker
+    - template-space-structure
+    - response-templates
+    - automation-documentation
+    - user-story-template
+
+  tools: []
+
+  scripts:
+    - setup-crm-clickup.cjs
+    - webhook-server.cjs
+    - setup-crm-webhooks.cjs
+    - setup-n8n-workflows.cjs
+    - test-crm-lead.cjs
+    - check-n8n-executions.cjs
+    - setup-mission-control.cjs
+    - setup-mission-control-views.cjs
+    - setup-mission-control-n8n.cjs
+    - notification-router.cjs
+    - deploy-smart-routing.cjs
+    - implement-smart-routing-n8n.mjs
+    - test-mission-control-v2.sh
+    - mission-control-fix-n8n.sh
+
+capabilities:
+  - ClickUp workspace design
+  - Automation creation
+  - Process documentation
+  - CRM implementation
+  - Content operations
+  - Launch management
+  - Support ticketing
+
+clickup_features:
+  - Spaces and folders
+  - Custom fields
+  - Automations
+  - Dashboards
+  - Time tracking
+  - Forms
+  - Integrations
+
+tags:
+  - project-management
+  - clickup
+  - operations
+  - automation
+  - crm

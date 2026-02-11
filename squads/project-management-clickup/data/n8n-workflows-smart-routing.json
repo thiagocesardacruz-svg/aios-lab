@@ -1,0 +1,149 @@
+{
+  "workflows": [
+    {
+      "id": "mission-control-new-task",
+      "name": "Mission Control - Nova Demanda (Smart Routing)",
+      "description": "Notifica squad específico ou Central quando nova demanda é criada no Inbox",
+      "trigger": {
+        "type": "webhook",
+        "webhookId": "mc-task-created"
+      },
+      "nodes": [
+        {
+          "name": "Webhook Trigger",
+          "type": "n8n-nodes-base.webhook",
+          "parameters": {
+            "path": "mission-control/task-created",
+            "responseMode": "immediate"
+          }
+        },
+        {
+          "name": "Extract Task Data",
+          "type": "n8n-nodes-base.function",
+          "parameters": {
+            "functionCode": "const task = items[0].json.task_id ? items[0].json : items[0].json.event.task;\n\nreturn [{\n  json: {\n    taskId: task.id,\n    taskName: task.name,\n    taskUrl: task.url,\n    creator: task.creator?.username || 'Desconhecido',\n    priority: task.priority?.priority || 'Normal',\n    customFields: task.custom_fields || [],\n    task: task\n  }\n}];"
+          }
+        },
+        {
+          "name": "Route to Squad Groups",
+          "type": "n8n-nodes-base.function",
+          "parameters": {
+            "functionCode": "// Squad mapping\nconst SQUAD_GROUPS = {\n  'youtube-content': process.env.MISSION_CONTROL_WHATSAPP_YOUTUBE_CONTENT,\n  'copywriting': process.env.MISSION_CONTROL_WHATSAPP_COPYWRITING,\n  'full-stack-dev': process.env.MISSION_CONTROL_WHATSAPP_FULL_STACK_DEV,\n  'deep-scraper': process.env.MISSION_CONTROL_WHATSAPP_DEEP_SCRAPER,\n  'project-management': process.env.MISSION_CONTROL_WHATSAPP_PROJECT_MANAGEMENT,\n  'orquestrador': process.env.MISSION_CONTROL_WHATSAPP_ORQUESTRADOR,\n  'content-ecosystem': process.env.MISSION_CONTROL_WHATSAPP_CONTENT_ECOSYSTEM,\n  'squad-creator': process.env.MISSION_CONTROL_WHATSAPP_SQUAD_CREATOR,\n  'infoproduct-creation': process.env.MISSION_CONTROL_WHATSAPP_INFOPRODUCT_CREATION,\n  'sales': process.env.MISSION_CONTROL_WHATSAPP_SALES,\n  'conselho': process.env.MISSION_CONTROL_WHATSAPP_CONSELHO,\n  'design-system': process.env.MISSION_CONTROL_WHATSAPP_DESIGN_SYSTEM,\n  'creative-studio': process.env.MISSION_CONTROL_WHATSAPP_CREATIVE_STUDIO,\n  'youtube-lives': process.env.MISSION_CONTROL_WHATSAPP_YOUTUBE_LIVES,\n  'data-analytics': process.env.MISSION_CONTROL_WHATSAPP_DATA_ANALYTICS,\n  'media-buy': process.env.MISSION_CONTROL_WHATSAPP_MEDIA_BUY,\n  'funnel-creator': process.env.MISSION_CONTROL_WHATSAPP_FUNNEL_CREATOR,\n  'devops': process.env.MISSION_CONTROL_WHATSAPP_DEVOPS\n};\n\nconst SQUAD_NAMES = {\n  'youtube-content': 'YouTube Content',\n  'copywriting': 'Copywriting',\n  'full-stack-dev': 'Full Stack Dev',\n  'deep-scraper': 'Deep Scraper',\n  'project-management': 'Project Management',\n  'orquestrador': 'Orquestrador',\n  'content-ecosystem': 'Content Ecosystem',\n  'squad-creator': 'Squad Creator',\n  'infoproduct-creation': 'Infoproduct Creation',\n  'sales': 'Sales',\n  'conselho': 'Conselho',\n  'design-system': 'Design System',\n  'creative-studio': 'Creative Studio',\n  'youtube-lives': 'YouTube Lives',\n  'data-analytics': 'Data Analytics',\n  'media-buy': 'Media Buy',\n  'funnel-creator': 'Funnel Creator',\n  'devops': 'DevOps'\n};\n\nconst CENTRAL_GROUP = process.env.MISSION_CONTROL_WHATSAPP_CENTRAL;\nconst RAFAEL_TELEGRAM = process.env.MISSION_CONTROL_TELEGRAM_CHAT_ID;\n\nconst task = items[0].json.task;\nconst squadField = task.custom_fields?.find(f => f.name.toLowerCase() === 'squad');\nconst squad = squadField?.value || null;\nconst squadName = squad ? (SQUAD_NAMES[squad] || squad) : 'Geral';\n\nconst destinations = [];\n\n// 1. Notificar squad específico ou Central\nif (squad && SQUAD_GROUPS[squad]) {\n  destinations.push({\n    type: 'whatsapp',\n    chatId: SQUAD_GROUPS[squad],\n    squadName: SQUAD_NAMES[squad] || squad\n  });\n} else {\n  destinations.push({\n    type: 'whatsapp',\n    chatId: CENTRAL_GROUP,\n    squadName: 'Central (Geral)'\n  });\n}\n\n// 2. Sempre notificar Rafael via Telegram\ndestinations.push({\n  type: 'telegram',\n  chatId: RAFAEL_TELEGRAM,\n  squadName: 'Admin'\n});\n\n// Retornar um item para cada destinatário\nreturn destinations.map(dest => ({\n  json: {\n    ...items[0].json,\n    destination: dest,\n    message: `🆕 *Nova demanda criada*\\n\\n📋 ${task.name}\\n👥 Squad: ${squadName}\\n👤 Solicitado por: ${task.creator?.username || 'Desconhecido'}\\n⚡ Prioridade: ${task.priority?.priority || 'Normal'}\\n\\n📎 ${task.url}`\n  }\n}));"
+          }
+        },
+        {
+          "name": "Send WhatsApp",
+          "type": "n8n-nodes-base.httpRequest",
+          "parameters": {
+            "url": "={{$env.WAHA_API_URL}}/api/sendText",
+            "method": "POST",
+            "authentication": "none",
+            "sendHeaders": true,
+            "headerParameters": {
+              "parameters": [
+                {
+                  "name": "X-Api-Key",
+                  "value": "={{$env.WAHA_API_TOKEN}}"
+                }
+              ]
+            },
+            "sendBody": true,
+            "bodyParameters": {
+              "parameters": [
+                {
+                  "name": "chatId",
+                  "value": "={{$json.destination.chatId}}"
+                },
+                {
+                  "name": "text",
+                  "value": "={{$json.message}}"
+                }
+              ]
+            },
+            "options": {
+              "response": {
+                "response": {
+                  "neverError": true
+                }
+              }
+            }
+          },
+          "executeOnce": false
+        },
+        {
+          "name": "Send Telegram",
+          "type": "n8n-nodes-base.httpRequest",
+          "parameters": {
+            "url": "=https://api.telegram.org/bot{{$env.TELEGRAM_BOT_TOKEN}}/sendMessage",
+            "method": "POST",
+            "sendBody": true,
+            "bodyParameters": {
+              "parameters": [
+                {
+                  "name": "chat_id",
+                  "value": "={{$json.destination.chatId}}"
+                },
+                {
+                  "name": "text",
+                  "value": "={{$json.message}}"
+                },
+                {
+                  "name": "parse_mode",
+                  "value": "Markdown"
+                }
+              ]
+            },
+            "options": {
+              "response": {
+                "response": {
+                  "neverError": true
+                }
+              }
+            }
+          },
+          "executeOnce": false
+        }
+      ]
+    },
+    {
+      "id": "mission-control-status-changed",
+      "name": "Mission Control - Status Alterado (Smart Routing)",
+      "description": "Notifica squad e Central (se Done) quando status é alterado",
+      "trigger": {
+        "type": "webhook",
+        "webhookId": "mc-status-updated"
+      },
+      "implementation": "Similar to new_task, with status change logic"
+    },
+    {
+      "id": "mission-control-daily-digest",
+      "name": "Mission Control - Daily Digest (Smart Routing)",
+      "description": "Envia resumo diário para Central (global) e cada squad (específico)",
+      "trigger": {
+        "type": "schedule",
+        "cron": "0 9 * * *"
+      },
+      "implementation": "Uses generateDigestRouting() from notification-router.cjs"
+    },
+    {
+      "id": "mission-control-blocked-alert",
+      "name": "Mission Control - Blocked Alert (Smart Routing)",
+      "description": "Notifica squad + Central + Telegram quando task bloqueada >48h",
+      "trigger": {
+        "type": "schedule",
+        "cron": "0 */6 * * *"
+      },
+      "implementation": "Triple notification: squad + central + telegram"
+    }
+  ],
+  "metadata": {
+    "created_at": "2026-02-07",
+    "version": "2.0",
+    "features": [
+      "Smart routing by squad",
+      "Contextual notifications",
+      "Multi-channel support (WhatsApp + Telegram)",
+      "Fallback to Central for unknown squads"
+    ]
+  }
+}

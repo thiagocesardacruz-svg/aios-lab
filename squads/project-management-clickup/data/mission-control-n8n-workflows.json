@@ -1,0 +1,1188 @@
+[
+  {
+    "name": "Mission Control - Nova Demanda",
+    "nodes": [
+      {
+        "id": "webhook",
+        "name": "Webhook Nova Demanda",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 1.1,
+        "position": [
+          250,
+          300
+        ],
+        "webhookId": "mc-task-created",
+        "parameters": {
+          "path": "mission-control/task-created",
+          "httpMethod": "POST",
+          "responseMode": "onReceived",
+          "responseData": "allEntries"
+        }
+      },
+      {
+        "id": "fetch-task",
+        "name": "Buscar Task",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.1,
+        "position": [
+          450,
+          300
+        ],
+        "parameters": {
+          "method": "GET",
+          "url": "=https://api.clickup.com/api/v2/task/{{ $json.task_id }}?custom_fields=true",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Authorization",
+                "value": "pk_42953089_4A273OG0YDRHNCSA4OVQMU6RHI672O25"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "extract",
+        "name": "Extrair Campos",
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.2,
+        "position": [
+          650,
+          300
+        ],
+        "parameters": {
+          "mode": "manual",
+          "duplicateItem": false,
+          "assignments": {
+            "assignments": [
+              {
+                "id": "task-id",
+                "name": "taskId",
+                "value": "={{ $json.id }}",
+                "type": "string"
+              },
+              {
+                "id": "task-name",
+                "name": "taskName",
+                "value": "={{ $json.name }}",
+                "type": "string"
+              },
+              {
+                "id": "task-url",
+                "name": "taskUrl",
+                "value": "=https://app.clickup.com/t/{{ $json.id }}",
+                "type": "string"
+              },
+              {
+                "id": "status",
+                "name": "status",
+                "value": "={{ $json.status.status }}",
+                "type": "string"
+              },
+              {
+                "id": "priority",
+                "name": "priority",
+                "value": "={{ $json.priority?.priority || \"none\" }}",
+                "type": "string"
+              },
+              {
+                "id": "squad",
+                "name": "squad",
+                "value": "={{ $json.custom_fields?.find(f => f.id === \"c4ca0674-b10b-496c-8b83-a9b44e6e7750\")?.type_config?.options?.find(o => o.orderindex === $json.custom_fields?.find(f => f.id === \"c4ca0674-b10b-496c-8b83-a9b44e6e7750\")?.value)?.name || \"N/A\" }}",
+                "type": "string"
+              },
+              {
+                "id": "task-type",
+                "name": "taskType",
+                "value": "={{ $json.custom_fields?.find(f => f.id === \"94d8463e-2698-4577-9541-c51a408639de\")?.type_config?.options?.find(o => o.orderindex === $json.custom_fields?.find(f => f.id === \"94d8463e-2698-4577-9541-c51a408639de\")?.value)?.name || \"N/A\" }}",
+                "type": "string"
+              },
+              {
+                "id": "folder",
+                "name": "folder",
+                "value": "={{ $json.folder?.name || \"Inbox\" }}",
+                "type": "string"
+              },
+              {
+                "id": "list",
+                "name": "list",
+                "value": "={{ $json.list?.name || \"N/A\" }}",
+                "type": "string"
+              },
+              {
+                "id": "date-created",
+                "name": "dateCreated",
+                "value": "={{ new Date(parseInt($json.date_created)).toISOString() }}",
+                "type": "string"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "check-notification",
+        "name": "Canal Disponível?",
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 1,
+        "position": [
+          850,
+          300
+        ],
+        "parameters": {
+          "conditions": {
+            "boolean": [
+              {
+                "value1": "={{ \"726437877\" !== \"\" || \"5516988148880@s.whatsapp.net\" !== \"\" }}",
+                "value2": true
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "telegram-notify",
+        "name": "Telegram - Nova Demanda",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.1,
+        "position": [
+          1050,
+          200
+        ],
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.telegram.org/bot8394468712:AAGzhnddbZOKb03MjDQlEKe7aP1tFFGXs2s/sendMessage",
+          "sendBody": true,
+          "specifyBody": "json",
+          "jsonBody": "={\n  \"chat_id\": \"726437877\",\n  \"text\": `\"📥 NOVA DEMANDA\\n\\n\" + \"📋 \" + $json.taskName + \"\\n\" + \"🏷️ Squad: \" + $json.squad + \"\\n\" + \"📂 Tipo: \" + $json.taskType + \"\\n\" + \"⚡ Prioridade: \" + $json.priority + \"\\n\" + \"📍 Status: \" + $json.status + \"\\n\\n\" + \"🔗 \" + $json.taskUrl`,\n  \"parse_mode\": \"HTML\"\n}"
+        }
+      },
+      {
+        "id": "waha-notify",
+        "name": "WhatsApp - Nova Demanda",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.1,
+        "position": [
+          1050,
+          400
+        ],
+        "parameters": {
+          "method": "POST",
+          "url": "https://waha.nataliatanaka.com.br/api/sendText",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Authorization",
+                "value": "Bearer waha_5f9c8a7b3e2d1f0a9b8c7d6e5f4a3b2c1d0e9f8a7b6c5d4e3f2a1b0c9d8e7f6a"
+              }
+            ]
+          },
+          "sendBody": true,
+          "specifyBody": "json",
+          "jsonBody": "={\n  \"chatId\": \"5516988148880@s.whatsapp.net\",\n  \"text\": `\"📥 NOVA DEMANDA\\n\\n📋 \" + $json.taskName + \"\\n🏷️ Squad: \" + $json.squad + \"\\n📂 Tipo: \" + $json.taskType + \"\\n⚡ Prioridade: \" + $json.priority + \"\\n📍 Status: \" + $json.status + \"\\n\\n🔗 \" + $json.taskUrl`,\n  \"session\": \"default\"\n}"
+        }
+      },
+      {
+        "id": "log-only",
+        "name": "Log (sem notificação)",
+        "type": "n8n-nodes-base.noOp",
+        "typeVersion": 1,
+        "position": [
+          1050,
+          500
+        ],
+        "parameters": {}
+      }
+    ],
+    "connections": {
+      "Webhook Nova Demanda": {
+        "main": [
+          [
+            {
+              "node": "Buscar Task",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Buscar Task": {
+        "main": [
+          [
+            {
+              "node": "Extrair Campos",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Extrair Campos": {
+        "main": [
+          [
+            {
+              "node": "Canal Disponível?",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Canal Disponível?": {
+        "main": [
+          [
+            {
+              "node": "Telegram - Nova Demanda",
+              "type": "main",
+              "index": 0
+            },
+            {
+              "node": "WhatsApp - Nova Demanda",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Log (sem notificação)",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "settings": {
+      "executionOrder": "v1",
+      "callerPolicy": "workflowsFromSameOwner",
+      "availableInMCP": false
+    },
+    "active": false,
+    "versionId": "a583cdd5-694f-463f-981b-16effc762c02",
+    "id": "HHzwCo0rneqzaNK4",
+    "description": null,
+    "staticData": null,
+    "meta": null,
+    "pinData": null,
+    "activeVersionId": null,
+    "updatedAt": "2026-02-06T21:42:27.325Z",
+    "createdAt": "2026-02-06T21:42:27.325Z",
+    "isArchived": false,
+    "versionCounter": 1,
+    "triggerCount": 0
+  },
+  {
+    "name": "Mission Control - Status Alterado",
+    "nodes": [
+      {
+        "id": "webhook",
+        "name": "Webhook Status",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 1.1,
+        "position": [
+          250,
+          300
+        ],
+        "webhookId": "mc-status-updated",
+        "parameters": {
+          "path": "mission-control/task-status-updated",
+          "httpMethod": "POST",
+          "responseMode": "onReceived",
+          "responseData": "allEntries"
+        }
+      },
+      {
+        "id": "fetch-task",
+        "name": "Buscar Task",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.1,
+        "position": [
+          450,
+          300
+        ],
+        "parameters": {
+          "method": "GET",
+          "url": "=https://api.clickup.com/api/v2/task/{{ $json.task_id }}?custom_fields=true",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Authorization",
+                "value": "pk_42953089_4A273OG0YDRHNCSA4OVQMU6RHI672O25"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "extract",
+        "name": "Extrair Campos",
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.2,
+        "position": [
+          650,
+          300
+        ],
+        "parameters": {
+          "mode": "manual",
+          "duplicateItem": false,
+          "assignments": {
+            "assignments": [
+              {
+                "id": "task-id",
+                "name": "taskId",
+                "value": "={{ $json.id }}",
+                "type": "string"
+              },
+              {
+                "id": "task-name",
+                "name": "taskName",
+                "value": "={{ $json.name }}",
+                "type": "string"
+              },
+              {
+                "id": "task-url",
+                "name": "taskUrl",
+                "value": "=https://app.clickup.com/t/{{ $json.id }}",
+                "type": "string"
+              },
+              {
+                "id": "status",
+                "name": "status",
+                "value": "={{ $json.status.status }}",
+                "type": "string"
+              },
+              {
+                "id": "priority",
+                "name": "priority",
+                "value": "={{ $json.priority?.priority || \"none\" }}",
+                "type": "string"
+              },
+              {
+                "id": "squad",
+                "name": "squad",
+                "value": "={{ $json.custom_fields?.find(f => f.id === \"c4ca0674-b10b-496c-8b83-a9b44e6e7750\")?.type_config?.options?.find(o => o.orderindex === $json.custom_fields?.find(f => f.id === \"c4ca0674-b10b-496c-8b83-a9b44e6e7750\")?.value)?.name || \"N/A\" }}",
+                "type": "string"
+              },
+              {
+                "id": "task-type",
+                "name": "taskType",
+                "value": "={{ $json.custom_fields?.find(f => f.id === \"94d8463e-2698-4577-9541-c51a408639de\")?.type_config?.options?.find(o => o.orderindex === $json.custom_fields?.find(f => f.id === \"94d8463e-2698-4577-9541-c51a408639de\")?.value)?.name || \"N/A\" }}",
+                "type": "string"
+              },
+              {
+                "id": "folder",
+                "name": "folder",
+                "value": "={{ $json.folder?.name || \"Inbox\" }}",
+                "type": "string"
+              },
+              {
+                "id": "list",
+                "name": "list",
+                "value": "={{ $json.list?.name || \"N/A\" }}",
+                "type": "string"
+              },
+              {
+                "id": "date-created",
+                "name": "dateCreated",
+                "value": "={{ new Date(parseInt($json.date_created)).toISOString() }}",
+                "type": "string"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "switch-status",
+        "name": "Switch Status",
+        "type": "n8n-nodes-base.switch",
+        "typeVersion": 2,
+        "position": [
+          850,
+          300
+        ],
+        "parameters": {
+          "dataType": "string",
+          "value1": "={{ $json.status }}",
+          "rules": {
+            "rules": [
+              {
+                "value2": "blocked",
+                "output": 0
+              },
+              {
+                "value2": "rejected",
+                "output": 1
+              },
+              {
+                "value2": "done",
+                "output": 2
+              },
+              {
+                "value2": "review",
+                "output": 3
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "tg-blocked",
+        "name": "TG - Blocked",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.1,
+        "position": [
+          1100,
+          100
+        ],
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.telegram.org/bot8394468712:AAGzhnddbZOKb03MjDQlEKe7aP1tFFGXs2s/sendMessage",
+          "sendBody": true,
+          "specifyBody": "json",
+          "jsonBody": "={\n  \"chat_id\": \"726437877\",\n  \"text\": `\"🚫 TASK BLOQUEADA\\n\\n📋 \" + $json.taskName + \"\\n🏷️ Squad: \" + $json.squad + \"\\n\\n⚠️ Requer atenção imediata!\\n\\n🔗 \" + $json.taskUrl`,\n  \"parse_mode\": \"HTML\"\n}"
+        }
+      },
+      {
+        "id": "tg-rejected",
+        "name": "TG - Rejected",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.1,
+        "position": [
+          1100,
+          250
+        ],
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.telegram.org/bot8394468712:AAGzhnddbZOKb03MjDQlEKe7aP1tFFGXs2s/sendMessage",
+          "sendBody": true,
+          "specifyBody": "json",
+          "jsonBody": "={\n  \"chat_id\": \"726437877\",\n  \"text\": `\"❌ DEMANDA REJEITADA\\n\\n📋 \" + $json.taskName + \"\\n🏷️ Squad: \" + $json.squad + \"\\n\\n💡 Uma nova proposta deve ser criada.\\n\\n🔗 \" + $json.taskUrl`,\n  \"parse_mode\": \"HTML\"\n}"
+        }
+      },
+      {
+        "id": "tg-done",
+        "name": "TG - Done",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.1,
+        "position": [
+          1100,
+          400
+        ],
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.telegram.org/bot8394468712:AAGzhnddbZOKb03MjDQlEKe7aP1tFFGXs2s/sendMessage",
+          "sendBody": true,
+          "specifyBody": "json",
+          "jsonBody": "={\n  \"chat_id\": \"726437877\",\n  \"text\": `\"✅ TASK CONCLUÍDA\\n\\n📋 \" + $json.taskName + \"\\n🏷️ Squad: \" + $json.squad + \"\\n\\n🎉 Entrega finalizada!\\n\\n🔗 \" + $json.taskUrl`,\n  \"parse_mode\": \"HTML\"\n}"
+        }
+      },
+      {
+        "id": "tg-review",
+        "name": "TG - Review",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.1,
+        "position": [
+          1100,
+          550
+        ],
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.telegram.org/bot8394468712:AAGzhnddbZOKb03MjDQlEKe7aP1tFFGXs2s/sendMessage",
+          "sendBody": true,
+          "specifyBody": "json",
+          "jsonBody": "={\n  \"chat_id\": \"726437877\",\n  \"text\": `\"🔍 EM REVIEW\\n\\n📋 \" + $json.taskName + \"\\n🏷️ Squad: \" + $json.squad + \"\\n\\n👀 Aguardando revisão.\\n\\n🔗 \" + $json.taskUrl`,\n  \"parse_mode\": \"HTML\"\n}"
+        }
+      }
+    ],
+    "connections": {
+      "Webhook Status": {
+        "main": [
+          [
+            {
+              "node": "Buscar Task",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Buscar Task": {
+        "main": [
+          [
+            {
+              "node": "Extrair Campos",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Extrair Campos": {
+        "main": [
+          [
+            {
+              "node": "Switch Status",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Switch Status": {
+        "main": [
+          [
+            {
+              "node": "TG - Blocked",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "TG - Rejected",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "TG - Done",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "TG - Review",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "settings": {
+      "executionOrder": "v1",
+      "callerPolicy": "workflowsFromSameOwner",
+      "availableInMCP": false
+    },
+    "active": false,
+    "versionId": "5ef46d57-8580-45bb-98dc-4b47cc3c09f5",
+    "id": "Phq1pBEo9jgG6t8x",
+    "description": null,
+    "staticData": null,
+    "meta": null,
+    "pinData": null,
+    "activeVersionId": null,
+    "updatedAt": "2026-02-06T21:42:27.901Z",
+    "createdAt": "2026-02-06T21:42:27.901Z",
+    "isArchived": false,
+    "versionCounter": 1,
+    "triggerCount": 0
+  },
+  {
+    "name": "Mission Control - Daily Digest",
+    "nodes": [
+      {
+        "id": "cron",
+        "name": "Cron 9h",
+        "type": "n8n-nodes-base.scheduleTrigger",
+        "typeVersion": 1.1,
+        "position": [
+          250,
+          300
+        ],
+        "parameters": {
+          "rule": {
+            "interval": [
+              {
+                "field": "cronExpression",
+                "expression": "0 9 * * *"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "fetch-inbox",
+        "name": "Buscar Tasks Inbox",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.1,
+        "position": [
+          450,
+          200
+        ],
+        "parameters": {
+          "method": "GET",
+          "url": "https://api.clickup.com/api/v2/list/901325202828/task?statuses[]=inbox&statuses[]=awaiting%20approval&subtasks=true&include_closed=false",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Authorization",
+                "value": "pk_42953089_4A273OG0YDRHNCSA4OVQMU6RHI672O25"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "fetch-blocked",
+        "name": "Buscar Tasks Blocked",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.1,
+        "position": [
+          450,
+          400
+        ],
+        "parameters": {
+          "method": "GET",
+          "url": "https://api.clickup.com/api/v2/team/9010133626/task?space_ids[]=901313156043&statuses[]=blocked&subtasks=true&include_closed=false",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Authorization",
+                "value": "pk_42953089_4A273OG0YDRHNCSA4OVQMU6RHI672O25"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "fetch-progress",
+        "name": "Buscar Tasks In Progress",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.1,
+        "position": [
+          450,
+          600
+        ],
+        "parameters": {
+          "method": "GET",
+          "url": "https://api.clickup.com/api/v2/team/9010133626/task?space_ids[]=901313156043&statuses[]=in%20progress&subtasks=true&include_closed=false",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Authorization",
+                "value": "pk_42953089_4A273OG0YDRHNCSA4OVQMU6RHI672O25"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "merge",
+        "name": "Merge Resultados",
+        "type": "n8n-nodes-base.merge",
+        "typeVersion": 2.1,
+        "position": [
+          700,
+          300
+        ],
+        "parameters": {
+          "mode": "append"
+        }
+      },
+      {
+        "id": "build-digest",
+        "name": "Montar Digest",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          900,
+          300
+        ],
+        "parameters": {
+          "jsCode": "\n// Collect all items from all inputs\nconst allItems = $input.all();\n\n// Parse tasks from each source\nlet inboxTasks = [];\nlet blockedTasks = [];\nlet progressTasks = [];\n\nfor (const item of allItems) {\n  const tasks = item.json?.tasks || [];\n  // Determine source by checking the node that produced this\n  for (const task of tasks) {\n    const status = task.status?.status?.toLowerCase() || '';\n    if (status === 'inbox' || status === 'awaiting approval') {\n      inboxTasks.push(task);\n    } else if (status === 'blocked') {\n      blockedTasks.push(task);\n    } else if (status === 'in progress') {\n      progressTasks.push(task);\n    }\n  }\n}\n\nconst today = new Date().toLocaleDateString('pt-BR', { weekday: 'long', day: '2-digit', month: '2-digit' });\n\nlet msg = \"📊 MISSION CONTROL - DAILY DIGEST\\n\";\nmsg += \"📅 \" + today + \"\\n\\n\";\n\nmsg += \"📥 INBOX/APROVAÇÃO (\" + inboxTasks.length + \")\\n\";\nif (inboxTasks.length === 0) {\n  msg += \"   ✅ Nenhuma pendência\\n\";\n} else {\n  for (const t of inboxTasks.slice(0, 10)) {\n    msg += \"   • \" + t.name + \" [\" + (t.status?.status || '?') + \"]\\n\";\n  }\n  if (inboxTasks.length > 10) msg += \"   ... e mais \" + (inboxTasks.length - 10) + \"\\n\";\n}\n\nmsg += \"\\n🚫 BLOCKED (\" + blockedTasks.length + \")\\n\";\nif (blockedTasks.length === 0) {\n  msg += \"   ✅ Nenhuma bloqueada\\n\";\n} else {\n  for (const t of blockedTasks.slice(0, 10)) {\n    msg += \"   • \" + t.name + \"\\n\";\n  }\n}\n\nmsg += \"\\n🔄 IN PROGRESS (\" + progressTasks.length + \")\\n\";\nif (progressTasks.length === 0) {\n  msg += \"   Nenhuma em andamento\\n\";\n} else {\n  for (const t of progressTasks.slice(0, 10)) {\n    msg += \"   • \" + t.name + \"\\n\";\n  }\n  if (progressTasks.length > 10) msg += \"   ... e mais \" + (progressTasks.length - 10) + \"\\n\";\n}\n\nmsg += \"\\n📈 Total: \" + (inboxTasks.length + blockedTasks.length + progressTasks.length) + \" tasks ativas\";\n\nreturn [{ json: { digest: msg, inboxCount: inboxTasks.length, blockedCount: blockedTasks.length, progressCount: progressTasks.length } }];\n"
+        }
+      },
+      {
+        "id": "tg-digest",
+        "name": "Telegram - Digest",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.1,
+        "position": [
+          1100,
+          300
+        ],
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.telegram.org/bot8394468712:AAGzhnddbZOKb03MjDQlEKe7aP1tFFGXs2s/sendMessage",
+          "sendBody": true,
+          "specifyBody": "json",
+          "jsonBody": "={\n  \"chat_id\": \"726437877\",\n  \"text\": $json.digest,\n  \"parse_mode\": \"HTML\"\n}"
+        }
+      }
+    ],
+    "connections": {
+      "Cron 9h": {
+        "main": [
+          [
+            {
+              "node": "Buscar Tasks Inbox",
+              "type": "main",
+              "index": 0
+            },
+            {
+              "node": "Buscar Tasks Blocked",
+              "type": "main",
+              "index": 0
+            },
+            {
+              "node": "Buscar Tasks In Progress",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Buscar Tasks Inbox": {
+        "main": [
+          [
+            {
+              "node": "Merge Resultados",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Buscar Tasks Blocked": {
+        "main": [
+          [
+            {
+              "node": "Merge Resultados",
+              "type": "main",
+              "index": 1
+            }
+          ]
+        ]
+      },
+      "Buscar Tasks In Progress": {
+        "main": [
+          [
+            {
+              "node": "Montar Digest",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Merge Resultados": {
+        "main": [
+          [
+            {
+              "node": "Montar Digest",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Montar Digest": {
+        "main": [
+          [
+            {
+              "node": "Telegram - Digest",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "settings": {
+      "executionOrder": "v1",
+      "callerPolicy": "workflowsFromSameOwner",
+      "availableInMCP": false
+    },
+    "active": false,
+    "versionId": "97eac29a-487c-4991-a900-f34378b01729",
+    "id": "EEWaYc30MtE9Kroz",
+    "description": null,
+    "staticData": null,
+    "meta": null,
+    "pinData": null,
+    "activeVersionId": null,
+    "updatedAt": "2026-02-06T21:42:28.474Z",
+    "createdAt": "2026-02-06T21:42:28.474Z",
+    "isArchived": false,
+    "versionCounter": 1,
+    "triggerCount": 0
+  },
+  {
+    "name": "Mission Control - Blocked Alert",
+    "nodes": [
+      {
+        "id": "cron",
+        "name": "Cron 6h",
+        "type": "n8n-nodes-base.scheduleTrigger",
+        "typeVersion": 1.1,
+        "position": [
+          250,
+          300
+        ],
+        "parameters": {
+          "rule": {
+            "interval": [
+              {
+                "field": "cronExpression",
+                "expression": "0 */6 * * *"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "fetch-blocked",
+        "name": "Buscar Blocked",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.1,
+        "position": [
+          450,
+          300
+        ],
+        "parameters": {
+          "method": "GET",
+          "url": "https://api.clickup.com/api/v2/team/9010133626/task?space_ids[]=901313156043&statuses[]=blocked&subtasks=true&include_closed=false",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Authorization",
+                "value": "pk_42953089_4A273OG0YDRHNCSA4OVQMU6RHI672O25"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "filter-old",
+        "name": "Filtrar >24h",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          650,
+          300
+        ],
+        "parameters": {
+          "jsCode": "\nconst tasks = $input.first().json.tasks || [];\nconst now = Date.now();\nconst twentyFourHours = 24 * 60 * 60 * 1000;\n\nconst oldBlocked = tasks.filter(t => {\n  const updated = parseInt(t.date_updated || t.date_created);\n  return (now - updated) > twentyFourHours;\n});\n\nif (oldBlocked.length === 0) {\n  return [{ json: { hasBlocked: false, count: 0, message: '' } }];\n}\n\nlet msg = \"🚨 ALERTA: \" + oldBlocked.length + \" TASK(S) BLOQUEADA(S) HÁ +24H\\n\\n\";\n\nfor (const t of oldBlocked) {\n  const hours = Math.round((now - parseInt(t.date_updated || t.date_created)) / (60 * 60 * 1000));\n  msg += \"• \" + t.name + \" (\" + hours + \"h bloqueada)\\n\";\n  msg += \"  🔗 https://app.clickup.com/t/\" + t.id + \"\\n\\n\";\n}\n\nmsg += \"⚡ Ação necessária: desbloquear ou reatribuir.\";\n\nreturn [{ json: { hasBlocked: true, count: oldBlocked.length, message: msg } }];\n"
+        }
+      },
+      {
+        "id": "check-blocked",
+        "name": "Tem Bloqueadas?",
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 1,
+        "position": [
+          850,
+          300
+        ],
+        "parameters": {
+          "conditions": {
+            "boolean": [
+              {
+                "value1": "={{ $json.hasBlocked }}",
+                "value2": true
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "tg-blocked-alert",
+        "name": "TG - Blocked Alert",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.1,
+        "position": [
+          1050,
+          200
+        ],
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.telegram.org/bot8394468712:AAGzhnddbZOKb03MjDQlEKe7aP1tFFGXs2s/sendMessage",
+          "sendBody": true,
+          "specifyBody": "json",
+          "jsonBody": "={\n  \"chat_id\": \"726437877\",\n  \"text\": $json.message,\n  \"parse_mode\": \"HTML\"\n}"
+        }
+      },
+      {
+        "id": "no-blocked",
+        "name": "Sem Bloqueadas",
+        "type": "n8n-nodes-base.noOp",
+        "typeVersion": 1,
+        "position": [
+          1050,
+          400
+        ],
+        "parameters": {}
+      }
+    ],
+    "connections": {
+      "Cron 6h": {
+        "main": [
+          [
+            {
+              "node": "Buscar Blocked",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Buscar Blocked": {
+        "main": [
+          [
+            {
+              "node": "Filtrar >24h",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Filtrar >24h": {
+        "main": [
+          [
+            {
+              "node": "Tem Bloqueadas?",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Tem Bloqueadas?": {
+        "main": [
+          [
+            {
+              "node": "TG - Blocked Alert",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Sem Bloqueadas",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "settings": {
+      "executionOrder": "v1",
+      "callerPolicy": "workflowsFromSameOwner",
+      "availableInMCP": false
+    },
+    "active": false,
+    "versionId": "7fa6a464-2bd3-40a3-8fb2-dca3d24012b7",
+    "id": "cHA46BuTSAb2T7gy",
+    "description": null,
+    "staticData": null,
+    "meta": null,
+    "pinData": null,
+    "activeVersionId": null,
+    "updatedAt": "2026-02-06T21:42:29.062Z",
+    "createdAt": "2026-02-06T21:42:29.062Z",
+    "isArchived": false,
+    "versionCounter": 1,
+    "triggerCount": 0
+  },
+  {
+    "name": "Mission Control - Auto Archive",
+    "nodes": [
+      {
+        "id": "cron",
+        "name": "Cron Diário 0h",
+        "type": "n8n-nodes-base.scheduleTrigger",
+        "typeVersion": 1.1,
+        "position": [
+          250,
+          300
+        ],
+        "parameters": {
+          "rule": {
+            "interval": [
+              {
+                "field": "cronExpression",
+                "expression": "0 0 * * *"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "fetch-done",
+        "name": "Buscar Done",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.1,
+        "position": [
+          450,
+          300
+        ],
+        "parameters": {
+          "method": "GET",
+          "url": "https://api.clickup.com/api/v2/team/9010133626/task?space_ids[]=901313156043&statuses[]=done&subtasks=true&include_closed=true",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Authorization",
+                "value": "pk_42953089_4A273OG0YDRHNCSA4OVQMU6RHI672O25"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "filter-old",
+        "name": "Filtrar >30 dias",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          650,
+          300
+        ],
+        "parameters": {
+          "jsCode": "\nconst tasks = $input.first().json.tasks || [];\nconst now = Date.now();\nconst thirtyDays = 30 * 24 * 60 * 60 * 1000;\n\nconst oldDone = tasks.filter(t => {\n  const completed = parseInt(t.date_done || t.date_updated || t.date_created);\n  return (now - completed) > thirtyDays && !t.archived;\n});\n\nif (oldDone.length === 0) {\n  return [{ json: { toArchive: [], count: 0 } }];\n}\n\nreturn oldDone.map(t => ({\n  json: {\n    taskId: t.id,\n    taskName: t.name,\n    daysOld: Math.round((now - parseInt(t.date_done || t.date_updated)) / (24 * 60 * 60 * 1000))\n  }\n}));\n"
+        }
+      },
+      {
+        "id": "check-archive",
+        "name": "Tem para Arquivar?",
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 1,
+        "position": [
+          850,
+          300
+        ],
+        "parameters": {
+          "conditions": {
+            "number": [
+              {
+                "value1": "={{ $json.count }}",
+                "operation": "largerEqual",
+                "value2": 0
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "archive-task",
+        "name": "Arquivar Task",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.1,
+        "position": [
+          1050,
+          200
+        ],
+        "parameters": {
+          "method": "PUT",
+          "url": "=https://api.clickup.com/api/v2/task/{{ $json.taskId }}",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Authorization",
+                "value": "pk_42953089_4A273OG0YDRHNCSA4OVQMU6RHI672O25"
+              }
+            ]
+          },
+          "sendBody": true,
+          "specifyBody": "json",
+          "jsonBody": "{ \"archived\": true }"
+        }
+      },
+      {
+        "id": "no-archive",
+        "name": "Nada para Arquivar",
+        "type": "n8n-nodes-base.noOp",
+        "typeVersion": 1,
+        "position": [
+          1050,
+          400
+        ],
+        "parameters": {}
+      }
+    ],
+    "connections": {
+      "Cron Diário 0h": {
+        "main": [
+          [
+            {
+              "node": "Buscar Done",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Buscar Done": {
+        "main": [
+          [
+            {
+              "node": "Filtrar >30 dias",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Filtrar >30 dias": {
+        "main": [
+          [
+            {
+              "node": "Tem para Arquivar?",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Tem para Arquivar?": {
+        "main": [
+          [
+            {
+              "node": "Arquivar Task",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Nada para Arquivar",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "settings": {
+      "executionOrder": "v1",
+      "callerPolicy": "workflowsFromSameOwner",
+      "availableInMCP": false
+    },
+    "active": false,
+    "versionId": "57e5eb55-7be6-4981-9414-fbe66c597020",
+    "id": "CYew1BVvMHAMYsDB",
+    "description": null,
+    "staticData": null,
+    "meta": null,
+    "pinData": null,
+    "activeVersionId": null,
+    "updatedAt": "2026-02-06T21:42:29.644Z",
+    "createdAt": "2026-02-06T21:42:29.644Z",
+    "isArchived": false,
+    "versionCounter": 1,
+    "triggerCount": 0
+  }
+]

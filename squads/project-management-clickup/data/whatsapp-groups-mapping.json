@@ -1,0 +1,115 @@
+{
+  "aios_whatsapp_groups": {
+    "comunidade": {
+      "name": "AIOS #2 (Comunidade)",
+      "id": "120363405905388077@g.us",
+      "type": "community"
+    },
+    "anuncios": {
+      "name": "AIOS #2 (Anúncios)",
+      "id": "120363407511887895@g.us",
+      "type": "announcements"
+    },
+    "central": {
+      "name": "AIOS - Central",
+      "id": "120363406314168390@g.us",
+      "type": "squad"
+    },
+    "project-management": {
+      "name": "AIOS - Project Management",
+      "id": "120363407597476119@g.us",
+      "type": "squad"
+    },
+    "orquestrador": {
+      "name": "AIOS - Orquestrador",
+      "id": "120363406314822971@g.us",
+      "type": "squad"
+    },
+    "content-ecosystem": {
+      "name": "AIOS - Content Ecosystem",
+      "id": "120363404710981133@g.us",
+      "type": "squad"
+    },
+    "youtube-content": {
+      "name": "AIOS - YouTube Content",
+      "id": "120363424196533902@g.us",
+      "type": "squad"
+    },
+    "copywriting": {
+      "name": "AIOS - Copywriting",
+      "id": "120363406587885552@g.us",
+      "type": "squad"
+    },
+    "full-stack-dev": {
+      "name": "AIOS - Full Stack Dev",
+      "id": "120363406026510701@g.us",
+      "type": "squad"
+    },
+    "deep-scraper": {
+      "name": "AIOS - Deep Scraper",
+      "id": "120363423300665938@g.us",
+      "type": "squad"
+    },
+    "squad-creator": {
+      "name": "AIOS - Squad Creator",
+      "id": "120363406656215906@g.us",
+      "type": "squad"
+    },
+    "infoproduct-creation": {
+      "name": "AIOS - Infoproduct Creation",
+      "id": "120363422153688546@g.us",
+      "type": "squad"
+    },
+    "sales": {
+      "name": "AIOS - Sales",
+      "id": "120363405780687881@g.us",
+      "type": "squad"
+    },
+    "conselho": {
+      "name": "AIOS - Conselho",
+      "id": "120363425327638973@g.us",
+      "type": "squad"
+    },
+    "design-system": {
+      "name": "AIOS - Design System",
+      "id": "120363423380627383@g.us",
+      "type": "squad"
+    },
+    "creative-studio": {
+      "name": "AIOS - Creative Studio",
+      "id": "120363425012662387@g.us",
+      "type": "squad"
+    },
+    "youtube-lives": {
+      "name": "AIOS - YouTube Lives",
+      "id": "120363404442774199@g.us",
+      "type": "squad"
+    },
+    "data-analytics": {
+      "name": "AIOS - Data Analytics",
+      "id": "120363422673222745@g.us",
+      "type": "squad"
+    },
+    "media-buy": {
+      "name": "AIOS - Media Buy",
+      "id": "120363405238158159@g.us",
+      "type": "squad"
+    },
+    "funnel-creator": {
+      "name": "AIOS - Funnel Creator",
+      "id": "120363426405865296@g.us",
+      "type": "squad"
+    },
+    "devops": {
+      "name": "AIOS - Devops",
+      "id": "120363423692903314@g.us",
+      "type": "squad"
+    }
+  },
+  "metadata": {
+    "created_at": "2026-02-07",
+    "total_groups": 21,
+    "waha_session": "default",
+    "connected_number": "5516992244404@s.whatsapp.net"
+  }
+}
