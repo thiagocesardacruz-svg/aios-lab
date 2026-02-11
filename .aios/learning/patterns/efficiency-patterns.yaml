@@ -1,0 +1,43 @@
+# Efficiency Patterns
+# Managed by /learning-loop skill
+#
+# Shortcuts, optimizations, and time-savers
+# Format: "This shortcut saves N tokens/minutes"
+
+version: "1.0.0"
+last_updated: "2025-02-11"
+total_patterns: 0
+
+# Pattern schema
+pattern_schema:
+  id: "EP-NNN"
+  optimization: string      # The shortcut/optimization
+  baseline: string          # What it replaces
+  savings:
+    tokens: integer         # Tokens saved per use
+    time_minutes: float     # Time saved per use
+  confidence: float
+  evidence:
+    - task_id: string
+      tokens_saved: integer
+      date: "YYYY-MM-DD"
+  scope:
+    task_types: list
+    contexts: list
+  created: "YYYY-MM-DD"
+  last_validated: "YYYY-MM-DD"
+  times_applied: integer
+  total_tokens_saved: integer
+  total_time_saved_minutes: float
+
+# Active optimizations
+patterns: []
+
+# Candidate optimizations (need more evidence)
+candidates: []
+
+# Cumulative savings
+totals:
+  tokens_saved: 0
+  time_saved_minutes: 0
+  cost_saved_euros: 0

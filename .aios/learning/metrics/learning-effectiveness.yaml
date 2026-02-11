@@ -1,0 +1,64 @@
+# Learning Effectiveness Metrics
+# Managed by /learning-loop skill
+#
+# Tracks how well the learning system is performing
+
+version: "1.0.0"
+last_updated: "2025-02-11"
+
+# Overall metrics
+overall:
+  total_patterns: 0
+  active_patterns: 0
+  average_confidence: 0.0
+  patterns_applied_today: 0
+  patterns_validated_today: 0
+
+# Pattern type breakdown
+by_type:
+  success:
+    count: 0
+    avg_confidence: 0.0
+    total_applications: 0
+  failure:
+    count: 0
+    avg_confidence: 0.0
+    errors_prevented: 0
+  efficiency:
+    count: 0
+    avg_confidence: 0.0
+    tokens_saved: 0
+    time_saved_minutes: 0
+
+# Confidence distribution
+confidence_distribution:
+  high: 0       # >= 0.8
+  medium: 0     # 0.5 - 0.8
+  low: 0        # < 0.5
+
+# Validation history
+validation_history:
+  - date: null
+    patterns_validated: 0
+    confirmed: 0
+    refined: 0
+    invalidated: 0
+
+# ROI metrics
+roi:
+  estimated_tokens_saved: 0
+  estimated_time_saved_hours: 0
+  estimated_cost_saved_euros: 0
+  errors_prevented: 0
+
+# Learning rate (patterns per week)
+learning_rate:
+  current_week: 0
+  last_week: 0
+  trend: "stable"  # improving | stable | declining
+
+# Staleness check
+staleness:
+  patterns_not_used_30_days: 0
+  patterns_not_validated_30_days: 0
+  candidates_pending: 0

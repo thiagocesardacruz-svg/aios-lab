@@ -1,0 +1,71 @@
+# Decision Records Index
+# Managed by /institutional-memory skill
+#
+# Each decision is stored as a separate .md file
+# This index provides fast lookup by keywords, date, and category
+
+version: "1.0.0"
+last_updated: "2025-02-11"
+total_entries: 0
+
+# Decision categories
+categories:
+  - architectural
+  - business
+  - technical
+  - process
+  - tooling
+
+# Entry template
+entry_schema:
+  id: "DEC-YYYY-NNN"
+  title: string
+  date: "YYYY-MM-DD"
+  category: string
+  participants: list
+  keywords: list
+  outcome: "positive | negative | neutral | pending"
+  superseded_by: "DEC-YYYY-NNN | null"
+  related: list
+
+# Entries (populated by skill)
+entries:
+  - id: DEC-2025-001
+    title: "Criação de Skills de Alta Performance"
+    date: "2025-02-11"
+    category: architectural
+    participants:
+      - Director (Thiago)
+      - "@aios-master"
+      - Board
+    keywords:
+      - skills
+      - performance
+      - tokens
+      - optimization
+      - circuit-breaker
+      - learning
+      - memory
+      - moat
+      - compound-intelligence
+      - cost-control
+      - budget
+      - auto-routing
+    outcome: positive
+    superseded_by: null
+    related: []
+
+# Keyword index (auto-generated)
+keywords:
+  skills: [DEC-2025-001]
+  performance: [DEC-2025-001]
+  tokens: [DEC-2025-001]
+  optimization: [DEC-2025-001]
+  circuit-breaker: [DEC-2025-001]
+  learning: [DEC-2025-001]
+  memory: [DEC-2025-001]
+  moat: [DEC-2025-001]
+  compound-intelligence: [DEC-2025-001]
+  cost-control: [DEC-2025-001]
+  budget: [DEC-2025-001]
+  auto-routing: [DEC-2025-001]

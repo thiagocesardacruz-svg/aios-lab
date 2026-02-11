@@ -1,0 +1,38 @@
+# Success Patterns
+# Managed by /learning-loop skill
+#
+# Patterns that have been validated to work well
+# Format: "When X happens, Y works"
+
+version: "1.0.0"
+last_updated: "2025-02-11"
+total_patterns: 0
+
+# Pattern schema
+pattern_schema:
+  id: "SP-NNN"
+  trigger: string           # When this condition exists
+  action: string            # Do this
+  rationale: string         # Why it works
+  confidence: float         # 0.0 to 1.0
+  evidence:                 # Tasks that support this
+    - task_id: string
+      outcome: "success | partial"
+      date: "YYYY-MM-DD"
+  scope:
+    task_types: list
+    contexts: list
+    agents: list
+  created: "YYYY-MM-DD"
+  last_validated: "YYYY-MM-DD"
+  times_applied: integer
+  success_rate: float
+
+# Active patterns (confidence >= 0.5)
+patterns: []
+
+# Candidate patterns (confidence < 0.5, need more evidence)
+candidates: []
+
+# Archived patterns (deprecated or invalidated)
+archived: []

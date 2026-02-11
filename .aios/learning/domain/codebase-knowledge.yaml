@@ -1,0 +1,55 @@
+# Codebase Knowledge
+# Managed by /learning-loop skill
+#
+# Learned knowledge about how this codebase works
+# "Module X depends on Y", "Function Z is deprecated", etc.
+
+version: "1.0.0"
+last_updated: "2025-02-11"
+project: "aios-lab"
+
+# Architecture knowledge
+architecture:
+  entry_points: []              # Main entry points
+  core_modules: []              # Critical modules
+  dependencies: []              # Key dependency relationships
+
+# Module knowledge
+modules: []
+
+# Module schema
+module_schema:
+  path: string
+  purpose: string
+  dependencies: list
+  dependents: list
+  gotchas: list                 # Known issues/quirks
+  tips: list                    # Usage tips
+
+# Function/API knowledge
+apis: []
+
+# API schema
+api_schema:
+  id: "CK-NNN"
+  path: string
+  name: string
+  purpose: string
+  parameters: list
+  gotchas: list
+  deprecated: boolean
+  replacement: string | null
+  confidence: float
+  last_validated: "YYYY-MM-DD"
+
+# Known quirks and gotchas
+quirks: []
+
+# Quirk schema
+quirk_schema:
+  id: "CK-NNN"
+  location: string
+  quirk: string
+  workaround: string
+  reason: string | null
+  confidence: float

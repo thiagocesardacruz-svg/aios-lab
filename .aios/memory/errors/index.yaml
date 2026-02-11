@@ -1,0 +1,38 @@
+# Error Archive Index
+# Managed by /institutional-memory skill
+#
+# Each error/incident is stored as a separate .md file
+# This index provides fast lookup for avoiding past mistakes
+
+version: "1.0.0"
+last_updated: "2025-02-11"
+total_entries: 0
+
+# Error severity levels
+severities:
+  - critical      # Data loss, security breach, outage
+  - high          # Major functionality broken
+  - medium        # Significant bug, workaround available
+  - low           # Minor issue
+  - near_miss     # Caught before production
+
+# Entry template
+entry_schema:
+  id: "ERR-YYYY-NNN"
+  title: string
+  date: "YYYY-MM-DD"
+  severity: string
+  root_cause: string
+  lesson: string
+  keywords: list
+  prevention: string
+  related_decisions: list
+
+# Entries (populated by skill)
+entries: []
+
+# Keyword index (auto-generated)
+keywords: {}
+
+# Lesson quick-reference (most important learnings)
+key_lessons: []
