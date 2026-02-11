@@ -1,0 +1,360 @@
+# Skill Auto-Routing Registry
+# Central registry of skills that support automatic invocation
+#
+# Governance: OPT-IN - Only skills listed here with auto_invoke: true are auto-routed
+# Version: 1.0.0
+# Last Updated: 2025-02-11
+
+version: "1.0.0"
+governance: opt-in
+default_auto_invoke: false
+
+# =============================================================================
+# REGISTERED SKILLS
+# =============================================================================
+#
+# Each skill entry defines:
+#   - path: Location of SKILL.md
+#   - auto_invoke: Whether to auto-invoke (must be true to be routed)
+#   - triggers: What activates this skill
+#   - agents_allowed: Which agents can auto-invoke
+#   - priority: low | medium | high | critical
+#   - confirm_before_invoke: Ask user first? (default: false)
+#
+# =============================================================================
+
+skills:
+
+  # ---------------------------------------------------------------------------
+  # ARCHITECTURE & DESIGN
+  # ---------------------------------------------------------------------------
+
+  architect-first:
+    path: .claude/skills/architect-first/
+    auto_invoke: true
+    description: Architecture-first development - complete design before code
+    triggers:
+      keywords:
+        - "arquitetura"
+        - "architecture"
+        - "design system"
+        - "nova feature complexa"
+        - "new complex feature"
+        - "system design"
+        - "estrutura do projeto"
+        - "technical design"
+      patterns:
+        - "(?i)design.*before.*code"
+        - "(?i)architect.*first"
+        - "(?i)precis.*arquitet"
+      conditions:
+        - greenfield_feature
+        - multi_component_change
+    agents_allowed:
+      - architect
+      - dev
+      - aios-master
+    priority: critical
+    confirm_before_invoke: false
+
+  # ---------------------------------------------------------------------------
+  # RESEARCH & DISCOVERY
+  # ---------------------------------------------------------------------------
+
+  tech-search:
+    path: .claude/skills/tech-search/
+    auto_invoke: true
+    description: Deep technical research with WebSearch + WebFetch
+    triggers:
+      keywords:
+        - "pesquisar"
+        - "research"
+        - "best practice"
+        - "como fazer"
+        - "how to"
+        - "melhor forma"
+        - "best way"
+        - "documentação de"
+        - "docs for"
+      patterns:
+        - "(?i)what.*best.*way"
+        - "(?i)como.*implement"
+        - "(?i)qual.*melhor"
+        - "(?i)search.*for"
+    agents_allowed: all
+    priority: medium
+    confirm_before_invoke: false
+
+  # ---------------------------------------------------------------------------
+  # WORKFLOW & ENHANCEMENT
+  # ---------------------------------------------------------------------------
+
+  enhance-workflow:
+    path: .claude/skills/enhance-workflow/
+    auto_invoke: true
+    description: Multi-agent pipeline for feature enhancement
+    triggers:
+      keywords:
+        - "melhorar feature"
+        - "enhance feature"
+        - "evoluir projeto"
+        - "evolve project"
+        - "adicionar funcionalidade"
+        - "add functionality"
+        - "expandir sistema"
+      patterns:
+        - "(?i)improve.*existing"
+        - "(?i)melhorar.*exist"
+        - "(?i)enhance.*system"
+      conditions:
+        - existing_codebase
+        - feature_evolution
+    agents_allowed:
+      - aios-master
+      - pm
+      - architect
+      - po
+    priority: high
+    confirm_before_invoke: false
+
+  # ---------------------------------------------------------------------------
+  # MCP & INTEGRATIONS
+  # ---------------------------------------------------------------------------
+
+  mcp-builder:
+    path: .claude/skills/mcp-builder/
+    auto_invoke: true
+    description: Guide for creating MCP servers (Python/Node)
+    triggers:
+      keywords:
+        - "criar mcp"
+        - "create mcp"
+        - "build mcp server"
+        - "mcp integration"
+        - "nova integração"
+        - "fastmcp"
+        - "mcp sdk"
+      patterns:
+        - "(?i)mcp.*server"
+        - "(?i)integr.*externa"
+    agents_allowed:
+      - devops
+      - dev
+      - architect
+    priority: high
+    confirm_before_invoke: false
+
+  # ---------------------------------------------------------------------------
+  # PERFORMANCE & OPTIMIZATION (Tier 1)
+  # ---------------------------------------------------------------------------
+
+  context-optimizer:
+    path: .claude/skills/context-optimizer/
+    auto_invoke: true
+    description: Reduce token usage via intelligent compression and lazy loading
+    triggers:
+      keywords:
+        - "otimizar contexto"
+        - "optimize context"
+        - "reduzir tokens"
+        - "reduce tokens"
+        - "contexto grande"
+        - "large context"
+        - "economizar tokens"
+        - "save tokens"
+      patterns:
+        - "(?i)context.*too.*large"
+        - "(?i)token.*optim"
+        - "(?i)comprimir.*contexto"
+    agents_allowed: all
+    priority: high
+    confirm_before_invoke: false
+
+  circuit-breaker:
+    path: .claude/skills/circuit-breaker/
+    auto_invoke: true
+    description: Prevent infinite loops, cost explosion and cascading failures
+    triggers:
+      keywords:
+        - "prevenir loop"
+        - "prevent loop"
+        - "parar execução"
+        - "stop execution"
+        - "limite de custo"
+        - "cost limit"
+        - "guardrails"
+        - "circuit breaker"
+      patterns:
+        - "(?i)infinite.*loop"
+        - "(?i)cost.*control"
+        - "(?i)stop.*if"
+        - "(?i)safeguard"
+    agents_allowed: all
+    priority: critical
+    confirm_before_invoke: false
+
+  learning-loop:
+    path: .claude/skills/learning-loop/
+    auto_invoke: true
+    description: Agents that improve with each execution through compound intelligence
+    triggers:
+      keywords:
+        - "aprender com"
+        - "learn from"
+        - "melhorar processo"
+        - "improve process"
+        - "lição aprendida"
+        - "lesson learned"
+        - "padrão de sucesso"
+        - "success pattern"
+      patterns:
+        - "(?i)what.*learned"
+        - "(?i)como.*melhorar"
+        - "(?i)next.*time"
+        - "(?i)avoid.*mistake"
+    agents_allowed: all
+    priority: high
+    confirm_before_invoke: false
+
+  # ---------------------------------------------------------------------------
+  # COMPETITIVE ADVANTAGE (Tier 2)
+  # ---------------------------------------------------------------------------
+
+  institutional-memory:
+    path: .claude/skills/institutional-memory/
+    auto_invoke: true
+    description: Accumulated organizational memory that persists across sessions
+    triggers:
+      keywords:
+        - "decisão anterior"
+        - "previous decision"
+        - "já fizemos isso"
+        - "we did this before"
+        - "histórico de"
+        - "history of"
+        - "por que decidimos"
+        - "why did we decide"
+        - "memória institucional"
+      patterns:
+        - "(?i)what.*decided.*before"
+        - "(?i)como.*resolvemos"
+        - "(?i)last.*time.*we"
+        - "(?i)remember.*when"
+    agents_allowed: all
+    priority: high
+    confirm_before_invoke: false
+
+  cost-guardian:
+    path: .claude/skills/cost-guardian/
+    auto_invoke: true
+    description: Rigorous budget control with automatic enforcement
+    triggers:
+      keywords:
+        - "custo"
+        - "cost"
+        - "budget"
+        - "orçamento"
+        - "gasto"
+        - "spending"
+        - "limite de custo"
+        - "quanto gastei"
+        - "how much spent"
+      patterns:
+        - "(?i)budget.*limit"
+        - "(?i)cost.*track"
+        - "(?i)quanto.*custa"
+        - "(?i)monitor.*spend"
+    agents_allowed: all
+    priority: critical
+    confirm_before_invoke: false
+
+  skill-composer:
+    path: .claude/skills/skill-composer/
+    auto_invoke: true
+    description: Combine multiple skills into complex orchestrated workflows
+    triggers:
+      keywords:
+        - "combinar skills"
+        - "combine skills"
+        - "workflow de skills"
+        - "skill pipeline"
+        - "múltiplas skills"
+        - "multiple skills"
+        - "orquestrar skills"
+        - "orchestrate skills"
+      patterns:
+        - "(?i)use.*skills.*together"
+        - "(?i)chain.*skills"
+        - "(?i)pipeline.*skills"
+        - "(?i)sequencia.*skills"
+    agents_allowed:
+      - aios-master
+      - architect
+      - pm
+    priority: medium
+    confirm_before_invoke: false
+
+  # ---------------------------------------------------------------------------
+  # META-SKILLS (User-Invocable Only)
+  # ---------------------------------------------------------------------------
+
+  skill-creator:
+    path: .claude/skills/skill-creator/
+    auto_invoke: false  # Meta-skill - only user should invoke
+    description: Create or update Claude Code skills
+    triggers:
+      keywords: []
+    agents_allowed:
+      - aios-master
+    priority: low
+    confirm_before_invoke: true  # Always ask before creating skills
+
+# =============================================================================
+# PENDING REGISTRATION (Skills to create)
+# =============================================================================
+#
+# These skills are recommended but not yet created. When created via
+# /skill-creator, they should be added to this registry.
+#
+# - story-implement: Story implementation pipeline (triggers: "implement story")
+# - supabase-ops: Supabase operations (triggers: "migration", "rls policy")
+# - pr-workflow: PR creation workflow (triggers: "create pr", "pull request")
+# - debug-assist: Debugging assistant (triggers: "debug", "fix bug")
+# - code-review: Code review checklist (triggers: "review", "code review")
+#
+# =============================================================================
+
+# =============================================================================
+# ROUTING RULES
+# =============================================================================
+
+routing_rules:
+  # If multiple skills match, use priority order
+  priority_order:
+    - critical
+    - high
+    - medium
+    - low
+
+  # Minimum confidence to auto-invoke (future use)
+  min_confidence: 0.7
+
+  # Max skills to invoke per request
+  max_skills_per_request: 1
+
+  # Global excludes - never auto-invoke for these patterns
+  global_excludes:
+    - "(?i)don't use skill"
+    - "(?i)manual only"
+    - "(?i)sem skill"
+    - "(?i)without skill"
+
+# =============================================================================
+# METADATA
+# =============================================================================
+
+metadata:
+  created: "2025-02-11"
+  created_by: aios-master
+  purpose: Central registry for skill auto-routing
+  documentation: .claude/rules/skill-auto-routing.md

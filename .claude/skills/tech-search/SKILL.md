@@ -5,6 +5,28 @@ description: |
   Pipeline: Query > Decompose > Parallel Search (Haiku) > Evaluate > Synthesize > Document.
   Zero external dependencies. MCPs optional.
   Salva em docs/research/{YYYY-MM-DD}-{slug}/.
+
+# Auto-routing configuration (opt-in)
+auto_invoke: true
+triggers:
+  keywords:
+    - "pesquisar"
+    - "research"
+    - "best practice"
+    - "como fazer"
+    - "how to"
+    - "melhor forma"
+    - "best way"
+    - "documentação de"
+    - "docs for"
+  patterns:
+    - "(?i)what.*best.*way"
+    - "(?i)como.*implement"
+    - "(?i)qual.*melhor"
+    - "(?i)search.*for"
+agents_allowed: all
+priority: medium
+confirm_before_invoke: false
 ---
 
 # Tech Search

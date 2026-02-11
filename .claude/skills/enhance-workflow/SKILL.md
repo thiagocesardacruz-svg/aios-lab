@@ -11,6 +11,29 @@ description: |
 
   Use quando: planejar melhorias em projetos existentes, adicionar features complexas,
   ou quando precisar de analise cross-funcional antes de implementar.
+
+# Auto-routing configuration (opt-in)
+auto_invoke: true
+triggers:
+  keywords:
+    - "melhorar feature"
+    - "enhance feature"
+    - "evoluir projeto"
+    - "evolve project"
+    - "adicionar funcionalidade"
+    - "add functionality"
+    - "expandir sistema"
+  patterns:
+    - "(?i)improve.*existing"
+    - "(?i)melhorar.*exist"
+    - "(?i)enhance.*system"
+agents_allowed:
+  - aios-master
+  - pm
+  - architect
+  - po
+priority: high
+confirm_before_invoke: false
 ---
 
 # Enhance Workflow

@@ -49,13 +49,39 @@ Agents (Execução de tasks)
 
 ## Skills
 
-| Skill | Descrição |
-|-------|-----------|
-| `/architect-first` | Desenvolvimento architecture-first: design completo antes de código |
-| `/enhance-workflow` | Pipeline multi-agente: Discovery → Research → Roundtable → Epic |
-| `/tech-search` | Deep research técnico com WebSearch + WebFetch |
-| `/mcp-builder` | Guia para criar MCP servers (FastMCP/Python ou MCP SDK/Node) |
-| `/skill-creator` | Criar ou atualizar skills do Claude Code |
+Skills extend agent capabilities with specialized workflows. Some skills support **auto-routing** (agents invoke automatically when needed).
+
+### Core Skills
+
+| Skill | Descrição | Auto-Invoke | Priority |
+|-------|-----------|-------------|----------|
+| `/architect-first` | Desenvolvimento architecture-first: design completo antes de código | Yes | Critical |
+| `/enhance-workflow` | Pipeline multi-agente: Discovery → Research → Roundtable → Epic | Yes | High |
+| `/tech-search` | Deep research técnico com WebSearch + WebFetch | Yes | Medium |
+| `/mcp-builder` | Guia para criar MCP servers (FastMCP/Python ou MCP SDK/Node) | Yes | High |
+| `/skill-creator` | Criar ou atualizar skills do Claude Code | No | - |
+
+### Performance & Optimization (Tier 1)
+
+| Skill | Descrição | Auto-Invoke | Priority |
+|-------|-----------|-------------|----------|
+| `/context-optimizer` | Reduz tokens via compressão inteligente e lazy loading (-50% tokens) | Yes | High |
+| `/circuit-breaker` | Previne loops infinitos, custo descontrolado e falhas em cascata | Yes | Critical |
+| `/learning-loop` | Agentes que melhoram a cada execução (compound intelligence) | Yes | High |
+
+### Competitive Advantage (Tier 2)
+
+| Skill | Descrição | Auto-Invoke | Priority |
+|-------|-----------|-------------|----------|
+| `/institutional-memory` | Memória organizacional acumulada que persiste entre sessões | Yes | High |
+| `/cost-guardian` | Controle rigoroso de budget com enforcement automático | Yes | Critical |
+| `/skill-composer` | Combina múltiplas skills em workflows complexos orquestrados | Yes | Medium |
+
+### Skill Auto-Routing
+
+Agents automatically invoke skills when task patterns match. See `.claude/rules/skill-auto-routing.md` for rules and `.claude/skills/_registry.yaml` for registered skills.
+
+**Governance:** Opt-in - skills must declare `auto_invoke: true` in frontmatter to be auto-routed.
 
 ## Repository Structure
 
