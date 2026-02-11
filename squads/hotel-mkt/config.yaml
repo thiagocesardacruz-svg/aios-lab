@@ -1,0 +1,306 @@
+# ═══════════════════════════════════════════════════════════════
+# SQUAD: hotel-mkt — Marketing Hoteleiro Brasil AB
+# Version: 1.0.0
+# Created: 2026-02-10
+# Framework: AIOS Synkra v3.10
+# ═══════════════════════════════════════════════════════════════
+
+squad:
+  name: hotel-mkt
+  display_name: "Hotel Marketing Brasil AB"
+  version: "1.0.0"
+  domain: "Marketing Digital para Hotelaria e Turismo"
+  description: |
+    Squad especializado em marketing digital para hotéis e pousadas
+    do Brasil, focado no público classe AB que viaja por lazer.
+    Opera com DNA triplo: Hormozi (conversão) + Conley (hospitalidade)
+    + Schrager (desejo visual). Cobre o ciclo completo desde pesquisa
+    de tendências até fidelização pós-estadia.
+
+  target_audience:
+    demographics: "Classe AB brasileira, 25-55 anos"
+    psychographics: "Viajantes que buscam experiências, status, descanso, romance, aventura"
+    behavior: "Pesquisam no Google/Instagram, reservam via OTA ou WhatsApp, compartilham experiências"
+
+  philosophy: |
+    "Não vendemos quartos. Vendemos sonhos, memórias e sentimentos."
+    Clone minds > create bots.
+    Hotelaria vende expectativa — o cliente paga antes de ver.
+
+  keywords:
+    - hotel marketing
+    - hospitality marketing
+    - tourism marketing Brazil
+    - direct booking optimization
+    - OTA commission reduction
+    - travel content creation
+    - hotel reputation management
+    - UGC hospitality
+    - guest lifecycle marketing
+    - seasonal campaigns hotels
+
+# ═══════════════════════════════════════════════════════════════
+# MIND DNA SOURCES
+# ═══════════════════════════════════════════════════════════════
+
+mind_dna:
+  primary:
+    - name: "Alex Hormozi"
+      weight: 0.50
+      contribution: "Frameworks de conversão, ofertas, ads, copy, retenção"
+      frameworks:
+        - "Grand Slam Offer"
+        - "Value Equation"
+        - "GOATed Ads (50×3×1)"
+        - "Hook-Meat-CTA"
+        - "Proof > Promise > Plan"
+        - "Core Four Lead Generation"
+        - "4 Pillars of Nurture"
+        - "LTV:CAC 3:1"
+        - "Rule of 100"
+        - "70-20-10 Testing"
+
+    - name: "Chip Conley"
+      weight: 0.30
+      contribution: "Alma da hospitalidade, jornada emocional, identity refreshment"
+      frameworks:
+        - "Peak Pyramid (Survival → Success → Transformation)"
+        - "Customer Transformation Pyramid"
+        - "5 Adjectives Brand Identity"
+        - "Identity Refreshment"
+        - "Psychographics Over Demographics"
+        - "H2H (Human-to-Human)"
+        - "Unrecognized Needs Discovery"
+        - "Emotional Equations"
+
+    - name: "Ian Schrager"
+      weight: 0.20
+      contribution: "Desejo visual, atmosfera, FOMO, hotel as theater"
+      frameworks:
+        - "Hotel as Theater"
+        - "Lobby as Marketing Engine"
+        - "Velvet Rope (FOMO Creation)"
+        - "Democratization of Luxury"
+        - "Design as Marketing Tool"
+        - "Media Multiplier Effect"
+        - "Visual Storytelling"
+
+  complementary:
+    - name: "Neil Patel"
+      focus: "SEO anti-OTA, content multiplication"
+    - name: "PMWeb"
+      focus: "CRM/dados, lifecycle automation, RFM model"
+    - name: "Mapie"
+      focus: "WhatsApp conversion, hospitalidade brasileira"
+    - name: "Tribuzana"
+      focus: "Social media hoteleiro, Growth Flywheel"
+    - name: "Propeller"
+      focus: "Performance marketing, metasearch"
+    - name: "O'Rourke"
+      focus: "Reputation management, direct booking"
+
+# ═══════════════════════════════════════════════════════════════
+# AGENT REGISTRY
+# ═══════════════════════════════════════════════════════════════
+
+agents:
+  tier_0:
+    - id: hotel-mkt-chief
+      name: "Hotel Marketing Chief"
+      file: agents/hotel-mkt-chief.md
+      role: orchestrator
+      description: "Orquestra todo o squad, diagnostica, roteia demandas"
+
+  tier_1:
+    - id: hotel-trend-hunter
+      name: "Trend Hunter"
+      file: agents/hotel-trend-hunter.md
+      role: strategist
+      description: "Pesquisa tendências, buscas, sazonalidade, destinos"
+
+    - id: hotel-offer-architect
+      name: "Offer Architect"
+      file: agents/hotel-offer-architect.md
+      role: strategist
+      description: "Engenheiro de ofertas e pacotes irresistíveis"
+
+    - id: hotel-guest-strategist
+      name: "Guest Strategist"
+      file: agents/hotel-guest-strategist.md
+      role: strategist
+      description: "Estrategista da jornada emocional do hóspede"
+
+  tier_2:
+    - id: hotel-copywriter
+      name: "Copywriter"
+      file: agents/hotel-copywriter.md
+      role: executor
+      description: "Copy emocional para todos os canais"
+
+    - id: hotel-social-creator
+      name: "Social Creator"
+      file: agents/hotel-social-creator.md
+      role: executor
+      description: "Conteúdo Instagram, Reels, TikTok, blog"
+
+    - id: hotel-ads-specialist
+      name: "Ads Specialist"
+      file: agents/hotel-ads-specialist.md
+      role: executor
+      description: "Campanhas Meta, Google, Bing, TikTok Ads"
+
+    - id: hotel-email-maestro
+      name: "Email Maestro"
+      file: agents/hotel-email-maestro.md
+      role: executor
+      description: "Sequências de email lifecycle completo"
+
+    - id: hotel-seo-architect
+      name: "SEO Architect"
+      file: agents/hotel-seo-architect.md
+      role: executor
+      description: "SEO para competir com OTAs na busca"
+
+    - id: hotel-visual-producer
+      name: "Visual Producer"
+      file: agents/hotel-visual-producer.md
+      role: executor
+      description: "Produção visual com Nano Banana (Google) e DALL-E (OpenAI)"
+
+  tier_3:
+    - id: hotel-reputation-guardian
+      name: "Reputation Guardian"
+      file: agents/hotel-reputation-guardian.md
+      role: specialist
+      description: "Gerencia TripAdvisor, Google Reviews, reputação online"
+
+    - id: hotel-ugc-curator
+      name: "UGC Curator"
+      file: agents/hotel-ugc-curator.md
+      role: specialist
+      description: "Incentiva e curadoria de conteúdo de hóspedes"
+
+    - id: hotel-direct-booking
+      name: "Direct Booking Specialist"
+      file: agents/hotel-direct-booking.md
+      role: specialist
+      description: "Conversão direta, anti-OTA, WhatsApp, Pix"
+
+    - id: hotel-pr-advertorial
+      name: "PR & Advertorial"
+      file: agents/hotel-pr-advertorial.md
+      role: specialist
+      description: "Matérias, advertoriais, native ads em sites de turismo"
+
+# ═══════════════════════════════════════════════════════════════
+# WORKFLOWS
+# ═══════════════════════════════════════════════════════════════
+
+workflows:
+  - id: wf-seasonal-campaign
+    file: workflows/wf-seasonal-campaign.yaml
+    description: "Campanha sazonal completa (Carnaval, Réveillon, Férias)"
+    phases: 7
+    agents_involved: all
+
+  - id: wf-email-lifecycle
+    file: workflows/wf-email-lifecycle.yaml
+    description: "Ciclo completo de email do hóspede"
+    phases: 5
+    agents_involved: [hotel-email-maestro, hotel-copywriter, hotel-reputation-guardian, hotel-guest-strategist]
+
+  - id: wf-content-machine
+    file: workflows/wf-content-machine.yaml
+    description: "Produção contínua de conteúdo multi-canal"
+    phases: 4
+    agents_involved: [hotel-trend-hunter, hotel-social-creator, hotel-copywriter, hotel-ugc-curator]
+
+  - id: wf-paid-ads-scale
+    file: workflows/wf-paid-ads-scale.yaml
+    description: "Escalar ads de 5 para 150+ variações"
+    phases: 5
+    agents_involved: [hotel-ads-specialist, hotel-copywriter, hotel-trend-hunter, hotel-direct-booking]
+
+  - id: wf-direct-booking-funnel
+    file: workflows/wf-direct-booking-funnel.yaml
+    description: "Funil anti-OTA completo"
+    phases: 6
+    agents_involved: [hotel-direct-booking, hotel-seo-architect, hotel-ads-specialist, hotel-email-maestro]
+
+  - id: wf-reputation-engine
+    file: workflows/wf-reputation-engine.yaml
+    description: "Sistema de reviews + recovery"
+    phases: 4
+    agents_involved: [hotel-reputation-guardian, hotel-ugc-curator, hotel-email-maestro]
+
+  - id: wf-advertorial-seeding
+    file: workflows/wf-advertorial-seeding.yaml
+    description: "Matérias em sites de turismo"
+    phases: 4
+    agents_involved: [hotel-pr-advertorial, hotel-trend-hunter, hotel-seo-architect, hotel-copywriter]
+
+  - id: wf-visual-production
+    file: workflows/wf-visual-production.yaml
+    description: "Pipeline de produção visual com IA (Nano Banana + DALL-E)"
+    phases: 6
+    agents_involved: [hotel-visual-producer, hotel-social-creator, hotel-mkt-chief, hotel-ads-specialist]
+
+# ═══════════════════════════════════════════════════════════════
+# EXCLUSIVE FRAMEWORKS
+# ═══════════════════════════════════════════════════════════════
+
+exclusive_frameworks:
+  emotional_value_equation:
+    name: "Emotional Value Equation"
+    formula: "Valor = (Sonho × Certeza × Identidade) / (Esforço + Tempo + Risco)"
+    sources: ["Hormozi (Value Equation)", "Conley (Identity Refreshment)"]
+
+  theater_content:
+    name: "Theater Content Framework"
+    formula: "Conteúdo = Atmosfera (Schrager) + Hook-Retain-Reward (Hormozi)"
+    description: "Capturar o SENTIMENTO + Estrutura que CONVERTE"
+
+  direct_booking_funnel:
+    name: "Direct Booking Funnel (Anti-OTA)"
+    formula: "SEO/Social → WhatsApp/AI → Qualifica → Oferta → Pix → Reserva"
+    target: "60%+ reservas diretas"
+
+  reputation_revenue:
+    name: "Reputation = Revenue"
+    formula: "+1 estrela TripAdvisor = +5-9% receita"
+    kpis: ["MRR 95%+", "Resposta <48h", "Review Generation"]
+
+  guest_transformation:
+    name: "Guest Transformation Journey"
+    formula: "Expectativa → Desejo → Necessidade Não-Reconhecida → EVANGELISTA"
+    source: "Conley (Customer Transformation Pyramid)"
+
+# ═══════════════════════════════════════════════════════════════
+# QUALITY STANDARDS
+# ═══════════════════════════════════════════════════════════════
+
+quality:
+  mode: quality
+  agent_min_lines: 500
+  workflow_min_lines: 300
+  required_sections:
+    - voice_dna
+    - thinking_dna
+    - output_examples  # min 3
+    - anti_patterns
+    - completion_criteria
+    - handoff_to
+
+# ═══════════════════════════════════════════════════════════════
+# KPIs DO SQUAD
+# ═══════════════════════════════════════════════════════════════
+
+kpis:
+  direct_booking_ratio: "60%+ (vs OTA)"
+  ltv_cac_ratio: "3:1 mínimo"
+  review_response_rate: "95%+"
+  email_open_rate: "25%+"
+  ad_variations_per_campaign: "150+"
+  content_pieces_per_week: "20+"
+  whatsapp_conversion_rate: "25-40%"
+  organic_traffic_growth: "20-35% em 6 meses"

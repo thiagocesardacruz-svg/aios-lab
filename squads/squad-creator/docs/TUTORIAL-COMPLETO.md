@@ -1,327 +1,458 @@
-# Tutorial Completo
+# Tutorial Completo: Criando um Squad do Zero
 
-> Guia pratico passo a passo do squad-creator v2.6
-> Todas as funcionalidades principais com exemplos reais
-> Ultima atualizacao: 2026-02-04
+> **Objetivo:** Acompanhe passo a passo a criação de um squad real, vendo exatamente o que acontece em cada etapa.
 
----
-
-## Pre-requisitos
-
-Antes de comecar, verifique que voce tem:
-
-- Synkra AIOS v2.1.0 ou superior instalado
-- Acesso ao repositorio com o squad-creator em `squads/squad-creator/`
-- Familiaridade basica com comandos de agente (prefixo `*`) e ativacao de agente (prefixo `@`)
-
-Se voce nunca usou o AIOS antes, recomendo ler o [POR-ONDE-COMECAR.md](./POR-ONDE-COMECAR.md) primeiro.
+> **Nota:** Este tutorial usa copywriting como exemplo ilustrativo. Substitua pelo seu domínio de interesse (marketing, vendas, legal, finanças, etc.). Os experts encontrados serão específicos do domínio escolhido.
 
 ---
 
-## 1. Criando seu primeiro squad com *create-squad
+## O Cenário
 
-O comando `*create-squad` gera a estrutura completa de um squad novo, incluindo diretorios, manifesto YAML e arquivos base.
+Vamos criar um **squad de copywriting** usando o modo **YOLO** (sem materiais).
 
-### Passo 1: Ativar o squad-creator
+> **[Exemplo: Copywriting]** - O mesmo processo funciona para qualquer domínio.
 
+**Por que YOLO?**
+- É mais rápido para aprender
+- Não precisa ter livros/PDFs
+- Você pode melhorar depois
+
+---
+
+## Passo 1: Ativar o Squad Creator
+
+**O que você digita:**
 ```
 @squad-creator
 ```
 
-O agente Craft vai cumprimentar voce e mostrar os comandos disponiveis. Aguarde o prompt.
-
-### Passo 2: Criar o squad
-
+**O que você vê:**
 ```
-*create-squad meu-primeiro-squad
+🎨 Squad Architect ativado!
+
+Sou especialista em criar squads de agentes baseados em elite minds reais.
+
+Comandos disponíveis:
+• *create-squad - Criar novo squad
+• *clone-mind {name} - Clonar expert específico
+• *validate-squad {name} - Validar squad existente
+• *help - Ver todos os comandos
+
+Como posso ajudar?
 ```
-
-O agente vai solicitar informacoes interativamente (elicit=true):
-
-```
-Craft: Vamos criar o squad "meu-primeiro-squad". Preciso de algumas informacoes:
-
-1. Descricao do squad: (descreva o proposito em 1-2 frases)
-> Um squad para automatizar o processo de onboarding de novos desenvolvedores
-
-2. Dominio principal: (area de atuacao)
-> DevOps / Onboarding
-
-3. Agentes necessarios: (quantos agentes e quais papeis)
-> 2 agentes: onboarding-guide (guia de novos devs) e environment-setup (configuracao de ambiente)
-```
-
-### Saida esperada
-
-Apos responder as perguntas, o agente gera a seguinte estrutura:
-
-```
-squads/meu-primeiro-squad/
-  squad.yaml              # Manifesto do squad
-  agents/
-    onboarding-guide.md   # Definicao do agente guia
-    environment-setup.md  # Definicao do agente de setup
-  tasks/                  # Diretorio para tarefas (vazio inicialmente)
-  workflows/              # Diretorio para workflows
-  checklists/             # Diretorio para checklists
-  data/                   # Diretorio para dados e registros
-```
-
-O arquivo `squad.yaml` gerado tera a versao, componentes declarados e configuracoes iniciais.
-
-### Passo 3: Verificar a criacao
-
-```
-*validate-squad meu-primeiro-squad
-```
-
-O validador vai checar se todos os arquivos declarados no manifesto existem em disco e se o YAML e valido. Na primeira validacao, e normal receber avisos sobre tarefas e checklists vazios.
 
 ---
 
-## 2. Desenhando um squad a partir de documentacao com *design-squad
+## Passo 2: Solicitar o Squad
 
-O comando `*design-squad` e mais sofisticado que o `*create-squad`. Ele analisa documentacao existente (PRDs, requisitos, processos) para projetar a composicao ideal do squad.
-
-### Passo 1: Ativar o squad-architect
-
+**O que você digita:**
 ```
-@squad-creator:squad-architect
+Quero um squad de copywriting
 ```
 
-O Atlas (Estrategista) sera ativado.
+**O que acontece:**
 
-### Passo 2: Executar o design
-
-```
-*design-squad --docs ./docs/prd/onboarding-system-prd.md
-```
-
-### O que acontece internamente
-
-1. Atlas le o documento de requisitos completo
-2. Identifica os dominios de competencia necessarios
-3. Mapeia as tarefas que precisam ser executadas
-4. Propoe uma composicao de agentes baseada nas tarefas
-5. Sugere ferramentas necessarias
-6. Gera um blueprint de squad
-
-### Saida esperada
+O Squad Architect identifica o domínio e faz uma pergunta inicial:
 
 ```
-Atlas: Analise do PRD concluida. Proposta de composicao:
-
-Squad: onboarding-system
-Agentes propostos:
-  1. welcome-bot (Guia) - Tarefas: boas-vindas, tour de ferramentas, FAQ interativo
-  2. env-provisioner (Engenheiro) - Tarefas: setup IDE, config repositorios, acesso CI/CD
-  3. mentor-matcher (Analista) - Tarefas: matching de mentor, agendamento, follow-up
-
-Tarefas identificadas: 9
-Workflows sugeridos: 2 (wf-onboard-new-dev, wf-mentor-assignment)
-Ferramentas recomendadas: GitHub CLI, Slack API, Jira API
-
-Deseja que eu gere o squad a partir deste blueprint? (sim/nao)
+┌─────────────────────────────────────────────────────────────────┐
+│ PRE-FLIGHT: CRIAÇÃO DE SQUAD                                    │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                 │
+│ Vou criar um squad de COPYWRITING.                              │
+│                                                                 │
+│ Para máxima qualidade, você teria:                              │
+│ • Livros dos experts (PDFs, ebooks)                             │
+│ • Transcrições de cursos                                        │
+│ • Entrevistas/podcasts                                          │
+│                                                                 │
+│ Como quer executar?                                             │
+│                                                                 │
+│ 🚀 YOLO    - Não tenho materiais (60-75% fidelidade)           │
+│ 💎 QUALITY - Tenho livros/PDFs (85-95% fidelidade)             │
+│ 🔀 HYBRID  - Tenho materiais de alguns experts                  │
+│                                                                 │
+└─────────────────────────────────────────────────────────────────┘
 ```
 
-Respondendo "sim", o Atlas delega para o Craft gerar os arquivos.
+**O que você responde:**
+```
+YOLO
+```
 
 ---
 
-## 3. Clonando uma mente com *clone-mind
+## Passo 3: Pesquisa de Elite Minds
 
-O Mind Cloning e uma das funcionalidades mais poderosas do v2.6. Ele cria uma persona de agente baseada em uma pessoa real.
+**O que acontece:**
 
-### Passo 1: Ativar o Mirror
-
-```
-@squad-creator:oalanicolas
-```
-
-### Passo 2: Preparar as fontes
-
-Voce precisa de material escrito pela pessoa ou sobre ela. Tipos aceitos:
-
-- Artigos de blog ou posts no LinkedIn
-- Transcricoes de reunioes ou apresentacoes
-- Registros de decisoes (ADRs)
-- Threads no Twitter/X
-- Entrevistas gravadas (texto)
-
-Coloque os arquivos em um diretorio acessivel, por exemplo: `./sources/joao/`
-
-### Passo 3: Executar o clone (modo YOLO)
+O sistema pesquisa automaticamente os melhores experts do domínio:
 
 ```
-*clone-mind --person "Joao Silva" --mode yolo --sources ["./sources/joao/linkedin-posts.md", "./sources/joao/meeting-notes.md"]
+🔍 Pesquisando elite minds em copywriting...
+
+Iteração 1/3: Buscando experts reconhecidos...
+  ✓ Gary Halbert - "The Boron Letters", A-pile method
+  ✓ Eugene Schwartz - "Breakthrough Advertising", awareness levels
+  ✓ Dan Kennedy - "No B.S. Direct Marketing"
+
+Iteração 2/3: Devil's advocate - questionando seleção...
+  ✓ Claude Hopkins incluído - "Scientific Advertising" (fundamental)
+  ✓ David Ogilvy incluído - "Ogilvy on Advertising" (branding + DR)
+
+Iteração 3/3: Validando frameworks documentados...
+  ✓ Todos têm frameworks próprios documentados
+  ✓ Todos têm skin in the game (resultados reais)
+
+🎯 5 elite minds encontrados
 ```
 
-### O que acontece internamente
-
-1. **Validacao de fontes**: Mirror verifica se os arquivos existem e tem conteudo util. Minimo de 2 fontes para YOLO.
-2. **Extracao de Voice DNA**: Analisa vocabulario, tom, estrutura de frases, marcadores culturais e catchphrases.
-3. **Extracao de Thinking DNA**: Analisa frameworks de decisao, modelos mentais, vieses cognitivos e prioridades.
-4. **Merge**: Combina Voice DNA e Thinking DNA em um perfil unificado. No modo YOLO, conflitos sao resolvidos automaticamente usando o sinal de maior confianca.
-5. **Smoke Test**: Roda 3 cenarios de teste (escrita de email, tomada de decisao, resolucao de conflito) para validar a fidelidade do perfil.
-
-### Saida esperada
+**O que você vê:**
 
 ```
-Mirror: Mind Clone concluido para "Joao Silva"
+┌─────────────────────────────────────────────────────────────────┐
+│ ELITE MINDS ENCONTRADOS                                         │
+├──────────────────┬──────────┬───────────────────────────────────┤
+│ Mind             │ Tier     │ Framework Principal               │
+├──────────────────┼──────────┼───────────────────────────────────┤
+│ Eugene Schwartz  │ Tier 0   │ 5 Levels of Awareness             │
+│ Gary Halbert     │ Tier 1   │ A-Pile Method                     │
+│ Dan Kennedy      │ Tier 1   │ No B.S. Direct Marketing          │
+│ Claude Hopkins   │ Tier 1   │ Scientific Advertising            │
+│ David Ogilvy     │ Tier 1   │ Ogilvy on Advertising             │
+└──────────────────┴──────────┴───────────────────────────────────┘
 
-Fidelity Score: 68% (modo YOLO)
+Criar agents baseados nestes minds? [sim/não/ajustar]
+```
+
+**Por que Tier 0 e Tier 1?**
+- **Eugene Schwartz é Tier 0** porque seu framework (awareness levels) serve para DIAGNOSTICAR antes de escrever
+- **Os outros são Tier 1** porque são executores - escrevem copy diretamente
+
+**O que você responde:**
+```
+sim
+```
+
+---
+
+## Passo 4: Coleta de Fontes (Automática)
+
+**O que acontece:**
+
+Para cada mind, o sistema coleta fontes automaticamente:
+
+```
+📚 Coletando fontes para Gary Halbert...
+
+Buscando fontes primárias (Tier 1):
+  ✓ "The Boron Letters" - livro completo
+  ✓ Entrevista com John Carlton (2h)
+  ✓ "The Gary Halbert Letter" - newsletters
+  ✓ Seminário "Hurricane Marketing" - transcrição
+
+Buscando fontes secundárias (Tier 2):
+  ✓ "The Halbert Copywriting Method" - análise
+  ✓ Bond Halbert podcast sobre o pai
+
+📊 Resultado: 12 fontes (6 Tier 1, 4 Tier 2, 2 Tier 3)
+✅ SOURCE_QUALITY: PASS (12/10 fontes, 6/5 Tier 1)
+
+[Repetindo para cada mind...]
+```
+
+**Se falhar:**
+```
+⚠️ Eugene Schwartz: Apenas 4 fontes encontradas
+   Mínimo necessário: 10
+
+   Opções:
+   1. Prosseguir com qualidade reduzida (não recomendado)
+   2. Fornecer materiais próprios
+   3. Remover este mind do squad
+
+   Sua escolha: ___
+```
+
+---
+
+## Passo 5: Extração de DNA (Automática)
+
+**O que acontece:**
+
+Para cada mind, o sistema extrai Voice DNA e Thinking DNA:
+
+```
+🧬 Extraindo DNA de Gary Halbert...
 
 Voice DNA:
-  - Tom: Pragmatico, direto, com humor sutil
-  - Vocabulario: Predominancia de termos tecnicos em ingles, mistura com portugues informal
-  - Marcadores culturais: Brasileiro, tech culture, refs a startups e agile
+  ✓ Power words: "pile of money", "starving crowd", "A-pile"
+  ✓ Signature phrases: "The answer is in the market"
+  ✓ Tom: Casual (20/100), Direto (90/100)
+  ✓ Anti-patterns: Nunca usa jargão corporativo
 
 Thinking DNA:
-  - Framework dominante: Data-driven com validacao por pares
-  - Vies detectado: Otimismo moderado, preferencia por acao rapida
-  - Prioridades: Velocidade > Perfeicao > Custo
+  ✓ Framework: A-Pile Method (4 steps)
+  ✓ Heurísticas: "Market > Copy", "When in doubt, test"
+  ✓ Red flags: "No proven market", "Complicated offer"
 
-Smoke Test:
-  Cenario 1 (Email): PASS - 72% match
-  Cenario 2 (Decisao): PASS - 65% match
-  Cenario 3 (Conflito): PASS - 67% match
+📊 Voice Score: 8.5/10
+📊 Thinking Score: 8.2/10
 
-Perfil salvo em: squads/squad-creator/data/minds/joao-silva.yaml
-```
-
-### Passo 4: Modo QUALITY (opcional)
-
-Para maior fidelidade, junte pelo menos 5 fontes diversas e execute:
-
-```
-*clone-mind --person "Joao Silva" --mode quality --sources ["./sources/joao/blog-posts.md", "./sources/joao/linkedin-posts.md", "./sources/joao/meeting-notes.md", "./sources/joao/adr-decisions.md", "./sources/joao/interview-transcript.md"]
-```
-
-No modo QUALITY, o Mirror vai pausar em conflitos ambiguos e pedir sua opiniao antes de resolver.
-
----
-
-## 4. Descobrindo ferramentas com *discover-tools
-
-O Deep Tool Discovery busca em 5 canais paralelos e avalia cada ferramenta encontrada.
-
-### Passo 1: Ativar o squad-architect
-
-```
-@squad-creator:squad-architect
-```
-
-### Passo 2: Executar a descoberta
-
-```
-*discover-tools domain="web scraping" capability_gaps="Preciso extrair dados estruturados de paginas JS-rendered" constraints={"budget": "free", "license": "MIT/Apache"}
-```
-
-### O que acontece internamente
-
-O workflow `wf-discover-tools` e executado em 4 fases:
-
-1. **Fase 0 - Gap Analysis**: Mapeia o que o squad ja tem vs. o que precisa
-2. **Fase 1 - Parallel Search**: Busca em MCP Catalog, APIs, CLI, Packages e GitHub simultaneamente
-3. **Fase 2 - Evaluation**: Aplica RICE scoring, WSJF scoring, Security Gate e Social Proof Gate, e classifica em tiers
-4. **Fase 3 - Decision Matrix**: Gera a matriz final com DO NOW / DO NEXT / DO LATER / DON'T DO
-
-### Saida esperada
-
-```
-Atlas: Tool Discovery para "web scraping" concluido.
-
-| Ferramenta | Categoria | RICE | WSJF | Security | Social | Tier | Decisao |
-|------------|-----------|------|------|----------|--------|------|---------|
-| Playwright MCP | MCP | 82 | 78 | PASS | PASS | 1 | DO NOW |
-| Puppeteer | Library | 75 | 70 | PASS | PASS | 2 | DO NEXT |
-| Crawlee | Library | 68 | 65 | PASS | PASS | 2 | DO NEXT |
-| Scrapy | CLI | 60 | 55 | PASS | PASS | 3 | DO LATER |
-
-Top 3 recomendacoes:
-1. Playwright MCP - Integracao nativa com AIOS via Docker MCP
-2. Puppeteer - Ecossistema maduro, excelente para JS rendering
-3. Crawlee - Framework moderno com crawling avancado
-
-Registry atualizado: squads/squad-creator/data/tool-registry.yaml
+✅ DNA extraction completa
 ```
 
 ---
 
-## 5. Extraindo um SOP com *extract-sop
+## Passo 6: Smoke Tests (Automático)
 
-A extracao de SOPs transforma documentacao nao-estruturada em procedimentos padrao no formato SC-PE-001.
+**O que acontece:**
 
-### Passo 1: Ativar o sop-extractor
-
-```
-@squad-creator:sop-extractor
-```
-
-### Passo 2: Executar a extracao
+O sistema testa se o agent realmente se comporta como o expert:
 
 ```
-*extract-sop --source ./docs/deployment-process.md --source_type document
+🧪 Rodando Smoke Tests para {agent-1}...
+
+> **Nota:** Este exemplo usa copywriting como domínio. Substitua pelos nomes de agents do seu domínio.
+
+TEST 1: Conhecimento do Domínio
+  Prompt: "Explique o A-Pile Method"
+  ✓ Usou "starving crowd" (power word)
+  ✓ Usou "pile of money" (power word)
+  ✓ Explicou os 4 steps do método
+  ✓ Tom casual e direto
+  ✓ Sem jargão corporativo
+  → PASS (5/5)
+
+TEST 2: Tomada de Decisão
+  Prompt: "Devo vender para público geral ou nicho específico?"
+  ✓ Aplicou heurística "starving crowd first"
+  ✓ Citou importância do mercado
+  ✓ Deu resposta definitiva (não "depende")
+  ✓ Justificou com experiência
+  → PASS (4/5)
+
+TEST 3: Resposta a Objeção
+  Prompt: "Copywriting é manipulação"
+  ✓ Manteve convicção
+  ✓ Respondeu com perspectiva própria
+  ✓ Não cedeu à objeção
+  ✓ Pareceu autêntico
+  → PASS (4/5)
+
+✅ SMOKE_TEST: PASS (3/3 tests)
 ```
 
-### O que acontece internamente
-
-1. **Parsing**: O Scribe analisa o documento e extrai passos candidatos
-2. **Identificacao de passos**: Discretiza os passos, funde acoes granulares demais e divide acoes compostas
-3. **Taxonomia cognitiva**: Classifica cada passo (Remember, Understand, Apply, Analyze, Evaluate, Create)
-4. **Classificacao de executor**: Atribui Human, AI ou Hybrid para cada passo com justificativa
-5. **Estruturacao SC-PE-001**: Organiza nas 11 partes do formato padrao
-6. **Validacao**: Verifica completude e fluxo logico
-
-### Saida esperada
-
+**Se falhar:**
 ```
-Scribe: SOP extraido com sucesso.
+❌ TEST 2: Tomada de Decisão - FAIL (2/5)
 
-SOP ID: SC-PE-DEPLOY-2026-02-04
-Titulo: Deploy de Release para Producao
-Passos extraidos: 12
-Classificacao cognitiva:
-  - Remember: 3 passos (25%)
-  - Apply: 4 passos (33%)
-  - Analyze: 3 passos (25%)
-  - Evaluate: 2 passos (17%)
+   Problemas detectados:
+   - Respondeu "depende" (anti-pattern)
+   - Não citou framework específico
 
-Executor:
-  - AI: 5 passos (42%)
-  - Hybrid: 4 passos (33%)
-  - Human: 3 passos (25%)
-
-Potencial de automacao: 42% totalmente automatizavel, 33% parcialmente
-
-SOP salvo em: squads/squad-creator/data/sops/SC-PE-DEPLOY-2026-02-04.md
+   Ação: Re-trabalhando DNA...
+   [Sistema ajusta automaticamente e re-testa]
 ```
-
-### Passo 3: Validar o SOP
-
-```
-*validate-sop SC-PE-DEPLOY-2026-02-04
-```
-
-### Passo 4: Gerar blueprint de squad
-
-```
-*generate-blueprint SC-PE-DEPLOY-2026-02-04
-```
-
-Isso transforma o SOP validado em um blueprint de squad com agentes, tarefas e workflows sugeridos.
 
 ---
 
-## Proximos passos
+## Passo 7: Montagem do Squad
 
-Agora que voce completou o tutorial, recomendo:
+**O que acontece:**
 
-1. Consultar o [COMMANDS.md](./COMMANDS.md) para explorar todos os comandos disponiveis
-2. Ler o [CONCEPTS.md](./CONCEPTS.md) para aprofundar nos frameworks teoricos
-3. Revisar o [HITL-FLOW.md](./HITL-FLOW.md) para entender os pontos de controle humano
-4. Usar o [TROUBLESHOOTING.md](./TROUBLESHOOTING.md) quando encontrar problemas
+O sistema cria a estrutura completa:
+
+```
+🏗️ Montando squad copy...
+
+Criando agents:
+  ✓ {agent-1}.md (Tier 0 - diagnóstico)
+  ✓ {agent-2}.md (Tier 1 - especialista)
+  ✓ {agent-3}.md (Tier 1 - especialista)
+  ✓ {agent-4}.md (Tier 1 - especialista)
+  ✓ {agent-5}.md (Tier 1 - especialista)
+  ✓ {squad-name}-chief.md (Orchestrator)
+
+Criando estrutura:
+  ✓ config.yaml
+  ✓ README.md
+  ✓ tasks/write-sales-page.md
+  ✓ tasks/write-headline.md
+  ✓ templates/sales-page-tmpl.md
+
+Testando integração:
+  ✓ Orchestrator roteia corretamente
+  ✓ Handoffs funcionando
+  ✓ Todos os agents respondem
+```
 
 ---
 
-*squad-creator docs v2.6.0 -- Synkra AIOS*
+## Passo 8: Aprovação Final
+
+**O que você vê:**
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│ ✅ SQUAD PRONTO: copy                                           │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                 │
+│ │ Agent           │ Status │ Quality │ Fidelity │              │
+│ │─────────────────│────────│─────────│──────────│              │
+│ │ {agent-1}       │ ✅     │ 8.5/10  │ 72%      │              │
+│ │ {agent-2}       │ ✅     │ 8.2/10  │ 75%      │              │
+│ │ {agent-3}       │ ✅     │ 7.8/10  │ 68%      │              │
+│ │ {agent-4}       │ ✅     │ 8.0/10  │ 70%      │              │
+│ │ {agent-5}       │ ✅     │ 7.5/10  │ 65%      │              │
+│ │ {squad}-chief   │ ✅     │ 8.0/10  │ N/A      │              │
+│                                                                 │
+│ Squad Score: 8.0/10                                             │
+│ Fidelity Média: 70%                                             │
+│                                                                 │
+│ Ativação: @{squad-name}                                         │
+│ Dashboard: squads/{squad-name}/docs/quality-dashboard.md        │
+│                                                                 │
+│ [✅ DEPLOY] [🔄 AJUSTAR] [❌ CANCELAR]                          │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+**O que você responde:**
+```
+DEPLOY
+```
+
+---
+
+## Passo 9: Usando o Squad
+
+**Ativar o squad:**
+```
+@{squad-name}  # e.g., @copy
+```
+
+**Resposta:**
+```
+🎯 Copy Squad ativado!
+
+Tenho 5 experts de copywriting prontos para ajudar:
+• Eugene Schwartz - Diagnóstico de awareness
+• Gary Halbert - Sales letters e A-pile
+• Dan Kennedy - Direct response
+• Claude Hopkins - Abordagem científica
+• David Ogilvy - Brand + direct response
+
+Como posso ajudar com seu copy?
+```
+
+**Pedir uma task:**
+```
+Preciso escrever uma sales page para um curso de produtividade
+```
+
+**O que acontece:**
+```
+📋 Analisando request...
+
+→ Eugene Schwartz (Tier 0): Vou diagnosticar primeiro.
+
+Qual o nível de awareness do seu público?
+1. Unaware - Não sabe que tem problema
+2. Problem-aware - Sabe o problema, não a solução
+3. Solution-aware - Conhece soluções, não seu produto
+4. Product-aware - Conhece seu produto, não decidiu
+5. Most-aware - Pronto para comprar
+
+Sua resposta: ___
+```
+
+Após responder:
+```
+✅ Classificado: Problem-aware
+
+→ Roteando para Gary Halbert (Tier 1)
+
+Gary vai usar o A-Pile Method:
+1. Identificar a "starving crowd" no mercado
+2. Encontrar o que já estão comprando
+3. Criar oferta irresistível
+4. Escrever copy que converte
+
+Vamos começar. Me conte sobre seu público...
+```
+
+---
+
+## Resumo do Fluxo
+
+```
+Tempo total: ~20 minutos
+
+Suas interações:
+1. @squad-creator ───────── Ativar
+2. "Quero squad de {domain}" ── Solicitar
+3. "YOLO" ─────────────────  Escolher modo
+4. "sim" ──────────────────  Aprovar minds
+5. "DEPLOY" ───────────────  Aprovar final
+6. @{squad-name} ──────────  Usar!
+
+Tudo mais foi automático.
+```
+
+---
+
+## Dicas para Sua Primeira Vez
+
+### Antes de começar
+- [ ] Claude Code está funcionando?
+- [ ] Você está no diretório do projeto AIOS?
+- [ ] Sabe o domínio que quer criar?
+
+### Durante a criação
+- [ ] YOLO é mais fácil para começar
+- [ ] Aceite as sugestões de minds (são boas)
+- [ ] Não se preocupe com fidelidade baixa - pode melhorar depois
+
+### Após a criação
+- [ ] Teste o squad com requests reais
+- [ ] Se algo parecer errado, use `*validate-squad`
+- [ ] Para melhorar fidelidade, forneça materiais com `*update-mind`
+
+---
+
+## Próximos Passos
+
+1. **Crie seu primeiro squad** seguindo este tutorial
+2. **Explore os comandos:** [COMMANDS.md](./COMMANDS.md)
+3. **Entenda os conceitos:** [CONCEPTS.md](./CONCEPTS.md)
+4. **Problemas?** [TROUBLESHOOTING.md](./TROUBLESHOOTING.md)
+
+---
+
+## Checklist de Sucesso
+
+Após seguir este tutorial, você deve conseguir:
+
+- [ ] Ativar o Squad Creator
+- [ ] Escolher entre YOLO/QUALITY/HYBRID
+- [ ] Aprovar elite minds sugeridos
+- [ ] Entender o que são smoke tests
+- [ ] Usar o squad criado
+- [ ] Saber onde encontrar ajuda
+
+---
+
+---
+
+## Navegação
+
+| Anterior | Atual | Próximo |
+|----------|-------|---------|
+| [POR-ONDE-COMECAR](./POR-ONDE-COMECAR.md) | **TUTORIAL-COMPLETO** | [COMMANDS](./COMMANDS.md) |
+
+**Dúvidas?** [FAQ.md](./FAQ.md) | **Erro?** [TROUBLESHOOTING.md](./TROUBLESHOOTING.md)
+
+---
+
+**Squad Creator | Tutorial Completo v1.0**
+*"Da primeira vez ao squad funcionando."*

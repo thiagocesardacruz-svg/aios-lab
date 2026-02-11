@@ -1,0 +1,1159 @@
+# ═══════════════════════════════════════════════════════════════
+# AIOS Workflow: Content Machine (Continuous Production)
+# ═══════════════════════════════════════════════════════════════
+# Squad: hotel-mkt
+# Version: 1.0.0
+# Duration: Ongoing (weekly cycles)
+# Target: 20+ high-quality pieces per week
+# DNA: Hormozi (value-first content) + Conley (emotional storytelling) + Schrager (design-forward)
+# ═══════════════════════════════════════════════════════════════
+
+workflow:
+  name: "Content Machine (Weekly Production)"
+  id: "wf-content-machine"
+  squad: "hotel-mkt"
+  version: "1.0.0"
+
+  metadata:
+    description: "Continuous content production system for omnichannel marketing (social, blog, email, ads)"
+    target_output: "20+ pieces per week (minimum)"
+    content_types:
+      - "Instagram Posts (4-5/week)"
+      - "Instagram Reels (2-3/week)"
+      - "Instagram Stories (daily)"
+      - "Facebook Posts (3-4/week)"
+      - "TikTok Videos (2-3/week)"
+      - "Blog Articles (2-3/week)"
+      - "Email Newsletter (1/week)"
+      - "UGC Curation (daily)"
+    success_metrics:
+      - "Engagement rate >8% (Instagram)"
+      - "Video views >10k/video"
+      - "Blog traffic >5k visits/month"
+      - "Email open rate >35%"
+      - "UGC collection >10 pieces/week"
+
+  inputs:
+    - name: "trend_briefing"
+      type: "document"
+      required: true
+      description: "Weekly trends from hotel-trend-hunter"
+    - name: "brand_guidelines"
+      type: "document"
+      required: true
+      description: "Voice, tone, visual identity"
+    - name: "content_calendar_template"
+      type: "spreadsheet"
+      required: true
+      description: "Weekly content planning grid"
+    - name: "guest_database"
+      type: "database"
+      required: false
+      description: "For UGC sourcing and testimonials"
+
+  outputs:
+    - name: "weekly_content_calendar"
+      type: "document"
+      description: "Planned content with topics, formats, publishing dates"
+    - name: "content_library"
+      type: "collection"
+      description: "All produced content (copy, images, videos)"
+    - name: "published_analytics"
+      type: "report"
+      description: "Weekly performance metrics and insights"
+
+  duration:
+    cycle: "1 week"
+    phases:
+      trend_input: "Monday morning (1h)"
+      content_planning: "Monday afternoon (2h)"
+      creation: "Tuesday-Thursday (6-8h total)"
+      ugc_integration: "Wednesday-Friday (2h total)"
+      publish_analyze: "Throughout week + Friday wrap (2h)"
+
+# ═══════════════════════════════════════════════════════════════
+# PHASE 1: TREND INPUT (Monday Morning)
+# ═══════════════════════════════════════════════════════════════
+
+phases:
+  - name: "Trend Input"
+    id: "phase-1-trends"
+    duration: "1 hour"
+    schedule: "Monday 9-10am"
+    agents:
+      - role: "hotel-trend-hunter"
+        responsibility: "primary"
+        tasks:
+          - "Deliver weekly trend briefing to content team"
+          - "Highlight viral topics, hashtags, formats"
+          - "Share competitor content insights"
+          - "Recommend content angles for the week"
+
+    tasks:
+      - id: "trends-001"
+        name: "Weekly Trend Briefing"
+        agent: "hotel-trend-hunter"
+        actions:
+          - "Analyze trending topics in Brazilian travel (Google Trends, Twitter, Instagram)"
+          - "Identify viral formats (e.g., 'Day in the life', 'Hidden gems', 'Behind the scenes')"
+          - "Monitor competitor content performance (top posts from 10 competitors)"
+          - "Highlight seasonal hooks (holidays, events, weather patterns)"
+          - "Recommend 5-7 content themes for the week"
+        outputs:
+          - "weekly_trend_briefing.pdf"
+        duration: "45 min"
+
+      - id: "trends-002"
+        name: "Content Team Briefing Meeting"
+        agents:
+          - "hotel-trend-hunter"
+          - "hotel-social-creator"
+          - "hotel-copywriter"
+        actions:
+          - "Present trend briefing to content team"
+          - "Discuss applicability to hotel brand"
+          - "Brainstorm content angles"
+          - "Assign trending topics to specific content pieces"
+        outputs:
+          - "trend_discussion_notes.md"
+        duration: "15 min"
+
+    checkpoint:
+      name: "Trend Briefing Complete"
+      criteria:
+        - "Briefing covers minimum 5 trend angles"
+        - "Content team aligned on priorities"
+      approvers:
+        - "hotel-trend-hunter"
+        - "hotel-social-creator"
+      output_required: true
+
+    quality_gates:
+      - metric: "Trend relevance score"
+        threshold: ">8/10"
+
+# ═══════════════════════════════════════════════════════════════
+# PHASE 2: CONTENT PLANNING (Monday Afternoon)
+# ═══════════════════════════════════════════════════════════════
+
+  - name: "Content Planning"
+    id: "phase-2-planning"
+    duration: "2 hours"
+    schedule: "Monday 2-4pm"
+    depends_on: ["phase-1-trends"]
+    agents:
+      - role: "hotel-social-creator"
+        responsibility: "primary"
+        tasks:
+          - "Build weekly content calendar"
+          - "Select formats for each piece"
+          - "Map topics to platforms"
+          - "Assign creation tasks"
+
+    tasks:
+      - id: "planning-001"
+        name: "Content Calendar Creation"
+        agent: "hotel-social-creator"
+        inputs:
+          - "weekly_trend_briefing.pdf"
+          - "content_calendar_template"
+        actions:
+          - "Fill weekly grid (Monday-Sunday)"
+          - "Plan 4-5 Instagram posts with topics and visuals"
+          - "Plan 2-3 Reels with scripts and hooks"
+          - "Plan Instagram Stories (daily themes)"
+          - "Plan 3-4 Facebook posts (repurpose + unique)"
+          - "Plan 2-3 TikToks (align with trending sounds)"
+          - "Coordinate with blog calendar (2-3 articles)"
+          - "Align with email newsletter content"
+        outputs:
+          - "weekly_content_calendar.xlsx"
+        duration: "60 min"
+
+      - id: "planning-002"
+        name: "Format & Platform Selection"
+        agent: "hotel-social-creator"
+        actions:
+          - "Choose optimal format for each topic (static, carousel, Reel, Story)"
+          - "Map content to platform strengths (Instagram for lifestyle, TikTok for entertainment)"
+          - "Plan cross-posting strategy (what works on multiple platforms)"
+          - "Ensure content variety (educational, entertaining, inspiring, promotional)"
+          - "Apply 80/20 rule (80% value, 20% promotional)"
+        outputs:
+          - "format_mapping.json"
+        duration: "30 min"
+
+      - id: "planning-003"
+        name: "Task Assignment"
+        agent: "hotel-social-creator"
+        actions:
+          - "Assign copywriting tasks to hotel-copywriter"
+          - "Assign visual/video creation to hotel-social-creator"
+          - "Flag UGC needs to hotel-ugc-curator"
+          - "Set internal deadlines (Tuesday-Thursday creation)"
+          - "Create production checklist"
+        outputs:
+          - "production_task_list.md"
+        duration: "30 min"
+
+    checkpoint:
+      name: "Calendar Approval"
+      criteria:
+        - "Calendar covers all 7 days"
+        - "Minimum 20 pieces planned"
+        - "Content aligned with brand guidelines"
+        - "Tasks assigned with clear deadlines"
+      approvers:
+        - "hotel-social-creator"
+        - "hotel-mkt-chief"
+      output_required: true
+
+    quality_gates:
+      - metric: "Content variety score"
+        threshold: ">8/10"
+      - metric: "Trend integration"
+        threshold: ">3 trending topics included"
+
+# ═══════════════════════════════════════════════════════════════
+# PHASE 3: CREATION (Tuesday-Thursday)
+# ═══════════════════════════════════════════════════════════════
+
+  - name: "Content Creation"
+    id: "phase-3-creation"
+    duration: "3 days (6-8 hours total)"
+    schedule: "Tuesday-Thursday"
+    depends_on: ["phase-2-planning"]
+    agents:
+      - role: "hotel-copywriter"
+        responsibility: "primary"
+        tasks:
+          - "Write all copy (captions, scripts, headlines)"
+          - "Create blog posts (2-3/week)"
+          - "Write email newsletter"
+      - role: "hotel-social-creator"
+        responsibility: "primary"
+        tasks:
+          - "Design static posts and carousels"
+          - "Script and film Reels/TikToks"
+          - "Create Stories templates"
+          - "Edit videos and graphics"
+
+    tasks:
+      - id: "creation-001"
+        name: "Social Copy Writing"
+        agent: "hotel-copywriter"
+        inputs:
+          - "weekly_content_calendar.xlsx"
+          - "brand_guidelines"
+        actions:
+          - "Write Instagram captions (4-5 posts, 150-300 words each)"
+          - "Write Reel/TikTok hooks and scripts (2-3 videos)"
+          - "Write Facebook post copy (3-4 posts)"
+          - "Create Stories text overlays"
+          - "Write CTAs for each piece (engage, click, book)"
+          - "Incorporate hashtags (mix of branded, trending, niche)"
+        outputs:
+          - "social_copy.json"
+        duration: "2-3 hours"
+        schedule: "Tuesday"
+
+      - id: "creation-002"
+        name: "Blog Article Writing"
+        agent: "hotel-copywriter"
+        actions:
+          - "Write 2-3 blog articles (800-1500 words each)"
+          - "Topics: travel guides, local experiences, hotel features"
+          - "Optimize for SEO (keywords, meta tags, internal links)"
+          - "Add CTAs (book now, subscribe, download guide)"
+          - "Source or create images (free stock or hotel photos)"
+        outputs:
+          - "blog_articles.md"
+        duration: "3-4 hours"
+        schedule: "Tuesday-Wednesday"
+
+      - id: "creation-003"
+        name: "Email Newsletter Writing"
+        agent: "hotel-copywriter"
+        actions:
+          - "Write weekly newsletter (500-800 words)"
+          - "Structure: intro + 3-4 content blocks + CTA"
+          - "Include: blog highlights, special offer, guest spotlight, local tip"
+          - "Personalize subject line and preview text"
+          - "Optimize for mobile reading"
+        outputs:
+          - "email_newsletter.html"
+        duration: "1-2 hours"
+        schedule: "Wednesday"
+
+      - id: "creation-004"
+        name: "Static Post Design"
+        agent: "hotel-social-creator"
+        inputs:
+          - "social_copy.json"
+          - "brand_guidelines"
+        actions:
+          - "Design 4-5 Instagram feed posts (1080x1080px)"
+          - "Create carousel posts (up to 10 slides)"
+          - "Maintain brand visual identity (colors, fonts, style)"
+          - "Add text overlays if applicable"
+          - "Export in optimal format (JPG/PNG)"
+        outputs:
+          - "static_posts.zip"
+        duration: "2-3 hours"
+        schedule: "Tuesday-Wednesday"
+
+      - id: "creation-005"
+        name: "Video Production (Reels/TikTok)"
+        agent: "hotel-social-creator"
+        actions:
+          - "Script 2-3 videos (15-60 seconds each)"
+          - "Film content (hotel tours, guest experiences, behind-scenes)"
+          - "Edit with trending music/sounds"
+          - "Add captions/subtitles"
+          - "Apply brand color grading"
+          - "Export in platform specs (9:16 vertical)"
+        outputs:
+          - "video_content.zip"
+        duration: "3-4 hours"
+        schedule: "Wednesday-Thursday"
+
+      - id: "creation-006"
+        name: "Stories Templates"
+        agent: "hotel-social-creator"
+        actions:
+          - "Create 7 Stories templates (one per day)"
+          - "Design interactive elements (polls, quizzes, sliders)"
+          - "Plan boomerangs, time-lapses, BTS clips"
+          - "Add brand stickers and GIFs"
+        outputs:
+          - "stories_templates.zip"
+        duration: "1 hour"
+        schedule: "Thursday"
+
+    checkpoint:
+      name: "Content Review"
+      criteria:
+        - "All planned content created"
+        - "Copy follows brand voice"
+        - "Visuals match brand guidelines"
+        - "Videos have captions for accessibility"
+        - "CTAs clear and compelling"
+      approvers:
+        - "hotel-social-creator"
+        - "hotel-mkt-chief"
+      output_required: true
+
+    quality_gates:
+      - metric: "Content completeness"
+        threshold: "100%"
+      - metric: "Brand alignment score"
+        threshold: ">9/10"
+      - metric: "Visual quality"
+        threshold: ">8/10"
+
+# ═══════════════════════════════════════════════════════════════
+# PHASE 4: UGC INTEGRATION (Wednesday-Friday)
+# ═══════════════════════════════════════════════════════════════
+
+  - name: "UGC Integration"
+    id: "phase-4-ugc"
+    duration: "2 hours total"
+    schedule: "Wednesday-Friday"
+    depends_on: ["phase-2-planning"]
+    agents:
+      - role: "hotel-ugc-curator"
+        responsibility: "primary"
+        tasks:
+          - "Curate guest content from social media"
+          - "Request permission to repost"
+          - "Schedule UGC posts"
+          - "Feature in Stories and highlights"
+
+    tasks:
+      - id: "ugc-001"
+        name: "Content Curation"
+        agent: "hotel-ugc-curator"
+        inputs:
+          - "guest_database"
+        actions:
+          - "Monitor hashtags (#hotelname, #citytourism)"
+          - "Check tagged posts and Stories"
+          - "Review past guest Instagram accounts"
+          - "Select 10-15 high-quality UGC pieces"
+          - "Prioritize diverse content (couples, families, solo, groups)"
+        outputs:
+          - "ugc_candidates.json"
+        duration: "45 min"
+        schedule: "Wednesday"
+
+      - id: "ugc-002"
+        name: "Permission Requests"
+        agent: "hotel-ugc-curator"
+        actions:
+          - "DM guests to request repost permission"
+          - "Use standard message template (friendly, grateful)"
+          - "Offer incentive (tag + feature, future discount)"
+          - "Track responses"
+        outputs:
+          - "ugc_permissions.xlsx"
+        duration: "30 min"
+        schedule: "Wednesday-Thursday"
+
+      - id: "ugc-003"
+        name: "UGC Scheduling"
+        agent: "hotel-ugc-curator"
+        actions:
+          - "Add approved UGC to content calendar"
+          - "Schedule 3-5 UGC posts per week"
+          - "Create proper credits (tag original creator)"
+          - "Write captions highlighting guest experience"
+          - "Plan UGC Stories (daily if available)"
+        outputs:
+          - "ugc_scheduled_posts.json"
+        duration: "30 min"
+        schedule: "Thursday-Friday"
+
+      - id: "ugc-004"
+        name: "UGC Highlights"
+        agent: "hotel-ugc-curator"
+        actions:
+          - "Create Instagram Highlights for UGC (e.g., 'Guest Love')"
+          - "Feature best UGC in Stories"
+          - "Repurpose UGC for ads (with permission)"
+          - "Thank guests publicly"
+        outputs:
+          - "ugc_highlights.zip"
+        duration: "15 min"
+        schedule: "Friday"
+
+    checkpoint:
+      name: "UGC Collection Target"
+      criteria:
+        - "Minimum 10 UGC pieces collected"
+        - "Permissions secured for all usage"
+        - "Credits properly attributed"
+      approvers:
+        - "hotel-ugc-curator"
+      output_required: true
+
+    quality_gates:
+      - metric: "UGC quantity"
+        threshold: ">10 pieces/week"
+      - metric: "Permission rate"
+        threshold: ">80%"
+
+# ═══════════════════════════════════════════════════════════════
+# PHASE 5: PUBLISH & ANALYZE (Throughout Week + Friday Wrap)
+# ═══════════════════════════════════════════════════════════════
+
+  - name: "Publish & Analyze"
+    id: "phase-5-publish"
+    duration: "Throughout week + 2h Friday wrap"
+    schedule: "Monday-Sunday + Friday 4-6pm"
+    depends_on: ["phase-3-creation", "phase-4-ugc"]
+    agents:
+      - role: "hotel-social-creator"
+        responsibility: "primary"
+        tasks:
+          - "Schedule and publish content"
+          - "Monitor engagement in real-time"
+          - "Respond to comments and DMs"
+          - "Analyze weekly performance"
+
+    tasks:
+      - id: "publish-001"
+        name: "Content Scheduling"
+        agent: "hotel-social-creator"
+        inputs:
+          - "weekly_content_calendar.xlsx"
+          - "static_posts.zip"
+          - "video_content.zip"
+          - "social_copy.json"
+        actions:
+          - "Upload content to scheduling tool (Later, Buffer, Meta Creator Studio)"
+          - "Schedule posts at optimal times (based on analytics)"
+          - "Instagram: 10am, 2pm, 7pm"
+          - "Facebook: 11am, 3pm"
+          - "TikTok: 6pm, 9pm"
+          - "Set up first comment (with additional hashtags or CTA)"
+        outputs:
+          - "scheduled_posts.json"
+        duration: "1 hour"
+        schedule: "Thursday evening"
+
+      - id: "publish-002"
+        name: "Blog Publishing"
+        agent: "hotel-copywriter"
+        inputs:
+          - "blog_articles.md"
+        actions:
+          - "Upload articles to CMS (WordPress, etc.)"
+          - "Add featured images and alt text"
+          - "Configure SEO settings (meta title, description, slug)"
+          - "Add internal links to other articles and booking page"
+          - "Schedule publication (Tuesday, Thursday)"
+        outputs:
+          - "published_blog_urls.txt"
+        duration: "30 min"
+        schedule: "Tuesday, Thursday"
+
+      - id: "publish-003"
+        name: "Email Newsletter Send"
+        agent: "hotel-email-maestro"
+        inputs:
+          - "email_newsletter.html"
+        actions:
+          - "Upload to ESP (RD Station, Mailchimp)"
+          - "Segment audience (all subscribers or specific segment)"
+          - "A/B test subject lines (optional)"
+          - "Schedule send (Thursday 9am)"
+          - "Monitor deliverability"
+        outputs:
+          - "newsletter_sent_report.json"
+        duration: "30 min"
+        schedule: "Thursday 9am"
+
+      - id: "publish-004"
+        name: "Real-Time Engagement"
+        agent: "hotel-social-creator"
+        actions:
+          - "Monitor comments on all posts (respond within 2h)"
+          - "Answer DMs within 1h during business hours"
+          - "Like and respond to guest tags"
+          - "Engage with relevant community content (like, comment)"
+          - "Flag negative comments for management"
+        outputs:
+          - "engagement_log.json"
+        duration: "30-60 min/day"
+        frequency: "Daily"
+
+      - id: "publish-005"
+        name: "Weekly Performance Analysis"
+        agent: "hotel-social-creator"
+        actions:
+          - "Compile analytics from all platforms"
+          - "Instagram: reach, engagement rate, saves, shares"
+          - "Facebook: reach, engagement, clicks"
+          - "TikTok: views, likes, shares"
+          - "Blog: visits, time on page, bounce rate"
+          - "Email: open rate, click rate, conversions"
+          - "Identify top-performing content"
+          - "Identify underperforming content (learn why)"
+          - "Document insights for next week"
+        outputs:
+          - "weekly_performance_report.pdf"
+        duration: "2 hours"
+        schedule: "Friday 4-6pm"
+
+      - id: "publish-006"
+        name: "Content Library Update"
+        agent: "hotel-social-creator"
+        actions:
+          - "Archive all published content in shared drive"
+          - "Tag by category, format, performance"
+          - "Update content bank for future repurposing"
+          - "Note evergreen content for re-sharing"
+        outputs:
+          - "content_library_updated.zip"
+        duration: "30 min"
+        schedule: "Friday"
+
+    checkpoint:
+      name: "Weekly Performance Review"
+      criteria:
+        - "All planned content published"
+        - "Engagement rate meets targets"
+        - "Response time <2h for comments"
+        - "Analytics documented"
+      approvers:
+        - "hotel-social-creator"
+        - "hotel-mkt-chief"
+      output_required: true
+
+    quality_gates:
+      - metric: "Publishing completeness"
+        threshold: "100%"
+      - metric: "Engagement rate (Instagram)"
+        threshold: ">6%"
+      - metric: "Comment response time"
+        threshold: "<2h average"
+
+# ═══════════════════════════════════════════════════════════════
+# WEEKLY OPTIMIZATION LOOP
+# ═══════════════════════════════════════════════════════════════
+
+optimization:
+  name: "Continuous Improvement"
+  description: "Weekly learnings feed into next week's planning"
+
+  tasks:
+    - id: "optimize-001"
+      name: "Performance Insights"
+      agent: "hotel-social-creator"
+      actions:
+        - "Review top 3 performing posts (why did they work?)"
+        - "Review bottom 3 posts (what went wrong?)"
+        - "Identify patterns (topics, formats, times)"
+        - "Document do's and don'ts"
+      outputs:
+        - "performance_insights.md"
+      frequency: "Weekly (Friday)"
+
+    - id: "optimize-002"
+      name: "Audience Feedback"
+      agent: "hotel-social-creator"
+      actions:
+        - "Analyze comments for content requests"
+        - "Monitor DMs for common questions (create FAQ content)"
+        - "Track sentiment (positive, neutral, negative)"
+        - "Identify brand ambassadors (highly engaged followers)"
+      outputs:
+        - "audience_feedback.json"
+      frequency: "Weekly (Friday)"
+
+    - id: "optimize-003"
+      name: "Competitor Benchmarking"
+      agent: "hotel-trend-hunter"
+      actions:
+        - "Review top competitor posts from the week"
+        - "Identify gaps in our content strategy"
+        - "Spot emerging trends we can adopt"
+        - "Benchmark engagement rates"
+      outputs:
+        - "competitor_benchmark.xlsx"
+      frequency: "Weekly (Friday)"
+
+    - id: "optimize-004"
+      name: "Next Week Planning Input"
+      agents:
+        - "hotel-social-creator"
+        - "hotel-trend-hunter"
+      actions:
+        - "Feed insights into next Monday's planning session"
+        - "Adjust content mix based on performance"
+        - "Double down on winning topics/formats"
+        - "Experiment with new ideas (10% of content)"
+      outputs:
+        - "planning_input_next_week.md"
+      frequency: "Weekly (Friday)"
+
+# ═══════════════════════════════════════════════════════════════
+# CONTENT TYPES & SPECIFICATIONS
+# ═══════════════════════════════════════════════════════════════
+
+content_specs:
+  instagram:
+    feed_post:
+      dimensions: "1080x1080px (square) or 1080x1350px (portrait)"
+      format: "JPG or PNG"
+      caption: "150-300 words"
+      hashtags: "15-20 (mix of branded, trending, niche)"
+      cta: "Clear and actionable"
+      frequency: "4-5 per week"
+
+    reel:
+      dimensions: "1080x1920px (9:16)"
+      format: "MP4"
+      duration: "15-60 seconds"
+      music: "Trending audio when relevant"
+      captions: "Always include for accessibility"
+      hook: "First 3 seconds critical"
+      frequency: "2-3 per week"
+
+    stories:
+      dimensions: "1080x1920px (9:16)"
+      format: "JPG, PNG, MP4"
+      duration: "15 seconds per slide"
+      interactive: "Use polls, quizzes, sliders"
+      frequency: "Daily (minimum 3-5 slides)"
+
+    carousel:
+      slides: "Up to 10"
+      dimensions: "1080x1080px per slide"
+      purpose: "Educational, how-to, before/after, storytelling"
+      frequency: "1-2 per week"
+
+  facebook:
+    post:
+      image: "1200x630px"
+      video: "1080x1080px or 1920x1080px"
+      caption: "100-200 words"
+      link_preview: "Optimize for click-through"
+      frequency: "3-4 per week"
+
+  tiktok:
+    video:
+      dimensions: "1080x1920px (9:16)"
+      duration: "15-60 seconds"
+      music: "Trending sounds highly recommended"
+      captions: "Essential for virality"
+      hashtags: "3-5 (trending + niche)"
+      frequency: "2-3 per week"
+
+  blog:
+    article:
+      length: "800-1500 words"
+      structure: "Intro + 3-5 sections + conclusion + CTA"
+      seo: "Keyword in title, headers, first paragraph"
+      images: "3-5 images per article"
+      internal_links: "3-5 to other content"
+      frequency: "2-3 per week"
+
+  email:
+    newsletter:
+      length: "500-800 words"
+      subject_line: "40-50 characters"
+      preview_text: "90-100 characters"
+      structure: "Header + intro + 3-4 blocks + CTA"
+      images: "2-4 images"
+      mobile_optimized: "Yes"
+      frequency: "1 per week"
+
+# ═══════════════════════════════════════════════════════════════
+# CONTENT THEMES & PILLARS
+# ═══════════════════════════════════════════════════════════════
+
+content_pillars:
+  - pillar: "Local Experiences"
+    description: "Showcase destination attractions, restaurants, hidden gems"
+    content_ideas:
+      - "Top 10 restaurants within walking distance"
+      - "Hidden beaches locals love"
+      - "Day trips from the hotel"
+      - "Local events calendar"
+    frequency: "30% of content"
+
+  - pillar: "Hotel Features"
+    description: "Highlight rooms, amenities, services, unique aspects"
+    content_ideas:
+      - "Room tours (Reels/TikTok)"
+      - "Behind-the-scenes (housekeeping, kitchen, concierge)"
+      - "Amenity showcases (pool, spa, gym, restaurant)"
+      - "Staff spotlights"
+    frequency: "25% of content"
+
+  - pillar: "Guest Stories"
+    description: "Feature guest experiences, testimonials, UGC"
+    content_ideas:
+      - "Guest testimonials (video or quote cards)"
+      - "Honeymoon stories"
+      - "Family vacation highlights"
+      - "UGC reposts"
+    frequency: "25% of content"
+
+  - pillar: "Travel Tips"
+    description: "Provide value through educational content"
+    content_ideas:
+      - "Packing tips for Brazilian beach trips"
+      - "Best time to visit [destination]"
+      - "Travel budgeting guide"
+      - "How to get the best hotel deals"
+    frequency: "15% of content"
+
+  - pillar: "Promotional"
+    description: "Offers, packages, deals, booking incentives"
+    content_ideas:
+      - "Limited-time offers"
+      - "Seasonal packages"
+      - "Early bird discounts"
+      - "Referral program"
+    frequency: "5% of content"
+
+# ═══════════════════════════════════════════════════════════════
+# ROLLBACK & CONTINGENCY
+# ═══════════════════════════════════════════════════════════════
+
+rollback:
+  triggers:
+    - condition: "Engagement rate drops below 4% for 2 consecutive weeks"
+      action: "Audit content strategy, test new formats and topics"
+    - condition: "Negative sentiment spike (>10% negative comments)"
+      action: "Pause promotional content, investigate root cause, address publicly"
+    - condition: "Content production delays"
+      action: "Use evergreen content library, repurpose top-performing posts"
+
+  contingency_plans:
+    - scenario: "Content creator unavailable"
+      actions:
+        - "Use pre-made templates and evergreen content"
+        - "Repurpose top-performing past content"
+        - "Increase UGC share to fill gaps"
+    - scenario: "Trend-jacking opportunity"
+      actions:
+        - "Pause planned content if necessary"
+        - "Rapid-create trend-aligned content (within 24h)"
+        - "Prioritize timeliness over perfection"
+    - scenario: "Crisis or negative PR"
+      actions:
+        - "Pause all promotional content"
+        - "Address issue transparently"
+        - "Shift to empathy-driven content"
+        - "Resume normal schedule only after resolution"
+
+# ═══════════════════════════════════════════════════════════════
+# SUCCESS CRITERIA
+# ═══════════════════════════════════════════════════════════════
+
+success_criteria:
+  primary:
+    - metric: "Content output"
+      target: ">20 pieces per week"
+      measurement: "Count of published content"
+    - metric: "Engagement rate (Instagram)"
+      target: ">8%"
+      measurement: "(Likes + comments + saves + shares) / reach"
+    - metric: "Video views"
+      target: ">10k per video (Reels/TikTok)"
+      measurement: "Average views per video"
+
+  secondary:
+    - metric: "Blog traffic"
+      target: ">5k visits/month"
+    - metric: "Email open rate"
+      target: ">35%"
+    - metric: "UGC collection"
+      target: ">10 pieces/week"
+    - metric: "Follower growth"
+      target: ">5% month-over-month"
+    - metric: "Comment response rate"
+      target: "100% within 2h"
+
+handoff:
+  to: "hotel-mkt-chief"
+  deliverables:
+    - "Weekly content calendars (4-week archive)"
+    - "Performance reports (weekly analytics)"
+    - "Content library (organized by pillar and format)"
+    - "UGC permissions database"
+    - "Best practices playbook"
+  knowledge_transfer:
+    - "Share top-performing content patterns"
+    - "Document optimal posting times"
+    - "Train on scheduling tools"
+    - "Establish ongoing optimization process"
+
+# ════════════════════════════════════════════════════════════════
+# 🔒 ENFORCEMENT ENGINE
+# Inspirado em: Cooper's Stage-Gate (P&G) + Salesforce Pipeline + Toyota Andon
+# ════════════════════════════════════════════════════════════════
+
+enforcement_engine:
+  version: "1.0.0"
+  protocol: "stage-gate"
+
+  # ──────────────────────────────────────────────────────────────
+  # STATE MACHINE
+  # ──────────────────────────────────────────────────────────────
+  state_machine:
+    initial_state: "phase-1-trends"
+    terminal_states: ["week-completed", "killed"]
+    transitions:
+      - from: "phase-1-trends"
+        to: "phase-2-planning"
+        gate: "G1"
+        trigger: "auto_on_gate_pass"
+      - from: "phase-2-planning"
+        to: "phase-3-creation"
+        gate: "G2"
+        trigger: "auto_on_gate_pass"
+      - from: "phase-3-creation"
+        to: "phase-4-ugc"
+        gate: "G3"
+        trigger: "auto_on_gate_pass"
+      - from: "phase-3-creation"
+        to: "phase-5-publish"
+        gate: "G3"
+        trigger: "auto_on_gate_pass"
+      - from: "phase-4-ugc"
+        to: "phase-5-publish"
+        gate: "G4"
+        trigger: "auto_on_gate_pass"
+      - from: "phase-5-publish"
+        to: "week-completed"
+        gate: "weekly-review"
+        trigger: "manual_approval"
+    invalid_transitions:
+      - from: "phase-1-trends"
+        to: "phase-3-creation"
+        reason: "Não pode criar conteúdo sem planejar calendar primeiro"
+      - from: "phase-2-planning"
+        to: "phase-5-publish"
+        reason: "Não pode publicar sem criar conteúdo"
+
+  # ──────────────────────────────────────────────────────────────
+  # STAGE-GATES
+  # ──────────────────────────────────────────────────────────────
+  gates:
+    G1:
+      name: "Trends → Planning Gate"
+      between: ["phase-1-trends", "phase-2-planning"]
+      gatekeeper: "hotel-social-creator"
+      sla: "2h"
+      must_meet:
+        - id: "G1-M1"
+          criterion: "Weekly trend briefing cobre mínimo 10 tópicos relevantes para hotelaria"
+          validation: "Contar items em 'trending_topics' seção do weekly_trend_briefing.pdf ≥10"
+          on_fail: "BLOCK"
+        - id: "G1-M2"
+          criterion: "Competitor content performance analisado (top 10 concorrentes)"
+          validation: "weekly_trend_briefing.pdf lista análise de ≥5 competitors"
+          on_fail: "BLOCK"
+        - id: "G1-M3"
+          criterion: "Viral formats identificados (ex: Reels trending, carousels, Stories interativos)"
+          validation: "Seção 'Viral Formats' em weekly_trend_briefing.pdf tem ≥3 formatos"
+          on_fail: "BLOCK"
+      should_meet:
+        - id: "G1-S1"
+          criterion: "Relevância dos trends para o hotel (não trends genéricos demais)"
+          weight: 1.0
+          min_score: 8
+        - id: "G1-S2"
+          criterion: "Acionabilidade (trends podem ser executados essa semana?)"
+          weight: 1.0
+          min_score: 7
+      kill_criteria:
+        - id: "G1-K1"
+          criterion: "Nenhum trend relevante identificado para a semana (dados insuficientes)"
+          action: "RECYCLE + usar evergreen content library da semana passada"
+      decision_options: ["GO", "KILL", "HOLD", "RECYCLE"]
+
+    G2:
+      name: "Planning → Creation Gate"
+      between: ["phase-2-planning", "phase-3-creation"]
+      gatekeeper: "hotel-social-creator"
+      sla: "4h"
+      must_meet:
+        - id: "G2-M1"
+          criterion: "Content calendar cobre todos 7 dias da semana"
+          validation: "weekly_content_calendar.xlsx tem entradas para Monday-Sunday"
+          on_fail: "BLOCK"
+        - id: "G2-M2"
+          criterion: "Mínimo 20 peças de conteúdo planejadas"
+          validation: "Contar rows em weekly_content_calendar.xlsx ≥20"
+          on_fail: "BLOCK"
+        - id: "G2-M3"
+          criterion: "Formatos distribuídos adequadamente (não só posts estáticos)"
+          validation: "Calendar inclui ≥2 Reels, ≥2 Stories, ≥4 feed posts"
+          on_fail: "BLOCK"
+      should_meet:
+        - id: "G2-S1"
+          criterion: "Variedade de conteúdo (mix de educational, entertaining, promotional)"
+          weight: 1.0
+          min_score: 8
+        - id: "G2-S2"
+          criterion: "Alinhamento com brand guidelines e pillars"
+          weight: 1.0
+          min_score: 9
+      kill_criteria:
+        - id: "G2-K1"
+          criterion: "Calendar planejado tem <10 peças (abaixo do mínimo aceitável)"
+          action: "RECYCLE + replanejar com mais conteúdo"
+      decision_options: ["GO", "KILL", "HOLD", "RECYCLE"]
+
+    G3:
+      name: "Creation → UGC/Publish Gate"
+      between: ["phase-3-creation", "phase-4-ugc"]
+      gatekeeper: "hotel-social-creator"
+      sla: "24h"
+      must_meet:
+        - id: "G3-M1"
+          criterion: "Todas peças planejadas foram criadas (100% completeness)"
+          validation: "Comparar weekly_content_calendar.xlsx com files em content_library/ = match 100%"
+          on_fail: "BLOCK"
+        - id: "G3-M2"
+          criterion: "Copy revisado e sem erros gramaticais (português correto)"
+          validation: "Spell check em social_copy.json + manual review = 0 errors"
+          on_fail: "BLOCK"
+        - id: "G3-M3"
+          criterion: "Vídeos têm captions/legendas para acessibilidade"
+          validation: "Todos arquivos .mp4 em video_content.zip têm arquivo .srt correspondente"
+          on_fail: "BLOCK"
+      should_meet:
+        - id: "G3-S1"
+          criterion: "Qualidade visual dos assets (resolução, composição, brand alignment)"
+          weight: 1.0
+          min_score: 8
+        - id: "G3-S2"
+          criterion: "Engaging hooks e CTAs (copy é persuasivo, não genérico)"
+          weight: 1.0
+          min_score: 7
+      kill_criteria:
+        - id: "G3-K1"
+          criterion: ">50% das peças falham em quality check (visuals ruins, copy fraco)"
+          action: "RECYCLE para Creation com feedback detalhado"
+      decision_options: ["GO", "KILL", "HOLD", "RECYCLE"]
+
+    G4:
+      name: "UGC → Publish Gate"
+      between: ["phase-4-ugc", "phase-5-publish"]
+      gatekeeper: "hotel-ugc-curator"
+      sla: "12h"
+      must_meet:
+        - id: "G4-M1"
+          criterion: "Mínimo 10 peças de UGC coletadas e aprovadas"
+          validation: "Contar entries em ugc_candidates.json com 'permission_status=approved' ≥10"
+          on_fail: "BLOCK"
+        - id: "G4-M2"
+          criterion: "Permissões escritas obtidas para TODO UGC usado (compliance LGPD)"
+          validation: "ugc_permissions.xlsx mostra 'consent_status=granted' para todos UGC em calendar"
+          on_fail: "BLOCK"
+        - id: "G4-M3"
+          criterion: "Créditos e tags corretos atribuídos aos criadores originais"
+          validation: "Manual check de ugc_scheduled_posts.json = 100% têm 'credit_tag' field"
+          on_fail: "BLOCK"
+      should_meet:
+        - id: "G4-S1"
+          criterion: "Qualidade do UGC curado (visualmente atraente, on-brand)"
+          weight: 1.0
+          min_score: 7
+        - id: "G4-S2"
+          criterion: "Diversidade de UGC (casais, famílias, solo travelers, diferentes idades)"
+          weight: 1.0
+          min_score: 7
+      kill_criteria:
+        - id: "G4-K1"
+          criterion: "Qualquer UGC sem permissão escrita detectado no calendar"
+          action: "BLOCK + remover imediatamente, não publicar"
+      decision_options: ["GO", "KILL", "HOLD", "RECYCLE"]
+
+  # ──────────────────────────────────────────────────────────────
+  # AUTOMATED HANDOFFS
+  # ──────────────────────────────────────────────────────────────
+  handoffs:
+    - id: "H1"
+      from_phase: "phase-1-trends"
+      to_phase: "phase-2-planning"
+      from_agent: "@hotel-trend-hunter"
+      to_agent: "@hotel-social-creator"
+      trigger: "gate_G1_passed"
+      deliverables:
+        - name: "weekly_trend_briefing.pdf"
+          format: "pdf"
+          required: true
+        - name: "trend_discussion_notes.md"
+          format: "markdown"
+          required: true
+      acceptance_criteria:
+        - "10+ tópicos relevantes identificados"
+        - "Formatos virais documentados com exemplos"
+        - "Insights acionáveis (não apenas data dump)"
+      sla: "2h"
+      on_timeout:
+        action: "escalate"
+        notify: "@hotel-mkt-chief"
+      on_reject:
+        action: "return_to_sender"
+        message: "Trend briefing insuficiente. Adicionar: [tópicos faltantes]. Prazo: 1h."
+
+    - id: "H2"
+      from_phase: "phase-2-planning"
+      to_phase: "phase-3-creation"
+      from_agent: "@hotel-social-creator"
+      to_agent: "@hotel-copywriter + @hotel-social-creator"
+      trigger: "gate_G2_passed"
+      deliverables:
+        - name: "weekly_content_calendar.xlsx"
+          format: "excel"
+          required: true
+        - name: "format_mapping.json"
+          format: "json"
+          required: true
+        - name: "production_task_list.md"
+          format: "markdown"
+          required: true
+      acceptance_criteria:
+        - "Calendar aprovado pelo chief"
+        - "20+ peças planejadas com clareza (topic, format, platform)"
+        - "Tasks claras para copywriter e designer"
+      sla: "4h"
+      on_timeout:
+        action: "escalate"
+        notify: "@hotel-mkt-chief"
+      on_reject:
+        action: "return_to_sender"
+        message: "Calendar precisa ajustes: [problemas]. Revisar e reenviar. Prazo: 2h."
+
+    - id: "H3"
+      from_phase: "phase-3-creation"
+      to_phase: "phase-4-ugc"
+      from_agent: "@hotel-copywriter + @hotel-social-creator"
+      to_agent: "@hotel-ugc-curator"
+      trigger: "gate_G3_passed"
+      deliverables:
+        - name: "social_copy.json"
+          format: "json"
+          required: true
+        - name: "static_posts.zip"
+          format: "zip"
+          required: true
+        - name: "video_content.zip"
+          format: "zip"
+          required: true
+      acceptance_criteria:
+        - "Todas peças do calendar produzidas"
+        - "Qualidade aprovada (visuals + copy)"
+        - "Assets em formato correto para cada plataforma"
+      sla: "24h"
+      on_timeout:
+        action: "escalate"
+        notify: "@hotel-mkt-chief"
+        message: "Production atrasada. Usar evergreen content como backup."
+      on_reject:
+        action: "return_to_sender"
+        message: "Conteúdo não atende padrão. Revisar: [feedback]. Prazo: 12h."
+
+    - id: "H4"
+      from_phase: "phase-4-ugc"
+      to_phase: "phase-5-publish"
+      from_agent: "@hotel-ugc-curator"
+      to_agent: "@hotel-social-creator"
+      trigger: "gate_G4_passed"
+      deliverables:
+        - name: "ugc_scheduled_posts.json"
+          format: "json"
+          required: true
+        - name: "ugc_permissions.xlsx"
+          format: "excel"
+          required: true
+      acceptance_criteria:
+        - "10+ UGC peças aprovadas e agendadas"
+        - "100% com permissões escritas (LGPD compliance)"
+        - "Créditos corretos atribuídos"
+      sla: "12h"
+      on_timeout:
+        action: "proceed_without_ugc"
+        message: "UGC não pronto. Publicar apenas conteúdo original essa semana."
+      on_reject:
+        action: "remove_non_compliant"
+        message: "UGC sem permissão removido do calendar. Ajustar schedule."
+
+  # ──────────────────────────────────────────────────────────────
+  # AUTO-ROLLBACK TRIGGERS
+  # ──────────────────────────────────────────────────────────────
+  auto_rollback:
+    triggers:
+      - id: "R1"
+        condition: "Engagement rate cai >20% week-over-week por 2 semanas consecutivas"
+        action: "pause"
+        recovery: "1. Auditar content strategy (topics relevantes? formatos certos?). 2. Revisar posting times. 3. A/B testar novos hooks. 4. Aumentar UGC mix (mais autêntico). 5. Usar top performers históricos."
+        notify: "@hotel-social-creator + @hotel-mkt-chief"
+      - id: "R2"
+        condition: "Production delay >24h (conteúdo não fica pronto a tempo)"
+        action: "activate_backup"
+        recovery: "1. Usar evergreen content library. 2. Repostar top performers de 3+ meses atrás. 3. Aumentar UGC share para preencher gaps. 4. Comunicar delay ao chief."
+        notify: "@hotel-social-creator"
+      - id: "R3"
+        condition: "UGC consent issue detectado (post sem permissão publicado por erro)"
+        action: "immediate_removal"
+        recovery: "1. Remover conteúdo imediatamente de todas plataformas. 2. Contactar guest para pedir desculpas. 3. Revisar processo de approval de UGC. 4. Documentar incident."
+        notify: "@hotel-ugc-curator + @hotel-mkt-chief"
+      - id: "R4"
+        condition: "Spike de sentimento negativo (>10% dos comentários negativos em 48h)"
+        action: "pause_promotional"
+        recovery: "1. Pausar posts promocionais temporariamente. 2. Investigar causa (crise? review ruim viral?). 3. Responder comments negativos com empatia. 4. Ajustar messaging. 5. Retomar após situação estabilizar."
+        notify: "@hotel-social-creator + @hotel-reputation-guardian"
+      - id: "R5"
+        condition: "Trend-jacking opportunity detectado (viral moment relevante para hotel)"
+        action: "rapid_create"
+        recovery: "1. Pausar conteúdo planejado menos urgente. 2. Criar trend-aligned content em <24h. 3. Priorizar timeliness sobre perfeição. 4. Publicar enquanto trend está quente. 5. Retomar calendar normal depois."
+        notify: "@hotel-trend-hunter + @hotel-social-creator"

@@ -1,0 +1,120 @@
+name: copywriting-masters
+version: 1.0.0
+description: "Squad de elite com os 22 maiores copywriters do mundo. Cada agente incorpora frameworks documentados, processos step-by-step e artefatos mentais extraiveis de mestres reais do copywriting."
+author: Virginia
+license: MIT
+slashPrefix: copy
+
+aios:
+  minVersion: "2.1.0"
+  type: squad
+
+components:
+  agents:
+    # Chief / Orchestrator
+    - copy-chief.md
+
+    # Direct Response Masters
+    - gary-halbert.md
+    - dan-kennedy.md
+    - john-carlton.md
+    - clayton-makepeace.md
+
+    # Email Marketing Masters
+    - ben-settle.md
+    - andre-chaperon.md
+    - laura-belgray.md
+
+    # Sales Pages & Long-form
+    - joe-sugarman.md
+    - robert-collier.md
+
+    # Headlines & Market Awareness
+    - eugene-schwartz.md
+    - john-caples.md
+
+    # VSL / Script Writing
+    - jon-benson.md
+    - stefan-georgi.md
+
+    # Funnels & Launch
+    - russell-brunson.md
+    - jeff-walker.md
+    - frank-kern.md
+
+    # Conversion & SEO
+    - joanna-wiebe.md
+    - brian-dean.md
+    - ann-handley.md
+
+    # Strategy & Science
+    - perry-marshall.md
+    - robert-cialdini.md
+    - drayton-bird.md
+
+  tasks:
+    - chief-routing.md
+    - write-sales-letter.md
+    - write-email-sequence.md
+    - write-vsl-script.md
+    - write-headlines.md
+    - write-landing-page.md
+    - write-launch-sequence.md
+    - write-funnel-copy.md
+    - write-seo-content.md
+    - copy-review.md
+    - persuasion-audit.md
+
+  workflows: []
+  checklists: []
+  templates: []
+  tools: []
+  scripts: []
+
+config:
+  extends: extend
+  coding-standards: config/copy-standards.md
+  tech-stack: config/tech-stack.md
+  source-tree: config/source-tree.md
+
+routing:
+  entrypoint: copy-chief
+  description: "O Copy Chief (Maverick) e o ponto de entrada. Ele analisa a missao e roteia para o especialista correto."
+
+specialist-map:
+  sales-letter: [dan-kennedy, gary-halbert, clayton-makepeace, robert-collier]
+  email-single: [ben-settle, laura-belgray]
+  email-sequence: [andre-chaperon, ben-settle, laura-belgray]
+  vsl: [jon-benson, stefan-georgi]
+  sales-page: [joe-sugarman, joanna-wiebe, clayton-makepeace]
+  headlines: [john-caples, eugene-schwartz]
+  market-analysis: [eugene-schwartz, robert-cialdini]
+  product-launch: [jeff-walker, russell-brunson, frank-kern]
+  funnel-copy: [russell-brunson, jeff-walker, frank-kern]
+  seo-content: [brian-dean, ann-handley]
+  content-marketing: [ann-handley, brian-dean]
+  persuasion-audit: [robert-cialdini, eugene-schwartz]
+  brand-voice: [laura-belgray, ann-handley]
+  quick-cash: [frank-kern, dan-kennedy]
+  conversion-optimization: [joanna-wiebe, perry-marshall]
+  webinar-script: [russell-brunson, jon-benson]
+  strategy-8020: [perry-marshall, dan-kennedy]
+  direct-marketing: [drayton-bird, dan-kennedy]
+  copy-review: [john-carlton, clayton-makepeace, joanna-wiebe]
+
+dependencies:
+  node: []
+  python: []
+  squads: []
+
+tags:
+  - copywriting
+  - marketing
+  - direct-response
+  - email-marketing
+  - sales-copy
+  - content-marketing
+  - persuasion
+  - funnels
+  - launch
+  - vsl

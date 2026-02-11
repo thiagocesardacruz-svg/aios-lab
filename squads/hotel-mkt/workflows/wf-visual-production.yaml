@@ -1,0 +1,1620 @@
+# ═══════════════════════════════════════════════════════════════
+# AIOS Workflow: Visual Production Pipeline (Hotel Marketing)
+# ═══════════════════════════════════════════════════════════════
+# Squad: hotel-mkt
+# Version: 1.0.0
+# Duration: 3-7 days
+# Target: AI-powered visual content creation for campaigns (Nano Banana + DALL-E)
+# DNA: Google Nano Banana (text-heavy visuals) + OpenAI DALL-E (lifestyle imagery)
+# ═══════════════════════════════════════════════════════════════
+
+workflow:
+  name: "Visual Production Pipeline"
+  id: "wf-visual-production"
+  squad: "hotel-mkt"
+  version: "1.0.0"
+
+  metadata:
+    description: "Pipeline completo de produção visual usando IA: Nano Banana para peças com texto, DALL-E para imagens aspiracionais"
+    target_output: "Peças visuais prontas para uso em campanhas (ads, social, email, landing pages)"
+    ai_tools:
+      - name: "Nano Banana by Google"
+        purpose: "Carrosséis, infográficos, posts com texto, ads com CTA"
+        integration: "Google AI Studio / Gemini API"
+        watermark: "SynthID (transparência obrigatória)"
+      - name: "DALL-E by OpenAI"
+        purpose: "Hero images, lifestyle shots, imagens aspiracionais para campanhas"
+        integration: "OpenAI API"
+        watermark: "None (AI disclosure in caption recommended)"
+    calling_workflows:
+      - "wf-seasonal-campaign (Phase 4)"
+      - "wf-content-machine (Phase 3)"
+      - "wf-paid-ads-scale (Phase 2)"
+      - "wf-email-lifecycle (Phase 2)"
+      - "wf-direct-booking-funnel (Phase 3)"
+    success_metrics:
+      - "Brand compliance score ≥ 8/10"
+      - "Human approval rate ≥ 95%"
+      - "Text legibility on mobile ≥ 9/10"
+      - "Emotional impact score ≥ 7/10"
+      - "Production time ≤ 7 days"
+
+  inputs:
+    - name: "campaign_brief"
+      type: "document"
+      required: true
+      description: "Contexto da campanha, objetivo, público-alvo, mensagem central"
+      source: "Calling workflow (seasonal-campaign, content-machine, etc.)"
+    - name: "brand_guidelines"
+      type: "document"
+      required: true
+      description: "Cores, tipografia, estilo fotográfico, identidade visual do hotel"
+      source: "squads/hotel-mkt/brand/guidelines.md"
+    - name: "output_specs"
+      type: "json"
+      required: true
+      description: "Formatos, tamanhos, quantidades (ex: 10 carrosséis 1080x1080, 5 hero images 1920x1080)"
+      source: "Calling workflow"
+    - name: "messaging_framework"
+      type: "document"
+      required: false
+      description: "Copy hooks, CTAs, value propositions para incorporar nas peças visuais"
+      source: "Phase 2 de seasonal-campaign ou copywriter agent"
+    - name: "hormozi_source"
+      type: "directory"
+      required: true
+      description: "Frameworks de hooks, ads, e value equation do Hormozi para aplicar em visuals"
+      source: "data/hormozi-source/"
+
+  outputs:
+    - name: "final_assets"
+      type: "collection"
+      description: "Todas peças visuais aprovadas, organizadas por formato e uso"
+      formats: ["PNG", "JPG", "WebP"]
+    - name: "carousel_preview"
+      type: "html"
+      description: "Preview interativo de carrosséis para validação antes de publicação"
+    - name: "prompts_archive"
+      type: "markdown"
+      description: "Todos prompts usados, documentados para reprodução futura"
+    - name: "approval_record"
+      type: "json"
+      description: "Registro de aprovações humanas com timestamps e decisões"
+    - name: "production_report"
+      type: "pdf"
+      description: "Relatório final: peças criadas, aprovação rate, tempo de produção, learnings"
+
+  duration:
+    estimated: "3-7 dias"
+    phases:
+      brief_alignment: "1 dia"
+      prompt_engineering: "1-2 dias"
+      generation: "1-2 dias"
+      curation_qc: "1-2 dias"
+      human_approval: "1-2 dias (pode ter 2 rounds de revisão)"
+      export_delivery: "1 dia"
+
+# ═══════════════════════════════════════════════════════════════
+# PHASE 1: BRIEF & BRAND ALIGNMENT
+# ═══════════════════════════════════════════════════════════════
+
+phases:
+  - name: "Brief & Brand Alignment"
+    id: "phase-1-brief"
+    duration: "1 dia"
+    agents:
+      - role: "hotel-visual-producer"
+        responsibility: "primary"
+        tasks:
+          - "Receber brief da campanha do agente solicitante"
+          - "Definir estilo visual para esta campanha específica"
+          - "Determinar specs de output (formatos, tamanhos, quantidade)"
+          - "Revisar brand guidelines (cores, fonts, estilo fotográfico)"
+          - "Decidir qual ferramenta usar por peça (Nano Banana vs DALL-E)"
+      - role: "hotel-mkt-chief"
+        responsibility: "secondary"
+        tasks:
+          - "Validar alinhamento do estilo visual com estratégia de campanha"
+          - "Aprovar direção criativa antes de produção em escala"
+
+    tasks:
+      - id: "brief-001"
+        name: "Recebimento e Análise do Brief"
+        agent: "hotel-visual-producer"
+        inputs:
+          - "campaign_brief"
+          - "output_specs"
+        actions:
+          - "Ler brief completo da campanha (objetivo, público, mensagem)"
+          - "Identificar agente solicitante (@social-creator, @ads-specialist, @email-maestro)"
+          - "Extrair requisitos visuais do brief (mood, estilo, restrições)"
+          - "Documentar contexto: campanha sazonal? ads? email? landing page?"
+          - "Definir timeline de entrega compatível com calling workflow"
+        outputs:
+          - "brief_summary.md"
+        duration: "2 horas"
+
+      - id: "brief-002"
+        name: "Definição de Estilo Visual"
+        agent: "hotel-visual-producer"
+        inputs:
+          - "brand_guidelines"
+          - "campaign_brief"
+        actions:
+          - "Criar mood board de referência (Pinterest, Behance, hotel competitor visuals)"
+          - "Definir paleta de cores para esta campanha (dentro do brand guideline)"
+          - "Escolher estilo fotográfico: lifestyle, editorial, UGC-style, minimalist"
+          - "Definir tipografia e tratamento de texto (se aplicável)"
+          - "Documentar todos elementos de estilo em visual_style_guide.md"
+        outputs:
+          - "visual_style_guide.md"
+          - "mood_board.pdf"
+        duration: "3 horas"
+
+      - id: "brief-003"
+        name: "Output Specs & Tool Selection"
+        agent: "hotel-visual-producer"
+        inputs:
+          - "output_specs"
+        actions:
+          - "Listar todos formatos necessários (1080x1080, 1200x628, 1920x1080, etc.)"
+          - "Definir quantidade de peças por formato"
+          - "Decidir ferramenta por tipo de peça:"
+          - "  → Nano Banana: carrosséis com texto, infográficos, posts sociais com CTA, ads com copy"
+          - "  → DALL-E: hero images, lifestyle shots, imagens aspiracionais sem texto"
+          - "Criar matriz de produção: [formato x quantidade x ferramenta]"
+        outputs:
+          - "production_matrix.xlsx"
+        duration: "2 horas"
+
+      - id: "brief-004"
+        name: "Brand Guidelines Review"
+        agent: "hotel-visual-producer"
+        inputs:
+          - "brand_guidelines"
+        actions:
+          - "Carregar cores oficiais do hotel (HEX codes)"
+          - "Revisar tipografia permitida (fonts primárias e secundárias)"
+          - "Estudar estilo fotográfico atual do hotel (warm? airy? dramatic?)"
+          - "Identificar elementos obrigatórios (logo placement, watermark, disclaimers)"
+          - "Validar se há restrições legais ou éticas (ex: não mostrar álcool se hotel é family-friendly)"
+        outputs:
+          - "brand_checklist.json"
+        duration: "1 hora"
+
+      - id: "brief-005"
+        name: "Direção Criativa Inicial"
+        agent: "hotel-visual-producer"
+        actions:
+          - "Escrever creative brief de 1 página com direção visual clara"
+          - "Definir 3-5 conceitos visuais principais (ex: 'sunset romance', 'family fun', 'luxury escape')"
+          - "Alinhar conceitos com messaging framework (se disponível)"
+          - "Preparar documento para apresentação ao Chief"
+        outputs:
+          - "creative_direction.md"
+        duration: "2 horas"
+
+    checkpoint:
+      name: "Brief Alignment Checkpoint"
+      criteria:
+        - "Visual style guide completo com mood board e referências"
+        - "Output specs definidos com matriz de produção clara"
+        - "Brand guidelines carregados e checklist criado"
+        - "Creative direction aprovada por Chief"
+        - "Tool selection (Nano vs DALL-E) mapeada por peça"
+      approvers:
+        - "hotel-mkt-chief"
+      output_required: true
+
+    quality_gates:
+      - metric: "Clareza da direção criativa"
+        threshold: ">8/10"
+      - metric: "Alinhamento com brand guidelines"
+        threshold: "100%"
+
+# ═══════════════════════════════════════════════════════════════
+# PHASE 2: PROMPT ENGINEERING
+# ═══════════════════════════════════════════════════════════════
+
+  - name: "Prompt Engineering"
+    id: "phase-2-prompts"
+    duration: "1-2 dias"
+    depends_on: ["phase-1-brief"]
+    agents:
+      - role: "hotel-visual-producer"
+        responsibility: "primary"
+        tasks:
+          - "Escrever prompts Nano Banana para peças text-heavy"
+          - "Escrever prompts DALL-E para imagens aspiracionais"
+          - "Incorporar brand elements em todos prompts"
+          - "Aplicar frameworks Hormozi para hooks visuais"
+          - "Criar variation matrix para A/B testing"
+
+    tasks:
+      - id: "prompts-001"
+        name: "Nano Banana Prompt Writing"
+        agent: "hotel-visual-producer"
+        inputs:
+          - "visual_style_guide.md"
+          - "brand_checklist.json"
+          - "messaging_framework"
+          - "hormozi_source/agents/hormozi-hooks.md"
+          - "hormozi_source/agents/hormozi-ads.md"
+        actions:
+          - "Escrever prompts para carrosséis (10 slides cada, máximo consistência visual)"
+          - "Incluir em cada prompt: paleta de cores, tipografia, estilo visual, mood"
+          - "Incorporar texto específico: headlines, CTAs, body copy (do messaging framework)"
+          - "Aplicar Hormozi hooks visuais: scarcity ('Últimas 5 vagas'), proof (reviews), urgency (countdown)"
+          - "Criar variações: 3-5 ângulos diferentes por conceito"
+          - "Garantir text legibility: contraste, tamanho de fonte, espaçamento"
+          - "Exemplo de prompt Nano Banana:"
+          - "  'Create a 10-slide Instagram carousel for a luxury beach hotel Carnaval campaign."
+          - "   Style: Vibrant, warm tones (HEX: #FF6B35, #F7931E, #FDC830), editorial photography."
+          - "   Slide 1: Hero image of beach at sunset with bold headline: CARNAVAL 2026 - RESERVE AGORA"
+          - "   Slide 2: Value prop #1 with icon and short copy: Pacote All-Inclusive..."
+          - "   [continue for all 10 slides]"
+          - "   Typography: Montserrat Bold for headlines, Open Sans for body."
+          - "   Ensure all text is readable on mobile (minimum 18pt font size)."
+          - "   Include hotel logo in bottom right corner of each slide.'"
+        outputs:
+          - "nano_prompts_library.md"
+        duration: "1 dia"
+
+      - id: "prompts-002"
+        name: "DALL-E Prompt Writing"
+        agent: "hotel-visual-producer"
+        inputs:
+          - "visual_style_guide.md"
+          - "brand_checklist.json"
+        actions:
+          - "Escrever prompts para hero images e lifestyle shots"
+          - "Focar em atmosfera, emoção, aspiração (não texto)"
+          - "Incorporar brand elements sutilmente (cores, mood, estilo)"
+          - "Definir composição: lighting, angle, depth of field"
+          - "Criar variações: 5 ângulos × 3 estilos (15 prompts por conceito)"
+          - "Exemplo de prompt DALL-E:"
+          - "  'A luxurious beach hotel room interior at golden hour, warm sunlight streaming"
+          - "   through floor-to-ceiling windows overlooking turquoise ocean. Modern Brazilian"
+          - "   design with natural wood accents, white linen bedding, and tropical plants."
+          - "   Photographic style: editorial, soft focus, warm color grading (sunset tones)."
+          - "   Composition: wide angle, symmetrical, inviting. Mood: serene, aspirational,"
+          - "   romantic. No people, no text. High-end travel magazine aesthetic.'"
+        outputs:
+          - "dalle_prompts_library.md"
+        duration: "4 horas"
+
+      - id: "prompts-003"
+        name: "Hormozi Visual Hooks Integration"
+        agent: "hotel-visual-producer"
+        inputs:
+          - "hormozi_source/agents/hormozi-hooks.md"
+          - "hormozi_source/agents/hormozi-ads.md"
+          - "hormozi_source/frameworks/hooks-framework.md"
+        actions:
+          - "Revisar frameworks Hormozi: hooks visuais que convertem"
+          - "Aplicar padrões GOATed em prompts:"
+          - "  → Scarcity visual: 'Only 5 rooms left' badge, countdown timer graphic"
+          - "  → Social proof: Star ratings overlay, 'Rated #1' badge"
+          - "  → Before/After: Split screen showing transformation"
+          - "  → Urgency: Clock icon, 'Ends Tonight' ribbon"
+          - "Documentar quais hooks foram aplicados em cada prompt"
+          - "Criar variation matrix: testar hooks diferentes na mesma imagem"
+        outputs:
+          - "hormozi_visual_patterns.md"
+        duration: "3 horas"
+
+      - id: "prompts-004"
+        name: "Variation Matrix Creation"
+        agent: "hotel-visual-producer"
+        actions:
+          - "Criar matriz de variações para cada conceito visual"
+          - "Dimensões da matriz: [Conceito × Ângulo × Estilo × Formato]"
+          - "Exemplo: 'Carnaval Offer Carousel' → 5 ângulos (scarcity, social proof, luxury, fun, romance)"
+          - "                                   → 3 estilos (editorial, UGC-style, minimalist)"
+          - "                                   → N formatos (1080x1080, 1200x628)"
+          - "Total prompts = conceitos × ângulos × estilos × formatos"
+          - "Documentar tudo em planilha para tracking de geração"
+        outputs:
+          - "variation_matrix.xlsx"
+        duration: "2 horas"
+
+      - id: "prompts-005"
+        name: "Prompts Library Documentation"
+        agent: "hotel-visual-producer"
+        actions:
+          - "Consolidar todos prompts em documento único: prompts_library.md"
+          - "Estrutura: [Tipo de peça > Ferramenta > Conceito > Variações > Prompt completo]"
+          - "Adicionar metadata: ferramenta, formato, output esperado, versão do modelo"
+          - "Incluir notas de produção: configurações recomendadas (temperature, guidance scale)"
+          - "Versionamento: v1.0 - primeira versão, atualizar se houver mudanças"
+        outputs:
+          - "prompts_library.md (versão consolidada)"
+        duration: "2 horas"
+
+    checkpoint:
+      name: "Prompt Engineering Review"
+      criteria:
+        - "Mínimo 3 prompts por tipo de peça (carousel, hero, social post, ad)"
+        - "Brand elements incluídos em 100% dos prompts"
+        - "Hormozi patterns aplicados em peças de conversão (ads, CTAs)"
+        - "Variation matrix completa com tracking de todas variações"
+        - "Text legibility garantida (contraste, tamanho) em prompts Nano Banana"
+      approvers:
+        - "hotel-visual-producer"
+        - "hotel-mkt-chief"
+      output_required: true
+
+    quality_gates:
+      - metric: "Clareza dos prompts (podem ser reproduzidos?)"
+        threshold: ">9/10"
+      - metric: "Brand compliance embedded in prompts"
+        threshold: "100%"
+
+# ═══════════════════════════════════════════════════════════════
+# PHASE 3: GENERATION
+# ═══════════════════════════════════════════════════════════════
+
+  - name: "Generation"
+    id: "phase-3-generation"
+    duration: "1-2 dias"
+    depends_on: ["phase-2-prompts"]
+    agents:
+      - role: "hotel-visual-producer"
+        responsibility: "primary"
+        tasks:
+          - "Executar prompts Nano Banana via Gemini API / Google AI Studio"
+          - "Executar prompts DALL-E via OpenAI API"
+          - "Gerar 3-5 variações por peça"
+          - "Manter consistência visual em carrosséis (mesma paleta/estilo para 10 slides)"
+          - "Quality filter: descartar < 7/10"
+
+    tasks:
+      - id: "gen-001"
+        name: "Nano Banana Batch Generation"
+        agent: "hotel-visual-producer"
+        inputs:
+          - "nano_prompts_library.md"
+          - "production_matrix.xlsx"
+        actions:
+          - "Configurar acesso ao Google AI Studio ou Gemini API"
+          - "Executar prompts Nano Banana em batch:"
+          - "  → Para carrosséis: gerar TODOS os 10 slides de uma vez para garantir consistência"
+          - "  → Manter mesma seed/style para sequências relacionadas"
+          - "  → Gerar 3-5 variações por carousel (diferentes hooks ou layouts)"
+          - "Configurações recomendadas:"
+          - "  → Resolution: 1080x1080 ou conforme specs"
+          - "  → Guidance scale: 7-9 (balance criatividade vs fidelidade ao prompt)"
+          - "  → Steps: 30-50"
+          - "Quality filter manual: revisar cada imagem, score 1-10, descartar <7"
+          - "Organizar output em folders: /nano/carousels/carnaval_2026/variation_1/"
+          - "Verificar SynthID watermark presente (transparência)"
+        outputs:
+          - "nano_raw_output/ (folder estruturado)"
+        duration: "1 dia"
+
+      - id: "gen-002"
+        name: "DALL-E Image Generation"
+        agent: "hotel-visual-producer"
+        inputs:
+          - "dalle_prompts_library.md"
+          - "production_matrix.xlsx"
+        actions:
+          - "Configurar acesso à OpenAI API (DALL-E 3)"
+          - "Executar prompts DALL-E em batch:"
+          - "  → Gerar 3-5 variações por conceito"
+          - "  → Usar different seeds para variações autênticas"
+          - "Configurações recomendadas:"
+          - "  → Model: DALL-E 3"
+          - "  → Size: 1024x1024, 1792x1024, 1024x1792 (conforme specs)"
+          - "  → Quality: HD"
+          - "Quality filter: revisar, score 1-10, descartar <7"
+          - "Organizar output: /dalle/hero_images/luxury_suite/variation_1/"
+          - "Documentar prompts exatos usados e seeds (para reprodução)"
+        outputs:
+          - "dalle_raw_output/ (folder estruturado)"
+        duration: "4 horas"
+
+      - id: "gen-003"
+        name: "Carousel Consistency Check"
+        agent: "hotel-visual-producer"
+        actions:
+          - "Revisar sequências de carrosséis slide-by-slide"
+          - "Verificar consistência visual:"
+          - "  → Paleta de cores consistente em todos 10 slides?"
+          - "  → Tipografia consistente?"
+          - "  → Estilo fotográfico mantido?"
+          - "  → Elementos de marca presentes?"
+          - "Se inconsistente: regenerar slides problemáticos com prompt ajustado"
+          - "Criar preview HTML interativo para validação visual"
+        outputs:
+          - "carousel_consistency_report.md"
+          - "carousel_preview_draft.html"
+        duration: "3 horas"
+
+      - id: "gen-004"
+        name: "Quality Scoring & Filtering"
+        agent: "hotel-visual-producer"
+        actions:
+          - "Revisar TODAS imagens geradas (Nano + DALL-E)"
+          - "Aplicar rubrica de qualidade (score 1-10):"
+          - "  → Resolução adequada? (2 pontos)"
+          - "  → Brand compliance? (2 pontos)"
+          - "  → Estética/beleza? (2 pontos)"
+          - "  → Text legibility (se aplicável)? (2 pontos)"
+          - "  → Emotional impact? (2 pontos)"
+          - "Descartar tudo com score <7/10"
+          - "Mover peças ≥7/10 para /curated/"
+          - "Documentar scores em quality_scores.xlsx"
+        outputs:
+          - "quality_scores.xlsx"
+          - "/curated/ (folder com peças aprovadas)"
+        duration: "4 horas"
+
+      - id: "gen-005"
+        name: "Organization & Metadata"
+        agent: "hotel-visual-producer"
+        actions:
+          - "Organizar assets em estrutura final:"
+          - "  /final_assets/"
+          - "    /social/ (carrosséis, posts)"
+          - "    /ads/ (ad creatives)"
+          - "    /email/ (headers, visuals para email)"
+          - "    /landing/ (hero images, banners)"
+          - "Renomear arquivos com naming convention:"
+          - "  carnaval_2026_carousel_scarcity_v1_slide01.png"
+          - "Criar metadata.json para cada asset (prompt usado, ferramenta, data, score)"
+          - "Gerar manifest.json com lista completa de todos assets"
+        outputs:
+          - "/final_assets/ (organized)"
+          - "metadata.json (per asset)"
+          - "manifest.json"
+        duration: "2 horas"
+
+    checkpoint:
+      name: "Generation Quality Check"
+      criteria:
+        - "Mínimo 3 variações geradas por peça especificada"
+        - "Resolução ≥ 1080p para todos assets"
+        - "Text legibility on mobile verified (Nano Banana pieces)"
+        - "SynthID watermark presente em Nano Banana outputs"
+        - "Quality scores documentados para todos assets"
+        - "Carousel slides mantêm consistência visual"
+      approvers:
+        - "hotel-visual-producer"
+      output_required: true
+
+    quality_gates:
+      - metric: "Geração success rate"
+        threshold: ">80%"
+      - metric: "Quality score médio"
+        threshold: "≥7/10"
+      - metric: "Text legibility (mobile)"
+        threshold: ">90% readable"
+
+# ═══════════════════════════════════════════════════════════════
+# PHASE 4: CURATION & QUALITY CONTROL
+# ═══════════════════════════════════════════════════════════════
+
+  - name: "Curation & Quality Control"
+    id: "phase-4-curation"
+    duration: "1-2 dias"
+    depends_on: ["phase-3-generation"]
+    agents:
+      - role: "hotel-visual-producer"
+        responsibility: "primary"
+        tasks:
+          - "Brand compliance check detalhado"
+          - "Text legibility check em dispositivos móveis"
+          - "Emotional impact scoring"
+          - "Technical quality validation"
+          - "Seleção top 2-3 variações por peça"
+      - role: "hotel-social-creator"
+        responsibility: "secondary"
+        tasks:
+          - "Validar carrosséis: flow lógico, storytelling visual"
+          - "Feedback sobre usabilidade em plataformas sociais"
+
+    tasks:
+      - id: "curation-001"
+        name: "Brand Compliance Audit"
+        agent: "hotel-visual-producer"
+        inputs:
+          - "/curated/"
+          - "brand_checklist.json"
+        actions:
+          - "Revisar cada asset contra brand checklist:"
+          - "  → Cores corretas? (verificar HEX codes)"
+          - "  → Tipografia permitida?"
+          - "  → Estilo fotográfico alinhado?"
+          - "  → Logo presente onde obrigatório?"
+          - "  → Identidade visual do hotel reconhecível?"
+          - "Scoring: Brand Compliance Score 1-10 por asset"
+          - "Descartar ou marcar para ajuste se score <8/10"
+        outputs:
+          - "brand_compliance_report.xlsx"
+        duration: "4 horas"
+
+      - id: "curation-002"
+        name: "Mobile Legibility Check"
+        agent: "hotel-visual-producer"
+        actions:
+          - "Testar text legibility em dispositivo móvel real (ou emulador)"
+          - "Abrir cada peça Nano Banana em smartphone (arm's length test)"
+          - "Verificar:"
+          - "  → Headline legível a 30cm de distância?"
+          - "  → Contraste suficiente (texto vs background)?"
+          - "  → Font size adequado (mínimo 18pt equivalente)?"
+          - "  → Call-to-action visível e claro?"
+          - "Scoring: Legibility Score 1-10"
+          - "Reprovar se score <9/10 (legibilidade é crítica)"
+        outputs:
+          - "legibility_test_results.xlsx"
+        duration: "3 horas"
+
+      - id: "curation-003"
+        name: "Emotional Impact Scoring"
+        agent: "hotel-visual-producer"
+        inputs:
+          - "/curated/"
+          - "visual_style_guide.md"
+        actions:
+          - "Avaliar impacto emocional de cada peça:"
+          - "  → Cria FOMO (fear of missing out)?"
+          - "  → Desperta desejo de estar lá?"
+          - "  → Evoca emoção positiva (alegria, relaxamento, romance)?"
+          - "  → É memorável?"
+          - "Scoring: Emotional Impact 1-10"
+          - "Para ads e hero images, target ≥7/10"
+          - "Para peças informativas (carrosséis educacionais), ≥5/10 ok"
+        outputs:
+          - "emotional_impact_scores.xlsx"
+        duration: "2 horas"
+
+      - id: "curation-004"
+        name: "Technical Quality Validation"
+        agent: "hotel-visual-producer"
+        actions:
+          - "Verificar qualidade técnica de cada asset:"
+          - "  → Resolução correta (conforme specs)?"
+          - "  → Aspect ratio correto?"
+          - "  → Sem artifacts visuais (glitches, distorções)?"
+          - "  → Formato de arquivo correto (PNG, JPG, WebP)?"
+          - "  → Tamanho de arquivo otimizado (<500KB para web)?"
+          - "Se problemas técnicos: reprovar ou corrigir"
+        outputs:
+          - "technical_qa_report.xlsx"
+        duration: "2 horas"
+
+      - id: "curation-005"
+        name: "Top Variations Selection"
+        agent: "hotel-visual-producer"
+        inputs:
+          - "brand_compliance_report.xlsx"
+          - "legibility_test_results.xlsx"
+          - "emotional_impact_scores.xlsx"
+          - "technical_qa_report.xlsx"
+        actions:
+          - "Consolidar todos scores em master_scores.xlsx"
+          - "Calcular composite score: (Brand×0.3 + Legibility×0.25 + Emotion×0.25 + Technical×0.2)"
+          - "Ranquear variações por composite score"
+          - "Selecionar top 2-3 variações por peça para approval"
+          - "Justificar seleção com notas qualitativas"
+        outputs:
+          - "master_scores.xlsx"
+          - "selected_for_approval/ (folder)"
+        duration: "2 horas"
+
+      - id: "curation-006"
+        name: "Carousel Flow Validation"
+        agent: "hotel-social-creator"
+        inputs:
+          - "/selected_for_approval/social/"
+        actions:
+          - "Revisar sequências de carrosséis como storytelling visual"
+          - "Verificar flow lógico:"
+          - "  → Slide 1 captura atenção (hook visual)?"
+          - "  → Slides 2-8 desenvolvem narrativa?"
+          - "  → Slide 9 reforça value prop?"
+          - "  → Slide 10 fecha com CTA forte?"
+          - "Feedback sobre usabilidade em Instagram/Facebook"
+          - "Sugerir ajustes de ordem ou conteúdo se necessário"
+        outputs:
+          - "carousel_flow_feedback.md"
+        duration: "2 horas"
+
+      - id: "curation-007"
+        name: "Mockup Assembly for Approval"
+        agent: "hotel-visual-producer"
+        actions:
+          - "Criar documento mockup_approval.pdf com todas peças selecionadas"
+          - "Organizar por categoria: Social / Ads / Email / Landing"
+          - "Incluir contexto de uso para cada peça"
+          - "Adicionar scores e notas de curadoria"
+          - "Preparar apresentação clara para human approval"
+          - "Atualizar carousel_preview.html com versão final interativa"
+        outputs:
+          - "mockup_approval.pdf"
+          - "carousel_preview.html (updated)"
+        duration: "3 horas"
+
+    checkpoint:
+      name: "Curation Quality Gate"
+      criteria:
+        - "Brand compliance score ≥ 8/10 para 100% dos assets selecionados"
+        - "Mobile legibility score ≥ 9/10 para peças text-heavy"
+        - "Emotional impact score ≥ 7/10 para ads e hero images"
+        - "Technical QA passed para 100% dos assets"
+        - "Carousel flow validado por social-creator"
+        - "Mockup approval document pronto e bem apresentado"
+      approvers:
+        - "hotel-visual-producer"
+        - "hotel-social-creator"
+      output_required: true
+
+    quality_gates:
+      - metric: "Composite quality score médio"
+        threshold: "≥8/10"
+      - metric: "Assets aprovados vs gerados"
+        threshold: ">60%"
+
+# ═══════════════════════════════════════════════════════════════
+# PHASE 5: HUMAN APPROVAL ⚠️ CRITICAL GATE
+# ═══════════════════════════════════════════════════════════════
+
+  - name: "Human Approval"
+    id: "phase-5-approval"
+    duration: "1-2 dias (pode ter até 2 rounds de revisão)"
+    depends_on: ["phase-4-curation"]
+    agents:
+      - role: "hotel-mkt-chief"
+        responsibility: "primary"
+        tasks:
+          - "Apresentar mockup_approval.pdf ao hotel manager/owner (HUMAN)"
+          - "Facilitar review: brand alignment, emotional tone, factual accuracy"
+          - "Coletar feedback e decisões"
+          - "Gerenciar revision rounds se necessário"
+          - "Documentar sign-off final"
+
+    tasks:
+      - id: "approval-001"
+        name: "Mockup Presentation to Human Decision-Maker"
+        agent: "hotel-mkt-chief"
+        inputs:
+          - "mockup_approval.pdf"
+          - "carousel_preview.html"
+        actions:
+          - "Agendar reunião com hotel manager/owner (human decision-maker)"
+          - "Apresentar mockup document com contexto:"
+          - "  → Objetivo da campanha"
+          - "  → Onde cada peça será usada (social, ads, email, landing)"
+          - "  → Rational por trás das escolhas criativas"
+          - "Demonstrar carousel_preview.html interativo"
+          - "Explicar scores de curadoria (brand, legibility, emotion)"
+          - "Deixar claro: HUMAN APPROVAL OBRIGATÓRIA antes de prosseguir"
+        outputs:
+          - "presentation_record.md (notas da reunião)"
+        duration: "1-2 horas"
+
+      - id: "approval-002"
+        name: "Human Review & Feedback Collection"
+        agent: "hotel-mkt-chief"
+        actions:
+          - "Humano revisa peças contra critérios:"
+          - "  → Brand alignment: 'Isso parece nosso hotel?'"
+          - "  → Emotional tone: 'Isso evoca a emoção certa?'"
+          - "  → Factual accuracy: 'Informações corretas? Sem promessas falsas?'"
+          - "  → Target audience fit: 'Nosso público vai se identificar?'"
+          - "Humano seleciona variações preferidas (entre as 2-3 apresentadas)"
+          - "Humano indica mudanças desejadas (se houver):"
+          - "  → Mudar cor? Ajustar copy? Trocar imagem?"
+          - "  → Aprovar com ajustes pequenos?"
+          - "  → Reprovar e pedir regeneração?"
+          - "Documentar TODAS decisões e feedback"
+        outputs:
+          - "human_feedback.json"
+        duration: "1-2 horas"
+
+      - id: "approval-003"
+        name: "Revision Round (se necessário)"
+        agent: "hotel-visual-producer"
+        inputs:
+          - "human_feedback.json"
+        actions:
+          - "Se humano solicitou mudanças:"
+          - "  → Identificar tipo de mudança: minor tweak vs major regeneration"
+          - "  → Minor (ex: trocar cor, ajustar texto): fazer edição manual ou small regen"
+          - "  → Major (ex: 'não gostei da direção criativa'): voltar para Phase 3 (Generation) ou Phase 2 (Prompts)"
+          - "Limitar a 2 revision rounds (para evitar infinite loop)"
+          - "Se após 2 rounds não aprovar: escalar para decisão de KILL workflow"
+          - "Preparar revised_mockup.pdf com mudanças aplicadas"
+        outputs:
+          - "revised_mockup.pdf (se aplicável)"
+        duration: "4-8 horas (dependendo da magnitude das mudanças)"
+
+      - id: "approval-004"
+        name: "Final Human Sign-Off"
+        agent: "hotel-mkt-chief"
+        inputs:
+          - "revised_mockup.pdf (ou mockup_approval.pdf se approved first time)"
+        actions:
+          - "Apresentar versão final (original ou revisada) para sign-off"
+          - "Obter aprovação EXPLÍCITA do humano:"
+          - "  → Verbal: 'Aprovado, pode usar' + confirmação por escrito (email/slack)"
+          - "  → Documentar timestamp de aprovação"
+          - "  → Registrar nome do aprovador (hotel manager/owner)"
+          - "Se reprovar novamente após 2 rounds: escalar kill_criteria do Gate G5"
+          - "Só após sign-off: avançar para Phase 6 (Export)"
+        outputs:
+          - "approval_record.json (com timestamp, aprovador, peças aprovadas)"
+        duration: "30 min"
+
+      - id: "approval-005"
+        name: "Approval Documentation"
+        agent: "hotel-mkt-chief"
+        actions:
+          - "Criar registro formal de aprovação em approval_record.json:"
+          - "  → approved_by: [Nome do hotel manager/owner]"
+          - "  → approved_at: [ISO timestamp]"
+          - "  → approved_assets: [lista de file paths]"
+          - "  → revision_rounds: [0, 1, ou 2]"
+          - "  → feedback_summary: [principais pontos do humano]"
+          - "Arquivar mockup_approval.pdf e revised_mockup.pdf (se houver)"
+          - "Comunicar aprovação ao visual-producer para prosseguir"
+        outputs:
+          - "approval_record.json (final)"
+        duration: "30 min"
+
+    checkpoint:
+      name: "⚠️ HUMAN APPROVAL GATE - NÃO NEGOCIÁVEL"
+      criteria:
+        - "⚠️ MUST: Hotel manager/owner aprovou EXPLICITAMENTE todas peças"
+        - "⚠️ MUST: Aprovação documentada com timestamp e nome do aprovador"
+        - "⚠️ MUST: Sem erros factuais em overlays de texto (preços, datas, ofertas)"
+        - "⚠️ MUST: Brand alignment confirmado pelo humano (não apenas pelo agent)"
+        - "SHOULD: Aprovação obtida em ≤2 revision rounds (evitar infinite loop)"
+      approvers:
+        - "⚠️ CRITICAL: Hotel Manager/Owner (HUMAN - not AI agent)"
+        - "hotel-mkt-chief (facilitador, não decision-maker final)"
+      output_required: true
+      blocking: true
+
+    quality_gates:
+      - metric: "Human approval rate"
+        threshold: "100%"
+        reason: "Cannot proceed to export without explicit human sign-off"
+      - metric: "Revision rounds"
+        threshold: "≤2"
+        reason: "More than 2 rounds indicates fundamental creative misalignment"
+
+# ═══════════════════════════════════════════════════════════════
+# PHASE 6: EXPORT & DELIVERY
+# ═══════════════════════════════════════════════════════════════
+
+  - name: "Export & Delivery"
+    id: "phase-6-export"
+    duration: "1 dia"
+    depends_on: ["phase-5-approval"]
+    agents:
+      - role: "hotel-visual-producer"
+        responsibility: "primary"
+        tasks:
+          - "Exportar assets em todos formatos e tamanhos requeridos"
+          - "Organizar por destino (social, ads, email, landing)"
+          - "Criar carousel preview HTML interativo"
+          - "Documentar prompts finais usados"
+          - "Hand off para agentes solicitantes"
+          - "Arquivar para reprodução futura"
+
+    tasks:
+      - id: "export-001"
+        name: "Multi-Format Export"
+        agent: "hotel-visual-producer"
+        inputs:
+          - "/selected_for_approval/"
+          - "approval_record.json"
+          - "production_matrix.xlsx"
+        actions:
+          - "Exportar cada asset aprovado em todos formatos requeridos:"
+          - "  → PNG (lossless, para assets com transparência ou alta qualidade)"
+          - "  → JPG (otimizado, para web e ads - quality 85-90%)"
+          - "  → WebP (para web moderna, menor tamanho - quality 85%)"
+          - "Exportar em todos tamanhos especificados:"
+          - "  → Social: 1080x1080, 1080x1350, 1200x628"
+          - "  → Ads: 1200x628, 1080x1080, 1920x1080"
+          - "  → Email: 600x400, 1200x600"
+          - "  → Landing: 1920x1080, 2560x1440"
+          - "Otimizar tamanho de arquivo (<500KB para web, <2MB para print)"
+          - "Verificar qualidade após compressão"
+        outputs:
+          - "/exports/ (multi-format, multi-size)"
+        duration: "3 horas"
+
+      - id: "export-002"
+        name: "Destination Organization"
+        agent: "hotel-visual-producer"
+        actions:
+          - "Organizar exports em estrutura por destino:"
+          - "  /final_assets/"
+          - "    /social/ (para @hotel-social-creator)"
+          - "      /instagram/"
+          - "      /facebook/"
+          - "      /tiktok/"
+          - "    /ads/ (para @hotel-ads-specialist)"
+          - "      /google_display/"
+          - "      /meta_ads/"
+          - "    /email/ (para @hotel-email-maestro)"
+          - "      /headers/"
+          - "      /inline_images/"
+          - "    /landing/ (para @hotel-direct-booking)"
+          - "      /hero_images/"
+          - "      /banners/"
+          - "Naming convention: [campanha]_[tipo]_[variacao]_[tamanho].[formato]"
+          - "  Ex: carnaval_2026_carousel_scarcity_v1_1080x1080.png"
+        outputs:
+          - "/final_assets/ (organized by destination)"
+        duration: "1 hora"
+
+      - id: "export-003"
+        name: "Carousel Preview HTML"
+        agent: "hotel-visual-producer"
+        actions:
+          - "Criar carousel_preview.html interativo para TODOS carrosséis aprovados"
+          - "Features:"
+          - "  → Navegação slide-by-slide (setas esquerda/direita)"
+          - "  → Auto-play opcional (3s por slide)"
+          - "  → Thumbnail navigation"
+          - "  → Responsive (desktop + mobile preview)"
+          - "  → Link para cada asset exportado"
+          - "Propósito: validação final antes de publicação, compartilhar com stakeholders"
+        outputs:
+          - "carousel_preview.html (final version)"
+        duration: "2 horas"
+
+      - id: "export-004"
+        name: "Prompts Archive Documentation"
+        agent: "hotel-visual-producer"
+        inputs:
+          - "prompts_library.md"
+          - "approval_record.json"
+        actions:
+          - "Documentar prompts FINAIS usados (os que geraram peças aprovadas)"
+          - "Criar prompts_archive.md com:"
+          - "  → Prompt completo"
+          - "  → Ferramenta (Nano Banana / DALL-E 3)"
+          - "  → Configurações (model version, guidance scale, steps, seed)"
+          - "  → Asset resultante (file path)"
+          - "  → Composite quality score"
+          - "  → Aprovação humana (timestamp)"
+          - "Propósito: reproduzir assets similares em futuras campanhas"
+          - "Versionar: prompts_archive_v1.0.md"
+        outputs:
+          - "prompts_archive.md"
+        duration: "2 horas"
+
+      - id: "export-005"
+        name: "Handoff to Requesting Agents"
+        agent: "hotel-visual-producer"
+        actions:
+          - "Identificar agentes solicitantes (do campaign_brief):"
+          - "  → @hotel-social-creator (se chamado por content-machine)"
+          - "  → @hotel-ads-specialist (se chamado por paid-ads-scale)"
+          - "  → @hotel-email-maestro (se chamado por email-lifecycle)"
+          - "  → @hotel-direct-booking (se chamado por direct-booking-funnel)"
+          - "Enviar handoff package para cada agente:"
+          - "  → Path para /final_assets/[destino]/"
+          - "  → carousel_preview.html link"
+          - "  → usage_guidelines.md (como usar cada peça, specs técnicas)"
+          - "  → approval_record.json (para rastreabilidade)"
+          - "Notificar agentes: 'Visual production COMPLETA. Assets prontos para uso.'"
+        outputs:
+          - "handoff_notifications.json"
+        duration: "1 hora"
+
+      - id: "export-006"
+        name: "Archive for Future Campaigns"
+        agent: "hotel-visual-producer"
+        actions:
+          - "Criar archive package para reprodução futura:"
+          - "  /archive/visual_production_[campaign_name]_[date]/"
+          - "    /final_assets/ (all approved assets)"
+          - "    /prompts_archive.md"
+          - "    /approval_record.json"
+          - "    /mockup_approval.pdf"
+          - "    /carousel_preview.html"
+          - "    /production_report.pdf (criar a seguir)"
+          - "Zipar package: visual_production_carnaval_2026.zip"
+          - "Upload para repositório central (Google Drive, S3, etc.)"
+          - "Documentar location em master_archive_index.md"
+        outputs:
+          - "visual_production_[campaign].zip"
+          - "master_archive_index.md (updated)"
+        duration: "1 hora"
+
+      - id: "export-007"
+        name: "Production Report"
+        agent: "hotel-visual-producer"
+        inputs:
+          - "approval_record.json"
+          - "master_scores.xlsx"
+          - "production_matrix.xlsx"
+        actions:
+          - "Criar production_report.pdf com:"
+          - "  → Executive Summary: peças criadas, approval rate, timeline"
+          - "  → Stats: total assets gerados vs aprovados, quality scores médios"
+          - "  → Tools Used: Nano Banana vs DALL-E breakdown"
+          - "  → Learnings: o que funcionou bem, o que melhorar"
+          - "  → Recommendations: para futuras produções visuais"
+          - "  → Appendix: sample assets, prompts destacados"
+          - "Apresentar ao Chief para review final do workflow"
+        outputs:
+          - "production_report.pdf"
+        duration: "2 horas"
+
+    checkpoint:
+      name: "Export & Delivery Completion"
+      criteria:
+        - "Todos assets exportados em formatos e tamanhos requeridos"
+        - "Organização por destino (social/ads/email/landing) completa"
+        - "carousel_preview.html funcional e testado"
+        - "prompts_archive.md documentado com prompts finais"
+        - "Handoffs enviados a todos agentes solicitantes"
+        - "Archive package criado e armazenado em repositório central"
+        - "production_report.pdf completo com learnings"
+      approvers:
+        - "hotel-visual-producer"
+        - "hotel-mkt-chief"
+      output_required: true
+
+    quality_gates:
+      - metric: "Export completeness"
+        threshold: "100%"
+      - metric: "File size optimization"
+        threshold: "<500KB para web assets"
+      - metric: "Handoff acknowledgment from requesting agents"
+        threshold: "100%"
+
+# ═══════════════════════════════════════════════════════════════
+# ROLLBACK & CONTINGENCY
+# ═══════════════════════════════════════════════════════════════
+
+rollback:
+  triggers:
+    - condition: "Human approval rate <50% após 2 revision rounds"
+      action: "KILL workflow - fundamental creative misalignment"
+      recovery: "Escalar para Chief: revisar brief inicial, redefinir direção criativa, restart Phase 1"
+    - condition: "Quality scores consistentemente baixos (<6/10) em Phase 3"
+      action: "PAUSE - problema com prompts ou ferramentas"
+      recovery: "Revisar prompts (Phase 2), ajustar configurações de geração, testar em pequeno batch antes de continuar"
+    - condition: "Brand compliance failures >30% em Phase 4"
+      action: "RECYCLE para Phase 2 (Prompt Engineering)"
+      recovery: "Brand guidelines não embarcados corretamente nos prompts. Revisar e re-engineer prompts com foco em brand."
+    - condition: "Text legibility failures >20% em Phase 4"
+      action: "PAUSE - ajustar prompts Nano Banana"
+      recovery: "Adicionar constraints de legibilidade mais explícitos nos prompts (font size, contrast, spacing). Regenerar batch."
+    - condition: "API failures ou rate limits (Google AI Studio / OpenAI)"
+      action: "PAUSE - technical issue"
+      recovery: "Aguardar rate limit reset, ou usar API alternativa (ex: Gemini API vs Google AI Studio). Continuar geração após resolução."
+
+  contingency_plans:
+    - scenario: "Humano rejeita TODA direção criativa no Phase 5"
+      actions:
+        - "HOLD workflow atual"
+        - "Agendar reunião com Chief + Humano para entender gaps"
+        - "Coletar referências visuais do humano (o que ELE gostaria de ver?)"
+        - "RECYCLE para Phase 1: redefinir visual style guide com input direto do humano"
+        - "Restart workflow com nova direção"
+    - scenario: "Ferramentas de IA (Nano Banana ou DALL-E) indisponíveis"
+      actions:
+        - "Verificar status de API (downtime temporário vs permanente)"
+        - "Se temporário: PAUSE workflow, aguardar resolução"
+        - "Se permanente ou >24h downtime: considerar ferramenta alternativa (Midjourney, Stable Diffusion)"
+        - "Se sem alternativa viável: escalar para humano designer (manual production)"
+    - scenario: "Assets gerados têm problemas de copyright (imagens similares a stock photos protegidos)"
+      actions:
+        - "Identificar assets problemáticos"
+        - "Descartar e regenerar com prompts mais específicos (evitar genericidade)"
+        - "Consultar legal se necessário"
+        - "Documentar para evitar em futuras gerações"
+    - scenario: "Workflow excede timeline (>7 dias)"
+      actions:
+        - "Identificar bottleneck: qual phase está atrasada?"
+        - "Se Phase 5 (Human Approval): escalar urgência, limitar revision rounds a 1"
+        - "Se Phase 3 (Generation): paralelizar mais, usar batch processing otimizado"
+        - "Comunicar delay ao calling workflow, ajustar expectations"
+
+# ═══════════════════════════════════════════════════════════════
+# SUCCESS CRITERIA & HANDOFF
+# ═══════════════════════════════════════════════════════════════
+
+success_criteria:
+  primary:
+    - metric: "Human approval rate"
+      target: "≥95%"
+      measurement: "Assets aprovados / assets apresentados para aprovação"
+    - metric: "Brand compliance score"
+      target: "≥8/10"
+      measurement: "Média de brand compliance scores de todos assets finais"
+    - metric: "Production timeline"
+      target: "≤7 dias"
+      measurement: "Data de início Phase 1 → data de conclusão Phase 6"
+
+  secondary:
+    - metric: "Text legibility on mobile"
+      target: "≥9/10"
+      measurement: "Legibility scores de peças text-heavy (Nano Banana)"
+    - metric: "Emotional impact score"
+      target: "≥7/10"
+      measurement: "Média de emotional impact scores para ads e hero images"
+    - metric: "Quality score médio"
+      target: "≥8/10"
+      measurement: "Composite quality score de todos assets aprovados"
+    - metric: "Generation efficiency"
+      target: ">60%"
+      measurement: "Assets aprovados / total assets gerados (eficiência)"
+    - metric: "Revision rounds"
+      target: "≤2"
+      measurement: "Número de revision rounds em Phase 5"
+
+handoff:
+  to_workflows:
+    - "wf-seasonal-campaign (Phase 4 → Phase 5)"
+    - "wf-content-machine (Phase 3 → Phase 4)"
+    - "wf-paid-ads-scale (Phase 2 → Phase 3)"
+    - "wf-email-lifecycle (Phase 2 → Phase 3)"
+    - "wf-direct-booking-funnel (Phase 3 → Phase 4)"
+  to_agents:
+    - "@hotel-social-creator"
+    - "@hotel-ads-specialist"
+    - "@hotel-email-maestro"
+    - "@hotel-direct-booking"
+  deliverables:
+    - "final_assets.zip (organized by destination)"
+    - "carousel_preview.html (interactive preview)"
+    - "prompts_archive.md (for future reproduction)"
+    - "approval_record.json (traceability)"
+    - "production_report.pdf (learnings & stats)"
+  knowledge_transfer:
+    - "Review prompts_archive.md com requesting agents: como prompts foram construídos"
+    - "Demonstrar carousel_preview.html: validação antes de publicação"
+    - "Compartilhar learnings de production_report.pdf: o que funcionou, melhorias"
+    - "Documentar em master_archive_index.md location do archive para future reference"
+
+# ════════════════════════════════════════════════════════════════
+# 🔒 ENFORCEMENT ENGINE
+# Inspirado em: Cooper's Stage-Gate (P&G) + Salesforce Pipeline + Toyota Andon
+# ════════════════════════════════════════════════════════════════
+
+enforcement_engine:
+  version: "1.0.0"
+  protocol: "stage-gate"
+
+  # ──────────────────────────────────────────────────────────────
+  # STATE MACHINE
+  # ──────────────────────────────────────────────────────────────
+  state_machine:
+    initial_state: "phase-1-brief"
+    terminal_states: ["completed", "killed"]
+    transitions:
+      - from: "phase-1-brief"
+        to: "phase-2-prompts"
+        gate: "G1"
+        trigger: "auto_on_gate_pass"
+      - from: "phase-2-prompts"
+        to: "phase-3-generation"
+        gate: "G2"
+        trigger: "auto_on_gate_pass"
+      - from: "phase-3-generation"
+        to: "phase-4-curation"
+        gate: "G3"
+        trigger: "auto_on_gate_pass"
+      - from: "phase-4-curation"
+        to: "phase-5-approval"
+        gate: "G4"
+        trigger: "auto_on_gate_pass"
+      - from: "phase-5-approval"
+        to: "phase-6-export"
+        gate: "G5"
+        trigger: "manual_human_approval"
+      - from: "phase-6-export"
+        to: "completed"
+        gate: "G6"
+        trigger: "auto_on_gate_pass"
+    invalid_transitions:
+      - from: "phase-1-brief"
+        to: "phase-3-generation"
+        reason: "Não pode pular Prompt Engineering - é o core do workflow visual"
+      - from: "phase-3-generation"
+        to: "phase-5-approval"
+        reason: "Não pode apresentar para humano sem curadoria (Phase 4) - humano veria lixo junto com boas peças"
+      - from: "phase-4-curation"
+        to: "phase-6-export"
+        reason: "Não pode exportar sem human approval - GATE CRÍTICO obrigatório"
+      - from: "phase-2-prompts"
+        to: "phase-5-approval"
+        reason: "Não pode aprovar prompts - precisa gerar peças reais primeiro"
+
+  # ──────────────────────────────────────────────────────────────
+  # STAGE-GATES
+  # ──────────────────────────────────────────────────────────────
+  gates:
+    G1:
+      name: "Brief → Prompts Gate"
+      between: ["phase-1-brief", "phase-2-prompts"]
+      gatekeeper: "hotel-mkt-chief"
+      sla: "24h"
+      must_meet:
+        - id: "G1-M1"
+          criterion: "Visual style guide completo com mood board e mínimo 5 referências visuais"
+          validation: "Arquivo visual_style_guide.md existe com seção 'Mood Board' + ≥5 image references"
+          on_fail: "BLOCK"
+        - id: "G1-M2"
+          criterion: "Production matrix com tool selection (Nano vs DALL-E) para cada tipo de peça"
+          validation: "production_matrix.xlsx tem coluna 'tool' preenchida para todas linhas"
+          on_fail: "BLOCK"
+        - id: "G1-M3"
+          criterion: "Brand guidelines carregados e checklist criado (cores HEX, fonts, logo specs)"
+          validation: "brand_checklist.json tem campos: colors[], fonts[], logo_placement, style_notes"
+          on_fail: "BLOCK"
+        - id: "G1-M4"
+          criterion: "Creative direction aprovada por Chief (sign-off explícito)"
+          validation: "creative_direction.md tem campo 'approved_by: hotel-mkt-chief' com timestamp"
+          on_fail: "BLOCK"
+      should_meet:
+        - id: "G1-S1"
+          criterion: "Clareza da direção criativa (visual producer entende exatamente o que criar?)"
+          weight: 1.0
+          min_score: 8
+        - id: "G1-S2"
+          criterion: "Alinhamento do estilo visual com brand identity do hotel"
+          weight: 1.0
+          min_score: 9
+      kill_criteria:
+        - id: "G1-K1"
+          criterion: "Brief da campanha ausente ou vago demais (sem objetivo, público, mensagem)"
+          action: "KILL + return to calling workflow: brief insuficiente para produção visual"
+        - id: "G1-K2"
+          criterion: "Brand guidelines inexistentes (hotel não tem identidade visual definida)"
+          action: "HOLD + escalar: criar brand guidelines básicos antes de continuar"
+      decision_options: ["GO", "KILL", "HOLD", "RECYCLE"]
+
+    G2:
+      name: "Prompts → Generation Gate"
+      between: ["phase-2-prompts", "phase-3-generation"]
+      gatekeeper: "hotel-visual-producer"
+      sla: "24h"
+      must_meet:
+        - id: "G2-M1"
+          criterion: "Mínimo 3 prompts escritos por tipo de peça (carousel, hero, social, ad)"
+          validation: "prompts_library.md tem ≥3 prompts para cada tipo listado em production_matrix.xlsx"
+          on_fail: "BLOCK"
+        - id: "G2-M2"
+          criterion: "Brand elements incluídos em 100% dos prompts (cores, style, mood)"
+          validation: "Grep prompts_library.md for brand color HEX codes - must appear in all prompts"
+          on_fail: "BLOCK"
+        - id: "G2-M3"
+          criterion: "Hormozi visual patterns aplicados em peças de conversão (ads, CTAs)"
+          validation: "hormozi_visual_patterns.md lista hooks aplicados + references to ad prompts"
+          on_fail: "BLOCK"
+        - id: "G2-M4"
+          criterion: "Variation matrix completa (tracking de todas variações planejadas)"
+          validation: "variation_matrix.xlsx tem ≥10 linhas com fields: concept, angle, style, format, prompt_id"
+          on_fail: "BLOCK"
+      should_meet:
+        - id: "G2-S1"
+          criterion: "Clareza e reprodutibilidade dos prompts (outro producer conseguiria executar?)"
+          weight: 1.0
+          min_score: 9
+        - id: "G2-S2"
+          criterion: "Text legibility design (prompts Nano Banana especificam font size, contrast, spacing)"
+          weight: 1.0
+          min_score: 8
+      kill_criteria:
+        - id: "G2-K1"
+          criterion: "Prompts genéricos demais (sem brand identity, poderiam ser de qualquer hotel)"
+          action: "RECYCLE para Phase 2 - reescrever prompts com brand specificity"
+        - id: "G2-K2"
+          criterion: "Text legibility não considerada em prompts Nano Banana (vai falhar em mobile)"
+          action: "HOLD + revisar prompts com constraints de legibilidade explícitos"
+      decision_options: ["GO", "KILL", "HOLD", "RECYCLE"]
+
+    G3:
+      name: "Generation → Curation Gate"
+      between: ["phase-3-generation", "phase-4-curation"]
+      gatekeeper: "hotel-visual-producer"
+      sla: "24h"
+      must_meet:
+        - id: "G3-M1"
+          criterion: "Mínimo 3 variações geradas por peça especificada em production matrix"
+          validation: "Contar arquivos em /curated/ - verificar ≥3 variations por concept"
+          on_fail: "BLOCK"
+        - id: "G3-M2"
+          criterion: "Resolução ≥ 1080p para 100% dos assets gerados"
+          validation: "Script verificar image dimensions - all files ≥1080px em pelo menos uma dimensão"
+          on_fail: "BLOCK"
+        - id: "G3-M3"
+          criterion: "Quality scores documentados (1-10) para todos assets"
+          validation: "quality_scores.xlsx tem score para cada file em /curated/"
+          on_fail: "BLOCK"
+        - id: "G3-M4"
+          criterion: "SynthID watermark presente em outputs Nano Banana (transparência AI)"
+          validation: "Verificar metadata de images Nano Banana - SynthID flag presente"
+          on_fail: "BLOCK"
+      should_meet:
+        - id: "G3-S1"
+          criterion: "Generation success rate (assets usáveis vs total gerado)"
+          weight: 1.0
+          min_score: 6
+          threshold: ">60%"
+        - id: "G3-S2"
+          criterion: "Consistency visual em carousel sequences (paleta, tipografia, estilo)"
+          weight: 1.0
+          min_score: 8
+      kill_criteria:
+        - id: "G3-K1"
+          criterion: "Generation success rate <40% (muitos failures, quality baixa)"
+          action: "RECYCLE para Phase 2 - prompts não estão gerando output aceitável"
+        - id: "G3-K2"
+          criterion: "API failures persistentes (Google AI Studio ou OpenAI down >24h)"
+          action: "HOLD + contingency: usar ferramenta alternativa ou aguardar resolução"
+      decision_options: ["GO", "KILL", "HOLD", "RECYCLE"]
+
+    G4:
+      name: "Curation → Approval Gate"
+      between: ["phase-4-curation", "phase-5-approval"]
+      gatekeeper: "hotel-visual-producer"
+      sla: "24h"
+      must_meet:
+        - id: "G4-M1"
+          criterion: "Brand compliance score ≥8/10 para 100% dos assets selecionados"
+          validation: "brand_compliance_report.xlsx - verificar all selected assets have score ≥8"
+          on_fail: "BLOCK"
+        - id: "G4-M2"
+          criterion: "Mobile legibility score ≥9/10 para peças text-heavy (Nano Banana)"
+          validation: "legibility_test_results.xlsx - all Nano assets score ≥9"
+          on_fail: "BLOCK"
+        - id: "G4-M3"
+          criterion: "Mockup approval document pronto e bem apresentado para humano"
+          validation: "mockup_approval.pdf existe, ≥5 páginas, assets organizados por categoria"
+          on_fail: "BLOCK"
+        - id: "G4-M4"
+          criterion: "Carousel flow validado por social-creator (storytelling visual ok)"
+          validation: "carousel_flow_feedback.md existe com approval note de @hotel-social-creator"
+          on_fail: "BLOCK"
+      should_meet:
+        - id: "G4-S1"
+          criterion: "Emotional impact score ≥7/10 para ads e hero images"
+          weight: 1.0
+          min_score: 7
+        - id: "G4-S2"
+          criterion: "Composite quality score médio ≥8/10"
+          weight: 1.0
+          min_score: 8
+      kill_criteria:
+        - id: "G4-K1"
+          criterion: "Brand compliance failures >30% (não parecem do hotel, identidade perdida)"
+          action: "RECYCLE para Phase 2 - prompts não capturam brand identity adequadamente"
+        - id: "G4-K2"
+          criterion: "Mobile legibility failures >20% (texto ilegível em smartphone)"
+          action: "RECYCLE para Phase 2 - ajustar prompts Nano com constraints de legibilidade"
+      decision_options: ["GO", "KILL", "HOLD", "RECYCLE"]
+
+    G5:
+      name: "⚠️ HUMAN APPROVAL GATE - CRITICAL NON-NEGOTIABLE"
+      between: ["phase-5-approval", "phase-6-export"]
+      gatekeeper: "⚠️ Hotel Manager/Owner (HUMAN) facilitated by hotel-mkt-chief"
+      sla: "48h (2 dias - pode ter até 2 revision rounds)"
+      must_meet:
+        - id: "G5-M1"
+          criterion: "⚠️ CRITICAL: Hotel manager/owner aprovou EXPLICITAMENTE todas peças apresentadas"
+          validation: "approval_record.json tem campo 'approved_by' = [nome do humano] + timestamp"
+          on_fail: "BLOCK - não pode exportar sem human approval"
+        - id: "G5-M2"
+          criterion: "⚠️ CRITICAL: Sem erros factuais em text overlays (preços corretos, datas corretas, ofertas válidas)"
+          validation: "Human verification during approval meeting - chief documenta em human_feedback.json"
+          on_fail: "BLOCK - fix factual errors, re-submit"
+        - id: "G5-M3"
+          criterion: "⚠️ CRITICAL: Brand alignment confirmado pelo humano (não apenas pelo agent)"
+          validation: "human_feedback.json tem nota 'brand_alignment: approved' pelo humano"
+          on_fail: "BLOCK - ajustar peças ou recycle"
+        - id: "G5-M4"
+          criterion: "Aprovação documentada formalmente (timestamp, nome aprovador, lista de assets aprovados)"
+          validation: "approval_record.json bem formatado com todos campos obrigatórios preenchidos"
+          on_fail: "BLOCK"
+      should_meet:
+        - id: "G5-S1"
+          criterion: "Aprovação obtida em ≤2 revision rounds (eficiência, evitar infinite loop)"
+          weight: 1.0
+          min_score: 8
+          note: "Se >2 rounds, indica fundamental creative misalignment - escalar"
+        - id: "G5-S2"
+          criterion: "Human feedback positivo sobre emotional tone e target audience fit"
+          weight: 0.5
+          min_score: 7
+      kill_criteria:
+        - id: "G5-K1"
+          criterion: "⚠️ Humano rejeita TODA direção criativa após 2 revision rounds (fundamental misalignment)"
+          action: "KILL workflow + escalar: reunião Chief + Humano para redefinir creative direction. Restart Phase 1 com novo input."
+        - id: "G5-K2"
+          criterion: "⚠️ Humano identifica erro factual crítico que invalida campanha (ex: preço errado, oferta ilegal)"
+          action: "HOLD + fix urgente: corrigir erro, regenerar assets afetados, re-submit para approval"
+        - id: "G5-K3"
+          criterion: "Humano não disponível para approval por >7 dias (bloqueio de timeline)"
+          action: "HOLD + escalar: Chief encontra substitute approver (operations manager?) ou aguarda retorno"
+      decision_options: ["GO", "KILL", "HOLD", "RECYCLE"]
+      blocking: true
+      critical: true
+
+    G6:
+      name: "Export → Delivery Gate"
+      between: ["phase-6-export", "completed"]
+      gatekeeper: "hotel-visual-producer"
+      sla: "24h"
+      must_meet:
+        - id: "G6-M1"
+          criterion: "100% dos assets exportados em todos formatos e tamanhos requeridos"
+          validation: "Checklist contra production_matrix.xlsx - todos outputs presentes em /final_assets/"
+          on_fail: "BLOCK"
+        - id: "G6-M2"
+          criterion: "Handoffs enviados a todos agentes solicitantes com acknowledgment recebido"
+          validation: "handoff_notifications.json lista all requesting agents com 'acknowledged: true'"
+          on_fail: "BLOCK"
+        - id: "G6-M3"
+          criterion: "Archive package criado e stored em repositório central"
+          validation: "visual_production_[campaign].zip existe + master_archive_index.md atualizado com location"
+          on_fail: "BLOCK"
+        - id: "G6-M4"
+          criterion: "prompts_archive.md documentado com prompts finais aprovados"
+          validation: "prompts_archive.md existe, ≥10 prompts documentados com metadata completa"
+          on_fail: "BLOCK"
+      should_meet:
+        - id: "G6-S1"
+          criterion: "File size optimization (web assets <500KB)"
+          weight: 1.0
+          min_score: 8
+        - id: "G6-S2"
+          criterion: "production_report.pdf completo com learnings e recommendations"
+          weight: 0.5
+          min_score: 7
+      kill_criteria:
+        - id: "G6-K1"
+          criterion: "Export failures técnicos persistentes (corrupção de arquivos, formato errado)"
+          action: "HOLD + fix technical issue, re-export"
+      decision_options: ["GO", "HOLD"]
+
+  # ──────────────────────────────────────────────────────────────
+  # AUTOMATED HANDOFFS
+  # ──────────────────────────────────────────────────────────────
+  handoffs:
+    - id: "H1"
+      from_phase: "phase-1-brief"
+      to_phase: "phase-2-prompts"
+      from_agent: "@hotel-mkt-chief"
+      to_agent: "@hotel-visual-producer"
+      trigger: "gate_G1_passed"
+      deliverables:
+        - name: "visual_style_guide.md"
+          format: "markdown"
+          required: true
+        - name: "production_matrix.xlsx"
+          format: "excel"
+          required: true
+        - name: "brand_checklist.json"
+          format: "json"
+          required: true
+        - name: "creative_direction.md"
+          format: "markdown"
+          required: true
+      acceptance_criteria:
+        - "Visual style guide tem mood board com ≥5 referências"
+        - "Production matrix completa com tool selection"
+        - "Creative direction aprovada por Chief"
+      sla: "12h"
+      on_timeout:
+        action: "escalate"
+        notify: "@hotel-mkt-chief"
+        message: "Handoff H1 atrasado - Brief phase não entregue"
+      on_reject:
+        action: "return_to_sender"
+        message: "Brief incompleto. Faltam: [lista]. Prazo para correção: 24h."
+
+    - id: "H2"
+      from_phase: "phase-2-prompts"
+      to_phase: "phase-3-generation"
+      from_agent: "@hotel-visual-producer"
+      to_agent: "@hotel-visual-producer"
+      trigger: "gate_G2_passed"
+      deliverables:
+        - name: "prompts_library.md"
+          format: "markdown"
+          required: true
+        - name: "variation_matrix.xlsx"
+          format: "excel"
+          required: true
+        - name: "hormozi_visual_patterns.md"
+          format: "markdown"
+          required: true
+      acceptance_criteria:
+        - "Mínimo 3 prompts por tipo de peça"
+        - "Brand elements em 100% dos prompts"
+        - "Variation matrix completa"
+      sla: "12h"
+      on_timeout:
+        action: "escalate"
+        notify: "@hotel-mkt-chief"
+      on_reject:
+        action: "return_to_sender"
+        message: "Prompts incompletos ou genéricos. Revisar com brand specificity."
+
+    - id: "H3"
+      from_phase: "phase-3-generation"
+      to_phase: "phase-4-curation"
+      from_agent: "@hotel-visual-producer"
+      to_agent: "@hotel-visual-producer + @hotel-social-creator"
+      trigger: "gate_G3_passed"
+      deliverables:
+        - name: "/curated/ (folder)"
+          format: "directory"
+          required: true
+        - name: "quality_scores.xlsx"
+          format: "excel"
+          required: true
+        - name: "carousel_consistency_report.md"
+          format: "markdown"
+          required: true
+      acceptance_criteria:
+        - "Mínimo 3 variações por peça geradas"
+        - "Quality scores ≥7/10 para todos assets em /curated/"
+        - "Resolução ≥1080p verificada"
+      sla: "12h"
+      on_timeout:
+        action: "escalate"
+        notify: "@hotel-mkt-chief"
+      on_reject:
+        action: "return_to_sender"
+        message: "Generation quality insuficiente. Success rate <60%. Revisar prompts."
+
+    - id: "H4"
+      from_phase: "phase-4-curation"
+      to_phase: "phase-5-approval"
+      from_agent: "@hotel-visual-producer + @hotel-social-creator"
+      to_agent: "@hotel-mkt-chief"
+      trigger: "gate_G4_passed"
+      deliverables:
+        - name: "mockup_approval.pdf"
+          format: "pdf"
+          required: true
+        - name: "carousel_preview.html"
+          format: "html"
+          required: true
+        - name: "/selected_for_approval/ (folder)"
+          format: "directory"
+          required: true
+        - name: "master_scores.xlsx"
+          format: "excel"
+          required: true
+      acceptance_criteria:
+        - "Brand compliance ≥8/10 para 100% assets"
+        - "Mobile legibility ≥9/10 para text-heavy pieces"
+        - "Mockup document bem apresentado"
+      sla: "24h"
+      on_timeout:
+        action: "escalate"
+        notify: "@hotel-mkt-chief"
+      on_reject:
+        action: "return_to_sender"
+        message: "Curadoria insuficiente. Problemas: [lista]. Revisar scoring."
+
+    - id: "H5"
+      from_phase: "phase-5-approval"
+      to_phase: "phase-6-export"
+      from_agent: "@hotel-mkt-chief"
+      to_agent: "@hotel-visual-producer"
+      trigger: "gate_G5_passed"
+      deliverables:
+        - name: "approval_record.json"
+          format: "json"
+          required: true
+        - name: "human_feedback.json"
+          format: "json"
+          required: true
+        - name: "/selected_for_approval/ (approved subset)"
+          format: "directory"
+          required: true
+      acceptance_criteria:
+        - "⚠️ Human approval explícito documentado"
+        - "Sem erros factuais em text overlays"
+        - "Brand alignment confirmado pelo humano"
+      sla: "12h"
+      on_timeout:
+        action: "escalate"
+        notify: "@hotel-mkt-chief"
+      on_reject:
+        action: "pause_workflow"
+        message: "Human approval pendente. Aguardar decisão ou processar revision requests."
+
+    - id: "H6"
+      from_phase: "phase-6-export"
+      to_phase: "completed"
+      from_agent: "@hotel-visual-producer"
+      to_agent: "[requesting agents]"
+      trigger: "gate_G6_passed"
+      deliverables:
+        - name: "final_assets.zip"
+          format: "zip"
+          required: true
+        - name: "carousel_preview.html"
+          format: "html"
+          required: true
+        - name: "prompts_archive.md"
+          format: "markdown"
+          required: true
+        - name: "production_report.pdf"
+          format: "pdf"
+          required: true
+      acceptance_criteria:
+        - "Todos assets exportados em formatos requeridos"
+        - "Handoffs acknowledged por requesting agents"
+        - "Archive package stored em repositório"
+      sla: "24h"
+      on_timeout:
+        action: "escalate"
+        notify: "@hotel-mkt-chief"
+      on_reject:
+        action: "return_to_sender"
+        message: "Export incompleto. Faltando formatos: [lista]. Corrigir e reenviar."
+
+  # ──────────────────────────────────────────────────────────────
+  # AUTO-ROLLBACK TRIGGERS
+  # ──────────────────────────────────────────────────────────────
+  auto_rollback:
+    triggers:
+      - id: "R1"
+        condition: "Quality scores consistentemente baixos (<6/10) em Phase 3 após 2 batches"
+        action: "pause"
+        recovery: "1. Analisar prompts: muito genéricos? Brand elements ausentes? 2. Ajustar configurações de geração (guidance scale, steps). 3. Testar em small batch (5 assets). 4. Se ok, continuar. Se não, RECYCLE para Phase 2."
+        notify: "@hotel-visual-producer"
+      - id: "R2"
+        condition: "Brand compliance failures >30% em Phase 4"
+        action: "recycle"
+        recovery: "1. RECYCLE para Phase 2 (Prompt Engineering). 2. Revisar brand_checklist.json - todos elementos cobertos? 3. Reescrever prompts com brand specificity aumentada. 4. Regenerar batch de teste. 5. Validar brand compliance antes de full generation."
+        notify: "@hotel-visual-producer + @hotel-mkt-chief"
+      - id: "R3"
+        condition: "Text legibility failures >20% em Phase 4 (Nano Banana pieces)"
+        action: "pause"
+        recovery: "1. Pausar workflow. 2. Ajustar prompts Nano Banana com constraints explícitos: 'minimum font size 18pt, high contrast (WCAG AA), ample spacing around text'. 3. Regenerar assets problemáticos. 4. Re-testar legibility em mobile. 5. Continuar após fix."
+        notify: "@hotel-visual-producer"
+      - id: "R4"
+        condition: "Human rejeita >50% assets em primeira apresentação (Phase 5)"
+        action: "hold"
+        recovery: "1. HOLD workflow. 2. Reunião Chief + Humano: entender gaps (estilo? mensagem? brand?). 3. Coletar referências visuais do humano. 4. Decidir: minor adjustments (RECYCLE Phase 4) ou major rework (RECYCLE Phase 1). 5. Limitar a 2 revision rounds total."
+        notify: "@hotel-mkt-chief + @hotel-visual-producer"
+      - id: "R5"
+        condition: "API failures ou rate limits persistentes (>24h downtime)"
+        action: "pause"
+        recovery: "1. Verificar status de Google AI Studio / OpenAI. 2. Se rate limit: aguardar reset ou usar API key alternativa. 3. Se downtime: considerar ferramenta alternativa (Midjourney, Stable Diffusion). 4. Se sem solução: escalar para manual production (human designer). 5. Comunicar delay ao calling workflow."
+        notify: "@hotel-visual-producer + @hotel-mkt-chief"
+      - id: "R6"
+        condition: "Workflow excede 7 dias (timeline target)"
+        action: "escalate"
+        recovery: "1. Identificar bottleneck phase. 2. Se Phase 5 (Human Approval): pressionar por decisão, limitar revision rounds a 1. 3. Se Phase 3 (Generation): paralelizar, otimizar batch processing. 4. Comunicar delay ao calling workflow, ajustar expectations. 5. Documentar learnings para futuras timelines."
+        notify: "@hotel-mkt-chief"
+
+# ═══════════════════════════════════════════════════════════════
+# NOTES & FUTURE IMPROVEMENTS
+# ═══════════════════════════════════════════════════════════════
+
+notes:
+  - "Este workflow é CHAMADO por outros workflows (seasonal-campaign, content-machine, etc.) - sempre retorna ao calling workflow após Phase 6"
+  - "Human approval (Phase 5) é NON-NEGOTIABLE - não há bypass. É o principal quality gate do pipeline."
+  - "Nano Banana (Google): melhor para text-heavy (carrosséis, infográficos, ads com CTA). SynthID watermark obrigatório para transparência."
+  - "DALL-E (OpenAI): melhor para lifestyle, aspirational imagery, hero images sem texto. Sem watermark nativo - disclosure em caption recomendado."
+  - "Prompts archive (Phase 6) é CRÍTICO para reprodução futura - documentar seeds, configs, tudo."
+  - "Se hotel não tem brand guidelines: criar básicos antes de rodar workflow (cores, fonts, estilo fotográfico mínimo)."
+
+future_improvements:
+  - "Integração com Midjourney ou Stable Diffusion como fallback se Nano/DALL-E indisponíveis"
+  - "Automated brand compliance check usando vision model (GPT-4V ou Gemini Vision) para scoring automático"
+  - "A/B testing automático: gerar variações, testar em small audience, selecionar winner antes de scale"
+  - "Prompt optimization loop: analisar quais prompts geraram assets aprovados, refinar prompts library over time"
+  - "Integration com DAM (Digital Asset Management) para storage centralizado e versionamento"
+  - "Automated carousel assembly: gerar 10 slides com narrative flow automático (storytelling engine)"

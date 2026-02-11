@@ -1,128 +1,250 @@
-# SOP Validation Checklist (SC-CK-001)
+# SOP Validation Checklist
 
-> Validates completeness, accuracy, and automation readiness of extracted Standard Operating Procedures.
-> Squad: squad-creator
-> Created: 2025-01-01
-> Reference: SC-PE-001 SOP Extraction Format
-
----
-
-## Pre-Conditions
-
-Before starting, verify:
-
-- [ ] SOP document exists and is accessible
-- [ ] Source material used for extraction is available for cross-reference
-- [ ] SC-PE-001 format specification is understood by the reviewer
-- [ ] Cognitive taxonomy (Bloom's) reference is available
+> **Pattern:** SC-CK-001 (SOP Validation Checklist)
+> **Version:** 1.0.0
+> **Used By:** @squad-chief, extract-sop task
 
 ---
 
-## Checklist Items
+## Purpose
 
-### Category 1: Source Validation
-
-| # | Item | Status | Notes |
-|---|------|--------|-------|
-| 1.1 | Source material is identified with title, author, and date | [ ] | |
-| 1.2 | Source type is classified (document, transcript, interview, observation) | [ ] | |
-| 1.3 | Source completeness assessed -- covers the full scope of the procedure | [ ] | |
-| 1.4 | Source accuracy verified -- information is current and factually correct | [ ] | |
-| 1.5 | Source recency confirmed -- material is from within the last 12 months or explicitly marked as evergreen | [ ] | |
-| 1.6 | Multiple sources cross-referenced where available | [ ] | |
-| 1.7 | Source quality score assigned (1-10) with justification | [ ] | |
-
-### Category 2: Extraction Completeness (SC-PE-001)
-
-| # | Item | Status | Notes |
-|---|------|--------|-------|
-| 2.1 | **Title** -- Clear, action-oriented title present | [ ] | |
-| 2.2 | **Objective** -- Single-sentence purpose statement with expected outcome | [ ] | |
-| 2.3 | **Scope** -- Boundaries defined (inclusions and exclusions) | [ ] | |
-| 2.4 | **Prerequisites** -- Required tools, access, knowledge, and prior SOPs listed | [ ] | |
-| 2.5 | **Procedure Steps** -- Numbered, atomic steps with estimated duration per step | [ ] | |
-| 2.6 | **Decision Points** -- Branch logic (IF/THEN/ELSE) identified and documented | [ ] | |
-| 2.7 | **Error Handling** -- Known failure modes and recovery actions specified | [ ] | |
-| 2.8 | **Outputs** -- All artifacts produced are listed (files, reports, state changes) | [ ] | |
-| 2.9 | **Quality Checks** -- Verification steps to confirm correctness are included | [ ] | |
-| 2.10 | **Handoffs** -- Downstream consumers and their expected actions are documented | [ ] | |
-| 2.11 | **Revision History** -- Version, date, author, and change summary present | [ ] | |
-
-### Category 3: Cognitive Taxonomy
-
-| # | Item | Status | Notes |
-|---|------|--------|-------|
-| 3.1 | Each procedure step is classified using Bloom's taxonomy (Remember, Understand, Apply, Analyze, Evaluate, Create) | [ ] | |
-| 3.2 | Classification is justified with reasoning for each step | [ ] | |
-| 3.3 | Complexity distribution is analyzed (percentage at each level) | [ ] | |
-| 3.4 | Steps at Evaluate/Create level are flagged as requiring human oversight | [ ] | |
-| 3.5 | Steps at Remember/Understand/Apply level are flagged as automation candidates | [ ] | |
-| 3.6 | Overall cognitive complexity score is calculated for the SOP | [ ] | |
-
-### Category 4: Executor Classification
-
-| # | Item | Status | Notes |
-|---|------|--------|-------|
-| 4.1 | Each procedure step is assigned an executor type (Human, AI, Hybrid) | [ ] | |
-| 4.2 | Rationale for executor assignment is documented per step | [ ] | |
-| 4.3 | Human-only steps have justification (judgment, authority, creativity required) | [ ] | |
-| 4.4 | AI-assigned steps have validated automation feasibility | [ ] | |
-| 4.5 | Hybrid steps define clear human/AI responsibility boundaries | [ ] | |
-| 4.6 | Automation readiness percentage is calculated: `(AI + Hybrid) / Total * 100` | [ ] | |
-| 4.7 | Executor distribution summary is documented (count per type) | [ ] | |
-
-### Category 5: Automation Analysis
-
-| # | Item | Status | Notes |
-|---|------|--------|-------|
-| 5.1 | PV_PM_001 automation potential analysis is completed | [ ] | |
-| 5.2 | Automation score is calculated (0-100 scale) | [ ] | |
-| 5.3 | Each automatable step has a recommended tool or approach | [ ] | |
-| 5.4 | Recommendations are prioritized by RICE or WSJF scoring | [ ] | |
-| 5.5 | ROI is estimated for each automation recommendation (time saved vs implementation effort) | [ ] | |
-| 5.6 | Quick wins identified (high ROI, low effort automations) | [ ] | |
-| 5.7 | Automation dependencies and prerequisites are mapped | [ ] | |
-| 5.8 | Phased automation roadmap is proposed (immediate, short-term, long-term) | [ ] | |
+Validate that an extracted SOP meets all quality standards before handoff to squad creation.
 
 ---
 
-## Post-Conditions
+## Part 1: Structure Completeness
 
-After completion, verify:
+### 1.1 All 11 Parts Present
 
-- [ ] SOP has been fully validated against all categories
-- [ ] Coverage score is calculated: `(passed / total) * 100`
-- [ ] Coverage score meets minimum threshold (> 80%)
-- [ ] Automation recommendations are documented with priorities and ROI estimates
-- [ ] Failing items have remediation notes with responsible party and deadline
-- [ ] Validation report is generated and attached to the SOP document
-- [ ] SOP is approved for production use or returned for revision
+- [ ] **PART 1:** Process Identification (metadata, triggers, preconditions)
+- [ ] **PART 2:** Stakeholders and Executors (stakeholder map, RACI, executor analysis)
+- [ ] **PART 3:** Data and Systems (inputs, outputs, tools, integrations)
+- [ ] **PART 4:** Process Flow (diagram, detailed steps, decision points)
+- [ ] **PART 5:** Quality and Validation (checklists, quality gates, META-AXIOMAS)
+- [ ] **PART 6:** Exceptions and Troubleshooting
+- [ ] **PART 7:** Automation Analysis (summary, map, barriers, PV_PM_001)
+- [ ] **PART 8:** AIOS Squad Blueprint (agents, tasks, checkpoints, guardrails, workflow)
+- [ ] **PART 9:** Gaps and Next Steps
+- [ ] **PART 10:** Glossary
+- [ ] **PART 11:** Extraction Metadata
 
----
-
-## Sign-off
-
-| Role | Name | Date | Signature |
-|------|------|------|-----------|
-| Creator | | | |
-| Reviewer | | | |
-| Approver | | | |
+**Score:** ___/11 parts | **Threshold:** 11/11 required
 
 ---
 
-## Usage
+## Part 2: Task Anatomy Compliance (HO-TP-001)
 
-```bash
-# Use this checklist with:
-*checklist sop-validation
+### 2.1 Required Fields per Step
 
-# Or reference in tasks:
-checklist: sop-validation.md
+For EACH process step, verify:
 
-# Validate a specific SOP:
-*validate-sop --checklist sop-validation --sop <sop-file>
-```
+| Step | task_name | status | executor | exec_type | est_time | inputs | outputs | actions | criteria |
+|------|-----------|--------|----------|-----------|----------|--------|---------|---------|----------|
+| 1 | ☐ | ☐ | ☐ | ☐ | ☐ | ☐ | ☐ | ☐ | ☐ |
+| 2 | ☐ | ☐ | ☐ | ☐ | ☐ | ☐ | ☐ | ☐ | ☐ |
+| 3 | ☐ | ☐ | ☐ | ☐ | ☐ | ☐ | ☐ | ☐ | ☐ |
+| ... | | | | | | | | | |
+
+**Score:** ___% steps with 8/8 fields | **Threshold:** 100%
 
 ---
 
-*Checklist created by squad-creator (SC-CK-001)*
+## Part 3: Executor Classification (HO-EP Framework)
+
+### 3.1 Every Step Has Executor Type
+
+- [ ] All steps have executor_type assigned
+- [ ] Executor types are valid: Human | Agent | Hybrid | Worker
+
+### 3.2 Classification Justification
+
+- [ ] Human steps have cognitive justification (empathy, negotiation, accountability, ethics)
+- [ ] Agent steps have automation justification (perception, analysis, synthesis)
+- [ ] Hybrid steps have checkpoint defined
+- [ ] Worker steps are 100% deterministic
+
+**Score:** ___% steps with justified executor | **Threshold:** 100%
+
+---
+
+## Part 4: Cognitive Analysis
+
+### 4.1 Cognitive Type per Step
+
+- [ ] Each step has cognitive type(s) identified
+- [ ] Evidence from transcript cited for classification
+
+### 4.2 Automation Potential
+
+- [ ] Each step evaluated for automation potential
+- [ ] Non-automatable steps have "what requires human" documented
+- [ ] Partially automatable steps have "what agent can do" documented
+
+**Score:** ___% steps with cognitive analysis | **Threshold:** 100%
+
+---
+
+## Part 5: Decision Rules
+
+### 5.1 Decision Points Captured
+
+- [ ] All "if/when/depends" statements converted to decision points
+- [ ] Each decision point has: question, options, criteria, decider
+
+### 5.2 IF/THEN Rules
+
+- [ ] Heuristics translated to explicit IF/THEN rules
+- [ ] Rules marked as automatable or human-required
+
+**Score:** ___/___  decision points documented | **Threshold:** 100%
+
+---
+
+## Part 6: Automation Analysis (PV_PM_001)
+
+### 6.1 Frequency/Impact/Automatability Matrix
+
+- [ ] Each step evaluated on: Frequency, Impact, Automatability
+- [ ] Decision assigned: AUTOMATE | DELEGATE | KEEP_MANUAL | ELIMINATE
+
+### 6.2 Guardrails Requirement
+
+- [ ] VETO applied to any automation without guardrails
+- [ ] Guardrails defined for each automated step:
+  - [ ] Loop Prevention
+  - [ ] Idempotency
+  - [ ] Audit Trail
+  - [ ] Escape Route
+  - [ ] Retry Logic (if external integration)
+  - [ ] Rollback (if destructive)
+
+**Score:** ___% automatable steps with guardrails | **Threshold:** 100%
+
+---
+
+## Part 7: META-AXIOMAS Score
+
+### 7.1 10 Dimensions Evaluated
+
+| # | Dimension | Score (0-10) | Above 6.0? |
+|---|-----------|--------------|------------|
+| 1 | Truthfulness | | ☐ |
+| 2 | Coherence | | ☐ |
+| 3 | Strategic Alignment | | ☐ |
+| 4 | Operational Excellence | | ☐ |
+| 5 | Innovation Capacity | | ☐ |
+| 6 | Risk Management | | ☐ |
+| 7 | Resource Optimization | | ☐ |
+| 8 | Stakeholder Value | | ☐ |
+| 9 | Sustainability | | ☐ |
+| 10 | Adaptability | | ☐ |
+
+**Overall Score:** ___/10 | **Threshold:** ≥7.0
+
+---
+
+## Part 8: Squad Blueprint Quality
+
+### 8.1 Agents Defined
+
+- [ ] At least one orchestrator agent defined
+- [ ] Agent responsibilities map to process steps
+- [ ] No orphan steps (all steps assigned to an agent)
+
+### 8.2 Tasks Defined
+
+- [ ] Tasks cover all workflow phases
+- [ ] Elicit flags set correctly for interactive tasks
+- [ ] Checkpoint flags set for validation points
+
+### 8.3 Workflow YAML
+
+- [ ] Workflow YAML is syntactically valid
+- [ ] Phases are sequenced correctly
+- [ ] Handoffs are defined between phases
+- [ ] Checkpoints reference valid validators
+
+**Score:** Blueprint completeness ___% | **Threshold:** 100%
+
+---
+
+## Part 9: Gap Documentation
+
+### 9.1 Gaps Identified
+
+- [ ] All `[INFERRED]` items listed in gaps
+- [ ] Each gap has: impact, clarifying question, priority
+
+### 9.2 Ambiguities Documented
+
+- [ ] Ambiguous statements have multiple interpretations listed
+- [ ] Recommendation for resolution provided
+
+### 9.3 Red Flags Addressed
+
+- [ ] Single points of failure identified
+- [ ] Undocumented exceptions flagged
+- [ ] Non-standardized variations noted
+
+**Score:** ___% gaps with clarifying questions | **Threshold:** 100%
+
+---
+
+## Part 10: Evidence & Traceability
+
+### 10.1 Transcript Citations
+
+- [ ] Key decisions cite transcript evidence
+- [ ] Cognitive classifications cite evidence
+- [ ] Heuristics cite original quotes
+
+### 10.2 Confidence Levels
+
+- [ ] High confidence items used as-is
+- [ ] Medium confidence items marked for validation
+- [ ] Low confidence items marked `[INFERRED]`
+- [ ] Absent items listed in gaps
+
+---
+
+## Validation Summary
+
+| Category | Score | Threshold | Status |
+|----------|-------|-----------|--------|
+| Structure (11 parts) | /11 | 11/11 | ☐ PASS ☐ FAIL |
+| Task Anatomy (8 fields) | % | 100% | ☐ PASS ☐ FAIL |
+| Executor Classification | % | 100% | ☐ PASS ☐ FAIL |
+| Cognitive Analysis | % | 100% | ☐ PASS ☐ FAIL |
+| Decision Rules | % | 100% | ☐ PASS ☐ FAIL |
+| Guardrails | % | 100% | ☐ PASS ☐ FAIL |
+| META-AXIOMAS | /10 | ≥7.0 | ☐ PASS ☐ FAIL |
+| Squad Blueprint | % | 100% | ☐ PASS ☐ FAIL |
+| Gap Documentation | % | 100% | ☐ PASS ☐ FAIL |
+
+---
+
+## Final Decision
+
+- [ ] **APPROVE** - SOP meets all thresholds, ready for squad creation
+- [ ] **REVIEW** - SOP needs improvements in specific areas (list below)
+- [ ] **REJECT** - SOP has critical gaps, requires re-extraction
+
+**Areas Needing Improvement:**
+1.
+2.
+3.
+
+---
+
+## Handoff Authorization
+
+| Field | Value |
+|-------|-------|
+| Validated By | |
+| Validation Date | |
+| Handoff To | create-squad task |
+| Artifacts Transferred | sop_document, squad_blueprint, gap_report |
+
+---
+
+**Pattern Compliance:** SC-CK-001 ✓ | HO-TP-001 ✓ | PV_PM_001 ✓

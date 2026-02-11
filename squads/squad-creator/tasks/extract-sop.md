@@ -1,114 +1,321 @@
 ---
-task: Extract SOP
-responsavel: "@sop-extractor"
+task: Extract SOP from Transcript
+execution_type: Worker
+responsavel: "@squad-chief"
 responsavel_type: agent
 atomic_layer: task
 elicit: true
-Entrada: |
-  - source: Path to document or transcript to extract SOP from (string, required)
-  - source_type: Type of source — document, transcript, interview, or observation (string, required)
-Saida: |
-  - sop_document: Complete SOP in SC-PE-001 format with all 11 parts (object)
-  - cognitive_taxonomy: Classification of each step by cognitive complexity level (object)
-  - executor_classification: Assignment of each step as Human, AI, or Hybrid executor (object)
-Checklist:
-  - "[ ] Load and parse source document"
-  - "[ ] Identify procedure steps from source content"
-  - "[ ] Sequence steps in logical execution order"
-  - "[ ] Classify each step cognitively (remember, understand, apply, analyze, evaluate, create)"
-  - "[ ] Assign executor type per step (Human, AI, Hybrid)"
-  - "[ ] Structure into SC-PE-001 format with all 11 parts"
-  - "[ ] Validate completeness against SC-PE-001 specification"
-  - "[ ] Save SOP document"
+phase: discovery
+
+# Dependencies
+templates:
+  - pop-extractor-prompt
+config:
+  - squad-config
 ---
 
-# *extract-sop
+# Extract SOP from Transcript
 
-Extracts a Standard Operating Procedure from unstructured source material. Parses documents, transcripts, interviews, or observation notes to identify procedural steps, classifies each step cognitively, assigns executor types, and structures the output into the SC-PE-001 format.
+**Squad:** squad-creator
+**Phase:** Discovery
+**Agent:** @squad-chief
+**Pattern:** SC-PE-001 (SOP Extraction Standard)
 
-## Uso
+## Purpose
 
-```
-*extract-sop source="./docs/onboarding-process.md" source_type=document
-*extract-sop source="./transcripts/expert-interview.md" source_type=interview
-```
+Extract a complete, AIOS-ready Standard Operating Procedure (SOP) from a meeting transcript where someone explained a business process. The output is structured to enable immediate squad creation for hybrid automation.
 
-## Parametros
+## Task Anatomy (HO-TP-001)
 
-| Param | Type | Required | Description |
+| Field | Value |
+|-------|-------|
+| task_name | Extract SOP from Transcript |
+| status | pending |
+| responsible_executor | @squad-chief |
+| execution_type | Hybrid (Agent extracts, Human validates) |
+| estimated_time | 1-2h per process |
+| input | transcript, domain_context |
+| output | sop_document, squad_blueprint, gap_report |
+| action_items | See Execution section |
+| acceptance_criteria | All 11 parts completed, gaps documented |
+
+## Inputs
+
+| Input | Type | Required | Description |
 |-------|------|----------|-------------|
-| source | string | yes | Path to the source document |
-| source_type | string | yes | One of: `document`, `transcript`, `interview`, `observation` |
+| transcript | text/file | Yes | Meeting transcript (text, audio transcription, or video transcript) |
+| domain_context | string | No | Business domain/area for terminology context |
+| existing_docs | file[] | No | Current SOPs, manuals, or process docs |
+| process_owner | string | No | Who to validate extracted SOP with |
 
-## Implementation
+## Outputs
 
-### Step 1: Source Parsing
-- Load source file
-- Apply parsing strategy based on source_type:
-  - **document**: Extract sections, numbered lists, headers, action items
-  - **transcript**: Identify speaker turns, extract action descriptions, filter filler
-  - **interview**: Extract answers about "how do you do X", identify sequential actions
-  - **observation**: Extract timestamped actions, sequential behaviors
-- Normalize extracted content into raw step candidates
+| Output | Type | Description |
+|--------|------|-------------|
+| sop_document | MD | Complete SOP following SC-PE-001 template |
+| squad_blueprint | YAML | Ready-to-use squad structure (Part 8) |
+| gap_report | MD | Missing information and clarifying questions |
+| automation_analysis | MD | Summary of automation potential (Part 7) |
 
-### Step 2: Step Identification
-- Identify discrete procedure steps from raw candidates
-- Merge overly granular steps that form a single logical action
-- Split compound steps that contain multiple distinct actions
-- Establish execution order (sequential, parallel where applicable)
-- Identify decision points and branching logic
+## Execution
 
-### Step 3: Cognitive Taxonomy Classification
-Classify each step using Bloom's taxonomy:
-- **Remember**: Recall facts, terms, basic concepts (e.g., "look up the client ID")
-- **Understand**: Explain ideas, interpret meaning (e.g., "review the error message")
-- **Apply**: Use information in new situations (e.g., "apply the template to the data")
-- **Analyze**: Draw connections, identify patterns (e.g., "compare current vs. expected output")
-- **Evaluate**: Justify decisions, assess quality (e.g., "decide if the result meets criteria")
-- **Create**: Produce new work, design solutions (e.g., "design the integration architecture")
+### Step 0: Fetch Transcript (Data Source Resolution)
 
-### Step 4: Executor Classification
-Assign each step an executor type:
-- **Human**: Requires judgment, creativity, empathy, or physical action that AI cannot perform
-- **AI**: Deterministic, data-driven, pattern-matching, or high-volume repetitive tasks
-- **Hybrid**: Requires AI assistance with human oversight, or human input with AI augmentation
-- Include rationale for each classification
+1. Load configuration from `config/squad-config.yaml`
+2. Read `data_sources.transcripts.active_source`
+3. Fetch transcript based on source type:
 
-### Step 5: SC-PE-001 Structuring
-Organize into the 11 parts of SC-PE-001:
-1. Title and ID
-2. Purpose and Scope
-3. Definitions and Acronyms
-4. Roles and Responsibilities
-5. Prerequisites and Inputs
-6. Procedure Steps (with cognitive and executor tags)
-7. Decision Points and Branching
-8. Outputs and Deliverables
-9. Quality Criteria
-10. Exception Handling
-11. Revision History
+**Source Resolution:**
 
-### Step 6: Validation
-- Verify all 11 parts are populated
-- Check that every step has cognitive and executor classifications
-- Validate logical flow (no orphan steps, no circular dependencies)
-- Run completeness score (percentage of parts with substantive content)
+```yaml
+# Read active_source from squad-config.yaml
+active_source: {{squad_config.data_sources.transcripts.active_source}}
 
-### Step 7: Save
-- Save SOP to `squads/squad-creator/data/sops/{sop-id}.md`
-- Generate SOP ID from source name and date
+# Execute appropriate fetch
+if active_source == "supabase":
+  - Connect using env vars from squad_config.data_sources.transcripts.sources.supabase.connection
+  - Execute query from squad_config.data_sources.transcripts.sources.supabase.query
+  - Map fields using field_mapping
+
+elif active_source == "local_file":
+  - Read from squad_config.data_sources.transcripts.sources.local_file.config.base_path
+  - Parse based on file extension
+  - Map fields if JSON
+
+elif active_source == "api":
+  - Call endpoint from squad_config.data_sources.transcripts.sources.api.endpoints.get
+  - Parse response using data_path
+  - Map fields
+
+elif active_source == "direct":
+  - Use transcript passed as input parameter
+```
+
+**Output:** Transcript object with standard schema:
+```yaml
+transcript:
+  transcript_id: string
+  transcript_content: string
+  transcript_source: string (optional)
+  transcript_url: string (optional)
+  transcript_duration: number (optional)
+  transcript_participants: array (optional)
+  transcript_date: date (optional)
+  transcript_language: string (optional)
+  transcript_metadata: object (optional)
+```
+
+**Elicit if source not configured:**
+```
+Which transcript source should I use?
+1. Supabase database (default)
+2. Local file (provide path)
+3. External API (requires config)
+4. Direct input (paste transcript)
+```
+
+---
+
+### Step 1: Transcript Preparation
+
+1. Validate transcript was fetched successfully
+2. Identify language and normalize if needed
+3. Mark timestamps or speaker changes
+4. Identify main process explainer
+5. Apply chunking if transcript exceeds `max_tokens_per_chunk`
+
+**Elicit if unclear:**
+```
+What is the business domain of this process?
+Who is the process owner to validate with?
+Are there existing documents to cross-reference?
+```
+
+### Step 2: First Pass - Structure Identification
+
+1. Identify process name and objective
+2. List all mentioned steps (even informal)
+3. Note all people/roles mentioned
+4. Capture all tools/systems referenced
+5. Mark decision points ("if", "when", "depends")
+
+**Output:** Raw extraction notes
+
+### Step 3: Second Pass - Task Anatomy Mapping
+
+For each identified step, extract:
+
+```yaml
+step_template:
+  task_name: "[Verb] + [Object]"
+  responsible_executor: "[Role or @agent]"
+  execution_type: "Human | Agent | Hybrid | Worker"
+  estimated_time: "[Xh/Xm]"
+  input: ["list of inputs"]
+  output: ["list of outputs"]
+  action_items: ["atomic steps"]
+  acceptance_criteria: ["how to verify success"]
+```
+
+**Classification Guide:**
+
+| Cognitive Signal | Executor Type |
+|------------------|---------------|
+| "I look at...", "I check..." | Agent (perception) |
+| "I decide based on...", "It depends..." | Hybrid (judgment) |
+| "I talk to...", "I convince..." | Human (relationship) |
+| "I copy...", "I move...", "I send..." | Worker (deterministic) |
+
+### Step 4: Third Pass - Decision Rules Extraction
+
+For each "depends", "usually", "sometimes":
+
+1. Identify the condition
+2. Identify possible outcomes
+3. Translate to IF/THEN rule
+4. Mark if automatable or requires human judgment
+
+**Output:** Decision rules table + heuristics list
+
+### Step 5: Automation Analysis (PV_PM_001)
+
+For each step, evaluate:
+
+| Criterion | Question |
+|-----------|----------|
+| Frequency | How often? (>4x/mo = high) |
+| Impact | What if it fails? (business impact) |
+| Automatability | Can code/AI do it? (determinism level) |
+| Guardrails | Can we add safeguards? (required for automation) |
+
+**Apply Decision Matrix:**
+- AUTOMATE: High freq + High impact + High auto + Has guardrails
+- DELEGATE: High freq + High impact + Low auto
+- KEEP_MANUAL: Low freq + High impact
+- ELIMINATE: Low freq + Low impact
+- VETO: No guardrails possible
+
+### Step 6: Quality Assessment (META-AXIOMAS)
+
+Score the process on 10 dimensions (0-10):
+
+1. Truthfulness - Is the process described accurately?
+2. Coherence - Do steps align logically?
+3. Strategic Alignment - Does it serve business goals?
+4. Operational Excellence - Is it efficient?
+5. Innovation Capacity - Can it evolve?
+6. Risk Management - Are risks addressed?
+7. Resource Optimization - Is it lean?
+8. Stakeholder Value - Does it serve users?
+9. Sustainability - Is it maintainable?
+10. Adaptability - Can it handle change?
+
+**Threshold:** Overall ≥7.0 to proceed
+
+### Step 7: Squad Blueprint Generation
+
+Based on extracted data, generate:
+
+1. **Agents needed** - One per major responsibility
+2. **Tasks to create** - One per workflow phase
+3. **Checkpoints** - Where human validation required
+4. **Guardrails** - Required safeguards per task
+5. **Workflow YAML** - Orchestration definition
+
+### Step 8: Gap Analysis
+
+Document all:
+
+1. **Missing information** - What wasn't explained
+2. **Ambiguities** - Multiple interpretations possible
+3. **Assumptions** - What was inferred (mark [INFERRED])
+4. **Red flags** - Single points of failure, undocumented exceptions
+
+**Output:** Gap report with clarifying questions
+
+### Step 9: Document Assembly
+
+Assemble final SOP using template `pop-extractor-prompt.md`:
+
+1. Fill all 11 parts
+2. Generate Mermaid diagrams
+3. Complete all tables
+4. Add glossary terms
+5. Set metadata
+
+## Validation
+
+**Validation Type:** Human review required
+
+**Validation Checklist:**
+
+- [ ] All 11 parts of SC-PE-001 completed
+- [ ] Task Anatomy (8 fields) for each step
+- [ ] Executor type assigned to each step
+- [ ] Decision rules extracted as IF/THEN
+- [ ] Automation analysis completed (PV_PM_001)
+- [ ] META-AXIOMAS score ≥7.0
+- [ ] Squad blueprint generated
+- [ ] Gaps documented with questions
+- [ ] No [INFERRED] items left unvalidated
+
+**Quality Gate:**
+
+| Criterion | Threshold | Action if Failed |
+|-----------|-----------|------------------|
+| Parts completed | 11/11 | Block until complete |
+| Steps with Task Anatomy | 100% | Block until complete |
+| Gaps documented | All listed | Review with process owner |
+| META-AXIOMAS score | ≥7.0 | Review weak dimensions |
+
+## Handoff
+
+```yaml
+handoff:
+  to: "create-squad"
+  trigger: "sop_validated = true"
+  data_transferred:
+    - sop_document
+    - squad_blueprint
+    - gap_report
+  validation: "Process owner confirms accuracy"
+```
+
+## Tools
+
+| Tool | Purpose |
+|------|---------|
+| Transcript parser | Extract text from audio/video |
+| Mermaid | Generate flow diagrams |
+| YAML validator | Validate squad blueprint |
+
+## Templates
+
+- `pop-extractor-prompt.md` - SOP extraction template (SC-PE-001)
 
 ## Error Handling
 
-- **Source file not found**: Abort with clear path error message
-- **Unrecognizable content**: If source has no identifiable procedural content, report "no procedure detected" with suggestions for what to look for
-- **Ambiguous step order**: Flag ambiguous sequences, ask user to clarify in interactive mode, make best guess in yolo mode
-- **Incomplete source**: If source covers only part of a procedure, note gaps in the SOP and suggest follow-up sources
-- **Conflicting instructions**: Flag contradictions found in source, include both versions with notes
+| Error | Cause | Resolution |
+|-------|-------|------------|
+| Incomplete transcript | Audio quality, speaker overlap | Request clarification from process owner |
+| Conflicting information | Multiple speakers disagree | Document both versions, flag for validation |
+| Missing steps | Tacit knowledge not verbalized | Add to gaps, schedule follow-up interview |
+| Unclear executor | Role not specified | Default to Hybrid, flag for validation |
 
-## Related
+## Examples
 
-- `validate-sop.md` — Validates a completed SOP against SC-PE-001
-- `generate-blueprint-from-sop.md` — Converts validated SOP into squad blueprint
-- `analyze-automation.md` — Analyzes SOP steps for automation potential
-- `squads/squad-creator/checklists/sop-validation.md` — Validation checklist
+**Good transcript signals:**
+- "First, I do X, then Y, then Z" → Clear sequence
+- "If the client says no, I do A, otherwise B" → Decision rule
+- "I always check this before proceeding" → Precondition
+- "This takes about 30 minutes" → Time estimate
+
+**Red flag signals:**
+- "It depends" (without criteria) → Needs clarification
+- "João knows how to do this" → Single point of failure
+- "We figure it out" → Undocumented exception
+- "It's always been this way" → May be obsolete
+
+---
+
+**Pattern Compliance:** SC-PE-001 ✓ | HO-TP-001 ✓ | HO-TP-002 ✓

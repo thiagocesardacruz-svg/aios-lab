@@ -1,466 +1,544 @@
-# Commands Reference
+# Referência de Comandos
 
-> squad-creator v2.6 -- Complete command reference for all 5 agents
-> Last updated: 2026-02-04
-
----
-
-## Overview
-
-The squad-creator v2.6 includes 5 agents (1 base + 4 specialists), each with their own set of commands. All commands use the `*` prefix when invoked. To use a sub-agent's commands, first activate the sub-agent with `@squad-creator:agent-name`.
-
-### Agent Summary
-
-| Agent ID | Name | Archetype | Primary Domain |
-|----------|------|-----------|---------------|
-| squad-creator | Craft | Creator | Squad creation and management |
-| squad-architect | Atlas | Strategist | Squad composition and tool discovery |
-| sop-extractor | Scribe | Analyst | SOP extraction and classification |
-| oalanicolas | Mirror | Empath | Mind Cloning and DNA extraction |
-| pedro-valerio | Forge | Engineer | Workflow and checklist design |
+> **Documento de referência.** Consulte quando precisar saber como usar um comando.
+>
+> **Primeira vez?** Comece por [POR-ONDE-COMECAR.md](./POR-ONDE-COMECAR.md).
 
 ---
 
-## 1. squad-creator (Craft) -- Base Agent
+## Comandos de Criação
 
-Activation: `@squad-creator`
+### `*create-squad`
 
-The base agent handles squad lifecycle management: creation, validation, listing, migration, analysis, and extension.
+Cria um squad completo através do workflow guiado.
 
-### *create-squad
+```bash
+*create-squad
 
-Creates a new squad with full directory structure and manifest.
+# Ou especificando domínio direto
+*create-squad copywriting
+*create-squad legal --mode quality
+```
 
-- **Syntax**: `*create-squad {name}`
-- **Parameters**:
-  - `name` (string, required): The squad name in kebab-case
-- **Interactive**: Yes (elicit=true) -- prompts for description, domain, and agent definitions
-- **Example**:
-  ```
-  *create-squad my-new-squad
-  ```
-- **Expected Output**: Full directory structure under `squads/{name}/` with `squad.yaml`, agent files, and empty component directories.
+**Parâmetros:**
+| Param | Descrição | Default |
+|-------|-----------|---------|
+| `domain` | Área do squad | (pergunta) |
+| `--mode` | yolo, quality, hybrid | yolo |
+| `--materials` | Path para materiais | (nenhum) |
 
-### *design-squad
-
-Designs squad structure from requirements documentation, analyzing docs to propose agent compositions, tasks, and workflows.
-
-- **Syntax**: `*design-squad` or `*design-squad --docs {path}`
-- **Parameters**:
-  - `--docs` (string, optional): Path to requirements document or PRD
-- **Interactive**: Yes -- guided design process
-- **Example**:
-  ```
-  *design-squad --docs ./docs/prd/my-feature.md
-  ```
-- **Expected Output**: Squad composition blueprint with proposed agents, tasks, workflows, and tool recommendations.
-
-### *validate-squad
-
-Validates squad structure, checking manifest integrity, file existence, and schema compliance.
-
-- **Syntax**: `*validate-squad {name}`
-- **Parameters**:
-  - `name` (string, required): The squad name to validate
-- **Example**:
-  ```
-  *validate-squad my-new-squad
-  ```
-- **Expected Output**: Pass/fail report with details on missing files, schema errors, and warnings.
-
-### *list-squads
-
-Lists all available squads in the `squads/` directory with their metadata.
-
-- **Syntax**: `*list-squads`
-- **Parameters**: None
-- **Example**:
-  ```
-  *list-squads
-  ```
-- **Expected Output**: Table showing squad name, version, description, agent count, and task count for each squad.
-
-### *migrate-squad
-
-Migrates a squad to a newer AIOS version or squad schema format.
-
-- **Syntax**: `*migrate-squad {name}`
-- **Parameters**:
-  - `name` (string, required): The squad to migrate
-- **Example**:
-  ```
-  *migrate-squad legacy-squad
-  ```
-- **Expected Output**: Migration report showing changes made, files updated, and any manual steps required.
-
-### *analyze-squad
-
-Performs deep analysis of a squad's structure, dependencies, and coverage gaps.
-
-- **Syntax**: `*analyze-squad {name}`
-- **Parameters**:
-  - `name` (string, required): The squad to analyze
-- **Example**:
-  ```
-  *analyze-squad my-squad
-  ```
-- **Expected Output**: Analysis report with dependency graph, coverage gaps, and optimization recommendations.
-
-### *extend-squad
-
-Extends an existing squad with new components (agents, tasks, workflows).
-
-- **Syntax**: `*extend-squad {name}`
-- **Parameters**:
-  - `name` (string, required): The squad to extend
-- **Interactive**: Yes -- guides through adding new components
-- **Example**:
-  ```
-  *extend-squad my-squad
-  ```
-- **Expected Output**: Updated squad manifest and newly generated component files.
+**Fluxo:**
+1. Pre-flight (escolha de modo)
+2. Research (3-5 iterações)
+3. Aprovar minds
+4. Clone + Create agents
+5. Validação + Dashboard
 
 ---
 
-## 2. squad-architect (Atlas) -- Strategist
+### `*create-agent`
 
-Activation: `@squad-creator:squad-architect`
+Cria um agent individual para um squad existente.
 
-Atlas handles squad composition design, quality assessment, and tool discovery.
+```bash
+*create-agent {agent-name} --squad {squad-name}
+*create-agent {agent-name} --squad {squad-name} --tier 1
+```
 
-### *design-squad
+**Parâmetros:**
+| Param | Descrição | Default |
+|-------|-----------|---------|
+| `name` | Nome do agent (kebab-case) | (obrigatório) |
+| `--squad` | Squad de destino | (obrigatório) |
+| `--tier` | 0, 1, 2, 3, orchestrator | (pergunta) |
+| `--based-on` | Mind para clonar | (nenhum) |
 
-Designs squad structure from requirements analysis with macro-vision composition.
-
-- **Syntax**: `*design-squad` or `*design-squad --docs {path}`
-- **Parameters**:
-  - `--docs` (string, optional): Path to requirements or PRD documentation
-- **Example**:
-  ```
-  *design-squad --docs ./docs/prd/onboarding-system.md
-  ```
-- **Expected Output**: Detailed blueprint with agent compositions, task mappings, collaboration patterns, and tool recommendations.
-
-### *review-squad
-
-Reviews an existing squad for quality and completeness against task-first architecture principles.
-
-- **Syntax**: `*review-squad {name}` or `*review-squad {name} --verbose`
-- **Parameters**:
-  - `name` (string, required): Squad to review
-  - `--verbose` (flag, optional): Include file-level analysis
-- **Example**:
-  ```
-  *review-squad my-squad --verbose
-  ```
-- **Expected Output**: Quality review with scores for structure, tasks, agents, and improvement recommendations.
-
-### *quality-dashboard
-
-Displays comprehensive quality metrics and coverage for a squad.
-
-- **Syntax**: `*quality-dashboard {name}` or `*quality-dashboard {name} --export markdown`
-- **Parameters**:
-  - `name` (string, required): Squad to assess
-  - `--export` (string, optional): Export format (markdown)
-- **Example**:
-  ```
-  *quality-dashboard squad-creator
-  ```
-- **Expected Output**: Dashboard showing Structure Coverage %, Task Coverage %, Doc Coverage %, Agent Health %, Overall Score /100, and prioritized improvement suggestions.
-
-### *discover-tools
-
-Deep tool discovery with RICE/WSJF evaluation across 5 parallel search channels.
-
-- **Syntax**: `*discover-tools {domain}` or with scoring option
-- **Parameters**:
-  - `domain` (string, required): Area of need
-  - `capability_gaps` (string, required): Description of missing capabilities
-  - `constraints` (object, optional): Budget, license, security constraints
-  - `--score` (string, optional): Scoring framework to emphasize (`rice` or `wsjf`)
-- **Examples**:
-  ```
-  *discover-tools "web scraping"
-  *discover-tools "database management" --score rice
-  *discover-tools "CI/CD" --score wsjf
-  ```
-- **Expected Output**: Decision matrix table with RICE scores, WSJF scores, gate results, tier assignments, and DO NOW/DO NEXT/DO LATER/DON'T DO classification.
-
-### *show-tools
-
-View discovered tools from the tool registry.
-
-- **Syntax**: `*show-tools` or `*show-tools --tier {n}` or `*show-tools --category {cat}`
-- **Parameters**:
-  - `--tier` (number, optional): Filter by tier (1-4)
-  - `--category` (string, optional): Filter by category (mcp, api, cli, library, github)
-- **Example**:
-  ```
-  *show-tools --tier 1
-  ```
-- **Expected Output**: Table of registered tools with name, category, tier, decision, and last evaluated date.
-
-### *add-tool
-
-Manually add a tool to the tool registry with RICE/WSJF evaluation.
-
-- **Syntax**: `*add-tool`
-- **Parameters**: Interactive -- prompts for tool details and scoring
-- **Example**:
-  ```
-  *add-tool
-  ```
-- **Expected Output**: New entry in `tool-registry.yaml` with full evaluation metadata.
+**Nota:** Se `--based-on` especificado, roda `*clone-mind` primeiro.
 
 ---
 
-## 3. sop-extractor (Scribe) -- Analyst
+### `*create-workflow`
 
-Activation: `@squad-creator:sop-extractor`
+Cria workflow multi-fase (preferido sobre tasks standalone).
 
-Scribe handles SOP extraction, validation, blueprint generation, and automation analysis.
+```bash
+*create-workflow high-ticket-copy --squad copy
+```
 
-### *extract-sop
-
-Extracts SOP from source material and structures into SC-PE-001 format.
-
-- **Syntax**: `*extract-sop --source {path} --source_type {type}`
-- **Parameters**:
-  - `--source` (string, required): Path to the source document
-  - `--source_type` (string, required): One of `document`, `transcript`, `interview`, `observation`
-  - `--format` (string, optional): SOP format (default: `sc-pe-001`)
-- **Examples**:
-  ```
-  *extract-sop --source ./docs/onboarding-process.md --source_type document
-  *extract-sop --source ./transcripts/expert-interview.md --source_type interview
-  ```
-- **Expected Output**: Complete SOP in SC-PE-001 format with cognitive taxonomy classification and executor type assignment for each step. Saved to `data/sops/`.
-
-### *validate-sop
-
-Validates SOP completeness and quality against SC-PE-001 standard.
-
-- **Syntax**: `*validate-sop {sop-id}` or `*validate-sop {sop-id} --verbose`
-- **Parameters**:
-  - `sop-id` (string, required): The SOP identifier to validate
-  - `--verbose` (flag, optional): Per-part detailed analysis
-- **Example**:
-  ```
-  *validate-sop SC-PE-DEPLOY-2026-02-04 --verbose
-  ```
-- **Expected Output**: Validation report showing pass/fail for each of the 11 parts, completeness score, and specific issues found.
-
-### *generate-blueprint
-
-Generates squad blueprint from a validated SOP, suggesting agents, tasks, and workflows.
-
-- **Syntax**: `*generate-blueprint {sop-id}` or `*generate-blueprint {sop-id} --agents auto`
-- **Parameters**:
-  - `sop-id` (string, required): The validated SOP to convert
-  - `--agents` (string, optional): `auto` for auto-suggested agent roles
-- **Example**:
-  ```
-  *generate-blueprint SC-PE-DEPLOY-2026-02-04 --agents auto
-  ```
-- **Expected Output**: Squad blueprint with proposed agents mapped to SOP responsibilities, tasks derived from procedure steps, and workflows from the execution sequence.
-
-### *analyze-automation
-
-Analyzes SOP for automation opportunities using PV_PM_001 framework.
-
-- **Syntax**: `*analyze-automation {sop-id}` or `*analyze-automation {sop-id} --threshold {level}`
-- **Parameters**:
-  - `sop-id` (string, required): The SOP to analyze
-  - `--threshold` (string, optional): Minimum automation potential to include (`low`, `medium`, `high`)
-- **Example**:
-  ```
-  *analyze-automation SC-PE-DEPLOY-2026-02-04 --threshold medium
-  ```
-- **Expected Output**: Automation roadmap showing each step's automation potential, recommended executor type, and estimated effort to automate.
+**Quando usar:**
+- Operação tem 3+ fases
+- Múltiplos agents envolvidos
+- Precisa checkpoints entre fases
 
 ---
 
-## 4. oalanicolas (Mirror) -- Empath
+### `*create-task`
 
-Activation: `@squad-creator:oalanicolas`
+Cria task atômica (quando workflow é overkill).
 
-Mirror handles mind cloning, Voice DNA extraction, Thinking DNA extraction, and profile management.
+```bash
+*create-task write-headline --squad copy
+```
 
-### *clone-mind
-
-Full mind cloning pipeline: source validation, Voice DNA, Thinking DNA, merge, smoke test.
-
-- **Syntax**: `*clone-mind --person {name} --mode {mode} --sources [{paths}]`
-- **Parameters**:
-  - `--person` (string, required): Full name of the person to clone
-  - `--mode` (string, optional, default: quality): `yolo` for fast or `quality` for thorough
-  - `--sources` (array, required): Paths to source material files
-- **Examples**:
-  ```
-  *clone-mind --person "Maria Santos" --mode yolo --sources ["./posts.md", "./notes.md"]
-  *clone-mind --person "Maria Santos" --mode quality --sources ["./blog.md", "./linkedin.md", "./meeting.md", "./adr.md", "./interview.md"]
-  ```
-- **Expected Output**: Complete mind profile with Voice DNA, Thinking DNA, fidelity score, and 3 smoke test results. Saved to `data/minds/{slug}.yaml`.
-
-### *extract-voice-dna
-
-Extracts communication patterns, vocabulary, and tone from text sources.
-
-- **Syntax**: `*extract-voice-dna --source {path}` or `*extract-voice-dna --source {path} --depth deep`
-- **Parameters**:
-  - `--source` (string/array, required): Path(s) to text sources
-  - `--depth` (string, optional): Analysis depth (`standard` or `deep`)
-- **Example**:
-  ```
-  *extract-voice-dna --source ./transcripts/interview-01.md --depth deep
-  ```
-- **Expected Output**: Voice DNA profile with vocabulary patterns, tone classification, sentence structure analysis, emoji patterns, cultural markers, and catchphrases.
-
-### *extract-thinking-dna
-
-Extracts decision frameworks, mental models, and priorities from decision-oriented sources.
-
-- **Syntax**: `*extract-thinking-dna --source {path}` or `*extract-thinking-dna --source {path} --frameworks all`
-- **Parameters**:
-  - `--source` (string/array, required): Path(s) to decision records, strategy docs, meeting notes
-  - `--frameworks` (string, optional): `all` to extract all mental models
-- **Example**:
-  ```
-  *extract-thinking-dna --source ./docs/strategy-q4.md --frameworks all
-  ```
-- **Expected Output**: Thinking DNA profile with decision frameworks, mental models, cognitive biases, risk tolerance, and priority hierarchy.
-
-### *update-mind
-
-Updates an existing mind profile with new source material for incremental improvement.
-
-- **Syntax**: `*update-mind {profile-id} --source {path}`
-- **Parameters**:
-  - `profile-id` (string, required): Existing profile identifier (slug)
-  - `--source` (string/array, required): Path(s) to new source material
-- **Example**:
-  ```
-  *update-mind maria-santos --source ./new-interview.md
-  ```
-- **Expected Output**: Updated profile with revised fidelity score and change summary.
-
-### *auto-acquire-sources
-
-Automatically searches for and acquires source material about a person from available channels.
-
-- **Syntax**: `*auto-acquire-sources --person {name}`
-- **Parameters**:
-  - `--person` (string, required): Full name of the person to research
-- **Example**:
-  ```
-  *auto-acquire-sources --person "Maria Santos"
-  ```
-- **Expected Output**: List of discovered sources with type, quality assessment, and download status.
-
-### *smoke-test
-
-Runs fidelity smoke test on a mind profile with scenario-based validation.
-
-- **Syntax**: `*smoke-test {profile-id}` or `*smoke-test {profile-id} --scenarios {n}`
-- **Parameters**:
-  - `profile-id` (string, required): Profile to test
-  - `--scenarios` (number, optional): Number of test scenarios (default: 3, max: 5)
-- **Example**:
-  ```
-  *smoke-test maria-santos --scenarios 5
-  ```
-- **Expected Output**: Smoke test results showing pass/fail and match percentage for each scenario (email writing, decision making, conflict resolution, and optionally more).
+**Quando usar:**
+- Operação single-session
+- Um agent só é suficiente
+- Não precisa checkpoints
 
 ---
 
-## 5. pedro-valerio (Forge) -- Engineer
+### `*create-template`
 
-Activation: `@squad-creator:pedro-valerio`
+Cria template de output para squad.
 
-Forge handles workflow design, checklist creation, veto condition definition, and process analysis.
-
-### *design-workflow
-
-Designs multi-step workflows with phases, decision points, and quality gates.
-
-- **Syntax**: `*design-workflow` or `*design-workflow --name {name}`
-- **Parameters**:
-  - `--name` (string, optional): Workflow name
-  - `--from-sop` (string, optional): SOP ID to derive workflow from
-  - `--phases` (number, optional): Number of phases
-  - `--hitl` (boolean, optional): Include HITL checkpoints
-- **Examples**:
-  ```
-  *design-workflow --name "deployment-pipeline" --phases 3 --hitl true
-  *design-workflow --from-sop SC-PE-DEPLOY-2026-02-04
-  ```
-- **Expected Output**: Workflow specification with phases, steps, decision points, handoffs, and quality gates.
-
-### *design-checklist
-
-Designs validation checklists for quality gates or veto conditions.
-
-- **Syntax**: `*design-checklist` or `*design-checklist --name {name} --type {type}`
-- **Parameters**:
-  - `--name` (string, optional): Checklist name
-  - `--type` (string, optional): `quality-gate` or `veto`
-- **Examples**:
-  ```
-  *design-checklist --name "release-validation" --type quality-gate
-  *design-checklist --type veto
-  ```
-- **Expected Output**: Structured checklist with items, criteria, responsible parties, and pass/fail conditions.
-
-### *define-veto-conditions
-
-Defines veto conditions and approval gates that can halt workflow execution.
-
-- **Syntax**: `*define-veto-conditions --workflow {name}`
-- **Parameters**:
-  - `--workflow` (string, required): Workflow to define veto conditions for
-  - `--severity` (string, optional): Filter by severity level (`critical`, `high`, `medium`, `low`)
-- **Example**:
-  ```
-  *define-veto-conditions --workflow "deployment-pipeline" --severity critical
-  ```
-- **Expected Output**: List of veto conditions with severity, trigger criteria, action to take, and notification targets.
-
-### *analyze-process
-
-Analyzes existing processes for optimization opportunities, bottlenecks, and HITL improvements.
-
-- **Syntax**: `*analyze-process --source {path}`
-- **Parameters**:
-  - `--source` (string, required): Path to process documentation
-  - `--focus` (string, optional): Analysis focus (`bottlenecks`, `hitl`, `automation`, `all`)
-- **Examples**:
-  ```
-  *analyze-process --source ./docs/current-process.md --focus bottlenecks
-  *analyze-process --source ./docs/current-process.md --focus hitl
-  ```
-- **Expected Output**: Process analysis report with identified issues, optimization recommendations, and proposed improvements.
+```bash
+*create-template sales-page-tmpl --squad copy
+```
 
 ---
 
-## Utility Commands (All Agents)
+## Comandos de Mind Cloning
 
-These commands are available in every agent:
+### `*clone-mind`
 
-### *help
+Executa clonagem completa (Voice + Thinking DNA).
 
-Shows all available commands with descriptions for the currently active agent.
+```bash
+*clone-mind "Gary Halbert" --domain copywriting
+*clone-mind "Dan Kennedy" --domain marketing --focus voice
+```
 
-- **Syntax**: `*help`
-- **Expected Output**: Numbered list of commands grouped by category.
+**Parâmetros:**
+| Param | Descrição | Default |
+|-------|-----------|---------|
+| `name` | Nome do expert | (obrigatório) |
+| `--domain` | Área de expertise | (obrigatório) |
+| `--focus` | voice, thinking, both | both |
+| `--sources` | Path para materiais | (nenhum) |
+| `--auto-acquire` | true, false | true |
 
-### *exit
-
-Exits the current agent mode, returning to the default conversation state.
-
-- **Syntax**: `*exit`
-- **Expected Output**: Confirmation message that the agent mode has been deactivated.
+**Output:**
+```
+outputs/minds/{slug}/
+├── sources_inventory.yaml
+├── voice_dna.yaml
+├── thinking_dna.yaml
+├── mind_dna_complete.yaml
+├── smoke_test_result.yaml
+└── quality_dashboard.md
+```
 
 ---
 
-*squad-creator docs v2.6.0 -- Synkra AIOS*
+### `*extract-voice-dna`
+
+Extrai apenas Voice DNA (comunicação/escrita).
+
+```bash
+*extract-voice-dna "Gary Halbert" --sources ./materials/
+```
+
+**O que extrai:**
+- Power words
+- Signature phrases
+- Stories/anecdotes
+- Writing style
+- Tone dimensions
+- Anti-patterns
+- Immune system
+
+---
+
+### `*extract-thinking-dna`
+
+Extrai apenas Thinking DNA (frameworks/decisões).
+
+```bash
+*extract-thinking-dna "Dan Kennedy" --sources ./materials/
+```
+
+**O que extrai:**
+- Recognition patterns
+- Primary framework
+- Secondary frameworks
+- Heuristics
+- Decision architecture
+- Objection handling
+- Handoff triggers
+
+---
+
+### `*update-mind`
+
+Atualiza mind existente com novas fontes (brownfield).
+
+```bash
+*update-mind gary_halbert --sources ./new-materials/
+*update-mind dan_kennedy --focus thinking
+```
+
+**Parâmetros:**
+| Param | Descrição | Default |
+|-------|-----------|---------|
+| `slug` | Slug do mind existente | (obrigatório) |
+| `--sources` | Path para novas fontes | (nenhum) |
+| `--focus` | voice, thinking, both | both |
+| `--mode` | merge, replace, selective | merge |
+
+**Output:**
+- DNA atualizado
+- Diff report do que mudou
+- Quality impact
+
+---
+
+### `*auto-acquire-sources`
+
+Busca fontes automaticamente na web.
+
+```bash
+*auto-acquire-sources "Gary Halbert" --domain copywriting
+```
+
+**O que busca:**
+- YouTube transcripts
+- Book summaries
+- Podcast appearances
+- Articles/blogs
+
+---
+
+## Comandos de Validação
+
+### `*validate-squad`
+
+Valida squad inteiro com análise por componente.
+
+```bash
+*validate-squad copy
+*validate-squad legal --verbose
+```
+
+**Valida:**
+- Estrutura de diretórios
+- Todos os agents
+- Workflows e tasks
+- Templates e checklists
+- Quality scores
+
+---
+
+### `*validate-agent`
+
+Valida agent individual contra AIOS 6-level structure.
+
+```bash
+*validate-agent squads/{squad-name}/agents/{agent-name}.md
+```
+
+**Critérios:**
+- Lines >= 300
+- voice_dna presente
+- output_examples >= 3
+- anti_patterns definidos
+- completion_criteria
+
+---
+
+### `*validate-task`
+
+Valida task contra Task Anatomy (8 campos).
+
+```bash
+*validate-task squads/{squad-name}/tasks/{task-name}.md
+```
+
+---
+
+### `*validate-workflow`
+
+Valida workflow (fases, checkpoints).
+
+```bash
+*validate-workflow squads/{squad-name}/workflows/{workflow-name}.yaml
+```
+
+---
+
+### `*quality-dashboard`
+
+Gera dashboard de qualidade para mind ou squad.
+
+```bash
+*quality-dashboard gary_halbert
+*quality-dashboard copy
+```
+
+**Métricas:**
+- Sources count & tier ratio
+- Voice score
+- Thinking score
+- Fidelity estimate
+- Gaps & recommendations
+
+---
+
+## Comandos de Especialistas
+
+### `@oalanicolas` - Mind Cloning Specialist
+
+Ativa o especialista em clonagem de mentes (DNA Mental™ 8-Layer).
+
+```bash
+# Dentro do squad-creator
+@oalanicolas
+
+# Ou diretamente
+/squad-creator @oalanicolas
+```
+
+**Comandos exclusivos:**
+| Comando | Descrição |
+|---------|-----------|
+| `*extract-dna` | Extrai Voice + Thinking DNA de um mind |
+| `*assess-sources` | Avalia qualidade das fontes (ouro vs bronze) |
+| `*design-clone` | Desenha arquitetura de clone |
+| `*validate-clone` | Valida fidelidade do clone |
+| `*diagnose-clone` | Diagnostica problemas de fidelidade |
+
+**Quando usar:**
+- Extração de DNA (voice, thinking)
+- Curadoria de fontes
+- Validação de fidelidade
+- Problemas de autenticidade do clone
+
+---
+
+### `@pedro-valerio` - Process Specialist
+
+Ativa o especialista em processos, tarefas e checklists.
+
+```bash
+# Dentro do squad-creator
+@pedro-valerio
+
+# Ou diretamente
+/squad-creator @pedro-valerio
+```
+
+**Comandos exclusivos:**
+| Comando | Descrição |
+|---------|-----------|
+| `*audit` | Audita workflows/tasks |
+| `*design-heuristic` | Desenha heurística de decisão |
+| `*find-automation` | Identifica oportunidades de automação |
+| `*gap-analysis` | Análise de gaps em processos |
+| `*veto-check` | Define condições de veto |
+
+**Quando usar:**
+- Design de workflows
+- Criação de checklists
+- Definição de veto conditions
+- Automação de processos
+- Validação de tasks
+
+---
+
+### Specialist Selection
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                 QUANDO USAR CADA ESPECIALISTA                   │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                 │
+│  "Preciso extrair DNA de um expert"                             │
+│  → @oalanicolas                                                 │
+│                                                                 │
+│  "As fontes estão boas?"                                        │
+│  → @oalanicolas                                                 │
+│                                                                 │
+│  "Clone não está autêntico"                                     │
+│  → @oalanicolas                                                 │
+│                                                                 │
+│  "Preciso criar um workflow"                                    │
+│  → @pedro-valerio                                               │
+│                                                                 │
+│  "Quero adicionar veto conditions"                              │
+│  → @pedro-valerio                                               │
+│                                                                 │
+│  "Checklist está completo?"                                     │
+│  → @pedro-valerio                                               │
+│                                                                 │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## Comandos de Tool Discovery
+
+### `*discover-tools`
+
+Pesquisa MCPs, APIs, CLIs, Libraries e GitHub projects para um domínio.
+
+```bash
+*discover-tools {domain}
+*discover-tools squad-creator
+*discover-tools copywriting
+```
+
+**O que pesquisa:**
+- MCP Servers (Model Context Protocol)
+- APIs REST/GraphQL
+- CLI tools
+- Libraries (Python, Node)
+- GitHub projects
+
+**Output:**
+- Matriz de priorização (Impacto vs Esforço)
+- Quick wins identificados
+- Plano de integração
+
+**Documentação:** Ver [TOOL-RECOMMENDATIONS.md](./TOOL-RECOMMENDATIONS.md)
+
+---
+
+### `*show-tools`
+
+Exibe o registro global de ferramentas (instaladas e recomendadas).
+
+```bash
+*show-tools
+```
+
+**Mostra:**
+- Ferramentas instaladas
+- Ferramentas recomendadas por prioridade
+- Capabilities disponíveis
+
+---
+
+### `*add-tool`
+
+Adiciona ferramenta descoberta às dependências do squad.
+
+```bash
+*add-tool mcp-youtube-transcript
+*add-tool firecrawl-mcp
+```
+
+**Nota:** Delegado para @devops para instalação real no `.mcp.json`.
+
+---
+
+## Comandos Utilitários
+
+### `*list-squads`
+
+Lista todos os squads criados.
+
+```bash
+*list-squads
+```
+
+**Output:**
+```
+┌──────────┬─────────────┬────────┬───────────┐
+│ Squad    │ Agents      │ Score  │ Status    │
+├──────────┼─────────────┼────────┼───────────┤
+│ copy     │ 6           │ 8.2    │ ✅ Active │
+│ legal    │ 4           │ 7.8    │ ✅ Active │
+│ data     │ 3           │ 6.5    │ ⚠️ Draft  │
+└──────────┴─────────────┴────────┴───────────┘
+```
+
+---
+
+### `*show-registry`
+
+Mostra registro de squads (existentes, padrões, gaps).
+
+```bash
+*show-registry
+```
+
+---
+
+### `*squad-analytics`
+
+Dashboard detalhado de analytics por squad.
+
+```bash
+*squad-analytics
+*squad-analytics copy
+```
+
+**Mostra:**
+- Agents por tier
+- Tasks por tipo
+- Workflows
+- Templates
+- Checklists
+- Usage stats
+
+---
+
+### `*refresh-registry`
+
+Escaneia squads/ e atualiza registro.
+
+```bash
+*refresh-registry
+```
+
+**Quando usar:**
+- Após criar squad manualmente
+- Após mover/renomear squads
+- Sincronizar estado
+
+---
+
+### `*help`
+
+Mostra lista de comandos disponíveis.
+
+```bash
+*help
+```
+
+---
+
+### `*exit`
+
+Desativa o Squad Architect.
+
+```bash
+*exit
+```
+
+---
+
+## Quick Reference
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                    COMANDOS MAIS USADOS                         │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                 │
+│  CRIAR                                                          │
+│  *create-squad {domain}     Criar squad completo               │
+│  *clone-mind {name}         Clonar expert específico           │
+│                                                                 │
+│  VALIDAR                                                        │
+│  *validate-squad {name}     Validar squad existente            │
+│  *quality-dashboard {name}  Ver métricas de qualidade          │
+│                                                                 │
+│  GERENCIAR                                                      │
+│  *list-squads               Ver squads disponíveis             │
+│  *refresh-registry          Atualizar registro                 │
+│                                                                 │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+**Squad Architect | Commands Reference v1.0**
