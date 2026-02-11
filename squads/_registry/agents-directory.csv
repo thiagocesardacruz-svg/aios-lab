@@ -1,0 +1,44 @@
+Agente,Chamada,Squad,Tipo,O que faz
+ops-lead,@ops-lead,Ops,Hybrid,Orquestração cross-squad e priorização e escalation
+ops-manager,@ops-manager,Ops,Hybrid,Gestão de OS e routing e status updates
+clawdbot,@clawdbot,Ops,Hybrid,Executor determinístico e scripts e infra
+tech-lead,@tech-lead,Tech,Hybrid,Arquitetura e decisões técnicas e code review
+application-developer,@application-developer,Tech,Expert,Implementação e APIs e testes
+automation-engineer,@automation-engineer,Tech,Expert,Workflows n8n e integrações
+ai-ops,@ai-ops,Tech,Expert,Custos AI e otimização prompts
+ghl-specialist,@ghl-specialist,Tech,Expert,GoHighLevel e CRM e pipelines
+marketing-lead,@marketing-lead,Marketing,Hybrid,Estratégia e campanhas e coordenação
+content-strategist,@content-strategist,Marketing,Expert,Pesquisa ICP e calendário editorial
+copy-specialist,@copy-specialist,Marketing,Expert,Copy e headlines e CTAs
+funnel-architect,@funnel-architect,Marketing,Expert,Funis e jornada do cliente
+offer-engine,@offer-engine,Marketing,Expert,Grand Slam Offers e pricing
+seo-specialist,@seo-specialist,Marketing,Expert,SEO e keywords e clusters
+sales-lead,@sales-lead,Sales,Hybrid,Estratégia vendas e coaching e forecast
+closer,@closer,Sales,Expert,Discovery e objeções e fechamento
+sdr,@sdr,Sales,Expert,Prospecção e qualificação e outreach
+sales-analyst,@sales-analyst,Sales,Expert,Pipeline e win/loss analysis
+design-lead,@design-lead,Design,Hybrid,Direção criativa e aprovações
+visual-systems-designer,@visual-systems-designer,Design,Expert,Carousels e infográficos e templates
+performance-designer,@performance-designer,Design,Expert,Ads e variantes e adaptações
+motion-video-specialist,@motion-video-specialist,Design,Expert,VSL e video ads e reels
+customer-lead,@customer-lead,Customer,Hybrid,Health check e risco e expansão
+onboarding-architect,@onboarding-architect,Customer,Expert,Fluxos onboarding e emails
+growth-lead,@growth-lead,Growth,Hybrid,Priorização e experimentos e waves
+data-analyst,@data-analyst,Growth,Expert,Métricas e cohorts e A/B tests
+qa-lead,@qa-lead,QA,Operational,Quality gates e DoD e padrões
+content-reviewer,@content-reviewer,QA,Operational,Review conteúdo e verificação
+process-auditor,@process-auditor,QA,Operational,Auditorias e compliance
+finance-lead,@finance-lead,Finance,Operational,Reports e aprovações e alertas
+financial-analyst,@financial-analyst,Finance,Operational,Unit economics e KPIs e cenários
+pricing-strategist,@pricing-strategist,Finance,Operational,Tiers e testes preço e elasticidade
+controller,@controller,Finance,Operational,Governance e compliance custos
+translation-lead,@translation-lead,Translator,Operational,Coordenação e glossário e review
+design-system,@design-system,Design-System,Expert,Brad Frost - tokens e componentes e migração
+charlie-munger,@charlie-munger,Board,Mind Clone,Mental models e inversão e blindspots
+steve-jobs,@steve-jobs,Board,Mind Clone,Produto e simplificação e visão
+alex-hormozi,@alex-hormozi,Board,Mind Clone,Ofertas e value equation e pricing
+dan-kennedy,@dan-kennedy,Board,Mind Clone,Posicionamento e clareza e sofisticação
+elon-musk,@elon-musk,Board,Mind Clone,First principles e custos e sistemas
+peter-thiel,@peter-thiel,Board,Mind Clone,Moat e secrets e zero-to-one
+ray-dalio,@ray-dalio,Board,Mind Clone,Princípios e root cause e encoding
+bill-gates,@bill-gates,Board,Mind Clone,Plataforma e network effects e longo prazo
