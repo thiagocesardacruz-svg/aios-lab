@@ -1,136 +1,279 @@
+# Design System Squad
+# Travel Tech Digital AIOS
+# Version: 2.3.0
+
 name: design-system
-version: "2.2.0"
-slashPrefix: ds
-title: "Design - Brad Frost Methodology"
-description: "100% independent design system agent - UI audit, design tokens, component generation, accessibility. Zero database dependencies."
-author: "AIOS Team"
-icon: "🎨"
-type: specialist
+version: "2.3.0"
+description: "100% independent design system agent - UI audit, design tokens, component generation, accessibility. Brad Frost Atomic Design methodology."
+
+aios:
+  minVersion: "2.1.0"
+  type: squad
+  domain: ui-infrastructure
+
+config:
+  slashPrefix: "ds"
+  entry_point: "workflows/brownfield-complete.yaml"
+  independence: true
 
 # IMPORTANT: 100% INDEPENDENT - NO EXTERNAL DEPENDENCIES
-independence: true
 independence_details: |
-  This expansion pack is completely self-contained:
+  This squad is completely self-contained:
   - No database required
   - No external APIs
   - No cloud services
   - Works with any codebase (React, Vue, HTML/CSS)
   - All operations are filesystem-based
 
-# Optional tools (standard dev environment)
-dependencies:
-  optional:
-    - name: Node.js
-      version: ">=18.0"
-      description: "For component generation and npm packages"
-      install: "https://nodejs.org/"
-    - name: npm/yarn/pnpm
-      description: "Package manager for installing component dependencies"
-
-# No environment variables required
-environment:
-  required: []
-  optional:
-    - name: NODE_ENV
-      description: "Development/production mode"
-      default: "development"
+lead:
+  agent: "design-system"
+  name: "Atlas"
+  role: "Design System Lead"
 
 agents:
-  - design-system
+  - id: "design-system"
+    file: "agents/design-system.md"
+    name: "Atlas"
+    role: "UI audit, tokens, components, accessibility (Brad Frost methodology)"
 
-tasks:
-  # Brownfield workflow (audit existing codebase)
-  - audit-codebase
-  - audit-reading-experience
-  - audit-tailwind-config
-  - consolidate-patterns
-  - extract-tokens
-  - generate-migration-strategy
-  - generate-shock-report
-  - calculate-roi
-  # Greenfield workflow (new design system)
-  - setup-design-system
-  - build-component
-  - compose-molecule
-  - extend-pattern
-  - generate-documentation
-  - bootstrap-shadcn-library
-  - export-design-tokens-dtcg
-  # Accessibility
-  - a11y-audit
-  - aria-audit
-  - contrast-matrix
-  - focus-order-audit
-  # Refactoring
-  - atomic-refactor-plan
-  - atomic-refactor-execute
-  # Analytics & maintenance
-  - design-compare
-  - ds-health-metrics
-  - bundle-audit
-  - token-usage-analytics
-  - dead-code-detection
-  - validate-design-fidelity
-  - tailwind-upgrade
-  - integrate-squad
-  # Prefixed versions (ds-*)
-  - ds-audit-codebase
-  - ds-build-component
-  - ds-calculate-roi
-  - ds-compose-molecule
-  - ds-consolidate-patterns
-  - ds-extend-pattern
-  - ds-extract-tokens
-  - ds-generate-documentation
-  - ds-generate-migration-strategy
-  - ds-generate-shock-report
-  - ds-health-metrics
-  - ds-integrate-squad
-  - ds-rebuild-artifact
-  - ds-scan-artifact
-  - ds-setup-design-system
-  # Shared
-  - create-doc
-  - execute-checklist
-
-templates:
-  - component-visual-spec-tmpl
-  - design-fidelity-report-tmpl
-  - ds-artifact-analysis
-  - ds-health-report-tmpl
-  - ds-migration-strategy-tmpl
-  - ds-state-persistence-tmpl
-  - ds-tokens-schema-tmpl
-  - migration-strategy-tmpl
-  - state-persistence-tmpl
-  - tokens-schema-tmpl
-
-checklists:
-  - accessibility-wcag-checklist
-  - atomic-refactor-checklist
-  - component-quality-checklist
-  - design-fidelity-checklist
-  - ds-accessibility-wcag-checklist
-  - ds-component-quality-checklist
-  - ds-migration-readiness-checklist
-  - ds-pattern-audit-checklist
-  - migration-readiness-checklist
-  - pattern-audit-checklist
-  - reading-accessibility-checklist
-
-workflows:
-  - audit-only
-  - brownfield-complete
-  - greenfield-new
+components:
+  agents:
+    - "design-system.md"
+  tasks:
+    # Brownfield (audit existing codebase)
+    - "ds-audit-codebase.md"
+    - "audit-reading-experience.md"
+    - "audit-tailwind-config.md"
+    - "ds-consolidate-patterns.md"
+    - "ds-extract-tokens.md"
+    - "ds-generate-migration-strategy.md"
+    - "ds-generate-shock-report.md"
+    - "ds-calculate-roi.md"
+    # Greenfield (new design system)
+    - "ds-setup-design-system.md"
+    - "ds-build-component.md"
+    - "ds-compose-molecule.md"
+    - "ds-extend-pattern.md"
+    - "ds-generate-documentation.md"
+    - "bootstrap-shadcn-library.md"
+    - "export-design-tokens-dtcg.md"
+    # Accessibility
+    - "a11y-audit.md"
+    - "aria-audit.md"
+    - "contrast-matrix.md"
+    - "focus-order-audit.md"
+    # Refactoring
+    - "atomic-refactor-plan.md"
+    - "atomic-refactor-execute.md"
+    # Analytics & maintenance
+    - "design-compare.md"
+    - "ds-health-metrics.md"
+    - "bundle-audit.md"
+    - "token-usage-analytics.md"
+    - "dead-code-detection.md"
+    - "validate-design-fidelity.md"
+    - "tailwind-upgrade.md"
+    - "ds-integrate-squad.md"
+    - "ds-rebuild-artifact.md"
+    - "ds-scan-artifact.md"
+    # Shared
+    - "create-doc.md"
+    - "execute-checklist.md"
+  workflows:
+    - "brownfield-complete.yaml"
+    - "greenfield-new.yaml"
+    - "audit-only.yaml"
+  templates:
+    - "component-visual-spec-tmpl.md"
+    - "design-fidelity-report-tmpl.md"
+    - "ds-artifact-analysis.md"
+    - "ds-health-report-tmpl.md"
+    - "ds-migration-strategy-tmpl.md"
+    - "ds-state-persistence-tmpl.yaml"
+    - "ds-tokens-schema-tmpl.yaml"
+    - "migration-strategy-tmpl.md"
+    - "state-persistence-tmpl.yaml"
+    - "tokens-schema-tmpl.yaml"
+  checklists:
+    - "accessibility-wcag-checklist.md"
+    - "atomic-refactor-checklist.md"
+    - "component-quality-checklist.md"
+    - "design-fidelity-checklist.md"
+    - "ds-accessibility-wcag-checklist.md"
+    - "ds-component-quality-checklist.md"
+    - "ds-migration-readiness-checklist.md"
+    - "ds-pattern-audit-checklist.md"
+    - "migration-readiness-checklist.md"
+    - "pattern-audit-checklist.md"
+    - "reading-accessibility-checklist.md"
+  data:
+    - "atomic-design-principles.md"
+    - "atomic-refactor-rules.md"
+    - "consolidation-algorithms.md"
+    - "design-token-best-practices.md"
+    - "design-tokens-spec.yaml"
+    - "high-retention-reading-guide.md"
+    - "integration-patterns.md"
+    - "roi-calculation-guide.md"
+    - "wcag-compliance-guide.md"
 
 tags:
-  - design-system
-  - ui
-  - components
-  - tokens
-  - accessibility
-  - wcag
-  - atomic-design
-  - brad-frost
-  - independent
-  - shareable
+  - "design-system"
+  - "ui"
+  - "components"
+  - "tokens"
+  - "accessibility"
+  - "wcag"
+  - "atomic-design"
+  - "brad-frost"
+  - "independent"
+
+commands:
+  # Workflows
+  - name: "brownfield"
+    workflow: "workflows/brownfield-complete.yaml"
+    description: "Complete brownfield audit and migration"
+    visibility: "full"
+  - name: "greenfield"
+    workflow: "workflows/greenfield-new.yaml"
+    description: "New design system from scratch"
+    visibility: "full"
+  - name: "audit-only"
+    workflow: "workflows/audit-only.yaml"
+    description: "Audit only, no migration"
+    visibility: "full"
+
+  # Audit & Analysis Tasks
+  - name: "audit"
+    task: "tasks/ds-audit-codebase.md"
+    description: "Audit codebase for UI patterns"
+    visibility: "quick"
+  - name: "consolidate"
+    task: "tasks/ds-consolidate-patterns.md"
+    description: "Consolidate patterns via clustering"
+    visibility: "quick"
+  - name: "shock-report"
+    task: "tasks/ds-generate-shock-report.md"
+    description: "Generate visual shock report"
+    visibility: "quick"
+  - name: "calculate-roi"
+    task: "tasks/ds-calculate-roi.md"
+    description: "Calculate ROI and cost savings"
+    visibility: "quick"
+
+  # Token Management
+  - name: "tokenize"
+    task: "tasks/ds-extract-tokens.md"
+    description: "Extract design tokens"
+    visibility: "quick"
+  - name: "export-tokens"
+    task: "tasks/export-design-tokens-dtcg.md"
+    description: "Export tokens (CSS/Tailwind/SCSS)"
+    visibility: "quick"
+  - name: "token-analytics"
+    task: "tasks/token-usage-analytics.md"
+    description: "Analyze token usage"
+    visibility: "quick"
+
+  # Component Building
+  - name: "setup"
+    task: "tasks/ds-setup-design-system.md"
+    description: "Initialize design system"
+    visibility: "quick"
+  - name: "build"
+    task: "tasks/ds-build-component.md"
+    description: "Build component with tests"
+    visibility: "quick"
+  - name: "compose"
+    task: "tasks/ds-compose-molecule.md"
+    description: "Compose molecule from atoms"
+    visibility: "quick"
+  - name: "extend"
+    task: "tasks/ds-extend-pattern.md"
+    description: "Extend existing pattern"
+    visibility: "quick"
+  - name: "document"
+    task: "tasks/ds-generate-documentation.md"
+    description: "Generate documentation"
+    visibility: "quick"
+  - name: "bootstrap-shadcn"
+    task: "tasks/bootstrap-shadcn-library.md"
+    description: "Setup shadcn/ui library"
+    visibility: "quick"
+
+  # Accessibility
+  - name: "a11y-audit"
+    task: "tasks/a11y-audit.md"
+    description: "Full accessibility audit"
+    visibility: "quick"
+  - name: "aria-audit"
+    task: "tasks/aria-audit.md"
+    description: "ARIA attributes audit"
+    visibility: "quick"
+  - name: "contrast"
+    task: "tasks/contrast-matrix.md"
+    description: "Color contrast analysis"
+    visibility: "quick"
+  - name: "focus-order"
+    task: "tasks/focus-order-audit.md"
+    description: "Focus order validation"
+    visibility: "quick"
+
+  # Refactoring
+  - name: "refactor-plan"
+    task: "tasks/atomic-refactor-plan.md"
+    description: "Plan atomic refactoring"
+    visibility: "quick"
+  - name: "refactor-execute"
+    task: "tasks/atomic-refactor-execute.md"
+    description: "Execute refactoring"
+    visibility: "quick"
+  - name: "dead-code"
+    task: "tasks/dead-code-detection.md"
+    description: "Detect unused patterns"
+    visibility: "quick"
+
+  # Maintenance
+  - name: "health"
+    task: "tasks/ds-health-metrics.md"
+    description: "Design system health score"
+    visibility: "quick"
+  - name: "bundle-audit"
+    task: "tasks/bundle-audit.md"
+    description: "Analyze bundle impact"
+    visibility: "quick"
+  - name: "tailwind-upgrade"
+    task: "tasks/tailwind-upgrade.md"
+    description: "Upgrade Tailwind version"
+    visibility: "quick"
+  - name: "validate-fidelity"
+    task: "tasks/validate-design-fidelity.md"
+    description: "Check design fidelity"
+    visibility: "quick"
+  - name: "migrate"
+    task: "tasks/ds-generate-migration-strategy.md"
+    description: "Generate migration strategy"
+    visibility: "quick"
+
+interface:
+  receives_from:
+    - squad: "design"
+      type: "specs"
+      required: ["visual_specs", "brand_guidelines"]
+  delivers_to:
+    - squad: "tech"
+      type: "components"
+      outputs: ["tokens", "components", "documentation"]
+
+# What this squad does NOT do
+boundaries:
+  does_not:
+    - "Create marketing visuals (Design squad)"
+    - "Implement business logic (Tech squad)"
+    - "Make brand decisions (Design squad)"
+
+quality:
+  min_checklist_coverage: 95
+  require_qa_gate: true
+  require_accessibility: true
+  wcag_level: "AA"

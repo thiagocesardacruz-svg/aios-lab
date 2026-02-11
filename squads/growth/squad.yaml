@@ -1,10 +1,10 @@
 # Growth Squad
 # Travel Tech Digital AIOS
-# Version: 1.0.0
+# Version: 1.1.0
 
 name: growth
-version: "1.0.0"
-description: "Growth squad focused on scaling, optimization, experimentation, and data-driven growth strategies."
+version: "1.1.0"
+description: "Growth squad focused on scaling, optimization, experimentation, and data-driven growth strategies using AARRR framework."
 
 aios:
   minVersion: "2.1.0"
@@ -22,7 +22,7 @@ lead:
 agents:
   - id: "growth-lead"
     file: "agents/growth-lead.md"
-    role: "Growth strategy, experiments"
+    role: "Growth strategy, waves, experiments"
   - id: "data-analyst"
     file: "agents/data-analyst.md"
     role: "Metrics, analysis, insights"
@@ -45,17 +45,37 @@ components:
     - "market-research.yaml"
     - "competitor-analysis.yaml"
     - "create-wave.yaml"
+  tasks:
+    - "design-experiment.md"
+    - "analyze-ab-test.md"
+    - "calculate-ice-score.md"
+    - "assess-pmf.md"
+    - "funnel-optimization.md"
+    - "retention-analysis.md"
+  templates:
+    - "experiment-design-tmpl.md"
+    - "experiment-report-tmpl.md"
+    - "pmf-assessment-tmpl.md"
+    - "wave-plan-tmpl.md"
+  checklists:
+    - "experiment-checklist.md"
+    - "funnel-analysis-checklist.md"
+  data:
+    - "growth-metrics.yaml"
+    - "retention-benchmarks.yaml"
 
 tags:
   - "growth"
   - "optimization"
   - "experiments"
   - "analytics"
+  - "aarrr"
+  - "pmf"
 
 commands:
   - name: "experiment"
     workflow: "workflows/experiment.yaml"
-    description: "Design and run experiment"
+    description: "Design and run A/B experiment"
     visibility: "full"
   - name: "analyze-funnel"
     workflow: "workflows/analyze-funnel.yaml"
@@ -73,3 +93,35 @@ commands:
     workflow: "workflows/create-wave.yaml"
     description: "Create growth wave"
     visibility: "full"
+  - name: "assess-pmf"
+    task: "tasks/assess-pmf.md"
+    description: "Assess product-market fit"
+    visibility: "full"
+  - name: "ice-score"
+    task: "tasks/calculate-ice-score.md"
+    description: "Calculate ICE scores for prioritization"
+    visibility: "full"
+  - name: "retention"
+    task: "tasks/retention-analysis.md"
+    description: "Analyze retention cohorts"
+    visibility: "full"
+
+interface:
+  inputs:
+    - "Funnel data from analytics"
+    - "User cohort data"
+    - "A/B test results"
+    - "Survey responses"
+  outputs:
+    - "Experiment designs & reports"
+    - "PMF assessments"
+    - "Growth wave plans"
+    - "ICE-scored initiatives"
+
+quality:
+  checklist: "checklists/experiment-checklist.md"
+  metrics:
+    - "experiment_win_rate"
+    - "funnel_conversion_lift"
+    - "pmf_score"
+    - "retention_vs_benchmark"

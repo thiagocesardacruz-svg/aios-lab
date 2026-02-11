@@ -1,0 +1,111 @@
+# Upsell Campaign Workflow
+# Squad: customer
+# Version: 1.0.0
+
+name: upsell-campaign
+description: "Design and execute upsell/cross-sell campaigns for expansion revenue"
+version: "1.0.0"
+
+trigger:
+  command: "/customer/upsell-campaign"
+  inputs:
+    - name: campaign_type
+      type: string
+      required: true
+      description: "upsell | cross-sell | expansion"
+    - name: target_segment
+      type: string
+      required: true
+      description: "Target customer segment"
+    - name: offer
+      type: string
+      required: false
+      description: "Product/feature to promote"
+
+steps:
+  - id: identify-opportunities
+    name: "Identify Expansion Opportunities"
+    agent: retention-strategist
+    task: design-upsell
+    inputs:
+      campaign_type: "{{inputs.campaign_type}}"
+      segment: "{{inputs.target_segment}}"
+    outputs:
+      - opportunity_list
+      - qualification_criteria
+      - potential_value
+
+  - id: design-offer
+    name: "Design Offer Strategy"
+    agent: customer-lead
+    action: design-offer
+    inputs:
+      opportunities: "{{steps.identify-opportunities.outputs}}"
+      offer: "{{inputs.offer}}"
+    outputs:
+      - offer_structure
+      - pricing_strategy
+      - value_proposition
+
+  - id: create-campaign
+    name: "Create Campaign Assets"
+    agent: retention-strategist
+    action: create-campaign
+    inputs:
+      offer: "{{steps.design-offer.outputs}}"
+      segment: "{{inputs.target_segment}}"
+    outputs:
+      - email_sequence
+      - in_app_messages
+      - sales_enablement
+
+  - id: define-triggers
+    name: "Define Campaign Triggers"
+    agent: retention-strategist
+    action: define-triggers
+    inputs:
+      campaign: "{{steps.create-campaign.outputs}}"
+      criteria: "{{steps.identify-opportunities.outputs.qualification_criteria}}"
+    outputs:
+      - trigger_conditions
+      - timing_rules
+      - exclusion_criteria
+
+  - id: setup-tracking
+    name: "Setup Campaign Tracking"
+    agent: customer-lead
+    action: setup-analytics
+    inputs:
+      campaign: "{{steps.create-campaign.outputs}}"
+    outputs:
+      - tracking_plan
+      - success_metrics
+      - reporting_dashboard
+
+  - id: launch-plan
+    name: "Create Launch Plan"
+    agent: customer-lead
+    action: plan-launch
+    inputs:
+      all_assets: "{{steps}}"
+    outputs:
+      - launch_checklist
+      - rollout_schedule
+      - team_assignments
+
+output:
+  template: "templates/upsell-campaign-tmpl.md"
+  sections:
+    - opportunity_analysis
+    - offer_strategy
+    - campaign_assets
+    - automation_config
+    - tracking_plan
+    - launch_schedule
+
+success_criteria:
+  - "Clear target segment defined"
+  - "Value proposition compelling"
+  - "Triggers automated"
+  - "Tracking in place"
+  - "Team aligned on execution"

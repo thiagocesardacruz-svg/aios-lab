@@ -1,0 +1,83 @@
+# AIOS Environment Report
+# Generated: 2026-02-04T22:01:00
+
+system:
+  os: Windows
+  platform: win32
+  user: thiag
+  hostname: DESKTOP
+
+project:
+  name: aios-lab
+  path: C:/Code/aios-lab
+  type: framework-development
+
+cli_tools:
+  essential:
+    git:
+      installed: true
+      version: "2.52.0"
+      status: ok
+    gh:
+      installed: true
+      version: "2.86.0"
+      authenticated: true
+      user: thiagocesardacruz-svg
+      status: ok
+    node:
+      installed: true
+      version: "22.22.0"
+      status: ok
+    npm:
+      installed: true
+      version: "10.9.4"
+      status: ok
+
+  infrastructure:
+    docker:
+      installed: true
+      version: "29.1.5"
+      status: ok
+    supabase:
+      installed: false
+      status: ok
+      note: "Using Supabase online (cloud) - CLI optional for local dev"
+      cloud_project: true
+    railway:
+      installed: true
+      status: ok
+
+  optional:
+    pnpm:
+      installed: true
+      status: ok
+
+repository:
+  initialized: true
+  remote: null
+  branch: null
+
+mcp_servers:
+  context7: installed
+  exa: installed
+  desktop-commander: installed
+
+coderabbit:
+  installed: true
+  version: "0.3.5"
+  platform: WSL (Ubuntu)
+  path: ~/.local/bin/coderabbit
+  authenticated: true
+  user: thiagocesardacruz-svg
+  provider: github
+
+validation:
+  essential_complete: true
+  recommended_complete: false
+  ready_for_development: true
+
+next_steps:
+  - "1. @analyst - Create Project Brief"
+  - "2. @pm - Create PRD"
+  - "3. @architect - Design Architecture"
+  - "4. @sm - Create Stories"

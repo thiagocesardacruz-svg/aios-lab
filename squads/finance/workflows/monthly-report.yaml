@@ -1,0 +1,84 @@
+id: monthly-report
+name: Monthly Financial Report
+squad: finance
+version: "1.0"
+description: Generate comprehensive monthly financial report with all key metrics.
+
+trigger:
+  type: scheduled
+  source: system
+  condition: First business day of each month
+
+participants:
+  - agent: controller
+    role: Aggregates cost data
+  - agent: financial-analyst
+    role: Calculates metrics and projections
+  - agent: finance-lead
+    role: Reviews and approves report
+
+steps:
+  - id: step-01
+    name: Audit previous month costs
+    agent: controller
+    task: audit-costs
+    input: cost_entries, previous_month
+    output: audit_report
+    depends_on: []
+    on_fail: retry
+
+  - id: step-02
+    name: Run month-end close checklist
+    agent: controller
+    task: classify-os-costs
+    input: month-end-close checklist
+    output: close_status
+    depends_on: [step-01]
+    on_fail: abort
+
+  - id: step-03
+    name: Calculate unit economics
+    agent: financial-analyst
+    task: analyze-unit-economics
+    input: customer_data, revenue_data
+    output: unit_economics
+    depends_on: []
+    on_fail: retry
+
+  - id: step-04
+    name: Forecast revenue
+    agent: financial-analyst
+    task: forecast-revenue
+    input: historical_revenue, current_mrr
+    output: revenue_forecast
+    depends_on: []
+    on_fail: skip
+
+  - id: step-05
+    name: Project cashflow
+    agent: financial-analyst
+    task: project-cashflow
+    input: current_balance, revenue_forecast
+    output: cashflow_projection
+    depends_on: [step-04]
+    on_fail: retry
+
+  - id: step-06
+    name: Generate financial report
+    agent: finance-lead
+    task: forecast-revenue
+    input: all outputs, financial-report-tmpl
+    output: monthly_report
+    depends_on: [step-01, step-02, step-03, step-05]
+    on_fail: retry
+
+completion:
+  condition: Month-end close passes and report generated
+  output: Monthly financial report (md)
+  notify: user
+
+constraints:
+  max_steps: 8
+  timeout_minutes: 60
+  retry_policy: 2
+  cost_ceiling: none

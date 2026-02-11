@@ -2,9 +2,16 @@
 
 > Squad especializado em marketing digital para hotéis e pousadas do Brasil, focado no público classe AB.
 
+| Aspecto | Valor |
+|---------|-------|
+| **Versão** | 1.1.0 |
+| **Domínio** | hotel-marketing |
+| **Prefixo** | `/hotel` |
+| **Entry Point** | hotel-mkt-chief |
+
 **Filosofia:** *"Não vendemos quartos. Vendemos sonhos, memórias e sentimentos."*
 
-**DNA Triplo:** Hormozi (conversão) + Chip Conley (hospitalidade) + Ian Schrager (desejo visual)
+**DNA Triplo:** Hormozi (50%) + Chip Conley (30%) + Ian Schrager (20%)
 
 ---
 
@@ -31,6 +38,7 @@ TIER 2 — EXECUÇÃO
   hotel-ads-specialist      Meta, Google, Bing, TikTok Ads
   hotel-email-maestro       Email lifecycle completo
   hotel-seo-architect       SEO anti-OTA
+  hotel-visual-producer     Produção visual com IA
 
 ═══════════════════════════════════════════════════════════════
 TIER 3 — ESPECIALISTAS
@@ -70,6 +78,7 @@ TIER 3 — ESPECIALISTAS
 | `*direct-booking-audit` | Auditoria de reservas diretas |
 | `*advertorial {tema}` | Cria matéria/advertorial |
 | `*content-calendar` | Gera calendário de conteúdo |
+| `*visual-production` | Pipeline de produção visual com IA |
 | `*exit` | Sai do modo squad |
 
 ---
@@ -85,6 +94,7 @@ TIER 3 — ESPECIALISTAS
 | `wf-paid-ads-scale` | 5 | 1-2 semanas | 3 agentes |
 | `wf-reputation-engine` | 6 | Contínuo | 3 agentes |
 | `wf-advertorial-seeding` | 6 | 2-4 semanas | 4 agentes |
+| `wf-visual-production` | 6 | 1-2 semanas | 4 agentes |
 
 ---
 
@@ -169,7 +179,8 @@ Expectativa → Desejo → Necessidade Não-Reconhecida → EVANGELISTA
 
 ```
 squads/hotel-mkt/
-├── config.yaml                          # Configuração do squad
+├── squad.yaml                           # Manifesto AIOS 2.1.0
+├── config.yaml                          # Configuração legada (referência)
 ├── README.md                            # Este arquivo
 ├── agents/
 │   ├── hotel-mkt-chief.md              # Tier 0: Orchestrator
@@ -181,6 +192,7 @@ squads/hotel-mkt/
 │   ├── hotel-ads-specialist.md         # Tier 2: Ads
 │   ├── hotel-email-maestro.md          # Tier 2: Email
 │   ├── hotel-seo-architect.md          # Tier 2: SEO
+│   ├── hotel-visual-producer.md        # Tier 2: Visual IA
 │   ├── hotel-reputation-guardian.md    # Tier 3: Reputação
 │   ├── hotel-ugc-curator.md            # Tier 3: UGC
 │   ├── hotel-direct-booking.md         # Tier 3: Reserva direta
@@ -192,7 +204,8 @@ squads/hotel-mkt/
 │   ├── wf-email-lifecycle.yaml         # Lifecycle email
 │   ├── wf-paid-ads-scale.yaml          # Escalar ads
 │   ├── wf-reputation-engine.yaml       # Motor de reputação
-│   └── wf-advertorial-seeding.yaml     # Seeding editorial
+│   ├── wf-advertorial-seeding.yaml     # Seeding editorial
+│   └── wf-visual-production.yaml       # Produção visual IA
 ├── data/
 │   └── minds/
 │       ├── hormozi-voice-dna.yaml      # Voice DNA Hormozi
@@ -226,10 +239,11 @@ squads/hotel-mkt/
 | Componente | Quantidade | Linhas Totais |
 |------------|-----------|---------------|
 | Agentes | 14 | 18.624 |
-| Workflows | 7 | 6.652 |
+| Workflows | 8 | ~7.000 |
 | Mind DNA | 19 | ~2.500 |
-| Config | 1 | 240 |
-| **TOTAL** | **41 arquivos** | **~28.000** |
+| Hormozi Source | 68+ | ~15.000 |
+| Config | 2 | ~550 |
+| **TOTAL** | **~110 arquivos** | **~43.000** |
 
 ---
 
@@ -261,5 +275,5 @@ squads/hotel-mkt/
 
 ---
 
-*Squad Creator v2.5.0 | hotel-mkt v1.0.0 | 14 agents | 7 workflows | 19 mind DNA files*
+*AIOS 2.1.0 | hotel-mkt v1.1.0 | 14 agents | 8 workflows | 19 mind DNAs | 68+ Hormozi source files*
 *DNA: Hormozi (50%) + Conley (30%) + Schrager (20%)*

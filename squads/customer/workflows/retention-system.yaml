@@ -1,0 +1,103 @@
+# Retention System Workflow
+# Squad: customer
+# Version: 1.0.0
+
+name: retention-system
+description: "Design comprehensive retention system with health scoring and interventions"
+version: "1.0.0"
+
+trigger:
+  command: "/customer/retention-system"
+  inputs:
+    - name: product
+      type: string
+      required: true
+      description: "Product for retention system"
+    - name: current_churn
+      type: number
+      required: false
+      description: "Current churn rate percentage"
+    - name: target_churn
+      type: number
+      required: false
+      description: "Target churn rate percentage"
+
+steps:
+  - id: analyze-churn
+    name: "Analyze Current Churn"
+    agent: retention-strategist
+    task: analyze-churn
+    inputs:
+      product: "{{inputs.product}}"
+      current_rate: "{{inputs.current_churn}}"
+    outputs:
+      - churn_drivers
+      - risk_segments
+      - patterns
+
+  - id: design-health-score
+    name: "Design Health Score Model"
+    agent: retention-strategist
+    task: create-health-score
+    inputs:
+      churn_drivers: "{{steps.analyze-churn.outputs.churn_drivers}}"
+      patterns: "{{steps.analyze-churn.outputs.patterns}}"
+    outputs:
+      - health_model
+      - score_weights
+      - thresholds
+
+  - id: create-playbooks
+    name: "Create Intervention Playbooks"
+    agent: retention-strategist
+    task: create-playbook
+    inputs:
+      risk_segments: "{{steps.analyze-churn.outputs.risk_segments}}"
+      health_model: "{{steps.design-health-score.outputs.health_model}}"
+    outputs:
+      - save_plays
+      - escalation_paths
+      - automation_rules
+
+  - id: design-monitoring
+    name: "Design Monitoring Dashboard"
+    agent: customer-lead
+    action: design-dashboard
+    inputs:
+      health_model: "{{steps.design-health-score.outputs.health_model}}"
+      playbooks: "{{steps.create-playbooks.outputs}}"
+    outputs:
+      - dashboard_spec
+      - alert_rules
+      - reporting_cadence
+
+  - id: document-system
+    name: "Document Retention System"
+    agent: customer-lead
+    action: document
+    inputs:
+      all_outputs: "{{steps}}"
+    outputs:
+      - system_documentation
+      - team_training
+
+  - id: quality-check
+    name: "Quality Check"
+    agent: customer-lead
+    checklist: "checklists/churn-prevention-checklist.md"
+
+output:
+  template: "templates/churn-analysis-tmpl.md"
+  sections:
+    - churn_analysis
+    - health_score_model
+    - intervention_playbooks
+    - monitoring_dashboard
+    - implementation_plan
+
+success_criteria:
+  - "Churn drivers identified"
+  - "Health score model validated"
+  - "Playbooks for all risk levels"
+  - "Monitoring in place"
+  - "Team trained"

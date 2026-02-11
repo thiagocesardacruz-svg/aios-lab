@@ -1,6 +1,29 @@
 ---
 name: architect-first
 description: Guide for implementing the Architect-First development philosophy - perfect architecture, pragmatic execution, quality guaranteed by tests. Use this skill when starting new features, refactoring systems, or when architectural decisions are needed. Enforces non-negotiables like complete design/documentation before code, zero coupling, and validation by multiple perspectives before structural decisions.
+
+# Auto-routing configuration (opt-in)
+auto_invoke: true
+triggers:
+  keywords:
+    - "arquitetura"
+    - "architecture"
+    - "design system"
+    - "nova feature complexa"
+    - "new complex feature"
+    - "system design"
+    - "estrutura do projeto"
+    - "technical design"
+  patterns:
+    - "(?i)design.*before.*code"
+    - "(?i)architect.*first"
+    - "(?i)precis.*arquitet"
+agents_allowed:
+  - architect
+  - dev
+  - aios-master
+priority: critical
+confirm_before_invoke: false
 ---
 
 # Architect First

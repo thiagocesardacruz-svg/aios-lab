@@ -1,0 +1,80 @@
+id: budget-check
+name: Budget Check
+squad: finance
+version: "1.0"
+description: Check budget status and generate alerts if thresholds exceeded.
+
+trigger:
+  type: event
+  source: ops-manager
+  condition: Cost logged or daily total updated
+
+participants:
+  - agent: controller
+    role: Checks budgets and generates alerts
+
+steps:
+  - id: step-01
+    name: Calculate current spend
+    agent: controller
+    task: track-expenses
+    input: latest_cost_entry
+    output: current_totals
+    depends_on: []
+    on_fail: retry
+
+  - id: step-02
+    name: Check daily limit
+    agent: controller
+    task: classify-os-costs
+    input: daily_total, daily_limit
+    output: daily_status
+    depends_on: [step-01]
+    on_fail: retry
+
+  - id: step-03
+    name: Check monthly limit
+    agent: controller
+    task: classify-os-costs
+    input: monthly_total, monthly_limit
+    output: monthly_status
+    depends_on: [step-01]
+    on_fail: retry
+
+  - id: step-04
+    name: Check squad allocations
+    agent: controller
+    task: track-expenses
+    input: squad_totals, squad_allocations
+    output: squad_status
+    depends_on: [step-01]
+    on_fail: skip
+
+  - id: step-05
+    name: Generate alerts if needed
+    agent: controller
+    task: track-expenses
+    input: all_status, budget-limits
+    output: budget_alerts
+    depends_on: [step-02, step-03, step-04]
+    on_fail: retry
+
+  - id: step-06
+    name: Run expense approval if over limit
+    agent: controller
+    task: track-expenses
+    input: expense-approval checklist (if over)
+    output: approval_needed
+    depends_on: [step-05]
+    on_fail: abort
+
+completion:
+  condition: Budget status checked and alerts generated if needed
+  output: Budget status (yaml) and alerts if triggered
+  notify: finance-lead (if alert), ops-manager
+
+constraints:
+  max_steps: 7
+  timeout_minutes: 5
+  retry_policy: 2
+  cost_ceiling: none

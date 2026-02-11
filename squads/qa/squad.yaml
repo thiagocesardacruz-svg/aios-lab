@@ -1,9 +1,9 @@
 # QA Squad
 # Travel Tech Digital AIOS
-# Version: 1.0.0
+# Version: 1.1.0
 
 name: qa
-version: "1.0.0"
+version: "1.1.0"
 description: "Quality Assurance squad responsible for output validation, quality gates, process audits, and maintaining high standards across all deliverables."
 
 aios:
@@ -13,21 +13,25 @@ aios:
 
 config:
   slashPrefix: "qa"
-  entry_point: null
+  entry_point: "workflows/validate-output.yaml"
 
 lead:
   agent: "qa-lead"
+  name: "Shield"
   role: "QA Lead"
 
 agents:
   - id: "qa-lead"
     file: "agents/qa-lead.md"
+    name: "Shield"
     role: "Quality gates, DoD, standards"
   - id: "content-reviewer"
     file: "agents/content-reviewer.md"
+    name: "Echo"
     role: "Copy review, claims, CTAs"
   - id: "process-auditor"
     file: "agents/process-auditor.md"
+    name: "Audit"
     role: "Process validation, logs, costs"
 
 components:
@@ -35,20 +39,53 @@ components:
     - "qa-lead.md"
     - "content-reviewer.md"
     - "process-auditor.md"
+  tasks:
+    - "validate-deliverable.md"
+    - "review-content-quality.md"
+    - "check-brand-compliance.md"
+    - "verify-links-and-forms.md"
+    - "verify-tracking.md"
+    - "check-accessibility.md"
+    - "audit-performance.md"
+    - "review-documentation.md"
+    - "validate-api-contract.md"
+    - "test-integration.md"
+    - "audit-security.md"
+    - "review-ux-flow.md"
   workflows:
     - "release-gate.yaml"
     - "review-content.yaml"
     - "validate-output.yaml"
     - "audit-process.yaml"
     - "run-checklist.yaml"
+  templates:
+    - "qa-report-tmpl.md"
+    - "bug-report-tmpl.md"
+    - "audit-findings-tmpl.md"
+    - "test-plan-tmpl.md"
+    - "release-notes-tmpl.md"
+    - "compliance-report-tmpl.md"
+  checklists:
+    - "content-review.md"
+    - "release-readiness.md"
+    - "security-audit.md"
+    - "accessibility-audit.md"
+    - "performance-audit.md"
+    - "ds-compliance.md"
+  data:
+    - "severity-definitions.yaml"
+    - "dod-definitions.yaml"
 
 tags:
   - "quality"
   - "validation"
   - "audit"
   - "review"
+  - "testing"
+  - "compliance"
 
 commands:
+  # Workflows
   - name: "release-gate"
     workflow: "workflows/release-gate.yaml"
     description: "Final validation before deploy"
@@ -69,3 +106,75 @@ commands:
     workflow: "workflows/run-checklist.yaml"
     description: "Run specific checklist"
     visibility: "quick"
+
+  # Tasks (direct execution)
+  - name: "validate"
+    task: "tasks/validate-deliverable.md"
+    description: "Validate deliverable against DoD"
+    visibility: "quick"
+  - name: "review-content-quality"
+    task: "tasks/review-content-quality.md"
+    description: "Review content quality"
+    visibility: "quick"
+  - name: "brand-check"
+    task: "tasks/check-brand-compliance.md"
+    description: "Check brand compliance"
+    visibility: "quick"
+  - name: "verify-links"
+    task: "tasks/verify-links-and-forms.md"
+    description: "Verify links and forms"
+    visibility: "quick"
+  - name: "verify-tracking"
+    task: "tasks/verify-tracking.md"
+    description: "Verify tracking setup"
+    visibility: "quick"
+  - name: "accessibility"
+    task: "tasks/check-accessibility.md"
+    description: "Check accessibility (a11y)"
+    visibility: "quick"
+  - name: "performance"
+    task: "tasks/audit-performance.md"
+    description: "Audit performance"
+    visibility: "quick"
+  - name: "review-docs"
+    task: "tasks/review-documentation.md"
+    description: "Review documentation"
+    visibility: "quick"
+  - name: "api-contract"
+    task: "tasks/validate-api-contract.md"
+    description: "Validate API contract"
+    visibility: "quick"
+  - name: "integration"
+    task: "tasks/test-integration.md"
+    description: "Test integration"
+    visibility: "quick"
+  - name: "security"
+    task: "tasks/audit-security.md"
+    description: "Audit security"
+    visibility: "quick"
+  - name: "ux-flow"
+    task: "tasks/review-ux-flow.md"
+    description: "Review UX flow"
+    visibility: "quick"
+
+interface:
+  receives_from:
+    - squad: "tech"
+      type: "deliverables"
+      required: ["code", "documentation"]
+    - squad: "marketing"
+      type: "content"
+      required: ["copy", "landing_pages"]
+    - squad: "design"
+      type: "assets"
+      required: ["designs", "specs"]
+  delivers_to:
+    - squad: "ops"
+      type: "approval"
+      outputs: ["qa_report", "release_approval"]
+
+quality:
+  min_checklist_coverage: 95
+  require_qa_gate: true
+  require_documentation: true
+  zero_critical_bugs: true

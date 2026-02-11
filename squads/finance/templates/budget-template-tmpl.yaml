@@ -1,0 +1,55 @@
+# Budget Template
+
+## Meta
+- **ID:** budget-template-tmpl
+- **Squad:** finance
+- **Used by:** budget-check workflow
+- **Output format:** yaml
+- **Version:** 1.0.0
+
+## Variables
+| Variable | Description | Required | Default |
+|----------|-------------|----------|---------|
+| `{{period}}` | Budget period | yes | none |
+| `{{squad_id}}` | Squad identifier | yes | none |
+| `{{allocated_budget}}` | Total allocated | yes | none |
+| `{{spent_to_date}}` | Amount spent | yes | none |
+| `{{remaining}}` | Budget remaining | yes | none |
+| `{{percent_used}}` | Percentage used | yes | none |
+| `{{daily_breakdown}}` | Daily spend | no | none |
+| `{{projections}}` | End of period projection | no | none |
+
+## Template
+
+---BEGIN TEMPLATE---
+
+# Budget Status
+#
+# Generated: {{generation_date}}
+# Period: {{period}}
+
+squad: {{squad_id}}
+
+budget:
+  allocated: {{allocated_budget}}
+  spent: {{spent_to_date}}
+  remaining: {{remaining}}
+  percent_used: {{percent_used}}
+
+status: {{status}}  # under | warning | critical | over
+
+daily_breakdown:
+{{daily_breakdown}}
+
+projection:
+  end_of_period_estimate: {{projections}}
+  on_track: {{on_track}}
+
+alerts: {{alerts}}
+
+---END TEMPLATE---
+
+## Usage Notes
+- Update daily for accurate tracking
+- Status thresholds: under (<80%), warning (80-95%), critical (95-100%), over (>100%)
+- Projections use linear extrapolation

@@ -1,0 +1,50 @@
+# SLA Definitions
+#
+# Meta:
+#   id: sla-definitions
+#   squad: ops
+#   consumed_by: [ops-manager, monitor-sla, track-os-status]
+#   token_estimate: 350
+#   last_updated: 2026-02-11
+
+sla_tiers:
+  - id: critical
+    response_time_minutes: 30
+    resolution_time_hours: 4
+    escalation_after_minutes: 15
+    applies_to: [production-down, security-breach, revenue-blocking]
+
+  - id: high
+    response_time_minutes: 60
+    resolution_time_hours: 8
+    escalation_after_minutes: 30
+    applies_to: [feature-broken, integration-failed, customer-escalation]
+
+  - id: normal
+    response_time_minutes: 240
+    resolution_time_hours: 24
+    escalation_after_minutes: 120
+    applies_to: [bug-report, feature-request, optimization]
+
+  - id: low
+    response_time_minutes: 480
+    resolution_time_hours: 72
+    escalation_after_minutes: 240
+    applies_to: [documentation, nice-to-have, cosmetic]
+
+business_hours:
+  start: "09:00"
+  end: "18:00"
+  timezone: "Europe/London"
+  exclude_weekends: true
+
+breach_actions:
+  - level: warning
+    condition: "80% of SLA consumed"
+    action: notify-assignee
+  - level: escalation
+    condition: "SLA breached"
+    action: notify-ops-lead
+  - level: critical
+    condition: "SLA breached by 2x"
+    action: notify-ops-lead-and-stakeholder

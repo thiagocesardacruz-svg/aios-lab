@@ -2,11 +2,18 @@
 
 > "An army of specialized Alex Hormozis, each mastering a specific domain, working in coordination to create offers, leads, ads, copy, and strategies that make people feel stupid saying no."
 
+| Aspecto | Valor |
+|---------|-------|
+| **Versao** | 1.1.0 |
+| **Dominio** | business-growth |
+| **Prefixo** | `/hormozi` |
+| **Entry Point** | hormozi-chief |
+
 ## Overview
 
 | Metric | Value |
 |--------|-------|
-| **Agents** | 15 specialists |
+| **Agents** | 16 specialists |
 | **Source Mind** | Alex Hormozi (95% fidelity) |
 | **Source Material** | 165+ files, 165MB |
 | **Mental Models** | 8 confirmed |
@@ -18,7 +25,7 @@
 
 | Category | Count | Description |
 |----------|-------|-------------|
-| **Agents** | 15 | Specialized minds with extracted DNA |
+| **Agents** | 16 | Specialized minds with extracted DNA |
 | **Tasks** | 55 | Executable task definitions |
 | **Checklists** | 45 | Validation & quality gates |
 | **Workflows** | 9 | Multi-phase orchestration pipelines |
@@ -233,7 +240,8 @@ PHASE 4: Validation   → hormozi-audit   → Anti-pattern check + Final Checkli
 ```
 squads/hormozi/
 ├── README.md                    # This file
-├── config.yaml                  # Squad configuration
+├── squad.yaml                   # AIOS 2.1.0 manifest
+├── config.yaml                  # Legacy configuration (reference)
 ├── tasks/                       # 55 executable tasks
 │   ├── create-grand-slam-offer.md
 │   ├── create-lead-magnet.md
@@ -292,11 +300,11 @@ docs/projects/hormozi-squad/
 
 ## Version
 
-- **v1.1.0** — Complete asset inventory documentation (2026-02-10)
+- **v1.1.0** — AIOS 2.1.0 manifest, complete asset inventory (2026-02-11)
 - **v1.0.1** — Added wf-grand-slam-offer workflow (2026-02-10)
 - **v1.0.0** — Epic 1 Foundation (2026-02-09)
-- Owner: Alan Nicolas
+- Owner: Alan Nicolas / AIOS Team
 
 
 
-<\!-- Criado com Squad Creator do AIOSPRO por @oalanicolas e @pedrovalerio | 2026-02-10 -->
+*AIOS 2.1.0 | hormozi v1.1.0 | 16 agents | 55 tasks | 45 checklists | 9 workflows | 232 total assets*

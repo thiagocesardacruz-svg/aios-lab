@@ -1,0 +1,237 @@
+# Tech Stack - Travel Tech Digital
+# Official technology stack definition
+# Version: 1.0.0
+
+metadata:
+  version: "1.0.0"
+  last_updated: "2026-02-11"
+  owner: "tech-lead"
+
+# Frontend Stack
+frontend:
+  framework:
+    name: "Next.js"
+    version: "16.x"
+    docs: "https://nextjs.org/docs"
+    notes: "App Router, Server Components by default"
+
+  ui_library:
+    name: "React"
+    version: "19.x"
+    docs: "https://react.dev"
+
+  language:
+    name: "TypeScript"
+    version: "5.x"
+    strict: true
+    docs: "https://www.typescriptlang.org/docs"
+
+  styling:
+    primary:
+      name: "Tailwind CSS"
+      version: "4.x"
+      docs: "https://tailwindcss.com/docs"
+    components:
+      name: "shadcn/ui"
+      docs: "https://ui.shadcn.com"
+      notes: "Copy components, don't install as dependency"
+
+  state_management:
+    client:
+      name: "React Context + useReducer"
+      notes: "For simple state, no external library"
+    server:
+      name: "Server Components"
+      notes: "Prefer server state when possible"
+    complex:
+      name: "Zustand"
+      when: "Only if Context becomes too complex"
+
+  forms:
+    name: "React Hook Form"
+    validation: "Zod"
+    docs: "https://react-hook-form.com"
+
+# Backend Stack
+backend:
+  platform:
+    name: "Supabase"
+    docs: "https://supabase.com/docs"
+    includes:
+      - "PostgreSQL database"
+      - "Authentication"
+      - "Storage"
+      - "Edge Functions"
+      - "Realtime"
+
+  database:
+    name: "PostgreSQL"
+    version: "15.x"
+    hosted_by: "Supabase"
+
+  api:
+    rest:
+      name: "Supabase REST API"
+      notes: "Auto-generated from schema"
+    custom:
+      name: "Edge Functions"
+      runtime: "Deno"
+      when: "Custom business logic"
+
+  auth:
+    name: "Supabase Auth"
+    providers:
+      - "Email/Password"
+      - "Magic Link"
+      - "Google OAuth"
+
+# Infrastructure
+infrastructure:
+  hosting:
+    frontend:
+      name: "Vercel"
+      docs: "https://vercel.com/docs"
+    backend:
+      name: "Supabase Cloud"
+
+  ci_cd:
+    name: "GitHub Actions"
+    triggers:
+      - "Push to main"
+      - "Pull requests"
+    checks:
+      - "lint"
+      - "typecheck"
+      - "test"
+      - "build"
+
+  version_control:
+    name: "GitHub"
+    branch_strategy: "GitHub Flow"
+    main_branch: "main"
+
+# Automation
+automation:
+  workflow:
+    name: "n8n"
+    hosted: "self-hosted"
+    use_cases:
+      - "Data pipelines"
+      - "Integrations"
+      - "Scheduled tasks"
+
+  crm:
+    name: "GoHighLevel"
+    use_cases:
+      - "Lead capture"
+      - "Email sequences"
+      - "Sales pipelines"
+
+# AI Stack
+ai:
+  primary_llm:
+    provider: "Anthropic"
+    models:
+      - name: "Claude Opus"
+        when: "Complex reasoning, architecture"
+        cost: "high"
+      - name: "Claude Sonnet"
+        when: "General tasks"
+        cost: "medium"
+      - name: "Claude Haiku"
+        when: "Simple tasks, high volume"
+        cost: "low"
+
+  secondary_llm:
+    provider: "OpenAI"
+    models:
+      - name: "GPT-4"
+        when: "Fallback, specific use cases"
+
+  routing:
+    strategy: "Cost-optimized"
+    hierarchy:
+      1: "Script (deterministic)"
+      2: "Cache"
+      3: "Haiku"
+      4: "Sonnet"
+      5: "Opus (last resort)"
+
+# Development Tools
+dev_tools:
+  editor:
+    name: "VS Code / Cursor"
+    extensions:
+      - "ESLint"
+      - "Prettier"
+      - "Tailwind CSS IntelliSense"
+      - "TypeScript"
+
+  linting:
+    name: "ESLint"
+    config: "Next.js default + custom rules"
+
+  formatting:
+    name: "Prettier"
+    config: "Project root"
+
+  git_hooks:
+    name: "Husky"
+    hooks:
+      - "pre-commit: lint + format"
+      - "commit-msg: conventional commits"
+
+  testing:
+    unit:
+      name: "Vitest"
+    component:
+      name: "React Testing Library"
+    e2e:
+      name: "Playwright"
+
+# Coding Standards
+standards:
+  commits:
+    convention: "Conventional Commits"
+    format: "type(scope): description"
+    types:
+      - "feat: New feature"
+      - "fix: Bug fix"
+      - "docs: Documentation"
+      - "style: Formatting"
+      - "refactor: Code restructure"
+      - "test: Tests"
+      - "chore: Maintenance"
+
+  naming:
+    files:
+      components: "PascalCase"
+      utilities: "camelCase"
+      constants: "UPPER_SNAKE_CASE"
+    variables: "camelCase"
+    types: "PascalCase"
+    css_classes: "kebab-case"
+
+  folder_structure: |
+    app/
+    ├── (auth)/           # Auth routes
+    ├── (dashboard)/      # Dashboard routes
+    ├── api/              # API routes
+    └── layout.tsx
+    components/
+    ├── ui/               # shadcn components
+    └── features/         # Feature components
+    lib/
+    ├── supabase/         # Supabase client
+    └── utils/            # Utilities
+    types/                # TypeScript types
+
+# Prohibited
+prohibited:
+  - "jQuery"
+  - "Moment.js (use date-fns)"
+  - "Class components"
+  - "any type (without justification)"
+  - "Inline styles (use Tailwind)"
+  - "CSS modules (use Tailwind)"
+  - "Redux (unless truly needed)"

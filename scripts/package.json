@@ -8,7 +8,10 @@
     "validate": "node validate-os.js",
     "costs": "node cost-calculator.js",
     "health": "node health-check.js",
-    "sync": "node sync-yaml-to-notion.js"
+    "sync": "node sync-yaml-to-notion.js",
+    "sync:from-notion": "node sync-notion-to-code.js",
+    "sync:agents": "node sync-notion-to-code.js --agents",
+    "sync:commands": "node sync-notion-to-code.js --commands"
   },
   "dependencies": {
     "js-yaml": "^4.1.0",

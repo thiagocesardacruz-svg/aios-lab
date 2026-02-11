@@ -1,10 +1,10 @@
 # OPS Squad - Orchestration & Operations
 # Travel Tech Digital AIOS
-# Versão: 1.0.0
+# Version: 1.1.0
 
 name: ops
-version: "1.0.0"
-description: "Squad de orquestração responsável pela coordenação global, roteamento de trabalho, visão sistêmica e gestão operacional do sistema AIOS."
+version: "1.1.0"
+description: "Squad de orquestração responsável pela coordenação global, roteamento de trabalho, visão sistêmica, gestão operacional e integração com ClickUp Command Center."
 
 aios:
   minVersion: "2.1.0"
@@ -22,12 +22,15 @@ lead:
 agents:
   - id: "ops-lead"
     file: "agents/ops-lead.md"
+    name: "Orion"
     role: "Visão sistêmica, prioridades, conflitos"
   - id: "ops-manager"
     file: "agents/ops-manager.md"
+    name: "Maxwell"
     role: "Traduz pedidos em OS, roteia para squads"
   - id: "clawdbot"
     file: "agents/clawdbot.md"
+    name: "Clawdbot"
     role: "Executor determinístico, sync, logs"
 
 components:
@@ -37,21 +40,45 @@ components:
     - "clawdbot.md"
   tasks:
     - "create-os.md"
-    - "route-os.md"
-    - "sync-notion.md"
-    - "generate-report.md"
+    - "route-request.md"
+    - "assign-agent.md"
+    - "track-os-status.md"
+    - "validate-os.md"
+    - "monitor-sla.md"
+    - "escalate-issue.md"
+    - "calculate-daily-cost.md"
+    - "sync-to-notion.md"
+    - "generate-status-report.md"
+    - "archive-completed.md"
+    - "balance-workload.md"
   workflows:
     - "status.yaml"
     - "new-task.yaml"
     - "cost-report.yaml"
     - "sync-notion.yaml"
+    - "daily-standup.yaml"
+    - "weekly-review.yaml"
   templates:
     - "os-template.yaml"
-    - "daily-digest.md"
+    - "daily-report-tmpl.md"
+    - "weekly-summary-tmpl.md"
+    - "escalation-tmpl.md"
+    - "cost-report-tmpl.md"
   checklists:
     - "os-validation.md"
+    - "os-handoff.md"
+    - "daily-close.md"
+    - "weekly-review.md"
   data:
     - "squad-registry.yaml"
+    - "sla-definitions.yaml"
+    - "escalation-matrix.yaml"
+    - "os-status-definitions.yaml"
+    - "command-center-data.json"
+  scripts:
+    - "clickup-sync.mjs"
+    - "command-center.mjs"
+    - "dashboard.mjs"
 
 dependencies:
   requires: []
@@ -60,11 +87,18 @@ dependencies:
     - "routing"
     - "cost-tracking"
     - "sync"
+    - "clickup-integration"
+    - "sla-monitoring"
 
 integrations:
-  - name: "notion"
+  - name: "clickup"
     type: "api"
     required: true
+    description: "Command Center - task CRUD, cost tracking, goals"
+  - name: "notion"
+    type: "api"
+    required: false
+    description: "Legacy sync (optional)"
   - name: "local-filesystem"
     type: "tool"
     required: true
@@ -73,8 +107,10 @@ tags:
   - "core"
   - "orchestration"
   - "meta"
+  - "command-center"
 
 commands:
+  # Core Operations
   - name: "status"
     workflow: "workflows/status.yaml"
     description: "Mostra status geral do sistema"
@@ -87,12 +123,60 @@ commands:
     workflow: "workflows/cost-report.yaml"
     description: "Relatório de custos"
     visibility: "full"
+
+  # Sync & Integration
   - name: "sync-notion"
     workflow: "workflows/sync-notion.yaml"
     description: "Sincroniza YAML com Notion"
+    visibility: "quick"
+
+  # Recurring Workflows
+  - name: "daily-standup"
+    workflow: "workflows/daily-standup.yaml"
+    description: "Daily digest: OS status, blockers, costs"
+    visibility: "full"
+    trigger: "scheduled"
+  - name: "weekly-review"
+    workflow: "workflows/weekly-review.yaml"
+    description: "Weekly review: metrics, retrospective, planning"
+    visibility: "full"
+    trigger: "scheduled"
+
+  # ClickUp Command Center (via scripts)
+  - name: "clickup-create"
+    script: "scripts/clickup-sync.mjs create"
+    description: "Criar task no ClickUp"
+    visibility: "quick"
+  - name: "clickup-start"
+    script: "scripts/clickup-sync.mjs start"
+    description: "Marcar task como in progress"
+    visibility: "quick"
+  - name: "clickup-done"
+    script: "scripts/clickup-sync.mjs done"
+    description: "Marcar task como concluída"
+    visibility: "quick"
+  - name: "track-cost"
+    script: "scripts/command-center.mjs track"
+    description: "Registrar custo/tokens de uma task"
+    visibility: "quick"
+  - name: "sync-dashboard"
+    script: "scripts/dashboard.mjs sync"
+    description: "Sincronizar dashboard e goals"
     visibility: "quick"
 
 quality:
   min_checklist_coverage: 90
   require_qa_gate: true
   require_documentation: true
+
+# Budget Governance
+governance:
+  budget:
+    daily_limit: 20        # EUR
+    daily_alert: 15        # EUR - trigger notification
+    monthly_limit: 468     # EUR
+    per_task_limit: 10     # EUR - requires approval above
+  escalation:
+    cost_threshold: 80     # % of daily budget
+    conflict_sla: 24       # hours to resolve
+    governance_violation: "immediate"

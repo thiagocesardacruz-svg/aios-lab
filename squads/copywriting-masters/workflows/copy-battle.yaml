@@ -1,0 +1,151 @@
+# Copy Battle Workflow
+# Squad: copywriting-masters
+# Version: 1.0.0
+
+name: copy-battle
+description: "Competição entre 2-3 mestres para gerar múltiplas abordagens de copy"
+version: "1.0.0"
+
+trigger:
+  command: "/copy/battle"
+  inputs:
+    - name: copy_type
+      type: string
+      required: true
+      description: "Tipo de copy (headline, lead, email, etc)"
+    - name: brief
+      type: string
+      required: true
+      description: "Brief do copy desejado"
+    - name: contestants
+      type: list
+      required: false
+      description: "Lista de mestres para competir (2-3)"
+    - name: variations
+      type: number
+      required: false
+      default: 3
+      description: "Número de variações por mestre"
+
+steps:
+  - id: setup-battle
+    name: "Setup Battle"
+    agent: copy-chief
+    action: setup-competition
+    inputs:
+      copy_type: "{{inputs.copy_type}}"
+      brief: "{{inputs.brief}}"
+      requested_contestants: "{{inputs.contestants}}"
+    outputs:
+      - contestants
+      - battle_rules
+      - judging_criteria
+
+  - id: contestant-1
+    name: "Contestant 1 Creates"
+    agent: "{{steps.setup-battle.outputs.contestants[0]}}"
+    action: create-variations
+    inputs:
+      brief: "{{inputs.brief}}"
+      variations: "{{inputs.variations}}"
+    outputs:
+      - copies
+      - approach_explanation
+      - frameworks_used
+
+  - id: contestant-2
+    name: "Contestant 2 Creates"
+    agent: "{{steps.setup-battle.outputs.contestants[1]}}"
+    action: create-variations
+    inputs:
+      brief: "{{inputs.brief}}"
+      variations: "{{inputs.variations}}"
+    outputs:
+      - copies
+      - approach_explanation
+      - frameworks_used
+
+  - id: contestant-3
+    name: "Contestant 3 Creates"
+    agent: "{{steps.setup-battle.outputs.contestants[2]}}"
+    condition: "length(contestants) >= 3"
+    action: create-variations
+    inputs:
+      brief: "{{inputs.brief}}"
+      variations: "{{inputs.variations}}"
+    outputs:
+      - copies
+      - approach_explanation
+      - frameworks_used
+
+  - id: judge-battle
+    name: "Judge Battle"
+    agent: copy-chief
+    action: judge
+    inputs:
+      submissions:
+        - contestant: "{{steps.setup-battle.outputs.contestants[0]}}"
+          copies: "{{steps.contestant-1.outputs.copies}}"
+        - contestant: "{{steps.setup-battle.outputs.contestants[1]}}"
+          copies: "{{steps.contestant-2.outputs.copies}}"
+        - contestant: "{{steps.setup-battle.outputs.contestants[2]}}"
+          copies: "{{steps.contestant-3.outputs.copies}}"
+      criteria: "{{steps.setup-battle.outputs.judging_criteria}}"
+    outputs:
+      - rankings
+      - winner
+      - detailed_scores
+      - analysis
+
+  - id: compile-results
+    name: "Compile Results"
+    agent: copy-chief
+    action: compile
+    inputs:
+      all_submissions: "{{steps}}"
+      rankings: "{{steps.judge-battle.outputs.rankings}}"
+    outputs:
+      - battle_report
+      - all_copies_organized
+      - recommendations
+
+output:
+  format: markdown
+  template: |
+    # Copy Battle Results
+
+    ## Brief
+    {{inputs.brief}}
+
+    ## Contestants
+    {{for contestant in contestants}}
+    - **{{contestant.name}}**: {{contestant.specialty}}
+    {{endfor}}
+
+    ## Winner: {{winner.name}}
+
+    ### Winning Copy
+    {{winner.best_copy}}
+
+    ## All Submissions
+
+    ### {{contestant_1.name}}
+    {{contestant_1.copies}}
+
+    ### {{contestant_2.name}}
+    {{contestant_2.copies}}
+
+    ### {{contestant_3.name}}
+    {{contestant_3.copies}}
+
+    ## Judging Analysis
+    {{analysis}}
+
+    ## Recommendation
+    {{recommendation}}
+
+success_criteria:
+  - "Mínimo 2 mestres competindo"
+  - "Variações distintas de cada mestre"
+  - "Julgamento com critérios claros"
+  - "Winner e runner-ups identificados"

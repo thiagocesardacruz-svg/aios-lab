@@ -1,0 +1,73 @@
+id: kpi-dashboard
+name: KPI Dashboard Update
+squad: finance
+version: "1.0"
+description: Update key financial KPIs for dashboard display.
+
+trigger:
+  type: scheduled
+  source: system
+  condition: Daily at 09:00 London time
+
+participants:
+  - agent: controller
+    role: Gathers cost metrics
+  - agent: financial-analyst
+    role: Calculates KPIs
+
+steps:
+  - id: step-01
+    name: Calculate daily cost metrics
+    agent: controller
+    task: classify-os-costs
+    input: previous_day_os
+    output: daily_costs
+    depends_on: []
+    on_fail: retry
+
+  - id: step-02
+    name: Update budget status
+    agent: controller
+    task: track-expenses
+    input: daily_costs
+    output: budget_status
+    depends_on: [step-01]
+    on_fail: retry
+
+  - id: step-03
+    name: Calculate runway
+    agent: controller
+    task: calculate-runway
+    input: cash_balance, monthly_burn
+    output: runway_months
+    depends_on: []
+    on_fail: retry
+
+  - id: step-04
+    name: Run budget review checklist
+    agent: controller
+    task: track-expenses
+    input: budget-review checklist
+    output: budget_health
+    depends_on: [step-02]
+    on_fail: skip
+
+  - id: step-05
+    name: Update dashboard
+    agent: financial-analyst
+    task: analyze-unit-economics
+    input: all metrics
+    output: dashboard_data
+    depends_on: [step-01, step-02, step-03]
+    on_fail: retry
+
+completion:
+  condition: All KPIs calculated and dashboard updated
+  output: Dashboard data (yaml)
+  notify: ops-manager
+
+constraints:
+  max_steps: 6
+  timeout_minutes: 15
+  retry_policy: 2
+  cost_ceiling: none

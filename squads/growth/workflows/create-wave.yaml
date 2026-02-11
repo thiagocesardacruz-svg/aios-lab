@@ -1,0 +1,102 @@
+# Create Wave Workflow
+# Design coordinated growth wave
+# Version: 1.0.0
+
+name: create-wave
+version: "1.0.0"
+description: "Create a coordinated 2-4 week growth push with experiments and goals"
+
+trigger:
+  command: "/growth/create-wave"
+  inputs:
+    - name: target
+      type: string
+      required: true
+      description: "AARRR stage to target"
+    - name: goal
+      type: string
+      required: true
+      description: "Primary goal/metric"
+    - name: duration
+      type: string
+      required: false
+      description: "Wave duration (default: 2 weeks)"
+
+steps:
+  - id: diagnose
+    name: "Diagnose Current State"
+    agent: data-analyst
+    task: diagnose-funnel-stage
+    inputs:
+      stage: "{{inputs.target}}"
+    outputs:
+      - current_metrics
+      - baseline
+      - opportunities
+
+  - id: hypothesis
+    name: "Generate Hypotheses"
+    agent: growth-lead
+    task: generate-hypotheses
+    inputs:
+      stage: "{{inputs.target}}"
+      opportunities: "{{diagnose.opportunities}}"
+    outputs:
+      - hypotheses
+      - ice_scores
+
+  - id: prioritize
+    name: "Prioritize Experiments"
+    agent: growth-lead
+    task: prioritize-experiments
+    inputs:
+      hypotheses: "{{hypothesis.hypotheses}}"
+      ice_scores: "{{hypothesis.ice_scores}}"
+    outputs:
+      - experiment_backlog
+      - wave_experiments
+
+  - id: plan
+    name: "Plan Wave"
+    agent: growth-lead
+    task: plan-wave
+    inputs:
+      experiments: "{{prioritize.wave_experiments}}"
+      duration: "{{inputs.duration}}"
+      goal: "{{inputs.goal}}"
+    outputs:
+      - wave_plan
+      - timeline
+      - success_criteria
+
+  - id: resources
+    name: "Allocate Resources"
+    agent: growth-lead
+    task: allocate-resources
+    inputs:
+      wave_plan: "{{plan.wave_plan}}"
+    outputs:
+      - resource_plan
+      - dependencies
+
+  - id: kickoff
+    name: "Create Kickoff Doc"
+    agent: growth-lead
+    task: create-wave-kickoff
+    inputs:
+      wave_plan: "{{plan.wave_plan}}"
+      resources: "{{resources.resource_plan}}"
+    outputs:
+      - kickoff_doc
+      - tracking_dashboard
+
+outputs:
+  - wave_plan
+  - kickoff_doc
+  - tracking_dashboard
+
+quality:
+  require_baseline: true
+  require_success_criteria: true
+  max_experiments: 5
+  min_experiments: 3

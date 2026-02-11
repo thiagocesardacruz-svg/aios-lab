@@ -1,0 +1,311 @@
+# Coding Standards - Travel Tech Digital
+# Version: 1.0.0
+
+metadata:
+  version: "1.0.0"
+  last_updated: "2026-02-11"
+  owner: "tech-lead"
+
+# TypeScript Standards
+typescript:
+  strict_mode: true
+  no_any: true
+  explicit_return_types: true
+
+  rules:
+    - id: "TS001"
+      rule: "No `any` type"
+      severity: "error"
+      fix: "Use specific type or `unknown`"
+
+    - id: "TS002"
+      rule: "Explicit function return types"
+      severity: "warning"
+      fix: "Add return type annotation"
+
+    - id: "TS003"
+      rule: "Interface over type for objects"
+      severity: "info"
+      when: "Object shapes that may be extended"
+
+    - id: "TS004"
+      rule: "Use const assertions"
+      severity: "info"
+      when: "Literal types needed"
+
+  examples:
+    bad: |
+      function getData(id: any): any {
+        return fetch(`/api/${id}`)
+      }
+
+    good: |
+      interface DataResponse {
+        id: string
+        name: string
+      }
+
+      async function getData(id: string): Promise<DataResponse> {
+        const response = await fetch(`/api/${id}`)
+        return response.json()
+      }
+
+# React Standards
+react:
+  components:
+    - id: "RC001"
+      rule: "Functional components only"
+      severity: "error"
+      fix: "Convert class to function"
+
+    - id: "RC002"
+      rule: "Named exports for components"
+      severity: "warning"
+
+    - id: "RC003"
+      rule: "Props interface named {Component}Props"
+      severity: "info"
+
+    - id: "RC004"
+      rule: "Destructure props"
+      severity: "info"
+
+  hooks:
+    - id: "RH001"
+      rule: "Hooks at top level only"
+      severity: "error"
+
+    - id: "RH002"
+      rule: "Custom hooks start with 'use'"
+      severity: "error"
+
+    - id: "RH003"
+      rule: "Dependency arrays must be complete"
+      severity: "error"
+
+  examples:
+    bad: |
+      class Button extends React.Component {
+        render() {
+          return <button>{this.props.children}</button>
+        }
+      }
+
+    good: |
+      interface ButtonProps {
+        children: React.ReactNode
+        variant?: 'default' | 'primary'
+        onClick?: () => void
+      }
+
+      export function Button({ children, variant = 'default', onClick }: ButtonProps) {
+        return (
+          <button className={cn(buttonVariants({ variant }))} onClick={onClick}>
+            {children}
+          </button>
+        )
+      }
+
+# Styling Standards
+styling:
+  tailwind:
+    - id: "TW001"
+      rule: "Use Design System tokens"
+      severity: "error"
+      bad: "text-[#1a1a1a]"
+      good: "text-foreground"
+
+    - id: "TW002"
+      rule: "No arbitrary values for colors"
+      severity: "error"
+
+    - id: "TW003"
+      rule: "Responsive mobile-first"
+      severity: "warning"
+      good: "text-sm md:text-base lg:text-lg"
+
+    - id: "TW004"
+      rule: "Use cn() for conditional classes"
+      severity: "info"
+
+  prohibited:
+    - "Inline styles"
+    - "CSS modules"
+    - "Styled components"
+    - "Hardcoded colors"
+    - "Hardcoded spacing"
+
+# File Organization
+files:
+  naming:
+    components: "PascalCase.tsx"
+    hooks: "use-name.ts"
+    utilities: "name.ts"
+    types: "name.types.ts"
+    tests: "name.test.ts"
+    styles: "name.css (rare)"
+
+  structure:
+    component_folder: |
+      component-name/
+      ├── index.tsx       # Main component
+      ├── variants.ts     # cva variants (if needed)
+      ├── types.ts        # Types (if complex)
+      └── component-name.test.tsx
+
+  imports:
+    order:
+      - "react"
+      - "next/*"
+      - "third-party"
+      - "@/components/*"
+      - "@/lib/*"
+      - "@/types/*"
+      - "./relative"
+
+# Error Handling
+errors:
+  - id: "EH001"
+    rule: "Always handle errors"
+    severity: "error"
+
+  - id: "EH002"
+    rule: "Use try-catch for async"
+    severity: "error"
+
+  - id: "EH003"
+    rule: "Log errors with context"
+    severity: "warning"
+
+  - id: "EH004"
+    rule: "User-friendly error messages"
+    severity: "warning"
+
+  example:
+    bad: |
+      const data = await fetch('/api/data')
+
+    good: |
+      try {
+        const response = await fetch('/api/data')
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status}`)
+        }
+        return response.json()
+      } catch (error) {
+        console.error('Failed to fetch data:', error)
+        throw new Error('Unable to load data. Please try again.')
+      }
+
+# Performance
+performance:
+  - id: "PF001"
+    rule: "Memoize expensive computations"
+    use: "useMemo"
+
+  - id: "PF002"
+    rule: "Memoize callbacks passed to children"
+    use: "useCallback"
+
+  - id: "PF003"
+    rule: "Lazy load heavy components"
+    use: "dynamic() or lazy()"
+
+  - id: "PF004"
+    rule: "Optimize images"
+    use: "next/image"
+
+  - id: "PF005"
+    rule: "Avoid layout shifts"
+    fix: "Set explicit dimensions"
+
+# Security
+security:
+  - id: "SEC001"
+    rule: "Never expose secrets in client code"
+    severity: "critical"
+
+  - id: "SEC002"
+    rule: "Validate all user input"
+    severity: "error"
+
+  - id: "SEC003"
+    rule: "Use parameterized queries"
+    severity: "error"
+
+  - id: "SEC004"
+    rule: "Sanitize HTML content"
+    severity: "error"
+
+  - id: "SEC005"
+    rule: "HTTPS only"
+    severity: "error"
+
+# Documentation
+documentation:
+  - id: "DOC001"
+    rule: "JSDoc for public functions"
+    severity: "info"
+
+  - id: "DOC002"
+    rule: "README for complex modules"
+    severity: "info"
+
+  - id: "DOC003"
+    rule: "Inline comments for complex logic"
+    severity: "info"
+
+  example: |
+    /**
+     * Calculates the total price including tax
+     * @param items - Array of cart items
+     * @param taxRate - Tax rate as decimal (e.g., 0.2 for 20%)
+     * @returns Total price with tax
+     */
+    export function calculateTotal(items: CartItem[], taxRate: number): number {
+      const subtotal = items.reduce((sum, item) => sum + item.price, 0)
+      return subtotal * (1 + taxRate)
+    }
+
+# Git Standards
+git:
+  commits:
+    format: "type(scope): description"
+    max_subject_length: 72
+    types:
+      feat: "New feature"
+      fix: "Bug fix"
+      docs: "Documentation"
+      style: "Formatting (no code change)"
+      refactor: "Code restructure"
+      perf: "Performance improvement"
+      test: "Tests"
+      chore: "Maintenance"
+
+    examples:
+      good:
+        - "feat(auth): add Google OAuth login"
+        - "fix(cart): correct total calculation"
+        - "docs(readme): update installation steps"
+      bad:
+        - "fixed stuff"
+        - "WIP"
+        - "updates"
+
+  branches:
+    format: "type/description"
+    examples:
+      - "feat/user-authentication"
+      - "fix/cart-total-bug"
+      - "docs/api-documentation"
+
+  pull_requests:
+    required:
+      - "Description of changes"
+      - "Test instructions"
+      - "Screenshots (for UI)"
+    checklist:
+      - "Code follows standards"
+      - "Tests pass"
+      - "No console errors"
+      - "Reviewed by peer"

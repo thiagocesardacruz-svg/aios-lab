@@ -1,0 +1,513 @@
+# Hormozi Squad - The $100M Mind System
+# Travel Tech Digital AIOS
+# Version: 1.1.0
+
+name: hormozi
+version: "1.1.0"
+description: "Squad com 16 agentes especializados Alex Hormozi, cada um dominando um aspecto da metodologia $100M. Uma mente, multiplas especialidades. Consistencia metodologica com profundidade brutal."
+
+aios:
+  minVersion: "2.1.0"
+  type: squad
+  domain: business-growth
+
+config:
+  slashPrefix: "hormozi"
+  entry_point: "agents/hormozi-chief.md"
+  squad_type: "specialist"
+  default_language: "pt-BR"
+  fidelity_target: 0.95
+
+lead:
+  agent: "hormozi-chief"
+  role: "Hormozi Chief"
+  name: "The $100M Mind"
+
+agents:
+  # Tier 0 - Orchestrator
+  - id: "hormozi-chief"
+    file: "agents/hormozi-chief.md"
+    role: "Master orchestrator - routing, strategy, coordination"
+    tier: 0
+
+  # Tier 1 - Core (Books)
+  - id: "hormozi-offers"
+    file: "agents/hormozi-offers.md"
+    role: "Grand Slam Offers, Value Equation, offer engineering"
+    tier: 1
+  - id: "hormozi-leads"
+    file: "agents/hormozi-leads.md"
+    role: "Core Four, lead magnets, content strategy"
+    tier: 1
+  - id: "hormozi-models"
+    file: "agents/hormozi-models.md"
+    role: "Money Models, upsells, downsells, continuity"
+    tier: 1
+
+  # Tier 2 - Execution (Playbooks)
+  - id: "hormozi-hooks"
+    file: "agents/hormozi-hooks.md"
+    role: "Hook creation, 121 formulas, first 5 seconds"
+    tier: 2
+  - id: "hormozi-ads"
+    file: "agents/hormozi-ads.md"
+    role: "GOATed ads, scripts, angles"
+    tier: 2
+  - id: "hormozi-pricing"
+    file: "agents/hormozi-pricing.md"
+    role: "Pricing strategy, anchoring, raises"
+    tier: 2
+  - id: "hormozi-copy"
+    file: "agents/hormozi-copy.md"
+    role: "Sales copy, LPs, VSLs"
+    tier: 2
+  - id: "hormozi-launch"
+    file: "agents/hormozi-launch.md"
+    role: "Launch sequences, timelines"
+    tier: 2
+  - id: "hormozi-retention"
+    file: "agents/hormozi-retention.md"
+    role: "LTV, retention, nurture, continuity"
+    tier: 2
+
+  # Tier 3 - Strategic
+  - id: "hormozi-advisor"
+    file: "agents/hormozi-advisor.md"
+    role: "Strategic counsel, Q&A"
+    tier: 3
+  - id: "hormozi-audit"
+    file: "agents/hormozi-audit.md"
+    role: "Offer/LP audits, diagnostics"
+    tier: 3
+  - id: "hormozi-closer"
+    file: "agents/hormozi-closer.md"
+    role: "Sales scripts, objection handling, CLOSER framework"
+    tier: 3
+  - id: "hormozi-scale"
+    file: "agents/hormozi-scale.md"
+    role: "Scaling strategy, 9-stage roadmap"
+    tier: 3
+  - id: "hormozi-workshop"
+    file: "agents/hormozi-workshop.md"
+    role: "Workshop design, frameworks"
+    tier: 3
+  - id: "hormozi-content"
+    file: "agents/hormozi-content.md"
+    role: "Content strategy, creation"
+    tier: 3
+
+components:
+  agents:
+    - "hormozi-chief.md"
+    - "hormozi-offers.md"
+    - "hormozi-leads.md"
+    - "hormozi-models.md"
+    - "hormozi-hooks.md"
+    - "hormozi-ads.md"
+    - "hormozi-pricing.md"
+    - "hormozi-copy.md"
+    - "hormozi-launch.md"
+    - "hormozi-retention.md"
+    - "hormozi-advisor.md"
+    - "hormozi-audit.md"
+    - "hormozi-closer.md"
+    - "hormozi-scale.md"
+    - "hormozi-workshop.md"
+    - "hormozi-content.md"
+  tasks:
+    # Offers (12)
+    - "create-grand-slam-offer.md"
+    - "create-bonus-stack.md"
+    - "create-guarantee-stack.md"
+    - "architect-offer-stack.md"
+    - "create-offer-name.md"
+    - "diagnose-value-equation.md"
+    - "create-pricing-strategy.md"
+    - "execute-price-raise.md"
+    - "design-scarcity-urgency.md"
+    - "design-continuity-offer.md"
+    - "create-upsell-sequence.md"
+    - "create-downsell-sequence.md"
+    # Leads (8)
+    - "create-lead-magnet.md"
+    - "design-core-four-strategy.md"
+    - "execute-rule-of-100.md"
+    - "setup-affiliate-program.md"
+    - "create-nurture-sequence.md"
+    - "create-engagement-scoring.md"
+    - "build-marketing-machine.md"
+    - "validate-market-selection.md"
+    # Ads & Hooks (6)
+    - "create-ad-campaign.md"
+    - "create-ad-angles.md"
+    - "create-hook-set.md"
+    - "create-vsl-script.md"
+    - "create-email-sequence.md"
+    - "design-brand-identity.md"
+    # Copy & Pages (8)
+    - "create-sales-page.md"
+    - "create-landing-page.md"
+    - "create-upsell-page.md"
+    - "create-registration-page.md"
+    - "create-closer-script.md"
+    - "create-content-unit.md"
+    - "create-launch-narrative.md"
+    - "design-customer-journey.md"
+    # Launch (9)
+    - "create-launch-timeline.md"
+    - "setup-war-room.md"
+    - "create-contingency-plan.md"
+    - "run-launch-post-mortem.md"
+    - "plan-launch-evento.md"
+    - "design-launch-value-stack.md"
+    - "design-workshop.md"
+    - "generate-fast-cash.md"
+    - "calculate-30-day-profit.md"
+    # Retention (7)
+    - "diagnose-churn-rate.md"
+    - "design-onboarding-sequence.md"
+    - "discover-activation-points.md"
+    - "create-exit-interview-system.md"
+    - "optimize-ltv-cac-ratio.md"
+    - "design-subscription-model.md"
+    - "implement-5-horsemen.md"
+    # Scaling (5)
+    - "diagnose-scaling-constraint.md"
+    - "build-scaling-team.md"
+    - "design-systems-automation.md"
+    - "design-money-model.md"
+    - "diagnose-business-stage.md"
+  workflows:
+    - "wf-grand-slam-offer.yaml"
+    - "wf-paid-ads-campaign.yaml"
+    - "wf-lead-magnet-pipeline.yaml"
+    - "wf-money-model-design.yaml"
+    - "wf-full-launch-sequence.yaml"
+    - "wf-scaling-diagnostic.yaml"
+    - "wf-context-diagnosis.yaml"
+    - "wf-opportunity-screening.yaml"
+    - "wf-growth-decision.yaml"
+  checklists:
+    # Offers (8)
+    - "value-equation-checklist.md"
+    - "guarantees-checklist.md"
+    - "bonuses-checklist.md"
+    - "offer-architecture-checklist.md"
+    - "naming-framework-checklist.md"
+    - "scarcity-urgency-checklist.md"
+    - "pricing-checklist.md"
+    - "pricing-framework-checklist.md"
+    # Leads (5)
+    - "core-four-checklist.md"
+    - "lead-magnet-checklist.md"
+    - "lead-nurture-checklist.md"
+    - "marketing-machine-checklist.md"
+    - "affiliates-referrals-checklist.md"
+    # Ads & Hooks (4)
+    - "goated-ads-checklist.md"
+    - "hooks-checklist.md"
+    - "ad-angles-checklist.md"
+    - "content-creation-checklist.md"
+    # Copy & Pages (6)
+    - "sales-page-checklist.md"
+    - "landing-page-checklist.md"
+    - "vsl-script-checklist.md"
+    - "upsell-page-checklist.md"
+    - "registration-page-checklist.md"
+    - "email-campaign-checklist.md"
+    # Launch (3)
+    - "launch-checklist.md"
+    - "workshop-launch-checklist.md"
+    - "fast-cash-checklist.md"
+    # Retention (6)
+    - "retention-checklist.md"
+    - "churn-diagnosis-checklist.md"
+    - "onboarding-30-day-checklist.md"
+    - "ltv-checklist.md"
+    - "activation-point-checklist.md"
+    - "engagement-scoring-checklist.md"
+    # Pricing (3)
+    - "price-raise-checklist.md"
+    - "subscription-model-checklist.md"
+    - "money-model-checklist.md"
+    # Scaling & Strategy (4)
+    - "upsell-strategy-checklist.md"
+    - "upsell-sequence-checklist.md"
+    - "downsell-strategy-checklist.md"
+    - "customer-journey-checklist.md"
+    # Quality Gates (4)
+    - "antipattern-screening.md"
+    - "market-validation-veto.md"
+    - "golden-ratios-veto.md"
+    - "exit-interview-checklist.md"
+    # Other (2)
+    - "branding-checklist.md"
+    - "5-horsemen-checklist.md"
+  templates:
+    - "grand-slam-offer-output.yaml"
+    - "capacity-planning-worksheet.yaml"
+    - "value-equation-scorecard.md"
+    - "handoff-context-tmpl.yaml"
+  data:
+    # Mind DNAs (17)
+    - "minds/hormozi-voice-dna.yaml"
+    - "minds/hormozi-thinking-dna.yaml"
+    - "minds/hormozi-offers_dna.yaml"
+    - "minds/hormozi-leads_dna.yaml"
+    - "minds/hormozi-models_dna.yaml"
+    - "minds/hormozi-hooks_dna.yaml"
+    - "minds/hormozi-ads_dna.yaml"
+    - "minds/hormozi-pricing_dna.yaml"
+    - "minds/hormozi-copy_dna.yaml"
+    - "minds/hormozi-launch_dna.yaml"
+    - "minds/hormozi-retention_dna.yaml"
+    - "minds/hormozi-advisor_dna.yaml"
+    - "minds/hormozi-audit_dna.yaml"
+    - "minds/hormozi-closer_dna.yaml"
+    - "minds/hormozi-scale_dna.yaml"
+    - "minds/hormozi-workshop_dna.yaml"
+    - "minds/hormozi-content_dna.yaml"
+    # Data Files (4)
+    - "antipatterns-database.yaml"
+    - "hormozi-case-library.yaml"
+    - "scaling-by-business-type.yaml"
+    - "source-index.yaml"
+  docs:
+    # Frameworks (14)
+    - "frameworks/100m-offers-framework.md"
+    - "frameworks/value-equation-framework.md"
+    - "frameworks/lead-magnet-framework.md"
+    - "frameworks/money-models-framework.md"
+    - "frameworks/core-four-framework.md"
+    - "frameworks/goated-ads-framework.md"
+    - "frameworks/hooks-framework.md"
+    - "frameworks/guarantees-framework.md"
+    - "frameworks/bonuses-framework.md"
+    - "frameworks/scarcity-framework.md"
+    - "frameworks/urgency-framework.md"
+    - "frameworks/attraction-offers-framework.md"
+    - "frameworks/workshop-framework.md"
+    # SOPs (32) - listed as directory
+    - "sops/"
+  config:
+    - "veto-conditions.yaml"
+
+tags:
+  - "hormozi"
+  - "offers"
+  - "leads"
+  - "money-models"
+  - "business-strategy"
+  - "scaling"
+  - "direct-response"
+  - "value-equation"
+  - "grand-slam-offer"
+  - "goated-ads"
+
+commands:
+  # Orchestration
+  - name: "diagnose"
+    description: "Value Equation diagnostic"
+    agent: "hormozi-chief"
+    visibility: "full"
+  - name: "health-check"
+    description: "Quick LTV:CAC health check"
+    agent: "hormozi-chief"
+    visibility: "full"
+  - name: "route"
+    description: "Route to correct specialist"
+    agent: "hormozi-chief"
+    visibility: "full"
+
+  # Offers
+  - name: "offers"
+    description: "Create Grand Slam Offers"
+    workflow: "workflows/wf-grand-slam-offer.yaml"
+    visibility: "full"
+  - name: "audit"
+    description: "Audit existing offer or LP"
+    agent: "hormozi-audit"
+    visibility: "full"
+
+  # Leads
+  - name: "leads"
+    description: "Lead generation strategy (Core Four)"
+    workflow: "workflows/wf-lead-magnet-pipeline.yaml"
+    visibility: "full"
+  - name: "lead-magnet"
+    description: "Create high-converting lead magnet"
+    task: "tasks/create-lead-magnet.md"
+    visibility: "full"
+
+  # Ads
+  - name: "ads"
+    description: "GOATed ad campaign"
+    workflow: "workflows/wf-paid-ads-campaign.yaml"
+    visibility: "full"
+  - name: "hooks"
+    description: "Create scroll-stopping hooks"
+    task: "tasks/create-hook-set.md"
+    visibility: "full"
+
+  # Money Models
+  - name: "models"
+    description: "Design money model with upsells/downsells"
+    workflow: "workflows/wf-money-model-design.yaml"
+    visibility: "full"
+  - name: "pricing"
+    description: "Pricing strategy"
+    agent: "hormozi-pricing"
+    visibility: "full"
+
+  # Launch
+  - name: "launch"
+    description: "Full launch sequence"
+    workflow: "workflows/wf-full-launch-sequence.yaml"
+    visibility: "full"
+  - name: "workshop"
+    description: "Design workshop"
+    agent: "hormozi-workshop"
+    visibility: "full"
+
+  # Retention
+  - name: "retention"
+    description: "LTV and churn strategy"
+    agent: "hormozi-retention"
+    visibility: "full"
+  - name: "churn"
+    description: "Diagnose churn rate"
+    task: "tasks/diagnose-churn-rate.md"
+    visibility: "full"
+
+  # Scaling
+  - name: "scale"
+    description: "Scaling diagnostic and roadmap"
+    workflow: "workflows/wf-scaling-diagnostic.yaml"
+    visibility: "full"
+  - name: "growth"
+    description: "More vs Better vs New decision"
+    workflow: "workflows/wf-growth-decision.yaml"
+    visibility: "full"
+
+  # Strategy
+  - name: "advisor"
+    description: "Strategic counsel"
+    agent: "hormozi-advisor"
+    visibility: "full"
+  - name: "antipatterns"
+    description: "Run antipattern detection"
+    checklist: "checklists/antipattern-screening.md"
+    visibility: "full"
+
+  # Copy
+  - name: "copy"
+    description: "Sales copy, LPs, VSLs"
+    agent: "hormozi-copy"
+    visibility: "full"
+  - name: "closer"
+    description: "Sales scripts with CLOSER framework"
+    agent: "hormozi-closer"
+    visibility: "full"
+
+interface:
+  inputs:
+    - "Descricao do negocio/produto"
+    - "Publico-alvo (avatar)"
+    - "Preco atual ou desejado"
+    - "Metricas atuais (LTV, CAC, churn)"
+    - "Estagio do negocio"
+    - "Objetivo especifico"
+  outputs:
+    - "Grand Slam Offers estruturadas"
+    - "Campanhas GOATed Ads"
+    - "Lead magnets de alta conversao"
+    - "Money models com upsells/downsells"
+    - "Launch sequences completas"
+    - "Diagnosticos com acoes priorizadas"
+    - "Scaling roadmaps"
+
+quality:
+  mode: "quality"
+  fidelity_target: 0.95
+  metrics:
+    - "value_equation_score"
+    - "ltv_cac_ratio"
+    - "offer_irresistibility"
+    - "antipattern_count"
+    - "framework_adherence"
+
+mental_models:
+  - id: "MM_001"
+    name: "Value Equation"
+    formula: "Value = (Dream Outcome x Likelihood) / (Time + Effort)"
+    type: "universal"
+    transferability: 0.95
+
+  - id: "MM_002"
+    name: "Grand Slam Offer"
+    insight: "Offer so good people feel stupid saying no"
+    type: "domain"
+    transferability: 0.85
+
+  - id: "MM_003"
+    name: "Framework-First Reasoning"
+    insight: "Convert all problems to systematic frameworks"
+    type: "universal"
+    transferability: 0.60
+
+  - id: "MM_004"
+    name: "External Metrics as Reality Anchor"
+    insight: "If unmeasurable, doesn't exist"
+    type: "universal"
+
+  - id: "MM_005"
+    name: "Core Four Lead Generation"
+    insight: "Warm, Content, Cold, Paid"
+    type: "domain"
+
+  - id: "MM_006"
+    name: "Rule of 100"
+    insight: "100 daily actions, no exceptions"
+    type: "domain"
+
+  - id: "MM_007"
+    name: "More, Better, New"
+    insight: "Growth prioritization: more first, new last"
+    type: "domain"
+
+  - id: "MM_008"
+    name: "LTV:CAC 3:1"
+    insight: "Unit economics health benchmark"
+    type: "domain"
+
+veto_conditions:
+  config_file: "config/veto-conditions.yaml"
+  enforcement: "strict"
+  mandatory_checklists:
+    antipattern: "checklists/antipattern-screening.md"
+    market_validation: "checklists/market-validation-veto.md"
+    golden_ratios: "checklists/golden-ratios-veto.md"
+
+source_material:
+  books:
+    - "$100M Offers"
+    - "$100M Leads"
+    - "$100M Money Models (PT+EN)"
+  playbooks: 25
+  programs:
+    - "100M Models"
+    - "Blueprint"
+    - "Clube $100M"
+  mmos_artifacts: 70
+  total_files: 165
+  total_size_mb: 165
+
+kpis:
+  ltv_cac_ratio: "3:1 minimo"
+  offer_conversion: "10%+ (cold traffic)"
+  lead_magnet_optin: "30%+"
+  churn_rate: "<5% mensal"
+  price_increase: "2-10x via value stacking"
+
+author: "Alan Nicolas / AIOS Team"
+license: "MIT"

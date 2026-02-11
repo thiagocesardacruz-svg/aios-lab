@@ -1,0 +1,253 @@
+# Keyword Clusters - Marketing Squad
+# SEO keyword research and clustering
+# Version: 1.0.0
+
+metadata:
+  version: "1.0.0"
+  last_updated: "2026-02-11"
+  owner: "seo-specialist"
+  primary_market: "en"
+
+# Pillar 1: Hotel Automation
+hotel_automation:
+  pillar_keyword: "hotel automation"
+  volume: 1900
+  difficulty: 45
+  intent: "commercial"
+
+  clusters:
+    - name: "Hotel AI"
+      keywords:
+        - keyword: "ai for hotels"
+          volume: 720
+          difficulty: 40
+          intent: "commercial"
+        - keyword: "hotel artificial intelligence"
+          volume: 390
+          difficulty: 35
+          intent: "informational"
+        - keyword: "ai hotel management"
+          volume: 260
+          difficulty: 42
+          intent: "commercial"
+        - keyword: "chatgpt for hotels"
+          volume: 480
+          difficulty: 30
+          intent: "informational"
+
+    - name: "Automation Tools"
+      keywords:
+        - keyword: "hotel automation software"
+          volume: 320
+          difficulty: 48
+          intent: "commercial"
+        - keyword: "automate hotel operations"
+          volume: 170
+          difficulty: 35
+          intent: "commercial"
+        - keyword: "hotel task automation"
+          volume: 90
+          difficulty: 28
+          intent: "commercial"
+
+    - name: "Guest Communication"
+      keywords:
+        - keyword: "automated guest messaging"
+          volume: 210
+          difficulty: 32
+          intent: "commercial"
+        - keyword: "hotel chatbot"
+          volume: 880
+          difficulty: 45
+          intent: "commercial"
+        - keyword: "automated check-in hotel"
+          volume: 390
+          difficulty: 40
+          intent: "informational"
+
+# Pillar 2: Hotel Marketing
+hotel_marketing:
+  pillar_keyword: "hotel marketing"
+  volume: 8100
+  difficulty: 65
+  intent: "informational"
+
+  clusters:
+    - name: "Digital Marketing"
+      keywords:
+        - keyword: "hotel digital marketing"
+          volume: 1300
+          difficulty: 55
+          intent: "informational"
+        - keyword: "hotel marketing strategy"
+          volume: 720
+          difficulty: 50
+          intent: "informational"
+        - keyword: "boutique hotel marketing"
+          volume: 320
+          difficulty: 40
+          intent: "informational"
+
+    - name: "Social Media"
+      keywords:
+        - keyword: "hotel social media marketing"
+          volume: 590
+          difficulty: 45
+          intent: "informational"
+        - keyword: "hotel instagram marketing"
+          volume: 260
+          difficulty: 35
+          intent: "informational"
+        - keyword: "hotel social media ideas"
+          volume: 390
+          difficulty: 30
+          intent: "informational"
+
+    - name: "Content Marketing"
+      keywords:
+        - keyword: "hotel content marketing"
+          volume: 210
+          difficulty: 40
+          intent: "informational"
+        - keyword: "hotel blog ideas"
+          volume: 320
+          difficulty: 25
+          intent: "informational"
+        - keyword: "hotel email marketing"
+          volume: 480
+          difficulty: 42
+          intent: "informational"
+
+# Pillar 3: Hotel Operations
+hotel_operations:
+  pillar_keyword: "hotel operations"
+  volume: 4400
+  difficulty: 55
+  intent: "informational"
+
+  clusters:
+    - name: "Management"
+      keywords:
+        - keyword: "hotel operations management"
+          volume: 1000
+          difficulty: 50
+          intent: "informational"
+        - keyword: "small hotel management tips"
+          volume: 260
+          difficulty: 30
+          intent: "informational"
+        - keyword: "independent hotel management"
+          volume: 170
+          difficulty: 35
+          intent: "informational"
+
+    - name: "Efficiency"
+      keywords:
+        - keyword: "improve hotel operations"
+          volume: 210
+          difficulty: 38
+          intent: "commercial"
+        - keyword: "hotel operational efficiency"
+          volume: 140
+          difficulty: 35
+          intent: "informational"
+        - keyword: "streamline hotel operations"
+          volume: 110
+          difficulty: 32
+          intent: "commercial"
+
+    - name: "Reviews"
+      keywords:
+        - keyword: "how to get more hotel reviews"
+          volume: 390
+          difficulty: 35
+          intent: "informational"
+        - keyword: "respond to hotel reviews"
+          volume: 260
+          difficulty: 30
+          intent: "informational"
+        - keyword: "hotel review management"
+          volume: 210
+          difficulty: 38
+          intent: "commercial"
+
+# Quick Wins (Low difficulty, decent volume)
+quick_wins:
+  - keyword: "chatgpt for hotels"
+    volume: 480
+    difficulty: 30
+    content_type: "guide"
+    priority: 1
+
+  - keyword: "hotel blog ideas"
+    volume: 320
+    difficulty: 25
+    content_type: "listicle"
+    priority: 2
+
+  - keyword: "hotel social media ideas"
+    volume: 390
+    difficulty: 30
+    content_type: "listicle"
+    priority: 3
+
+  - keyword: "small hotel management tips"
+    volume: 260
+    difficulty: 30
+    content_type: "guide"
+    priority: 4
+
+  - keyword: "automated guest messaging"
+    volume: 210
+    difficulty: 32
+    content_type: "comparison"
+    priority: 5
+
+# Content Calendar Mapping
+content_calendar:
+  month_1:
+    - keyword: "chatgpt for hotels"
+      content: "Complete Guide to Using ChatGPT for Hotels"
+      type: "pillar"
+
+    - keyword: "hotel blog ideas"
+      content: "50 Hotel Blog Post Ideas That Drive Bookings"
+      type: "cluster"
+
+  month_2:
+    - keyword: "hotel social media ideas"
+      content: "30 Days of Hotel Social Media Content"
+      type: "cluster"
+
+    - keyword: "automated guest messaging"
+      content: "Automated Guest Messaging: Complete Guide"
+      type: "cluster"
+
+  month_3:
+    - keyword: "ai for hotels"
+      content: "AI for Hotels: The Ultimate 2026 Guide"
+      type: "pillar"
+
+    - keyword: "hotel review management"
+      content: "Hotel Review Management: Tools & Tactics"
+      type: "cluster"
+
+# Competitor Keywords (gaps)
+competitor_gaps:
+  - keyword: "mews alternative"
+    volume: 170
+    difficulty: 25
+    competitor: "Mews"
+    opportunity: "comparison page"
+
+  - keyword: "cloudbeds alternative"
+    volume: 140
+    difficulty: 28
+    competitor: "Cloudbeds"
+    opportunity: "comparison page"
+
+  - keyword: "hotel automation without pms"
+    volume: 90
+    difficulty: 20
+    competitor: "none"
+    opportunity: "solution page"

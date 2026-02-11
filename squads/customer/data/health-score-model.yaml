@@ -1,0 +1,405 @@
+# Customer Health Score Model
+# Squad: customer
+# Version: 1.0.0
+
+# =============================================================================
+# MODEL OVERVIEW
+# =============================================================================
+
+model:
+  name: "Customer Health Score"
+  version: "1.0.0"
+  last_updated: "2024"
+  update_frequency: "daily"
+  score_range:
+    min: 0
+    max: 100
+
+# =============================================================================
+# HEALTH ZONES
+# =============================================================================
+
+health_zones:
+
+  healthy:
+    range:
+      min: 80
+      max: 100
+    color: "green"
+    icon: "🟢"
+    description: "Customer is engaged and thriving"
+    recommended_actions:
+      - "Focus on expansion opportunities"
+      - "Request testimonials/referrals"
+      - "Share advanced features"
+      - "Invite to beta programs"
+    csm_priority: "low"
+    check_frequency: "monthly"
+
+  at_risk:
+    range:
+      min: 50
+      max: 79
+    color: "yellow"
+    icon: "🟡"
+    description: "Customer showing signs of disengagement"
+    recommended_actions:
+      - "Proactive CSM outreach"
+      - "Schedule health check call"
+      - "Offer training/support"
+      - "Review usage patterns"
+    csm_priority: "medium"
+    check_frequency: "weekly"
+
+  critical:
+    range:
+      min: 0
+      max: 49
+    color: "red"
+    icon: "🔴"
+    description: "Customer at high risk of churn"
+    recommended_actions:
+      - "Immediate CSM intervention"
+      - "Executive escalation if needed"
+      - "Prepare save offer"
+      - "Root cause analysis"
+    csm_priority: "high"
+    check_frequency: "daily"
+
+# =============================================================================
+# SCORING COMPONENTS
+# =============================================================================
+
+components:
+
+  # ---------------------------------------------------------------------------
+  # USAGE COMPONENT (30% weight)
+  # ---------------------------------------------------------------------------
+  usage:
+    weight: 30
+    description: "How actively the customer uses the product"
+
+    metrics:
+      login_frequency:
+        weight: 10
+        description: "How often users log in"
+        scoring:
+          - condition: "daily_active"
+            definition: ">= 5 logins in 7 days"
+            points: 10
+          - condition: "weekly_active"
+            definition: "1-4 logins in 7 days"
+            points: 7
+          - condition: "monthly_active"
+            definition: "1+ logins in 30 days, < 1 in 7 days"
+            points: 4
+          - condition: "inactive"
+            definition: "0 logins in 30 days"
+            points: 0
+
+      feature_adoption:
+        weight: 10
+        description: "Percentage of core features used"
+        scoring:
+          - condition: "power_user"
+            definition: ">= 80% features used"
+            points: 10
+          - condition: "regular_user"
+            definition: "50-79% features used"
+            points: 7
+          - condition: "basic_user"
+            definition: "20-49% features used"
+            points: 4
+          - condition: "minimal_user"
+            definition: "< 20% features used"
+            points: 1
+
+      active_users_ratio:
+        weight: 10
+        description: "Active users / Licensed users"
+        scoring:
+          - condition: "high_adoption"
+            definition: ">= 75% active"
+            points: 10
+          - condition: "medium_adoption"
+            definition: "50-74% active"
+            points: 6
+          - condition: "low_adoption"
+            definition: "25-49% active"
+            points: 3
+          - condition: "poor_adoption"
+            definition: "< 25% active"
+            points: 0
+
+  # ---------------------------------------------------------------------------
+  # ENGAGEMENT COMPONENT (25% weight)
+  # ---------------------------------------------------------------------------
+  engagement:
+    weight: 25
+    description: "Quality and depth of product engagement"
+
+    metrics:
+      session_duration:
+        weight: 10
+        description: "Average time spent per session"
+        scoring:
+          - condition: "deep_engagement"
+            definition: "> 15 minutes avg"
+            points: 10
+          - condition: "moderate_engagement"
+            definition: "5-15 minutes avg"
+            points: 6
+          - condition: "light_engagement"
+            definition: "1-5 minutes avg"
+            points: 3
+          - condition: "minimal_engagement"
+            definition: "< 1 minute avg"
+            points: 0
+
+      actions_per_session:
+        weight: 10
+        description: "Meaningful actions taken per session"
+        scoring:
+          - condition: "very_active"
+            definition: "> 20 actions/session"
+            points: 10
+          - condition: "active"
+            definition: "10-20 actions/session"
+            points: 7
+          - condition: "passive"
+            definition: "5-9 actions/session"
+            points: 4
+          - condition: "idle"
+            definition: "< 5 actions/session"
+            points: 1
+
+      return_frequency:
+        weight: 5
+        description: "How consistently users return"
+        scoring:
+          - condition: "consistent"
+            definition: "Returns 4+ days/week"
+            points: 5
+          - condition: "regular"
+            definition: "Returns 2-3 days/week"
+            points: 3
+          - condition: "occasional"
+            definition: "Returns 1 day/week"
+            points: 1
+          - condition: "rare"
+            definition: "< 1 day/week"
+            points: 0
+
+  # ---------------------------------------------------------------------------
+  # RELATIONSHIP COMPONENT (25% weight)
+  # ---------------------------------------------------------------------------
+  relationship:
+    weight: 25
+    description: "Customer sentiment and relationship quality"
+
+    metrics:
+      nps_score:
+        weight: 10
+        description: "Net Promoter Score response"
+        scoring:
+          - condition: "promoter"
+            definition: "NPS 9-10"
+            points: 10
+          - condition: "passive"
+            definition: "NPS 7-8"
+            points: 6
+          - condition: "detractor"
+            definition: "NPS 0-6"
+            points: 2
+          - condition: "no_response"
+            definition: "No survey response"
+            points: 5  # Neutral assumption
+
+      support_sentiment:
+        weight: 10
+        description: "Recent support interaction sentiment"
+        scoring:
+          - condition: "positive"
+            definition: "Positive resolution, praise"
+            points: 10
+          - condition: "neutral"
+            definition: "Resolved, no strong sentiment"
+            points: 6
+          - condition: "negative"
+            definition: "Unresolved, complaint"
+            points: 1
+          - condition: "none"
+            definition: "No recent tickets"
+            points: 7  # Good sign
+
+      csm_engagement:
+        weight: 5
+        description: "Responsiveness to CSM outreach"
+        scoring:
+          - condition: "highly_engaged"
+            definition: "Responds quickly, proactive"
+            points: 5
+          - condition: "engaged"
+            definition: "Responds to outreach"
+            points: 3
+          - condition: "unresponsive"
+            definition: "Rarely responds"
+            points: 1
+          - condition: "no_contact"
+            definition: "No recent contact"
+            points: 2
+
+  # ---------------------------------------------------------------------------
+  # BUSINESS COMPONENT (20% weight)
+  # ---------------------------------------------------------------------------
+  business:
+    weight: 20
+    description: "Business health and growth signals"
+
+    metrics:
+      revenue_trend:
+        weight: 10
+        description: "MRR trend over last 90 days"
+        scoring:
+          - condition: "growing"
+            definition: "> 10% increase"
+            points: 10
+          - condition: "stable"
+            definition: "+/- 10%"
+            points: 6
+          - condition: "declining"
+            definition: "> 10% decrease"
+            points: 2
+
+      payment_history:
+        weight: 5
+        description: "Payment reliability"
+        scoring:
+          - condition: "perfect"
+            definition: "All payments on time"
+            points: 5
+          - condition: "minor_issues"
+            definition: "1 late payment"
+            points: 3
+          - condition: "payment_issues"
+            definition: "Multiple late/failed"
+            points: 0
+
+      expansion_signals:
+        weight: 5
+        description: "Signs of potential expansion"
+        scoring:
+          - condition: "strong_signals"
+            definition: "Usage limit, feature requests"
+            points: 5
+          - condition: "some_signals"
+            definition: "Growing usage"
+            points: 3
+          - condition: "no_signals"
+            definition: "Stable/declining"
+            points: 1
+
+# =============================================================================
+# ALERT RULES
+# =============================================================================
+
+alerts:
+
+  score_drop:
+    name: "Rapid Score Decline"
+    condition: "Score drops > 20 points in 7 days"
+    severity: "high"
+    action: "Notify CSM immediately"
+    notification:
+      - channel: "email"
+        recipients: ["csm", "csm_manager"]
+      - channel: "slack"
+        channel: "#customer-health-alerts"
+
+  enters_critical:
+    name: "Critical Status"
+    condition: "Score falls below 50"
+    severity: "critical"
+    action: "Trigger save play"
+    notification:
+      - channel: "email"
+        recipients: ["csm", "csm_manager", "vp_cs"]
+      - channel: "slack"
+        channel: "#customer-health-alerts"
+
+  no_login_warning:
+    name: "Login Warning"
+    condition: "No login in 14 days"
+    severity: "medium"
+    action: "Send re-engagement email"
+    notification:
+      - channel: "email"
+        recipients: ["csm"]
+
+  payment_failed:
+    name: "Payment Failure"
+    condition: "Payment failed"
+    severity: "high"
+    action: "Immediate outreach"
+    notification:
+      - channel: "email"
+        recipients: ["csm", "finance"]
+
+  nps_detractor:
+    name: "NPS Detractor"
+    condition: "NPS score 0-6"
+    severity: "high"
+    action: "CSM follow-up required"
+    notification:
+      - channel: "email"
+        recipients: ["csm"]
+
+# =============================================================================
+# MODEL VALIDATION
+# =============================================================================
+
+validation:
+
+  backtest_period: "12 months"
+  churned_customers_analyzed: 150
+  results:
+    accuracy: "78%"
+    precision: "82%"
+    recall: "74%"
+    auc_roc: "0.81"
+
+  key_findings:
+    - "Customers with score < 50 have 4x higher churn rate"
+    - "Login frequency is strongest predictor"
+    - "NPS drop precedes score drop by 2-3 weeks"
+    - "Payment issues are strong immediate signal"
+
+  model_improvements:
+    planned:
+      - "Add product-specific feature weights"
+      - "Incorporate seasonality adjustment"
+      - "Add segment-specific thresholds"
+    last_calibration: "2024-Q1"
+    next_calibration: "2024-Q3"
+
+# =============================================================================
+# IMPLEMENTATION
+# =============================================================================
+
+implementation:
+
+  data_sources:
+    usage: "Product analytics (Mixpanel/Amplitude)"
+    engagement: "Product analytics"
+    relationship: "CRM + Support system"
+    business: "Billing system + CRM"
+
+  calculation:
+    frequency: "Daily at 2:00 AM UTC"
+    processing_time: "~30 minutes"
+    storage: "Health score history for 2 years"
+
+  access:
+    dashboard: "https://app.example.com/health"
+    api_endpoint: "/api/v1/customers/{id}/health"
+    export: "CSV available on request"

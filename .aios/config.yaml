@@ -1,0 +1,28 @@
+# AIOS Project Configuration
+version: 2.1.0
+project:
+  name: aios-lab
+  type: framework-development
+  created: 2026-02-04
+
+environment:
+  bootstrapped: true
+  bootstrap_date: 2026-02-04T22:01:00
+
+workflow:
+  current: greenfield-fullstack
+  phase: 0-bootstrap-complete
+
+settings:
+  auto_update_status: true
+  quality_gates_enabled: true
+
+cli_tools:
+  git: installed
+  gh: installed
+  node: installed
+  npm: installed
+  docker: installed
+  supabase: pending
+  railway: installed
+  pnpm: installed

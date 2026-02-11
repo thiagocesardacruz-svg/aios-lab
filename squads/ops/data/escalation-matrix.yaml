@@ -1,0 +1,57 @@
+# Escalation Matrix
+#
+# Meta:
+#   id: escalation-matrix
+#   squad: ops
+#   consumed_by: [ops-manager, escalate-issue, ops-lead]
+#   token_estimate: 300
+#   last_updated: 2026-02-11
+
+escalation_paths:
+  - trigger: sla-breach
+    level_1:
+      notify: ops-manager
+      after_minutes: 0
+    level_2:
+      notify: ops-lead
+      after_minutes: 30
+    level_3:
+      notify: user
+      after_minutes: 60
+
+  - trigger: blocked-dependency
+    level_1:
+      notify: blocking-squad-lead
+      after_minutes: 0
+    level_2:
+      notify: ops-lead
+      after_minutes: 60
+    level_3:
+      notify: user
+      after_minutes: 120
+
+  - trigger: cost-overrun
+    level_1:
+      notify: ops-manager
+      after_minutes: 0
+    level_2:
+      notify: finance-lead
+      after_minutes: 0
+    level_3:
+      notify: user
+      after_minutes: 30
+
+  - trigger: quality-failure
+    level_1:
+      notify: qa-lead
+      after_minutes: 0
+    level_2:
+      notify: ops-lead
+      after_minutes: 30
+
+notification_channels:
+  primary: system-notification
+  secondary: slack
+  fallback: email
+
+escalation_cooldown_minutes: 60

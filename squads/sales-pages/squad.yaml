@@ -1,27 +1,143 @@
+# Sales Pages Squad
+# Travel Tech Digital AIOS
+# Version: 1.1.0
+
 name: sales-pages
-version: "1.0.0"
-description: Squad especializado em criar páginas de vendas de alta conversão para produtos digitais
+version: "1.1.0"
+description: "Squad especializado em criar páginas de vendas de alta conversão usando frameworks de persuasão (Schwartz, Cialdini, Hormozi, Halbert)."
 
-agents:
-  - copy-chief
-  - offer-architect
-  - conversion-optimizer
-
-workflows:
-  - full-sales-page
-  - quick-page
-
-entry_point: full-sales-page
+aios:
+  minVersion: "2.1.0"
+  type: squad
+  domain: conversion
 
 config:
-  default_language: pt-BR
-  output_format: markdown
-  include_analytics_hooks: true
+  slashPrefix: "sales-pages"
+  entry_point: "workflows/full-sales-page.yaml"
+  default_language: "pt-BR"
+  output_format: "markdown"
 
-metadata:
-  author: Synkra AIOS
-  tags:
-    - copywriting
-    - sales
-    - conversion
-    - marketing
+lead:
+  agent: "copy-chief"
+  role: "Copy Chief"
+
+agents:
+  - id: "copy-chief"
+    file: "agents/copy-chief.md"
+    role: "Copywriting, headlines, storytelling"
+    name: "Marcus"
+  - id: "offer-architect"
+    file: "agents/offer-architect.md"
+    role: "Estrutura de oferta, pricing, bônus"
+    name: "Victoria"
+  - id: "conversion-optimizer"
+    file: "agents/conversion-optimizer.md"
+    role: "CRO, layout, prova social"
+    name: "Rafael"
+
+components:
+  agents:
+    - "copy-chief.md"
+    - "offer-architect.md"
+    - "conversion-optimizer.md"
+  workflows:
+    - "full-sales-page.yaml"
+    - "quick-page.yaml"
+  tasks:
+    - "01-analyze-product.md"
+    - "02-define-avatar.md"
+    - "03-structure-offer.md"
+    - "04-write-headlines.md"
+    - "05-write-copy.md"
+    - "06-create-proof.md"
+    - "07-design-layout.md"
+    - "08-assemble-page.md"
+    - "09-optimize-page.md"
+  templates:
+    - "sales-page.md"
+    - "headline-formulas.md"
+    - "offer-stack.md"
+  checklists:
+    - "copy-quality.md"
+    - "conversion-elements.md"
+    - "compliance.md"
+  data:
+    - "schwartz-awareness.md"
+    - "persuasion-frameworks.md"
+    - "power-words.md"
+
+tags:
+  - "copywriting"
+  - "sales"
+  - "conversion"
+  - "marketing"
+  - "direct-response"
+  - "hormozi"
+  - "persuasion"
+
+commands:
+  - name: "full-sales-page"
+    workflow: "workflows/full-sales-page.yaml"
+    description: "Criar página de vendas completa (5 fases)"
+    alias: "sp"
+    visibility: "full"
+  - name: "quick-page"
+    workflow: "workflows/quick-page.yaml"
+    description: "Página rápida com templates pré-definidos"
+    alias: "qsp"
+    visibility: "full"
+  - name: "analyze-product"
+    task: "tasks/01-analyze-product.md"
+    description: "Analisar produto para copy"
+    visibility: "full"
+  - name: "define-avatar"
+    task: "tasks/02-define-avatar.md"
+    description: "Definir avatar/persona do comprador"
+    visibility: "full"
+  - name: "structure-offer"
+    task: "tasks/03-structure-offer.md"
+    description: "Estruturar oferta irresistível"
+    visibility: "full"
+  - name: "write-headlines"
+    task: "tasks/04-write-headlines.md"
+    description: "Criar headlines de alto impacto"
+    visibility: "full"
+  - name: "optimize-page"
+    task: "tasks/09-optimize-page.md"
+    description: "Otimizar página para conversão"
+    visibility: "full"
+
+interface:
+  inputs:
+    - "Nome e descrição do produto"
+    - "Tipo de produto (curso, ebook, SaaS, etc)"
+    - "Faixa de preço"
+    - "Depoimentos existentes"
+    - "URLs de concorrentes"
+  outputs:
+    - "sales-page.md - Página completa em Markdown"
+    - "sales-page.html - Esqueleto HTML"
+    - "optimization-report.md - Relatório de CRO"
+    - "assets-needed.md - Lista de assets necessários"
+
+quality:
+  checklist: "checklists/copy-quality.md"
+  metrics:
+    - "conversion_rate"
+    - "time_on_page"
+    - "scroll_depth"
+    - "cta_click_rate"
+
+frameworks:
+  - name: "Schwartz Awareness Levels"
+    file: "data/schwartz-awareness.md"
+    description: "5 níveis de consciência do prospect"
+  - name: "Cialdini Persuasion"
+    file: "data/persuasion-frameworks.md"
+    description: "6 armas da persuasão"
+  - name: "Hormozi Offer Architecture"
+    description: "Value equation e offer stacking"
+  - name: "PASTOR Framework"
+    description: "Dan Kennedy's copywriting structure"
+  - name: "Gary Halbert"
+    description: "Direct response copy principles"

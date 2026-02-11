@@ -1,0 +1,73 @@
+# Definition of Done (DoD) Definitions
+#
+# Meta:
+#   id: dod-definitions
+#   squad: qa
+#   consumed_by: [qa-lead, content-reviewer, validate-deliverable, release-gate]
+#   token_estimate: 400
+#   last_updated: 2026-02-11
+
+dod_by_artifact_type:
+  code:
+    required:
+      - Code compiles without errors
+      - All unit tests pass
+      - Code reviewed by peer
+      - No critical or major linting errors
+      - Documentation updated if API changed
+    recommended:
+      - Integration tests pass
+      - Test coverage >= 80%
+      - Performance benchmarks met
+
+  content:
+    required:
+      - Matches approved brief/spec
+      - Spell-checked and grammar-checked
+      - Brand voice compliant
+      - All links verified working
+      - CTA present and clear
+    recommended:
+      - SEO metadata complete
+      - Mobile-friendly preview verified
+      - A/B variant prepared if applicable
+
+  design:
+    required:
+      - Matches design spec
+      - All variants delivered
+      - Correct file formats
+      - Assets organized per naming convention
+      - Accessibility colors checked
+    recommended:
+      - Source files included
+      - Animation previews provided
+      - Responsive variations included
+
+  workflow:
+    required:
+      - All steps execute without error
+      - Inputs validated
+      - Outputs match spec
+      - Error handling tested
+      - Documentation complete
+    recommended:
+      - Edge cases tested
+      - Performance within SLA
+      - Rollback procedure documented
+
+  document:
+    required:
+      - Follows template structure
+      - All sections complete
+      - Reviewed by stakeholder
+      - No placeholder text remaining
+    recommended:
+      - Version tracked
+      - Linked to related docs
+
+global_dod:
+  - Assigned checklist passed
+  - No blocking issues open
+  - Stakeholder sign-off if required
+  - Synced to Notion/tracking system

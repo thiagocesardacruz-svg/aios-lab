@@ -1,0 +1,108 @@
+# Onboarding Sequence Workflow
+# Squad: customer
+# Version: 1.0.0
+
+name: onboarding-sequence
+description: "Design and implement customer onboarding sequence for maximum activation"
+version: "1.0.0"
+
+trigger:
+  command: "/customer/onboarding-sequence"
+  inputs:
+    - name: product
+      type: string
+      required: true
+      description: "Product being onboarded"
+    - name: segment
+      type: string
+      required: false
+      description: "Customer segment"
+    - name: goal
+      type: string
+      required: false
+      description: "Primary onboarding goal"
+
+steps:
+  - id: understand-journey
+    name: "Map Customer Journey"
+    agent: onboarding-architect
+    task: design-onboarding
+    inputs:
+      product: "{{inputs.product}}"
+      segment: "{{inputs.segment}}"
+    outputs:
+      - journey_map
+      - aha_moment
+      - milestones
+
+  - id: define-activation
+    name: "Define Activation Metrics"
+    agent: customer-lead
+    action: define-metrics
+    inputs:
+      journey: "{{steps.understand-journey.outputs.journey_map}}"
+      aha_moment: "{{steps.understand-journey.outputs.aha_moment}}"
+    outputs:
+      - activation_definition
+      - success_metrics
+      - time_targets
+
+  - id: design-sequence
+    name: "Design Onboarding Sequence"
+    agent: onboarding-architect
+    action: create-sequence
+    inputs:
+      milestones: "{{steps.understand-journey.outputs.milestones}}"
+      activation: "{{steps.define-activation.outputs.activation_definition}}"
+    outputs:
+      - email_sequence
+      - in_app_sequence
+      - checklist
+
+  - id: create-content
+    name: "Create Onboarding Content"
+    agent: onboarding-architect
+    action: write-content
+    inputs:
+      sequence: "{{steps.design-sequence.outputs}}"
+    outputs:
+      - welcome_email
+      - tutorial_scripts
+      - help_docs
+
+  - id: setup-automation
+    name: "Setup Automation"
+    agent: customer-lead
+    action: configure-automation
+    inputs:
+      email_sequence: "{{steps.design-sequence.outputs.email_sequence}}"
+      in_app_sequence: "{{steps.design-sequence.outputs.in_app_sequence}}"
+    outputs:
+      - automation_config
+      - triggers
+
+  - id: quality-check
+    name: "Quality Check"
+    agent: customer-lead
+    action: validate
+    checklist: "checklists/onboarding-checklist.md"
+    inputs:
+      sequence: "{{steps.design-sequence.outputs}}"
+      content: "{{steps.create-content.outputs}}"
+
+output:
+  template: "templates/onboarding-sequence-tmpl.md"
+  sections:
+    - journey_map
+    - activation_metrics
+    - email_sequence
+    - in_app_sequence
+    - content_assets
+    - automation_config
+
+success_criteria:
+  - "Aha moment clearly defined"
+  - "Time to value < 5 minutes"
+  - "All touchpoints documented"
+  - "Automation configured"
+  - "Metrics tracking in place"

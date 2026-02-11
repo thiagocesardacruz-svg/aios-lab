@@ -1,0 +1,257 @@
+# AI Model Pricing Reference
+# Used for cost calculations and optimization decisions
+# Version: 1.0.0
+
+metadata:
+  version: "1.0.0"
+  last_updated: "2026-02-11"
+  currency: "USD"
+  source: "Official API pricing pages"
+
+# Anthropic Claude Models
+anthropic:
+  claude_opus:
+    name: "Claude Opus 4.5"
+    model_id: "claude-opus-4-5-20251101"
+    pricing:
+      input_per_1m: 15.00
+      output_per_1m: 75.00
+    context_window: 200000
+    use_cases:
+      - "Complex reasoning"
+      - "Architecture decisions"
+      - "Long-form content"
+      - "Multi-step analysis"
+    when_to_use: "Only for truly complex tasks"
+    optimization_priority: 5  # Last resort
+
+  claude_sonnet:
+    name: "Claude Sonnet 4"
+    model_id: "claude-sonnet-4-20250514"
+    pricing:
+      input_per_1m: 3.00
+      output_per_1m: 15.00
+    context_window: 200000
+    use_cases:
+      - "General tasks"
+      - "Code generation"
+      - "Analysis"
+      - "Summarization"
+    when_to_use: "Default for most tasks"
+    optimization_priority: 4
+
+  claude_haiku:
+    name: "Claude Haiku 3.5"
+    model_id: "claude-3-5-haiku-20241022"
+    pricing:
+      input_per_1m: 0.80
+      output_per_1m: 4.00
+    context_window: 200000
+    use_cases:
+      - "Simple tasks"
+      - "Classification"
+      - "Extraction"
+      - "High volume"
+    when_to_use: "First choice for simple tasks"
+    optimization_priority: 3
+
+# OpenAI Models
+openai:
+  gpt4_turbo:
+    name: "GPT-4 Turbo"
+    model_id: "gpt-4-turbo"
+    pricing:
+      input_per_1m: 10.00
+      output_per_1m: 30.00
+    context_window: 128000
+    use_cases:
+      - "Fallback"
+      - "Specific integrations"
+    when_to_use: "When Claude unavailable"
+    optimization_priority: 4
+
+  gpt4o:
+    name: "GPT-4o"
+    model_id: "gpt-4o"
+    pricing:
+      input_per_1m: 5.00
+      output_per_1m: 15.00
+    context_window: 128000
+    use_cases:
+      - "Multimodal tasks"
+      - "Vision"
+    when_to_use: "For image analysis"
+    optimization_priority: 4
+
+  gpt4o_mini:
+    name: "GPT-4o Mini"
+    model_id: "gpt-4o-mini"
+    pricing:
+      input_per_1m: 0.15
+      output_per_1m: 0.60
+    context_window: 128000
+    use_cases:
+      - "Simple tasks"
+      - "High volume"
+    when_to_use: "Budget alternative to Haiku"
+    optimization_priority: 3
+
+# Cost Comparison Table
+comparison:
+  simple_task_1k_tokens:
+    opus: 0.09
+    sonnet: 0.018
+    haiku: 0.0048
+    gpt4_turbo: 0.04
+    gpt4o_mini: 0.00075
+    winner: "gpt4o_mini"
+    recommended: "haiku"  # Balance of cost and quality
+
+  medium_task_5k_tokens:
+    opus: 0.45
+    sonnet: 0.09
+    haiku: 0.024
+    gpt4_turbo: 0.20
+    winner: "haiku"
+
+  complex_task_20k_tokens:
+    opus: 1.80
+    sonnet: 0.36
+    haiku: 0.096
+    gpt4_turbo: 0.80
+    winner: "haiku"
+    note: "But may need Sonnet for quality"
+
+# Budget Limits (Travel Tech Digital)
+budget:
+  monthly_limit_gbp: 400
+  monthly_limit_eur: 468
+  daily_alert_eur: 15
+  daily_hard_eur: 20
+  single_task_max_eur: 10
+
+  allocation:
+    ops: 20%      # ~€94/month
+    tech: 30%     # ~€140/month
+    marketing: 20% # ~€94/month
+    other: 30%    # ~€140/month
+
+# Optimization Hierarchy
+optimization:
+  priority_order:
+    1:
+      name: "Script"
+      cost: 0
+      when: "Deterministic logic, calculations, formatting"
+
+    2:
+      name: "Cache"
+      cost: 0
+      when: "Repeated queries, static content"
+
+    3:
+      name: "Haiku"
+      cost: "low"
+      when: "Simple classification, extraction, short responses"
+
+    4:
+      name: "Sonnet"
+      cost: "medium"
+      when: "Code generation, analysis, general tasks"
+
+    5:
+      name: "Opus"
+      cost: "high"
+      when: "Complex reasoning, architecture, critical decisions"
+
+# Cost Categories (for tracking)
+cost_categories:
+  BASE:
+    description: "Deterministic, templates, CRON"
+    target: "~€0"
+    examples:
+      - "Template rendering"
+      - "Static responses"
+      - "Calculations"
+
+  EXEC:
+    description: "First LLM call - main value"
+    target: "Optimize model selection"
+    examples:
+      - "Initial generation"
+      - "Main task execution"
+
+  VRFY:
+    description: "Verification tokens"
+    target: "~€0"
+    red_flag: "Growing = KB drift"
+    examples:
+      - "Output validation"
+      - "Quality checks"
+
+  RCVR:
+    description: "Retries, fallbacks"
+    target: "Minimize"
+    red_flag: "Growing = system degradation"
+    examples:
+      - "Error recovery"
+      - "Retry attempts"
+
+  EXTA:
+    description: "External auto (Gemini/GPT)"
+    target: "Separate budget"
+    examples:
+      - "Third-party integrations"
+      - "Fallback providers"
+
+  DEV_:
+    description: "Development"
+    target: "Doesn't count for prod"
+    examples:
+      - "Testing"
+      - "Prompt development"
+
+# Red Flags & Actions
+red_flags:
+  - symptom: "High VRFY costs"
+    cause: "Knowledge base drift"
+    action: "Update knowledge, reduce verification"
+
+  - symptom: "High RCVR costs"
+    cause: "System degradation"
+    action: "Investigate failures, fix root cause"
+
+  - symptom: "Repeated identical calls"
+    cause: "Missing cache"
+    action: "Implement caching"
+
+  - symptom: "Simple task using Opus"
+    cause: "Poor model routing"
+    action: "Route to Haiku"
+
+  - symptom: "LLM for deterministic logic"
+    cause: "Over-engineering"
+    action: "Replace with script"
+
+# Calculation Helper
+calculations:
+  formula: "cost = (input_tokens / 1_000_000 * input_price) + (output_tokens / 1_000_000 * output_price)"
+
+  examples:
+    haiku_simple:
+      input_tokens: 500
+      output_tokens: 200
+      calculation: "(500/1M * 0.80) + (200/1M * 4.00)"
+      cost: 0.0012
+
+    sonnet_medium:
+      input_tokens: 2000
+      output_tokens: 1000
+      calculation: "(2000/1M * 3.00) + (1000/1M * 15.00)"
+      cost: 0.021
+
+    opus_complex:
+      input_tokens: 10000
+      output_tokens: 5000
+      calculation: "(10000/1M * 15.00) + (5000/1M * 75.00)"
+      cost: 0.525

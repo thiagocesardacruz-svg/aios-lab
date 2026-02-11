@@ -1,0 +1,77 @@
+# Financial Metrics
+#
+# Meta:
+#   id: financial-metrics
+#   squad: finance
+#   consumed_by: [finance-lead, financial-analyst, analyze-unit-economics]
+#   token_estimate: 350
+#   last_updated: 2026-02-11
+
+metrics:
+  revenue:
+    - id: mrr
+      name: Monthly Recurring Revenue
+      formula: sum(active_subscriptions * price)
+      unit: currency
+      frequency: monthly
+
+    - id: arr
+      name: Annual Recurring Revenue
+      formula: mrr * 12
+      unit: currency
+      frequency: monthly
+
+  costs:
+    - id: cac
+      name: Customer Acquisition Cost
+      formula: total_marketing_spend / new_customers
+      unit: currency
+      frequency: monthly
+
+    - id: ltv
+      name: Customer Lifetime Value
+      formula: avg_revenue_per_customer * avg_customer_lifespan_months
+      unit: currency
+      frequency: quarterly
+
+    - id: ltv_cac_ratio
+      name: LTV to CAC Ratio
+      formula: ltv / cac
+      target: ">3"
+      frequency: quarterly
+
+  profitability:
+    - id: gross_margin
+      name: Gross Margin
+      formula: (revenue - cogs) / revenue * 100
+      unit: percent
+      target: ">70%"
+
+    - id: net_margin
+      name: Net Margin
+      formula: net_income / revenue * 100
+      unit: percent
+
+  efficiency:
+    - id: payback_period
+      name: CAC Payback Period
+      formula: cac / (mrr_per_customer * gross_margin)
+      unit: months
+      target: "<12"
+
+    - id: burn_rate
+      name: Monthly Burn Rate
+      formula: total_monthly_expenses - total_monthly_revenue
+      unit: currency
+
+    - id: runway
+      name: Runway
+      formula: cash_balance / burn_rate
+      unit: months
+      alert_threshold: 6
+
+reporting_schedule:
+  daily: [daily_cost, daily_revenue]
+  weekly: [weekly_cost_by_squad, weekly_revenue]
+  monthly: [mrr, cac, burn_rate, runway]
+  quarterly: [ltv, ltv_cac_ratio, gross_margin]

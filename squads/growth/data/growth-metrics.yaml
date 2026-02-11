@@ -1,0 +1,287 @@
+# Growth Metrics Reference
+# Squad: growth
+# Version: 1.0.0
+
+# =============================================================================
+# AARRR PIRATE METRICS
+# =============================================================================
+
+aarrr_metrics:
+
+  acquisition:
+    description: "How users discover the product"
+    metrics:
+      - name: "visitors"
+        description: "Unique visitors to the site"
+        calculation: "COUNT(DISTINCT user_id) WHERE event = 'page_view'"
+
+      - name: "signups"
+        description: "Users who complete signup"
+        calculation: "COUNT(DISTINCT user_id) WHERE event = 'signup_complete'"
+
+      - name: "signup_rate"
+        description: "Visitor to signup conversion"
+        calculation: "signups / visitors * 100"
+        benchmark_b2b: "5-10%"
+        benchmark_b2c: "2-5%"
+
+      - name: "cac"
+        description: "Customer Acquisition Cost"
+        calculation: "total_marketing_spend / new_customers"
+
+      - name: "cpl"
+        description: "Cost Per Lead"
+        calculation: "total_marketing_spend / signups"
+
+  activation:
+    description: "Users who experience the 'aha moment'"
+    metrics:
+      - name: "activated_users"
+        description: "Users who complete activation milestone"
+        calculation: "COUNT(DISTINCT user_id) WHERE event = 'activation_complete'"
+
+      - name: "activation_rate"
+        description: "Signup to activation conversion"
+        calculation: "activated_users / signups * 100"
+        benchmark_b2b: "40-60%"
+        benchmark_b2c: "20-40%"
+
+      - name: "time_to_activate"
+        description: "Time from signup to activation"
+        calculation: "AVG(activation_time - signup_time)"
+        target: "< 24 hours"
+
+      - name: "aha_moment_rate"
+        description: "Users experiencing key value"
+        calculation: "users_with_aha / signups * 100"
+
+  retention:
+    description: "Users who return and stay active"
+    metrics:
+      - name: "day_1_retention"
+        description: "Return after 1 day"
+        calculation: "users_active_day_1 / signup_cohort * 100"
+        benchmark_b2b: "80%"
+        benchmark_b2c: "40%"
+
+      - name: "day_7_retention"
+        description: "Return after 7 days"
+        calculation: "users_active_day_7 / signup_cohort * 100"
+        benchmark_b2b: "60%"
+        benchmark_b2c: "20%"
+
+      - name: "day_30_retention"
+        description: "Return after 30 days"
+        calculation: "users_active_day_30 / signup_cohort * 100"
+        benchmark_b2b: "40%"
+        benchmark_b2c: "10%"
+
+      - name: "dau_mau_ratio"
+        description: "Daily to monthly active ratio (stickiness)"
+        calculation: "DAU / MAU"
+        benchmark: ">20%"
+
+      - name: "churn_rate"
+        description: "Monthly churn rate"
+        calculation: "churned_users / start_users * 100"
+        target: "<5%"
+
+  referral:
+    description: "Users who refer others"
+    metrics:
+      - name: "referral_rate"
+        description: "Users who refer at least one other"
+        calculation: "users_with_referral / total_users * 100"
+        benchmark: ">10%"
+
+      - name: "viral_coefficient"
+        description: "Referrals per user"
+        calculation: "total_referral_signups / total_users"
+        target: ">0.5"
+
+      - name: "nps"
+        description: "Net Promoter Score"
+        calculation: "promoters_pct - detractors_pct"
+        benchmark: ">50"
+
+      - name: "organic_traffic_pct"
+        description: "Traffic from organic sources"
+        calculation: "organic_visitors / total_visitors * 100"
+        target: ">30%"
+
+  revenue:
+    description: "Monetization metrics"
+    metrics:
+      - name: "conversion_to_paid"
+        description: "Free to paid conversion"
+        calculation: "paid_users / total_users * 100"
+        benchmark_b2b: "3-5%"
+        benchmark_b2c: "1-3%"
+
+      - name: "arpu"
+        description: "Average Revenue Per User"
+        calculation: "total_revenue / total_users"
+
+      - name: "arpa"
+        description: "Average Revenue Per Account"
+        calculation: "total_revenue / total_accounts"
+
+      - name: "mrr"
+        description: "Monthly Recurring Revenue"
+        calculation: "SUM(monthly_subscription_value)"
+
+      - name: "arr"
+        description: "Annual Recurring Revenue"
+        calculation: "MRR * 12"
+
+      - name: "ltv"
+        description: "Customer Lifetime Value"
+        calculation: "ARPU * avg_customer_lifetime_months"
+
+      - name: "ltv_cac_ratio"
+        description: "LTV to CAC ratio"
+        calculation: "LTV / CAC"
+        target: ">3"
+
+      - name: "nrr"
+        description: "Net Revenue Retention"
+        calculation: "(start_mrr + expansion - contraction - churn) / start_mrr * 100"
+        target: ">100%"
+
+      - name: "grr"
+        description: "Gross Revenue Retention"
+        calculation: "(start_mrr - contraction - churn) / start_mrr * 100"
+        target: ">90%"
+
+# =============================================================================
+# PMF METRICS
+# =============================================================================
+
+pmf_metrics:
+
+  sean_ellis:
+    description: "Sean Ellis Survey results"
+    question: "How would you feel if you could no longer use [product]?"
+    responses:
+      - very_disappointed
+      - somewhat_disappointed
+      - not_disappointed
+    thresholds:
+      no_pmf: "<20%"
+      early_pmf: "20-40%"
+      strong_pmf: ">40%"
+
+  retention_pmf:
+    description: "Retention-based PMF signals"
+    thresholds:
+      b2b_saas:
+        day_1: "80%"
+        day_7: "60%"
+        day_30: "40%"
+        steady_state: "30%"
+      b2c:
+        day_1: "40%"
+        day_7: "20%"
+        day_30: "10%"
+        steady_state: "5%"
+
+  organic_pmf:
+    description: "Organic growth as PMF signal"
+    signals:
+      - viral_coefficient: ">0.5"
+      - organic_traffic_pct: ">30%"
+      - word_of_mouth_mentions: "growing"
+
+# =============================================================================
+# EXPERIMENT METRICS
+# =============================================================================
+
+experiment_metrics:
+
+  sample_size:
+    description: "Sample size calculation parameters"
+    defaults:
+      confidence_level: 0.95
+      power: 0.80
+      baseline_conversion: "varies"
+      mde: 0.05
+    formula: |
+      n = (2 * (Z_alpha + Z_beta)^2 * p * (1-p)) / MDE^2
+      where:
+        Z_alpha = 1.96 (for 95% confidence)
+        Z_beta = 0.84 (for 80% power)
+        p = baseline conversion
+        MDE = minimum detectable effect
+
+  statistical_significance:
+    description: "Significance thresholds"
+    thresholds:
+      significant: "<0.05"
+      highly_significant: "<0.01"
+      marginal: "0.05-0.10"
+      not_significant: ">0.10"
+
+  effect_size:
+    description: "Cohen's d interpretation"
+    thresholds:
+      small: "<0.2"
+      medium: "0.2-0.8"
+      large: ">0.8"
+
+# =============================================================================
+# ICE SCORING GUIDE
+# =============================================================================
+
+ice_scoring:
+
+  impact:
+    description: "Potential impact on metrics"
+    scale:
+      10: "10x improvement"
+      7-9: "Major improvement (>50%)"
+      4-6: "Moderate improvement (10-50%)"
+      1-3: "Minor improvement (<10%)"
+
+  confidence:
+    description: "Likelihood of success"
+    scale:
+      10: "Proven, data-backed"
+      7-9: "Strong evidence"
+      4-6: "Some evidence"
+      1-3: "Gut feeling"
+
+  ease:
+    description: "Implementation difficulty"
+    scale:
+      10: "Trivial, <1 day"
+      7-9: "Easy, <1 week"
+      4-6: "Moderate, 1-2 weeks"
+      1-3: "Hard, >2 weeks"
+
+  calculation: "(Impact + Confidence + Ease) / 3"
+
+# =============================================================================
+# NORTH STAR METRICS BY STAGE
+# =============================================================================
+
+north_star_by_stage:
+
+  pre_pmf:
+    metric: "sean_ellis_very_disappointed_pct"
+    target: ">40%"
+    rationale: "Find users who love you before scaling"
+
+  early_growth:
+    metric: "weekly_active_users"
+    target: "10% WoW growth"
+    rationale: "Prove you can grow consistently"
+
+  scaling:
+    metric: "monthly_recurring_revenue"
+    target: "2x YoY"
+    rationale: "Prove unit economics work at scale"
+
+  mature:
+    metric: "net_revenue_retention"
+    target: ">120%"
+    rationale: "Grow through existing customers"

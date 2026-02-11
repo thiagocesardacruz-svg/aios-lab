@@ -1,0 +1,207 @@
+# Spanish (Latin America) Glossary
+# Squad: translator
+# Version: 1.0.0
+
+metadata:
+  language: "ES-LATAM"
+  version: "1.0.0"
+  last_updated: "2026-02-11"
+  maintainer: "translator-squad"
+  notes: "Neutral Latin American Spanish, avoiding regional slang"
+
+# Style Guide
+style_guide:
+  formality: "Varies by content type"
+  tú_vs_usted: "Use 'tu' for informal, 'usted' for formal"
+  vosotros: "Never use vosotros (Spain only)"
+  regional_variants: "Avoid Mexico/Argentina specific terms"
+
+# Format Standards
+formats:
+  date: "DD/MM/YYYY"
+  time: "HH:MM (varies by country)"
+  currency: "Varies by country (USD often used)"
+  decimal_separator: ","
+  thousand_separator: "."
+  phone: "+[country code] varies"
+
+# Common Terms
+terms:
+  # UI Elements
+  - source: "Submit"
+    translation: "Enviar"
+    context: "Form button"
+
+  - source: "Cancel"
+    translation: "Cancelar"
+    context: "Action button"
+
+  - source: "Save"
+    translation: "Guardar"
+    context: "Save action"
+
+  - source: "Delete"
+    translation: "Eliminar"
+    context: "Delete action"
+    alternatives: ["Borrar"]
+
+  - source: "Edit"
+    translation: "Editar"
+    context: "Edit action"
+
+  - source: "Settings"
+    translation: "Configuracion"
+    context: "App settings"
+    do_not_use: ["Ajustes (iOS specific)"]
+
+  - source: "Search"
+    translation: "Buscar"
+    context: "Search action"
+
+  - source: "Loading"
+    translation: "Cargando"
+    context: "Loading state"
+
+  - source: "Error"
+    translation: "Error"
+    context: "Error message"
+
+  - source: "Success"
+    translation: "Exito"
+    context: "Success message"
+
+  # E-commerce
+  - source: "Checkout"
+    translation: "Finalizar compra"
+    context: "Purchase completion"
+    do_not_use: ["Checkout"]
+
+  - source: "Add to cart"
+    translation: "Agregar al carrito"
+    context: "Shopping action"
+    alternatives: ["Anadir al carrito"]
+
+  - source: "Buy now"
+    translation: "Comprar ahora"
+    context: "Purchase CTA"
+
+  - source: "Free shipping"
+    translation: "Envio gratis"
+    context: "Shipping offer"
+
+  - source: "In stock"
+    translation: "Disponible"
+    context: "Availability"
+    alternatives: ["En stock"]
+
+  - source: "Out of stock"
+    translation: "Agotado"
+    context: "Unavailable"
+    alternatives: ["Sin stock"]
+
+  # Account
+  - source: "Sign in"
+    translation: "Iniciar sesion"
+    context: "Login action"
+    do_not_use: ["Loguearse"]
+
+  - source: "Sign up"
+    translation: "Crear cuenta"
+    context: "Registration"
+    alternatives: ["Registrarse"]
+
+  - source: "Log out"
+    translation: "Cerrar sesion"
+    context: "Logout action"
+
+  - source: "Forgot password"
+    translation: "Olvide mi contrasena"
+    context: "Password recovery"
+
+  - source: "Profile"
+    translation: "Perfil"
+    context: "User profile"
+
+  # Marketing
+  - source: "Learn more"
+    translation: "Mas informacion"
+    context: "CTA button"
+    alternatives: ["Saber mas"]
+
+  - source: "Get started"
+    translation: "Comenzar"
+    context: "CTA button"
+    alternatives: ["Empezar"]
+
+  - source: "Contact us"
+    translation: "Contactanos"
+    context: "Contact CTA"
+    alternatives: ["Escribenos"]
+
+  - source: "Subscribe"
+    translation: "Suscribirse"
+    context: "Newsletter signup"
+
+  - source: "Download"
+    translation: "Descargar"
+    context: "Download action"
+    do_not_use: ["Bajar (informal)"]
+
+  # Hospitality (Travel Tech)
+  - source: "Book now"
+    translation: "Reservar ahora"
+    context: "Booking CTA"
+
+  - source: "Check-in"
+    translation: "Check-in"
+    context: "Hotel arrival"
+    notes: "Kept in English (industry standard)"
+
+  - source: "Check-out"
+    translation: "Check-out"
+    context: "Hotel departure"
+    notes: "Kept in English (industry standard)"
+
+  - source: "Room"
+    translation: "Habitacion"
+    context: "Hotel room"
+    do_not_use: ["Cuarto (too informal)"]
+
+  - source: "Guest"
+    translation: "Huesped"
+    context: "Hotel guest"
+
+  - source: "Amenities"
+    translation: "Servicios"
+    context: "Hotel facilities"
+    alternatives: ["Comodidades"]
+
+# Common Phrases
+phrases:
+  - source: "Welcome back"
+    translation: "Bienvenido de nuevo"
+
+  - source: "Thank you for your purchase"
+    translation: "Gracias por tu compra"
+
+  - source: "Your order has been confirmed"
+    translation: "Tu pedido ha sido confirmado"
+
+  - source: "Please try again"
+    translation: "Por favor, intenta de nuevo"
+
+  - source: "Something went wrong"
+    translation: "Algo salio mal"
+
+# Regional Considerations
+regional_notes:
+  mexico:
+    - "ahorita = ahora"
+    - "recamara = habitacion"
+    - "camion = autobus"
+  argentina:
+    - "vos instead of tu"
+    - "celular = telefono movil"
+  colombia:
+    - "Generally neutral"
+    - "plata = dinero"
