@@ -1,44 +1,113 @@
 Agente,Chamada,Squad,Tipo,O que faz
-ops-lead,@ops-lead,Ops,Hybrid,Orquestração cross-squad e priorização e escalation
-ops-manager,@ops-manager,Ops,Hybrid,Gestão de OS e routing e status updates
-clawdbot,@clawdbot,Ops,Hybrid,Executor determinístico e scripts e infra
-tech-lead,@tech-lead,Tech,Hybrid,Arquitetura e decisões técnicas e code review
-application-developer,@application-developer,Tech,Expert,Implementação e APIs e testes
-automation-engineer,@automation-engineer,Tech,Expert,Workflows n8n e integrações
-ai-ops,@ai-ops,Tech,Expert,Custos AI e otimização prompts
-ghl-specialist,@ghl-specialist,Tech,Expert,GoHighLevel e CRM e pipelines
-marketing-lead,@marketing-lead,Marketing,Hybrid,Estratégia e campanhas e coordenação
-content-strategist,@content-strategist,Marketing,Expert,Pesquisa ICP e calendário editorial
-copy-specialist,@copy-specialist,Marketing,Expert,Copy e headlines e CTAs
-funnel-architect,@funnel-architect,Marketing,Expert,Funis e jornada do cliente
-offer-engine,@offer-engine,Marketing,Expert,Grand Slam Offers e pricing
-seo-specialist,@seo-specialist,Marketing,Expert,SEO e keywords e clusters
-sales-lead,@sales-lead,Sales,Hybrid,Estratégia vendas e coaching e forecast
-closer,@closer,Sales,Expert,Discovery e objeções e fechamento
-sdr,@sdr,Sales,Expert,Prospecção e qualificação e outreach
-sales-analyst,@sales-analyst,Sales,Expert,Pipeline e win/loss analysis
-design-lead,@design-lead,Design,Hybrid,Direção criativa e aprovações
-visual-systems-designer,@visual-systems-designer,Design,Expert,Carousels e infográficos e templates
-performance-designer,@performance-designer,Design,Expert,Ads e variantes e adaptações
-motion-video-specialist,@motion-video-specialist,Design,Expert,VSL e video ads e reels
-customer-lead,@customer-lead,Customer,Hybrid,Health check e risco e expansão
-onboarding-architect,@onboarding-architect,Customer,Expert,Fluxos onboarding e emails
-growth-lead,@growth-lead,Growth,Hybrid,Priorização e experimentos e waves
-data-analyst,@data-analyst,Growth,Expert,Métricas e cohorts e A/B tests
-qa-lead,@qa-lead,QA,Operational,Quality gates e DoD e padrões
-content-reviewer,@content-reviewer,QA,Operational,Review conteúdo e verificação
-process-auditor,@process-auditor,QA,Operational,Auditorias e compliance
-finance-lead,@finance-lead,Finance,Operational,Reports e aprovações e alertas
-financial-analyst,@financial-analyst,Finance,Operational,Unit economics e KPIs e cenários
-pricing-strategist,@pricing-strategist,Finance,Operational,Tiers e testes preço e elasticidade
-controller,@controller,Finance,Operational,Governance e compliance custos
-translation-lead,@translation-lead,Translator,Operational,Coordenação e glossário e review
-design-system,@design-system,Design-System,Expert,Brad Frost - tokens e componentes e migração
-charlie-munger,@charlie-munger,Board,Mind Clone,Mental models e inversão e blindspots
-steve-jobs,@steve-jobs,Board,Mind Clone,Produto e simplificação e visão
-alex-hormozi,@alex-hormozi,Board,Mind Clone,Ofertas e value equation e pricing
-dan-kennedy,@dan-kennedy,Board,Mind Clone,Posicionamento e clareza e sofisticação
-elon-musk,@elon-musk,Board,Mind Clone,First principles e custos e sistemas
-peter-thiel,@peter-thiel,Board,Mind Clone,Moat e secrets e zero-to-one
-ray-dalio,@ray-dalio,Board,Mind Clone,Princípios e root cause e encoding
-bill-gates,@bill-gates,Board,Mind Clone,Plataforma e network effects e longo prazo
+alex-hormozi,@alex-hormozi,board,Mind Clone,Architect offers e optimize revenue using value equation
+bill-gates,@bill-gates,board,Mind Clone,Evaluate platform potential e long-term strategic positioning
+charlie-munger,@charlie-munger,board,Mind Clone,Assess risks e detect biases using inversion e mental models
+dan-kennedy,@dan-kennedy,board,Mind Clone,Evaluate marketing e positioning through direct response lens
+elon-musk,@elon-musk,board,Mind Clone,Analyze systems through first principles e radical simplification
+peter-thiel,@peter-thiel,board,Mind Clone,Evaluate opportunities for monopoly potential e competitive moats
+ray-dalio,@ray-dalio,board,Mind Clone,Design principles e governance systems for systematic decision-making
+steve-jobs,@steve-jobs,board,Mind Clone,Evaluate products for simplicity focus e magical user experience
+andre-chaperon,@andre-chaperon,copywriting-masters,Expert,Email storytelling e soap opera sequences
+ann-handley,@ann-handley,copywriting-masters,Expert,Content marketing e brand voice
+ben-settle,@ben-settle,copywriting-masters,Expert,Email marketing e daily emails strategy
+brian-dean,@brian-dean,copywriting-masters,Expert,SEO copywriting e skyscraper content
+clayton-makepeace,@clayton-makepeace,copywriting-masters,Expert,Long-form sales copy e financial copywriting
+copy-chief,@copy-chief,copywriting-masters,Hybrid,Orchestrate copywriting team e ensure brand voice
+dan-kennedy-copy,@dan-kennedy-copy,copywriting-masters,Expert,Direct response marketing e no BS copy
+drayton-bird,@drayton-bird,copywriting-masters,Expert,Direct mail e classic direct response
+eugene-schwartz,@eugene-schwartz,copywriting-masters,Expert,Breakthrough advertising e market awareness
+frank-kern,@frank-kern,copywriting-masters,Expert,Mass control e intent-based branding
+gary-halbert,@gary-halbert,copywriting-masters,Expert,Sales letters e boron letters style
+jeff-walker,@jeff-walker,copywriting-masters,Expert,Product launch formula e launch sequences
+joanna-wiebe,@joanna-wiebe,copywriting-masters,Expert,Conversion copywriting e voice of customer
+joe-sugarman,@joe-sugarman,copywriting-masters,Expert,Triggers e psychological selling
+john-caples,@john-caples,copywriting-masters,Expert,Tested advertising methods e headlines
+john-carlton,@john-carlton,copywriting-masters,Expert,Kick-ass copywriting e simple selling
+jon-benson,@jon-benson,copywriting-masters,Expert,Video sales letters e sellerator
+laura-belgray,@laura-belgray,copywriting-masters,Expert,Personality-driven copy e talking shrimp
+perry-marshall,@perry-marshall,copywriting-masters,Expert,80/20 marketing e Google ads copy
+robert-cialdini,@robert-cialdini,copywriting-masters,Expert,Influence e persuasion psychology
+robert-collier,@robert-collier,copywriting-masters,Expert,Letter writing e desire-based copy
+russell-brunson,@russell-brunson,copywriting-masters,Expert,Funnels e dotcom secrets style
+stefan-georgi,@stefan-georgi,copywriting-masters,Expert,VSL e supplement copywriting
+customer-lead,@customer-lead,customer,Hybrid,Ensure every customer achieves goals e becomes advocate
+onboarding-architect,@onboarding-architect,customer,Expert,Design onboarding flows e activation sequences
+researcher,@researcher,deep-research,Expert,Deep research e competitive analysis
+design-lead,@design-lead,design,Hybrid,Set creative direction e ensure visual assets drive conversion
+motion-video-specialist,@motion-video-specialist,design,Expert,VSL e video ads e motion graphics
+performance-designer,@performance-designer,design,Expert,Ad creatives e conversion-focused design
+visual-systems-designer,@visual-systems-designer,design,Expert,Carousels e infographics e visual systems
+design-system,@design-system,design-system,Expert,Brad Frost atomic design e tokens e components
+controller,@controller,finance,Operational,Govern costs budgets e financial compliance
+finance-lead,@finance-lead,finance,Operational,Ensure financial health e control costs e revenue
+financial-analyst,@financial-analyst,finance,Operational,Unit economics analysis e financial KPI tracking
+pricing-strategist,@pricing-strategist,finance,Operational,Set prices that capture value e maintain margins
+data-analyst,@data-analyst,growth,Expert,Metrics cohorts e A/B test analysis
+growth-lead,@growth-lead,growth,Hybrid,Identify e execute growth levers through experimentation
+hormozi-ads,@hormozi-ads,hormozi,Expert,Paid advertising using Hormozi frameworks
+hormozi-advisor,@hormozi-advisor,hormozi,Expert,Strategic business advice Hormozi style
+hormozi-audit,@hormozi-audit,hormozi,Expert,Business audit using $100M methodology
+hormozi-chief,@hormozi-chief,hormozi,Hybrid,Orchestrate Hormozi squad operations
+hormozi-closer,@hormozi-closer,hormozi,Expert,Sales closing using Hormozi techniques
+hormozi-content,@hormozi-content,hormozi,Expert,Content creation Hormozi framework
+hormozi-copy,@hormozi-copy,hormozi,Expert,Copywriting using value equation
+hormozi-hooks,@hormozi-hooks,hormozi,Expert,Hook creation e attention capture
+hormozi-launch,@hormozi-launch,hormozi,Expert,Product launch Hormozi methodology
+hormozi-leads,@hormozi-leads,hormozi,Expert,$100M Leads style lead generation
+hormozi-models,@hormozi-models,hormozi,Expert,Business model design e optimization
+hormozi-offers,@hormozi-offers,hormozi,Expert,Grand Slam Offer creation
+hormozi-pricing,@hormozi-pricing,hormozi,Expert,Pricing strategy value-based
+hormozi-retention,@hormozi-retention,hormozi,Expert,Customer retention e LTV optimization
+hormozi-scale,@hormozi-scale,hormozi,Expert,Scaling operations e systems
+hormozi-workshop,@hormozi-workshop,hormozi,Expert,Workshop e training design
+hotel-ads-specialist,@hotel-ads-specialist,hotel-mkt,Expert,Hotel paid advertising campaigns
+hotel-copywriter,@hotel-copywriter,hotel-mkt,Expert,Hotel-specific copywriting
+hotel-direct-booking,@hotel-direct-booking,hotel-mkt,Expert,Direct booking optimization
+hotel-email-maestro,@hotel-email-maestro,hotel-mkt,Expert,Hotel email marketing sequences
+hotel-guest-strategist,@hotel-guest-strategist,hotel-mkt,Expert,Guest experience e journey
+hotel-mkt-chief,@hotel-mkt-chief,hotel-mkt,Hybrid,Orchestrate hotel marketing squad
+hotel-offer-architect,@hotel-offer-architect,hotel-mkt,Expert,Hotel package e offer design
+hotel-pr-advertorial,@hotel-pr-advertorial,hotel-mkt,Expert,Hotel PR e advertorials
+hotel-reputation-guardian,@hotel-reputation-guardian,hotel-mkt,Expert,Review management e reputation
+hotel-seo-architect,@hotel-seo-architect,hotel-mkt,Expert,Hotel SEO strategy
+hotel-social-creator,@hotel-social-creator,hotel-mkt,Expert,Hotel social media content
+hotel-trend-hunter,@hotel-trend-hunter,hotel-mkt,Expert,Hospitality trends e insights
+hotel-ugc-curator,@hotel-ugc-curator,hotel-mkt,Expert,User generated content curation
+hotel-visual-producer,@hotel-visual-producer,hotel-mkt,Expert,Hotel visual content production
+content-strategist,@content-strategist,marketing,Expert,Content strategy e editorial calendar
+copy-specialist,@copy-specialist,marketing,Expert,Copywriting e messaging
+funnel-architect,@funnel-architect,marketing,Expert,Funnel design e customer journey
+marketing-lead,@marketing-lead,marketing,Hybrid,Orchestrate campaigns e align brand messaging
+offer-engine,@offer-engine,marketing,Expert,Offer creation e value stacking
+seo-specialist,@seo-specialist,marketing,Expert,SEO strategy e organic growth
+clawdbot,@clawdbot,ops,Hybrid,Deterministic executor scripts e infra
+ops-lead,@ops-lead,ops,Hybrid,Orchestrate system operations cross-squad
+ops-manager,@ops-manager,ops,Hybrid,OS management routing e status
+automation-engineer-clickup,@automation-engineer,project-management-clickup,Expert,ClickUp automation workflows
+clickup-architect,@clickup-architect,project-management-clickup,Expert,ClickUp workspace architecture
+content-operations-manager,@content-operations-manager,project-management-clickup,Expert,Content pipeline operations
+crm-builder,@crm-builder,project-management-clickup,Expert,CRM setup in ClickUp
+launch-operations-manager,@launch-operations-manager,project-management-clickup,Expert,Launch project management
+pm-orchestrator,@pm-orchestrator,project-management-clickup,Hybrid,Project management orchestration
+process-diagnostician,@process-diagnostician,project-management-clickup,Expert,Process analysis e improvement
+saas-operations-specialist,@saas-operations-specialist,project-management-clickup,Expert,SaaS ops workflow
+support-operations-specialist,@support-operations-specialist,project-management-clickup,Expert,Support ticket operations
+content-reviewer,@content-reviewer,qa,Operational,Validate content clarity accuracy e brand voice
+process-auditor,@process-auditor,qa,Operational,Audit processes logs e compliance
+qa-lead,@qa-lead,qa,Operational,Orchestrate quality validation e enforce standards
+closer,@closer,sales,Expert,Discovery objections e closing
+sales-analyst,@sales-analyst,sales,Expert,Pipeline e win/loss analysis
+sales-lead,@sales-lead,sales,Hybrid,Commercial strategy e deal guidance
+sdr,@sdr,sales,Expert,Prospecting qualification e outreach
+conversion-optimizer,@conversion-optimizer,sales-pages,Expert,Conversion rate optimization e UX persuasion
+copy-chief-sp,@copy-chief,sales-pages,Hybrid,Copy chief e direct response specialist
+offer-architect,@offer-architect,sales-pages,Expert,Offer architecture e value stack design
+oalanicolas,@oalanicolas,squad-creator,Expert,Squad creation specialist
+pedro-valerio,@pedro-valerio,squad-creator,Expert,Squad creation specialist
+squad-chief,@squad-chief,squad-creator,Hybrid,Squad creation orchestration
+ai-ops,@ai-ops,tech,Expert,AI cost e performance optimization
+application-developer,@application-developer,tech,Expert,Implementation APIs e testing
+automation-engineer,@automation-engineer,tech,Expert,Workflow automation n8n integrations
+ghl-specialist,@ghl-specialist,tech,Expert,GoHighLevel CRM e pipelines
+tech-lead,@tech-lead,tech,Hybrid,Technical architecture e code quality
+translation-lead,@translation-lead,translator,Operational,Translation coordination e cultural adaptation
