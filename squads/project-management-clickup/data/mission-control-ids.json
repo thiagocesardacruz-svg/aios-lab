@@ -1,0 +1,1539 @@
+{
+  "space": {
+    "id": "901313156043",
+    "name": "MISSION CONTROL",
+    "color": null,
+    "private": false,
+    "avatar": null,
+    "admin_can_manage": null,
+    "statuses": [
+      {
+        "id": "p901313156043_ZArAnnXn",
+        "status": "to do",
+        "type": "open",
+        "orderindex": 0,
+        "color": "#87909e"
+      },
+      {
+        "id": "p901313156043_zFqMeK7M",
+        "status": "complete",
+        "type": "closed",
+        "orderindex": 1,
+        "color": "#008844"
+      }
+    ],
+    "multiple_assignees": true,
+    "features": {
+      "due_dates": {
+        "enabled": true,
+        "start_date": true,
+        "remap_due_dates": true,
+        "remap_closed_due_date": false
+      },
+      "sprints": {
+        "enabled": false
+      },
+      "time_tracking": {
+        "enabled": true,
+        "harvest": false,
+        "rollup": false,
+        "default_to_billable": 2
+      },
+      "points": {
+        "enabled": false
+      },
+      "custom_items": {
+        "enabled": false
+      },
+      "priorities": {
+        "enabled": true,
+        "priorities": [
+          {
+            "color": "#f50000",
+            "id": "1",
+            "orderindex": "1",
+            "priority": "urgent"
+          },
+          {
+            "color": "#f8ae00",
+            "id": "2",
+            "orderindex": "2",
+            "priority": "high"
+          },
+          {
+            "color": "#6fddff",
+            "id": "3",
+            "orderindex": "3",
+            "priority": "normal"
+          },
+          {
+            "color": "#d8d8d8",
+            "id": "4",
+            "orderindex": "4",
+            "priority": "low"
+          }
+        ]
+      },
+      "tags": {
+        "enabled": true
+      },
+      "milestones": {
+        "enabled": false
+      },
+      "custom_fields": {
+        "enabled": true
+      },
+      "remap_dependencies": {
+        "enabled": true
+      },
+      "dependency_warning": {
+        "enabled": true
+      },
+      "status_pies": {
+        "enabled": false
+      },
+      "multiple_assignees": {
+        "enabled": true
+      },
+      "emails": {
+        "enabled": true
+      },
+      "scheduler_enabled": false,
+      "dependency_type_enabled": false,
+      "dependency_enforcement": {
+        "enforcement_enabled": false,
+        "enforcement_mode": 0
+      },
+      "reschedule_closed_dependencies": {
+        "enabled": true
+      }
+    },
+    "archived": false
+  },
+  "inbox": {
+    "id": "901325202828",
+    "name": "📥 Inbox",
+    "deleted": false,
+    "orderindex": 0,
+    "content": "Central intake for all AIOS squad demands. All new tasks land here for triage.",
+    "priority": null,
+    "assignee": null,
+    "task_count": 0,
+    "due_date": null,
+    "start_date": null,
+    "folder": {
+      "id": "901316955021",
+      "name": "hidden",
+      "hidden": true,
+      "access": true
+    },
+    "space": {
+      "id": "901313156043",
+      "name": null,
+      "access": true
+    },
+    "inbound_address": "a.t.901325202828.u-42953089.cb66ead8-2a1a-4065-ad96-c648edda1b7a@tasks.clickup.com",
+    "archived": false,
+    "override_statuses": false,
+    "statuses": [
+      {
+        "id": "p901313156043_ZArAnnXn",
+        "status": "to do",
+        "orderindex": 0,
+        "color": "#87909e",
+        "type": "open",
+        "status_group": "proj_901313156043"
+      },
+      {
+        "id": "p901313156043_zFqMeK7M",
+        "status": "complete",
+        "orderindex": 1,
+        "color": "#008844",
+        "type": "closed",
+        "status_group": "proj_901313156043"
+      }
+    ],
+    "permission_level": "create"
+  },
+  "folders": [
+    {
+      "id": "901316955023",
+      "name": "Content Ecosystem",
+      "orderindex": 0,
+      "override_statuses": false,
+      "hidden": false,
+      "space": {
+        "id": "901313156043",
+        "name": null,
+        "access": true
+      },
+      "task_count": "0",
+      "archived": false,
+      "statuses": [],
+      "deleted": false,
+      "lists": [],
+      "permission_level": "create"
+    },
+    {
+      "id": "901316955027",
+      "name": "Copywriting",
+      "orderindex": 1,
+      "override_statuses": false,
+      "hidden": false,
+      "space": {
+        "id": "901313156043",
+        "name": null,
+        "access": true
+      },
+      "task_count": "0",
+      "archived": false,
+      "statuses": [],
+      "deleted": false,
+      "lists": [],
+      "permission_level": "create"
+    },
+    {
+      "id": "901316955029",
+      "name": "Creative Studio",
+      "orderindex": 2,
+      "override_statuses": false,
+      "hidden": false,
+      "space": {
+        "id": "901313156043",
+        "name": null,
+        "access": true
+      },
+      "task_count": "0",
+      "archived": false,
+      "statuses": [],
+      "deleted": false,
+      "lists": [],
+      "permission_level": "create"
+    },
+    {
+      "id": "901316955032",
+      "name": "Full Stack Dev",
+      "orderindex": 3,
+      "override_statuses": false,
+      "hidden": false,
+      "space": {
+        "id": "901313156043",
+        "name": null,
+        "access": true
+      },
+      "task_count": "0",
+      "archived": false,
+      "statuses": [],
+      "deleted": false,
+      "lists": [],
+      "permission_level": "create"
+    },
+    {
+      "id": "901316955033",
+      "name": "Funnel Creator",
+      "orderindex": 4,
+      "override_statuses": false,
+      "hidden": false,
+      "space": {
+        "id": "901313156043",
+        "name": null,
+        "access": true
+      },
+      "task_count": "0",
+      "archived": false,
+      "statuses": [],
+      "deleted": false,
+      "lists": [],
+      "permission_level": "create"
+    },
+    {
+      "id": "901316955034",
+      "name": "Media Buy",
+      "orderindex": 5,
+      "override_statuses": false,
+      "hidden": false,
+      "space": {
+        "id": "901313156043",
+        "name": null,
+        "access": true
+      },
+      "task_count": "0",
+      "archived": false,
+      "statuses": [],
+      "deleted": false,
+      "lists": [],
+      "permission_level": "create"
+    },
+    {
+      "id": "901316955035",
+      "name": "Data & Research",
+      "orderindex": 6,
+      "override_statuses": false,
+      "hidden": false,
+      "space": {
+        "id": "901313156043",
+        "name": null,
+        "access": true
+      },
+      "task_count": "0",
+      "archived": false,
+      "statuses": [],
+      "deleted": false,
+      "lists": [],
+      "permission_level": "create"
+    },
+    {
+      "id": "901316955038",
+      "name": "Sales",
+      "orderindex": 7,
+      "override_statuses": false,
+      "hidden": false,
+      "space": {
+        "id": "901313156043",
+        "name": null,
+        "access": true
+      },
+      "task_count": "0",
+      "archived": false,
+      "statuses": [],
+      "deleted": false,
+      "lists": [],
+      "permission_level": "create"
+    },
+    {
+      "id": "901316955040",
+      "name": "Infoproduct Creation",
+      "orderindex": 8,
+      "override_statuses": false,
+      "hidden": false,
+      "space": {
+        "id": "901313156043",
+        "name": null,
+        "access": true
+      },
+      "task_count": "0",
+      "archived": false,
+      "statuses": [],
+      "deleted": false,
+      "lists": [],
+      "permission_level": "create"
+    },
+    {
+      "id": "901316955041",
+      "name": "Design System",
+      "orderindex": 9,
+      "override_statuses": false,
+      "hidden": false,
+      "space": {
+        "id": "901313156043",
+        "name": null,
+        "access": true
+      },
+      "task_count": "0",
+      "archived": false,
+      "statuses": [],
+      "deleted": false,
+      "lists": [],
+      "permission_level": "create"
+    },
+    {
+      "id": "901316955046",
+      "name": "Suporte e Comunidade",
+      "orderindex": 10,
+      "override_statuses": false,
+      "hidden": false,
+      "space": {
+        "id": "901313156043",
+        "name": null,
+        "access": true
+      },
+      "task_count": "0",
+      "archived": false,
+      "statuses": [],
+      "deleted": false,
+      "lists": [],
+      "permission_level": "create"
+    },
+    {
+      "id": "901316955050",
+      "name": "Operations",
+      "orderindex": 11,
+      "override_statuses": false,
+      "hidden": false,
+      "space": {
+        "id": "901313156043",
+        "name": null,
+        "access": true
+      },
+      "task_count": "0",
+      "archived": false,
+      "statuses": [],
+      "deleted": false,
+      "lists": [],
+      "permission_level": "create"
+    },
+    {
+      "id": "901316955051",
+      "name": "Advisory",
+      "orderindex": 12,
+      "override_statuses": false,
+      "hidden": false,
+      "space": {
+        "id": "901313156043",
+        "name": null,
+        "access": true
+      },
+      "task_count": "0",
+      "archived": false,
+      "statuses": [],
+      "deleted": false,
+      "lists": [],
+      "permission_level": "create"
+    },
+    {
+      "id": "901316955053",
+      "name": "Projects",
+      "orderindex": 13,
+      "override_statuses": false,
+      "hidden": false,
+      "space": {
+        "id": "901313156043",
+        "name": null,
+        "access": true
+      },
+      "task_count": "0",
+      "archived": false,
+      "statuses": [],
+      "deleted": false,
+      "lists": [],
+      "permission_level": "create"
+    }
+  ],
+  "lists": [
+    {
+      "id": "901325202828",
+      "name": "📥 Inbox",
+      "deleted": false,
+      "orderindex": 0,
+      "content": "Central intake for all AIOS squad demands. All new tasks land here for triage.",
+      "priority": null,
+      "assignee": null,
+      "task_count": 0,
+      "due_date": null,
+      "start_date": null,
+      "folder": "Inbox (folderless)",
+      "space": {
+        "id": "901313156043",
+        "name": null,
+        "access": true
+      },
+      "inbound_address": "a.t.901325202828.u-42953089.cb66ead8-2a1a-4065-ad96-c648edda1b7a@tasks.clickup.com",
+      "archived": false,
+      "override_statuses": false,
+      "statuses": [
+        {
+          "id": "p901313156043_ZArAnnXn",
+          "status": "to do",
+          "orderindex": 0,
+          "color": "#87909e",
+          "type": "open",
+          "status_group": "proj_901313156043"
+        },
+        {
+          "id": "p901313156043_zFqMeK7M",
+          "status": "complete",
+          "orderindex": 1,
+          "color": "#008844",
+          "type": "closed",
+          "status_group": "proj_901313156043"
+        }
+      ],
+      "permission_level": "create"
+    },
+    {
+      "id": "901325202831",
+      "name": "Content Tasks",
+      "deleted": false,
+      "orderindex": 0,
+      "content": "",
+      "priority": null,
+      "assignee": null,
+      "task_count": 0,
+      "due_date": null,
+      "start_date": null,
+      "folder": "Content Ecosystem",
+      "space": {
+        "id": "901313156043",
+        "name": null,
+        "access": true
+      },
+      "inbound_address": "a.t.901325202831.u-42953089.88f83723-fab0-424c-ac42-d3e6ad788ba8@tasks.clickup.com",
+      "archived": false,
+      "override_statuses": false,
+      "statuses": [
+        {
+          "id": "p901313156043_ZArAnnXn",
+          "status": "to do",
+          "orderindex": 0,
+          "color": "#87909e",
+          "type": "open",
+          "status_group": "proj_901313156043"
+        },
+        {
+          "id": "p901313156043_zFqMeK7M",
+          "status": "complete",
+          "orderindex": 1,
+          "color": "#008844",
+          "type": "closed",
+          "status_group": "proj_901313156043"
+        }
+      ],
+      "permission_level": "create"
+    },
+    {
+      "id": "901325202832",
+      "name": "YouTube Lives Tasks",
+      "deleted": false,
+      "orderindex": 1,
+      "content": "",
+      "priority": null,
+      "assignee": null,
+      "task_count": 0,
+      "due_date": null,
+      "start_date": null,
+      "folder": "Content Ecosystem",
+      "space": {
+        "id": "901313156043",
+        "name": null,
+        "access": true
+      },
+      "inbound_address": "a.t.901325202832.u-42953089.ca1101dd-de70-4bdb-8464-cf036897f812@tasks.clickup.com",
+      "archived": false,
+      "override_statuses": false,
+      "statuses": [
+        {
+          "id": "p901313156043_ZArAnnXn",
+          "status": "to do",
+          "orderindex": 0,
+          "color": "#87909e",
+          "type": "open",
+          "status_group": "proj_901313156043"
+        },
+        {
+          "id": "p901313156043_zFqMeK7M",
+          "status": "complete",
+          "orderindex": 1,
+          "color": "#008844",
+          "type": "closed",
+          "status_group": "proj_901313156043"
+        }
+      ],
+      "permission_level": "create"
+    },
+    {
+      "id": "901325202836",
+      "name": "Copy Tasks",
+      "deleted": false,
+      "orderindex": 0,
+      "content": "",
+      "priority": null,
+      "assignee": null,
+      "task_count": 0,
+      "due_date": null,
+      "start_date": null,
+      "folder": "Copywriting",
+      "space": {
+        "id": "901313156043",
+        "name": null,
+        "access": true
+      },
+      "inbound_address": "a.t.901325202836.u-42953089.c530d99a-18a3-44a2-ba36-cba1179f4f11@tasks.clickup.com",
+      "archived": false,
+      "override_statuses": false,
+      "statuses": [
+        {
+          "id": "p901313156043_ZArAnnXn",
+          "status": "to do",
+          "orderindex": 0,
+          "color": "#87909e",
+          "type": "open",
+          "status_group": "proj_901313156043"
+        },
+        {
+          "id": "p901313156043_zFqMeK7M",
+          "status": "complete",
+          "orderindex": 1,
+          "color": "#008844",
+          "type": "closed",
+          "status_group": "proj_901313156043"
+        }
+      ],
+      "permission_level": "create"
+    },
+    {
+      "id": "901325202839",
+      "name": "Creative Tasks",
+      "deleted": false,
+      "orderindex": 0,
+      "content": "",
+      "priority": null,
+      "assignee": null,
+      "task_count": 0,
+      "due_date": null,
+      "start_date": null,
+      "folder": "Creative Studio",
+      "space": {
+        "id": "901313156043",
+        "name": null,
+        "access": true
+      },
+      "inbound_address": "a.t.901325202839.u-42953089.f25faf18-8d60-45d5-93d6-af7a6574d8b0@tasks.clickup.com",
+      "archived": false,
+      "override_statuses": false,
+      "statuses": [
+        {
+          "id": "p901313156043_ZArAnnXn",
+          "status": "to do",
+          "orderindex": 0,
+          "color": "#87909e",
+          "type": "open",
+          "status_group": "proj_901313156043"
+        },
+        {
+          "id": "p901313156043_zFqMeK7M",
+          "status": "complete",
+          "orderindex": 1,
+          "color": "#008844",
+          "type": "closed",
+          "status_group": "proj_901313156043"
+        }
+      ],
+      "permission_level": "create"
+    },
+    {
+      "id": "901325202841",
+      "name": "Dev Tasks",
+      "deleted": false,
+      "orderindex": 0,
+      "content": "",
+      "priority": null,
+      "assignee": null,
+      "task_count": 0,
+      "due_date": null,
+      "start_date": null,
+      "folder": "Full Stack Dev",
+      "space": {
+        "id": "901313156043",
+        "name": null,
+        "access": true
+      },
+      "inbound_address": "a.t.901325202841.u-42953089.3ddd4252-0e52-4cb3-872b-58cda0761dfe@tasks.clickup.com",
+      "archived": false,
+      "override_statuses": false,
+      "statuses": [
+        {
+          "id": "p901313156043_ZArAnnXn",
+          "status": "to do",
+          "orderindex": 0,
+          "color": "#87909e",
+          "type": "open",
+          "status_group": "proj_901313156043"
+        },
+        {
+          "id": "p901313156043_zFqMeK7M",
+          "status": "complete",
+          "orderindex": 1,
+          "color": "#008844",
+          "type": "closed",
+          "status_group": "proj_901313156043"
+        }
+      ],
+      "permission_level": "create"
+    },
+    {
+      "id": "901325202843",
+      "name": "AIOS Core Dev Tasks",
+      "deleted": false,
+      "orderindex": 1,
+      "content": "",
+      "priority": null,
+      "assignee": null,
+      "task_count": 0,
+      "due_date": null,
+      "start_date": null,
+      "folder": "Full Stack Dev",
+      "space": {
+        "id": "901313156043",
+        "name": null,
+        "access": true
+      },
+      "inbound_address": "a.t.901325202843.u-42953089.2c239fcc-54ad-4eed-8a80-801f21891d69@tasks.clickup.com",
+      "archived": false,
+      "override_statuses": false,
+      "statuses": [
+        {
+          "id": "p901313156043_ZArAnnXn",
+          "status": "to do",
+          "orderindex": 0,
+          "color": "#87909e",
+          "type": "open",
+          "status_group": "proj_901313156043"
+        },
+        {
+          "id": "p901313156043_zFqMeK7M",
+          "status": "complete",
+          "orderindex": 1,
+          "color": "#008844",
+          "type": "closed",
+          "status_group": "proj_901313156043"
+        }
+      ],
+      "permission_level": "create"
+    },
+    {
+      "id": "901325202844",
+      "name": "Funnel Tasks",
+      "deleted": false,
+      "orderindex": 0,
+      "content": "",
+      "priority": null,
+      "assignee": null,
+      "task_count": 0,
+      "due_date": null,
+      "start_date": null,
+      "folder": "Funnel Creator",
+      "space": {
+        "id": "901313156043",
+        "name": null,
+        "access": true
+      },
+      "inbound_address": "a.t.901325202844.u-42953089.42dfe61b-ee70-482b-8c0e-8dbbba6b1983@tasks.clickup.com",
+      "archived": false,
+      "override_statuses": false,
+      "statuses": [
+        {
+          "id": "p901313156043_ZArAnnXn",
+          "status": "to do",
+          "orderindex": 0,
+          "color": "#87909e",
+          "type": "open",
+          "status_group": "proj_901313156043"
+        },
+        {
+          "id": "p901313156043_zFqMeK7M",
+          "status": "complete",
+          "orderindex": 1,
+          "color": "#008844",
+          "type": "closed",
+          "status_group": "proj_901313156043"
+        }
+      ],
+      "permission_level": "create"
+    },
+    {
+      "id": "901325202845",
+      "name": "Campaign Tasks",
+      "deleted": false,
+      "orderindex": 0,
+      "content": "",
+      "priority": null,
+      "assignee": null,
+      "task_count": 0,
+      "due_date": null,
+      "start_date": null,
+      "folder": "Media Buy",
+      "space": {
+        "id": "901313156043",
+        "name": null,
+        "access": true
+      },
+      "inbound_address": "a.t.901325202845.u-42953089.e987a6cd-ef72-4480-a795-0a5aec4c62ae@tasks.clickup.com",
+      "archived": false,
+      "override_statuses": false,
+      "statuses": [
+        {
+          "id": "p901313156043_ZArAnnXn",
+          "status": "to do",
+          "orderindex": 0,
+          "color": "#87909e",
+          "type": "open",
+          "status_group": "proj_901313156043"
+        },
+        {
+          "id": "p901313156043_zFqMeK7M",
+          "status": "complete",
+          "orderindex": 1,
+          "color": "#008844",
+          "type": "closed",
+          "status_group": "proj_901313156043"
+        }
+      ],
+      "permission_level": "create"
+    },
+    {
+      "id": "901325202847",
+      "name": "Analytics Tasks",
+      "deleted": false,
+      "orderindex": 0,
+      "content": "",
+      "priority": null,
+      "assignee": null,
+      "task_count": 0,
+      "due_date": null,
+      "start_date": null,
+      "folder": "Data & Research",
+      "space": {
+        "id": "901313156043",
+        "name": null,
+        "access": true
+      },
+      "inbound_address": "a.t.901325202847.u-42953089.82d557b6-c225-4092-84bd-131ce789bf8c@tasks.clickup.com",
+      "archived": false,
+      "override_statuses": false,
+      "statuses": [
+        {
+          "id": "p901313156043_ZArAnnXn",
+          "status": "to do",
+          "orderindex": 0,
+          "color": "#87909e",
+          "type": "open",
+          "status_group": "proj_901313156043"
+        },
+        {
+          "id": "p901313156043_zFqMeK7M",
+          "status": "complete",
+          "orderindex": 1,
+          "color": "#008844",
+          "type": "closed",
+          "status_group": "proj_901313156043"
+        }
+      ],
+      "permission_level": "create"
+    },
+    {
+      "id": "901325202849",
+      "name": "Deep Scraper Tasks",
+      "deleted": false,
+      "orderindex": 1,
+      "content": "",
+      "priority": null,
+      "assignee": null,
+      "task_count": 0,
+      "due_date": null,
+      "start_date": null,
+      "folder": "Data & Research",
+      "space": {
+        "id": "901313156043",
+        "name": null,
+        "access": true
+      },
+      "inbound_address": "a.t.901325202849.u-42953089.1fe436b4-ec39-45b5-8516-ed9ab303ecd8@tasks.clickup.com",
+      "archived": false,
+      "override_statuses": false,
+      "statuses": [
+        {
+          "id": "p901313156043_ZArAnnXn",
+          "status": "to do",
+          "orderindex": 0,
+          "color": "#87909e",
+          "type": "open",
+          "status_group": "proj_901313156043"
+        },
+        {
+          "id": "p901313156043_zFqMeK7M",
+          "status": "complete",
+          "orderindex": 1,
+          "color": "#008844",
+          "type": "closed",
+          "status_group": "proj_901313156043"
+        }
+      ],
+      "permission_level": "create"
+    },
+    {
+      "id": "901325202851",
+      "name": "Sales Tasks",
+      "deleted": false,
+      "orderindex": 0,
+      "content": "",
+      "priority": null,
+      "assignee": null,
+      "task_count": 0,
+      "due_date": null,
+      "start_date": null,
+      "folder": "Sales",
+      "space": {
+        "id": "901313156043",
+        "name": null,
+        "access": true
+      },
+      "inbound_address": "a.t.901325202851.u-42953089.353bc849-c030-4b81-8e82-3d11a451c401@tasks.clickup.com",
+      "archived": false,
+      "override_statuses": false,
+      "statuses": [
+        {
+          "id": "p901313156043_ZArAnnXn",
+          "status": "to do",
+          "orderindex": 0,
+          "color": "#87909e",
+          "type": "open",
+          "status_group": "proj_901313156043"
+        },
+        {
+          "id": "p901313156043_zFqMeK7M",
+          "status": "complete",
+          "orderindex": 1,
+          "color": "#008844",
+          "type": "closed",
+          "status_group": "proj_901313156043"
+        }
+      ],
+      "permission_level": "create"
+    },
+    {
+      "id": "901325202854",
+      "name": "Product Tasks",
+      "deleted": false,
+      "orderindex": 0,
+      "content": "",
+      "priority": null,
+      "assignee": null,
+      "task_count": 0,
+      "due_date": null,
+      "start_date": null,
+      "folder": "Infoproduct Creation",
+      "space": {
+        "id": "901313156043",
+        "name": null,
+        "access": true
+      },
+      "inbound_address": "a.t.901325202854.u-42953089.24935cc6-d6ef-43c7-bc2e-8219a46257c5@tasks.clickup.com",
+      "archived": false,
+      "override_statuses": false,
+      "statuses": [
+        {
+          "id": "p901313156043_ZArAnnXn",
+          "status": "to do",
+          "orderindex": 0,
+          "color": "#87909e",
+          "type": "open",
+          "status_group": "proj_901313156043"
+        },
+        {
+          "id": "p901313156043_zFqMeK7M",
+          "status": "complete",
+          "orderindex": 1,
+          "color": "#008844",
+          "type": "closed",
+          "status_group": "proj_901313156043"
+        }
+      ],
+      "permission_level": "create"
+    },
+    {
+      "id": "901325202857",
+      "name": "Design Tasks",
+      "deleted": false,
+      "orderindex": 0,
+      "content": "",
+      "priority": null,
+      "assignee": null,
+      "task_count": 0,
+      "due_date": null,
+      "start_date": null,
+      "folder": "Design System",
+      "space": {
+        "id": "901313156043",
+        "name": null,
+        "access": true
+      },
+      "inbound_address": "a.t.901325202857.u-42953089.859f9fdd-0917-437f-9a83-412dc721c0b7@tasks.clickup.com",
+      "archived": false,
+      "override_statuses": false,
+      "statuses": [
+        {
+          "id": "p901313156043_ZArAnnXn",
+          "status": "to do",
+          "orderindex": 0,
+          "color": "#87909e",
+          "type": "open",
+          "status_group": "proj_901313156043"
+        },
+        {
+          "id": "p901313156043_zFqMeK7M",
+          "status": "complete",
+          "orderindex": 1,
+          "color": "#008844",
+          "type": "closed",
+          "status_group": "proj_901313156043"
+        }
+      ],
+      "permission_level": "create"
+    },
+    {
+      "id": "901325202860",
+      "name": "Communication Tasks",
+      "deleted": false,
+      "orderindex": 0,
+      "content": "",
+      "priority": null,
+      "assignee": null,
+      "task_count": 0,
+      "due_date": null,
+      "start_date": null,
+      "folder": "Suporte e Comunidade",
+      "space": {
+        "id": "901313156043",
+        "name": null,
+        "access": true
+      },
+      "inbound_address": "a.t.901325202860.u-42953089.05358b32-9de4-4e2b-9995-946e9da94c88@tasks.clickup.com",
+      "archived": false,
+      "override_statuses": false,
+      "statuses": [
+        {
+          "id": "p901313156043_ZArAnnXn",
+          "status": "to do",
+          "orderindex": 0,
+          "color": "#87909e",
+          "type": "open",
+          "status_group": "proj_901313156043"
+        },
+        {
+          "id": "p901313156043_zFqMeK7M",
+          "status": "complete",
+          "orderindex": 1,
+          "color": "#008844",
+          "type": "closed",
+          "status_group": "proj_901313156043"
+        }
+      ],
+      "permission_level": "create"
+    },
+    {
+      "id": "901325202862",
+      "name": "Community Tasks",
+      "deleted": false,
+      "orderindex": 1,
+      "content": "",
+      "priority": null,
+      "assignee": null,
+      "task_count": 0,
+      "due_date": null,
+      "start_date": null,
+      "folder": "Suporte e Comunidade",
+      "space": {
+        "id": "901313156043",
+        "name": null,
+        "access": true
+      },
+      "inbound_address": "a.t.901325202862.u-42953089.e1467d91-eef6-4ee7-8364-de185c54cc22@tasks.clickup.com",
+      "archived": false,
+      "override_statuses": false,
+      "statuses": [
+        {
+          "id": "p901313156043_ZArAnnXn",
+          "status": "to do",
+          "orderindex": 0,
+          "color": "#87909e",
+          "type": "open",
+          "status_group": "proj_901313156043"
+        },
+        {
+          "id": "p901313156043_zFqMeK7M",
+          "status": "complete",
+          "orderindex": 1,
+          "color": "#008844",
+          "type": "closed",
+          "status_group": "proj_901313156043"
+        }
+      ],
+      "permission_level": "create"
+    },
+    {
+      "id": "901325202865",
+      "name": "Strategy Tasks",
+      "deleted": false,
+      "orderindex": 2,
+      "content": "",
+      "priority": null,
+      "assignee": null,
+      "task_count": 0,
+      "due_date": null,
+      "start_date": null,
+      "folder": "Suporte e Comunidade",
+      "space": {
+        "id": "901313156043",
+        "name": null,
+        "access": true
+      },
+      "inbound_address": "a.t.901325202865.u-42953089.a3176067-7d39-4a78-b15b-7f99c5f820d2@tasks.clickup.com",
+      "archived": false,
+      "override_statuses": false,
+      "statuses": [
+        {
+          "id": "p901313156043_ZArAnnXn",
+          "status": "to do",
+          "orderindex": 0,
+          "color": "#87909e",
+          "type": "open",
+          "status_group": "proj_901313156043"
+        },
+        {
+          "id": "p901313156043_zFqMeK7M",
+          "status": "complete",
+          "orderindex": 1,
+          "color": "#008844",
+          "type": "closed",
+          "status_group": "proj_901313156043"
+        }
+      ],
+      "permission_level": "create"
+    },
+    {
+      "id": "901325202867",
+      "name": "Project Management Tasks",
+      "deleted": false,
+      "orderindex": 0,
+      "content": "",
+      "priority": null,
+      "assignee": null,
+      "task_count": 0,
+      "due_date": null,
+      "start_date": null,
+      "folder": "Operations",
+      "space": {
+        "id": "901313156043",
+        "name": null,
+        "access": true
+      },
+      "inbound_address": "a.t.901325202867.u-42953089.57da634c-9d24-4653-9ed1-0e63ab9c2028@tasks.clickup.com",
+      "archived": false,
+      "override_statuses": false,
+      "statuses": [
+        {
+          "id": "p901313156043_ZArAnnXn",
+          "status": "to do",
+          "orderindex": 0,
+          "color": "#87909e",
+          "type": "open",
+          "status_group": "proj_901313156043"
+        },
+        {
+          "id": "p901313156043_zFqMeK7M",
+          "status": "complete",
+          "orderindex": 1,
+          "color": "#008844",
+          "type": "closed",
+          "status_group": "proj_901313156043"
+        }
+      ],
+      "permission_level": "create"
+    },
+    {
+      "id": "901325202868",
+      "name": "DevOps Tasks",
+      "deleted": false,
+      "orderindex": 1,
+      "content": "",
+      "priority": null,
+      "assignee": null,
+      "task_count": 0,
+      "due_date": null,
+      "start_date": null,
+      "folder": "Operations",
+      "space": {
+        "id": "901313156043",
+        "name": null,
+        "access": true
+      },
+      "inbound_address": "a.t.901325202868.u-42953089.362ab9a9-af55-491e-b6f0-064c18a830cf@tasks.clickup.com",
+      "archived": false,
+      "override_statuses": false,
+      "statuses": [
+        {
+          "id": "p901313156043_ZArAnnXn",
+          "status": "to do",
+          "orderindex": 0,
+          "color": "#87909e",
+          "type": "open",
+          "status_group": "proj_901313156043"
+        },
+        {
+          "id": "p901313156043_zFqMeK7M",
+          "status": "complete",
+          "orderindex": 1,
+          "color": "#008844",
+          "type": "closed",
+          "status_group": "proj_901313156043"
+        }
+      ],
+      "permission_level": "create"
+    },
+    {
+      "id": "901325202871",
+      "name": "Conselho Tasks",
+      "deleted": false,
+      "orderindex": 0,
+      "content": "",
+      "priority": null,
+      "assignee": null,
+      "task_count": 0,
+      "due_date": null,
+      "start_date": null,
+      "folder": "Advisory",
+      "space": {
+        "id": "901313156043",
+        "name": null,
+        "access": true
+      },
+      "inbound_address": "a.t.901325202871.u-42953089.c04eca23-a3e5-480f-99a3-2e6b172968c9@tasks.clickup.com",
+      "archived": false,
+      "override_statuses": false,
+      "statuses": [
+        {
+          "id": "p901313156043_ZArAnnXn",
+          "status": "to do",
+          "orderindex": 0,
+          "color": "#87909e",
+          "type": "open",
+          "status_group": "proj_901313156043"
+        },
+        {
+          "id": "p901313156043_zFqMeK7M",
+          "status": "complete",
+          "orderindex": 1,
+          "color": "#008844",
+          "type": "closed",
+          "status_group": "proj_901313156043"
+        }
+      ],
+      "permission_level": "create"
+    },
+    {
+      "id": "901325202872",
+      "name": "Multi-Squad Projects",
+      "deleted": false,
+      "orderindex": 0,
+      "content": "",
+      "priority": null,
+      "assignee": null,
+      "task_count": 0,
+      "due_date": null,
+      "start_date": null,
+      "folder": "Projects",
+      "space": {
+        "id": "901313156043",
+        "name": null,
+        "access": true
+      },
+      "inbound_address": "a.t.901325202872.u-42953089.af49b1c4-4b4b-4b72-9f9b-8e4ca81d1b54@tasks.clickup.com",
+      "archived": false,
+      "override_statuses": false,
+      "statuses": [
+        {
+          "id": "p901313156043_ZArAnnXn",
+          "status": "to do",
+          "orderindex": 0,
+          "color": "#87909e",
+          "type": "open",
+          "status_group": "proj_901313156043"
+        },
+        {
+          "id": "p901313156043_zFqMeK7M",
+          "status": "complete",
+          "orderindex": 1,
+          "color": "#008844",
+          "type": "closed",
+          "status_group": "proj_901313156043"
+        }
+      ],
+      "permission_level": "create"
+    }
+  ],
+  "customFields": [
+    {
+      "name": "Squad",
+      "type": "drop_down"
+    },
+    {
+      "name": "Task Type",
+      "type": "drop_down"
+    },
+    {
+      "name": "Project",
+      "type": "short_text"
+    },
+    {
+      "name": "Requested By",
+      "type": "drop_down"
+    },
+    {
+      "name": "Approval Status",
+      "type": "drop_down"
+    }
+  ],
+  "customFieldIds": {
+    "Project": "0999d1c7-27e2-4912-bb73-1141baa62a0d",
+    "Requested By": "62f8588f-261b-458c-970b-2e80410a11e0",
+    "Task Type": "94d8463e-2698-4577-9541-c51a408639de",
+    "Squad": "c4ca0674-b10b-496c-8b83-a9b44e6e7750",
+    "Approval Status": "d90e349b-acdf-4e0c-8b36-bf2974bd2d3d"
+  },
+  "structure": {
+    "folders": [
+      {
+        "id": "901316955023",
+        "name": "Content Ecosystem"
+      },
+      {
+        "id": "901316955027",
+        "name": "Copywriting"
+      },
+      {
+        "id": "901316955029",
+        "name": "Creative Studio"
+      },
+      {
+        "id": "901316955032",
+        "name": "Full Stack Dev"
+      },
+      {
+        "id": "901316955033",
+        "name": "Funnel Creator"
+      },
+      {
+        "id": "901316955034",
+        "name": "Media Buy"
+      },
+      {
+        "id": "901316955035",
+        "name": "Data & Research"
+      },
+      {
+        "id": "901316955038",
+        "name": "Sales"
+      },
+      {
+        "id": "901316955040",
+        "name": "Infoproduct Creation"
+      },
+      {
+        "id": "901316955041",
+        "name": "Design System"
+      },
+      {
+        "id": "901316955046",
+        "name": "Suporte e Comunidade"
+      },
+      {
+        "id": "901316955050",
+        "name": "Operations"
+      },
+      {
+        "id": "901316955051",
+        "name": "Advisory"
+      },
+      {
+        "id": "901316955053",
+        "name": "Projects"
+      }
+    ],
+    "lists": [
+      {
+        "id": "901325202831",
+        "name": "Content Tasks",
+        "folderId": "901316955023",
+        "folderName": "Content Ecosystem"
+      },
+      {
+        "id": "901325202832",
+        "name": "YouTube Lives Tasks",
+        "folderId": "901316955023",
+        "folderName": "Content Ecosystem"
+      },
+      {
+        "id": "901325202836",
+        "name": "Copy Tasks",
+        "folderId": "901316955027",
+        "folderName": "Copywriting"
+      },
+      {
+        "id": "901325202839",
+        "name": "Creative Tasks",
+        "folderId": "901316955029",
+        "folderName": "Creative Studio"
+      },
+      {
+        "id": "901325202841",
+        "name": "Dev Tasks",
+        "folderId": "901316955032",
+        "folderName": "Full Stack Dev"
+      },
+      {
+        "id": "901325202843",
+        "name": "AIOS Core Dev Tasks",
+        "folderId": "901316955032",
+        "folderName": "Full Stack Dev"
+      },
+      {
+        "id": "901325202844",
+        "name": "Funnel Tasks",
+        "folderId": "901316955033",
+        "folderName": "Funnel Creator"
+      },
+      {
+        "id": "901325202845",
+        "name": "Campaign Tasks",
+        "folderId": "901316955034",
+        "folderName": "Media Buy"
+      },
+      {
+        "id": "901325202847",
+        "name": "Analytics Tasks",
+        "folderId": "901316955035",
+        "folderName": "Data & Research"
+      },
+      {
+        "id": "901325202849",
+        "name": "Deep Scraper Tasks",
+        "folderId": "901316955035",
+        "folderName": "Data & Research"
+      },
+      {
+        "id": "901325202851",
+        "name": "Sales Tasks",
+        "folderId": "901316955038",
+        "folderName": "Sales"
+      },
+      {
+        "id": "901325202854",
+        "name": "Product Tasks",
+        "folderId": "901316955040",
+        "folderName": "Infoproduct Creation"
+      },
+      {
+        "id": "901325202857",
+        "name": "Design Tasks",
+        "folderId": "901316955041",
+        "folderName": "Design System"
+      },
+      {
+        "id": "901325202860",
+        "name": "Communication Tasks",
+        "folderId": "901316955046",
+        "folderName": "Suporte e Comunidade"
+      },
+      {
+        "id": "901325202862",
+        "name": "Community Tasks",
+        "folderId": "901316955046",
+        "folderName": "Suporte e Comunidade"
+      },
+      {
+        "id": "901325202865",
+        "name": "Strategy Tasks",
+        "folderId": "901316955046",
+        "folderName": "Suporte e Comunidade"
+      },
+      {
+        "id": "901325202867",
+        "name": "Project Management Tasks",
+        "folderId": "901316955050",
+        "folderName": "Operations"
+      },
+      {
+        "id": "901325202868",
+        "name": "DevOps Tasks",
+        "folderId": "901316955050",
+        "folderName": "Operations"
+      },
+      {
+        "id": "901325202871",
+        "name": "Conselho Tasks",
+        "folderId": "901316955051",
+        "folderName": "Advisory"
+      },
+      {
+        "id": "901325202872",
+        "name": "Multi-Squad Projects",
+        "folderId": "901316955053",
+        "folderName": "Projects"
+      },
+      {
+        "id": "901325202828",
+        "name": "📥 Inbox",
+        "folderId": null,
+        "folderName": "Space (folderless)"
+      }
+    ]
+  },
+  "n8nWorkflows": {
+    "novaDemanda": {
+      "id": "OPhn7VWFwEvjuRCj",
+      "name": "Mission Control - Nova Demanda",
+      "active": true,
+      "webhook": "mission-control/task-created"
+    },
+    "statusAlterado": {
+      "id": "XCC7EbeAkxxXVVdn",
+      "name": "Mission Control - Status Alterado",
+      "active": false,
+      "webhook": "mission-control/task-status-updated",
+      "note": "Desativado 2026-02-09: substituído por autoTriageRoute. Webhook deletado."
+    },
+    "autoArchive": {
+      "id": "bl6GJ9MzW0J6HlFS",
+      "name": "Mission Control - Auto Archive",
+      "active": true
+    },
+    "notificationFlowV4": {
+      "id": "kkiCdcg6AxFi3Sjn",
+      "name": "Mission Control - Notification Flow v4",
+      "active": true
+    },
+    "autoTriageRoute": {
+      "id": "lzSCpS4bvOpzfq3u",
+      "name": "MC Auto-Triage + Route",
+      "active": true,
+      "webhook": "mc-auto/status-changed",
+      "description": "Auto-triage (inbox+squad → awaiting approval) + Auto-route (backlog+squad → target list)"
+    },
+    "priorityDueDate": {
+      "id": "PZWOr86JwcZM3S2Q",
+      "name": "MC Priority Due Date",
+      "active": true,
+      "webhook": "mc-auto/priority-changed",
+      "description": "Auto-set due date based on priority (urgent=+1d, high=+3d, normal=+7d, low=+14d)"
+    }
+  },
+  "webhooks": [
+    {
+      "name": "MC - Task Created",
+      "endpoint": "https://n8n.nataliatanaka.com.br/webhook/mission-control/task-created",
+      "events": [
+        "taskCreated"
+      ],
+      "space_id": 901313156043,
+      "id": "af3876cf-7b22-402b-90c0-c7e96ad014c5"
+    },
+    {
+      "name": "MC - Auto Status Changed",
+      "endpoint": "https://n8n.nataliatanaka.com.br/webhook/mc-auto/status-changed",
+      "events": [
+        "taskStatusUpdated"
+      ],
+      "space_id": 901313156043,
+      "id": "3941ecfe-127e-4298-a695-c252b097ba62"
+    },
+    {
+      "name": "MC - Auto Priority Changed",
+      "endpoint": "https://n8n.nataliatanaka.com.br/webhook/mc-auto/priority-changed",
+      "events": [
+        "taskPriorityUpdated"
+      ],
+      "space_id": 901313156043,
+      "id": "98fc8b39-5c95-46a9-9da4-30c46e419841"
+    }
+  ]
+}

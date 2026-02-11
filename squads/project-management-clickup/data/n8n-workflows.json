@@ -1,0 +1,715 @@
+[
+  {
+    "name": "CRM ClickUp - Novo Lead Criado",
+    "nodes": [
+      {
+        "id": "webhook",
+        "name": "Webhook ClickUp",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 1.1,
+        "position": [
+          250,
+          300
+        ],
+        "webhookId": "clickup-crm-task-created",
+        "parameters": {
+          "path": "clickup-crm/task-created",
+          "httpMethod": "POST",
+          "responseMode": "onReceived",
+          "responseData": "allEntries"
+        }
+      },
+      {
+        "id": "get-task",
+        "name": "Buscar Task ClickUp",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.1,
+        "position": [
+          450,
+          300
+        ],
+        "parameters": {
+          "method": "GET",
+          "url": "=https://api.clickup.com/api/v2/task/{{ $json.task_id }}",
+          "authentication": "genericCredentialType",
+          "genericAuthType": "httpHeaderAuth",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Authorization",
+                "value": "pk_42953089_4A273OG0YDRHNCSA4OVQMU6RHI672O25"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "check-whatsapp",
+        "name": "Tem WhatsApp?",
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 1,
+        "position": [
+          650,
+          300
+        ],
+        "parameters": {
+          "conditions": {
+            "string": [
+              {
+                "value1": "={{ $json.custom_fields.find(f => f.name === \"WhatsApp\")?.value }}",
+                "operation": "isNotEmpty"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "activecampaign",
+        "name": "ActiveCampaign - Criar Contato",
+        "type": "n8n-nodes-base.activeCampaign",
+        "typeVersion": 1,
+        "position": [
+          850,
+          200
+        ],
+        "parameters": {
+          "operation": "create",
+          "resource": "contact",
+          "email": "={{ $json.custom_fields.find(f => f.name === \"Email\")?.value || $json.name + \"@lead.temp\" }}",
+          "additionalFields": {
+            "firstName": "={{ $json.name.split(\" \")[0] }}",
+            "lastName": "={{ $json.name.split(\" \").slice(1).join(\" \") }}",
+            "phone": "={{ $json.custom_fields.find(f => f.name === \"WhatsApp\")?.value }}"
+          }
+        }
+      },
+      {
+        "id": "waha-welcome",
+        "name": "WAHA - Mensagem Boas-vindas",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.1,
+        "position": [
+          850,
+          400
+        ],
+        "parameters": {
+          "method": "POST",
+          "url": "https://waha.nataliatanaka.com.br/api/sendText",
+          "authentication": "genericCredentialType",
+          "genericAuthType": "httpHeaderAuth",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Authorization",
+                "value": "Bearer waha_5f9c8a7b3e2d1f0a9b8c7d6e5f4a3b2c1d0e9f8a7b6c5d4e3f2a1b0c9d8e7f6a"
+              }
+            ]
+          },
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "chatId",
+                "value": "={{ $json.custom_fields.find(f => f.name === \"WhatsApp\")?.value.replace(/\\D/g, \"\") }}@c.us"
+              },
+              {
+                "name": "text",
+                "value": "Olá {{ $json.name.split(\" \")[0] }}! 👋\n\nObrigada por se interessar!\n\nSou a assistente virtual da Natália Tanaka e estou aqui para te ajudar.\n\nTem alguma dúvida que eu possa esclarecer?"
+              },
+              {
+                "name": "session",
+                "value": "default"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "no-action",
+        "name": "Sem WhatsApp - Log",
+        "type": "n8n-nodes-base.noOp",
+        "typeVersion": 1,
+        "position": [
+          850,
+          500
+        ],
+        "parameters": {}
+      }
+    ],
+    "connections": {
+      "Webhook ClickUp": {
+        "main": [
+          [
+            {
+              "node": "Buscar Task ClickUp",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Buscar Task ClickUp": {
+        "main": [
+          [
+            {
+              "node": "Tem WhatsApp?",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Tem WhatsApp?": {
+        "main": [
+          [
+            {
+              "node": "ActiveCampaign - Criar Contato",
+              "type": "main",
+              "index": 0
+            },
+            {
+              "node": "WAHA - Mensagem Boas-vindas",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Sem WhatsApp - Log",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "settings": {
+      "executionOrder": "v1",
+      "callerPolicy": "workflowsFromSameOwner",
+      "availableInMCP": false
+    },
+    "active": false,
+    "versionId": "f70ccb74-c8da-426d-b702-9d632fa7d49d",
+    "id": "yqDxY8534KpFca3A",
+    "description": null,
+    "staticData": null,
+    "meta": null,
+    "pinData": null,
+    "activeVersionId": null,
+    "updatedAt": "2026-02-03T14:51:09.139Z",
+    "createdAt": "2026-02-03T14:51:09.139Z",
+    "isArchived": false,
+    "versionCounter": 1,
+    "triggerCount": 0
+  },
+  {
+    "name": "CRM ClickUp - Status Alterado",
+    "nodes": [
+      {
+        "id": "webhook",
+        "name": "Webhook Status",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 1.1,
+        "position": [
+          250,
+          300
+        ],
+        "webhookId": "clickup-crm-status-updated",
+        "parameters": {
+          "path": "clickup-crm/task-status-updated",
+          "httpMethod": "POST",
+          "responseMode": "onReceived",
+          "responseData": "allEntries"
+        }
+      },
+      {
+        "id": "get-task",
+        "name": "Buscar Task",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.1,
+        "position": [
+          450,
+          300
+        ],
+        "parameters": {
+          "method": "GET",
+          "url": "=https://api.clickup.com/api/v2/task/{{ $json.task_id }}",
+          "authentication": "genericCredentialType",
+          "genericAuthType": "httpHeaderAuth",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Authorization",
+                "value": "pk_42953089_4A273OG0YDRHNCSA4OVQMU6RHI672O25"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "extract-status",
+        "name": "Extrair Status",
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.2,
+        "position": [
+          650,
+          300
+        ],
+        "parameters": {
+          "mode": "manual",
+          "duplicateItem": false,
+          "assignments": {
+            "assignments": [
+              {
+                "id": "new-status",
+                "name": "newStatus",
+                "value": "={{ $json.status.status }}",
+                "type": "string"
+              },
+              {
+                "id": "task-name",
+                "name": "taskName",
+                "value": "={{ $json.name }}",
+                "type": "string"
+              },
+              {
+                "id": "whatsapp",
+                "name": "whatsapp",
+                "value": "={{ $json.custom_fields.find(f => f.name === \"WhatsApp\")?.value }}",
+                "type": "string"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "switch-status",
+        "name": "Switch Status",
+        "type": "n8n-nodes-base.switch",
+        "typeVersion": 2,
+        "position": [
+          850,
+          300
+        ],
+        "parameters": {
+          "dataType": "string",
+          "value1": "={{ $json.newStatus }}",
+          "rules": {
+            "rules": [
+              {
+                "value2": "Comprou",
+                "output": 0
+              },
+              {
+                "value2": "Carrinho Abandonado",
+                "output": 1
+              },
+              {
+                "value2": "Qualificado",
+                "output": 2
+              },
+              {
+                "value2": "Não Qualificado",
+                "output": 3
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "comprou-tag",
+        "name": "AC - Tag Cliente",
+        "type": "n8n-nodes-base.activeCampaign",
+        "typeVersion": 1,
+        "position": [
+          1100,
+          100
+        ],
+        "parameters": {
+          "operation": "addTag",
+          "resource": "contactTag",
+          "tagId": "cliente"
+        }
+      },
+      {
+        "id": "carrinho-wait",
+        "name": "Aguardar 30min",
+        "type": "n8n-nodes-base.wait",
+        "typeVersion": 1,
+        "position": [
+          1100,
+          250
+        ],
+        "parameters": {
+          "amount": 30,
+          "unit": "minutes"
+        }
+      },
+      {
+        "id": "carrinho-msg",
+        "name": "WAHA - Recuperação",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.1,
+        "position": [
+          1300,
+          250
+        ],
+        "parameters": {
+          "method": "POST",
+          "url": "https://waha.nataliatanaka.com.br/api/sendText",
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "chatId",
+                "value": "={{ $json.whatsapp.replace(/\\D/g, \"\") }}@c.us"
+              },
+              {
+                "name": "text",
+                "value": "Oi {{ $json.taskName.split(\" \")[0] }}!\n\nVi que você se interessou mas não finalizou a compra.\n\nAconteceu algum problema? Posso te ajudar com alguma dúvida?"
+              },
+              {
+                "name": "session",
+                "value": "default"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "qualificado-notify",
+        "name": "Notificar Closer",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.1,
+        "position": [
+          1100,
+          400
+        ],
+        "parameters": {
+          "method": "POST",
+          "url": "https://waha.nataliatanaka.com.br/api/sendText",
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "chatId",
+                "value": "5511999999999@c.us"
+              },
+              {
+                "name": "text",
+                "value": "🎯 NOVO LEAD QUALIFICADO\n\nNome: {{ $json.taskName }}\nWhatsApp: {{ $json.whatsapp }}\n\nAcessar no ClickUp: https://app.clickup.com/t/{{ $json.task_id }}"
+              },
+              {
+                "name": "session",
+                "value": "default"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "nao-qualificado",
+        "name": "Mover para Nurture",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.1,
+        "position": [
+          1100,
+          550
+        ],
+        "parameters": {
+          "method": "PUT",
+          "url": "=https://api.clickup.com/api/v2/task/{{ $json.task_id }}",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Authorization",
+                "value": "pk_42953089_4A273OG0YDRHNCSA4OVQMU6RHI672O25"
+              }
+            ]
+          },
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "list_id",
+                "value": "901325077615"
+              }
+            ]
+          }
+        }
+      }
+    ],
+    "connections": {
+      "Webhook Status": {
+        "main": [
+          [
+            {
+              "node": "Buscar Task",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Buscar Task": {
+        "main": [
+          [
+            {
+              "node": "Extrair Status",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Extrair Status": {
+        "main": [
+          [
+            {
+              "node": "Switch Status",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Switch Status": {
+        "main": [
+          [
+            {
+              "node": "AC - Tag Cliente",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Aguardar 30min",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Notificar Closer",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Mover para Nurture",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Aguardar 30min": {
+        "main": [
+          [
+            {
+              "node": "WAHA - Recuperação",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "settings": {
+      "executionOrder": "v1",
+      "callerPolicy": "workflowsFromSameOwner",
+      "availableInMCP": false
+    },
+    "active": false,
+    "versionId": "e4438035-cfd0-4152-b56f-95e67abbeeb8",
+    "id": "TrmQL2g9GWKMY9yu",
+    "description": null,
+    "staticData": null,
+    "meta": null,
+    "pinData": null,
+    "activeVersionId": null,
+    "updatedAt": "2026-02-03T14:51:09.773Z",
+    "createdAt": "2026-02-03T14:51:09.773Z",
+    "isArchived": false,
+    "versionCounter": 1,
+    "triggerCount": 0
+  },
+  {
+    "name": "CRM ClickUp - Task Atualizada",
+    "nodes": [
+      {
+        "id": "webhook",
+        "name": "Webhook Update",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 1.1,
+        "position": [
+          250,
+          300
+        ],
+        "webhookId": "clickup-crm-task-updated",
+        "parameters": {
+          "path": "clickup-crm/task-updated",
+          "httpMethod": "POST",
+          "responseMode": "onReceived",
+          "responseData": "allEntries"
+        }
+      },
+      {
+        "id": "log-update",
+        "name": "Log Atualização",
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.2,
+        "position": [
+          450,
+          300
+        ],
+        "parameters": {
+          "mode": "manual",
+          "duplicateItem": false,
+          "assignments": {
+            "assignments": [
+              {
+                "id": "task-id",
+                "name": "taskId",
+                "value": "={{ $json.task_id }}",
+                "type": "string"
+              },
+              {
+                "id": "event",
+                "name": "event",
+                "value": "={{ $json.event }}",
+                "type": "string"
+              },
+              {
+                "id": "timestamp",
+                "name": "timestamp",
+                "value": "={{ new Date().toISOString() }}",
+                "type": "string"
+              }
+            ]
+          }
+        }
+      }
+    ],
+    "connections": {
+      "Webhook Update": {
+        "main": [
+          [
+            {
+              "node": "Log Atualização",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "settings": {
+      "executionOrder": "v1",
+      "callerPolicy": "workflowsFromSameOwner",
+      "availableInMCP": false
+    },
+    "active": false,
+    "versionId": "d09ef25b-9464-4ec4-a255-b4756a2f2344",
+    "id": "CJnCjlTlTDAgZpP8",
+    "description": null,
+    "staticData": null,
+    "meta": null,
+    "pinData": null,
+    "activeVersionId": null,
+    "updatedAt": "2026-02-03T14:51:10.393Z",
+    "createdAt": "2026-02-03T14:51:10.393Z",
+    "isArchived": false,
+    "versionCounter": 1,
+    "triggerCount": 0
+  },
+  {
+    "name": "CRM ClickUp - Comentário Adicionado",
+    "nodes": [
+      {
+        "id": "webhook",
+        "name": "Webhook Comment",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 1.1,
+        "position": [
+          250,
+          300
+        ],
+        "webhookId": "clickup-crm-task-comment",
+        "parameters": {
+          "path": "clickup-crm/task-comment",
+          "httpMethod": "POST",
+          "responseMode": "onReceived",
+          "responseData": "allEntries"
+        }
+      },
+      {
+        "id": "log-comment",
+        "name": "Log Comentário",
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.2,
+        "position": [
+          450,
+          300
+        ],
+        "parameters": {
+          "mode": "manual",
+          "duplicateItem": false,
+          "assignments": {
+            "assignments": [
+              {
+                "id": "task-id",
+                "name": "taskId",
+                "value": "={{ $json.task_id }}",
+                "type": "string"
+              },
+              {
+                "id": "event",
+                "name": "event",
+                "value": "comment_added",
+                "type": "string"
+              }
+            ]
+          }
+        }
+      }
+    ],
+    "connections": {
+      "Webhook Comment": {
+        "main": [
+          [
+            {
+              "node": "Log Comentário",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "settings": {
+      "executionOrder": "v1",
+      "callerPolicy": "workflowsFromSameOwner",
+      "availableInMCP": false
+    },
+    "active": false,
+    "versionId": "6730cc4e-d8d4-43e8-93cb-7a0cf4e6d554",
+    "id": "sLHUtxGdbqLnVwRN",
+    "description": null,
+    "staticData": null,
+    "meta": null,
+    "pinData": null,
+    "activeVersionId": null,
+    "updatedAt": "2026-02-03T14:51:10.967Z",
+    "createdAt": "2026-02-03T14:51:10.967Z",
+    "isArchived": false,
+    "versionCounter": 1,
+    "triggerCount": 0
+  }
+]

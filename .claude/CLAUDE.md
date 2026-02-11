@@ -30,6 +30,33 @@ Squad Leads (Execução por domínio)
 Agents (Execução de tasks)
 ```
 
+### Available Agents
+
+| Agent | Expertise |
+|-------|-----------|
+| `/aios-master` | Orquestrador principal, coordena squads e workflows |
+| `/architect` | Arquitetura de sistemas, design patterns, decisões técnicas |
+| `/dev` | Implementação de código, debugging, refactoring |
+| `/pm` | Project management, timelines, stakeholder communication |
+| `/po` | Product ownership, backlog, priorização de features |
+| `/sm` | Scrum master, facilitação, remoção de impedimentos |
+| `/qa` | Quality assurance, testes, validação |
+| `/analyst` | Análise de dados, requisitos, especificações |
+| `/devops` | Infraestrutura, CI/CD, MCP management |
+| `/data-engineer` | Data pipelines, ETL, modelagem de dados |
+| `/ux-design-expert` | UX/UI design, wireframes, protótipos |
+| `/squad-creator` | Criação e configuração de novos squads |
+
+## Skills
+
+| Skill | Descrição |
+|-------|-----------|
+| `/architect-first` | Desenvolvimento architecture-first: design completo antes de código |
+| `/enhance-workflow` | Pipeline multi-agente: Discovery → Research → Roundtable → Epic |
+| `/tech-search` | Deep research técnico com WebSearch + WebFetch |
+| `/mcp-builder` | Guia para criar MCP servers (FastMCP/Python ou MCP SDK/Node) |
+| `/skill-creator` | Criar ou atualizar skills do Claude Code |
+
 ## Repository Structure
 
 ```
@@ -55,6 +82,29 @@ aios-lab/
 
 ### Squad Structure Pattern
 Each squad follows: `squad.yaml` + `README.md` + `agents/` + `workflows/` + `tasks/` + `templates/` + `checklists/` + `data/`
+
+### Active Squads (18)
+
+| Squad | Propósito |
+|-------|-----------|
+| **ops** | Orquestração AIOS, standups, reports |
+| **tech** | Infraestrutura, CI/CD, desenvolvimento |
+| **finance** | Controle financeiro, budgets |
+| **qa** | Testes, auditorias, quality gates |
+| **design** | UI/UX, wireframes, protótipos |
+| **design-system** | Tokens, componentes, padrões visuais |
+| **marketing** | Marketing operations, campanhas |
+| **growth** | Growth hacking, métricas |
+| **customer** | Customer success, suporte |
+| **sales-pages** | Landing pages, conversão |
+| **copywriting-masters** | Estratégia de conteúdo, copy |
+| **deep-research** | Research operations |
+| **board** | Strategic advisors (8 mind clones) |
+| **hormozi** | Frameworks de negócio ($100M methodology) |
+| **hotel-mkt** | Marketing vertical para hotéis |
+| **translator** | Serviços de tradução |
+| **squad-creator** | Meta-squad: cria outros squads |
+| **project-management-clickup** | Gestão de projetos com ClickUp (GTD, PARA, Agile) |
 
 ## Development Methodology
 

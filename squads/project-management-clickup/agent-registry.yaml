@@ -1,0 +1,120 @@
+# Agent Registry - Project Management ClickUp Squad
+# Consolidated index for agent discovery and routing
+
+squad: project-management-clickup
+version: 2.0.0
+total_agents: 9
+domain: project-management
+
+chief:
+  id: pm-orchestrator
+  expertise: [orchestration, project-strategy, resource-allocation]
+  routes_to: [all-specialists]
+  entry_point: true
+
+specialists:
+
+  # Process Diagnosis
+  process-diagnostician:
+    id: process-diagnostician
+    expertise: [process-analysis, bottleneck-identification, optimization]
+    frameworks: [process-mapping, constraint-analysis]
+    best_for: [diagnosticar-processos, identificar-gargalos]
+    commands: ["*diagnose-process"]
+
+  # ClickUp Architecture
+  clickup-architect:
+    id: clickup-architect
+    expertise: [clickup-structure, workspace-design, hierarchy]
+    frameworks: [clickup-best-practices, workspace-templates]
+    best_for: [estruturar-clickup, criar-espacos]
+    commands: ["*clickup-setup", "*workspace"]
+
+  # Automation Engineering
+  automation-engineer:
+    id: automation-engineer
+    expertise: [clickup-automations, zapier, integrations]
+    frameworks: [automation-patterns, integration-design]
+    best_for: [criar-automacoes, integrar-sistemas]
+    commands: ["*automate", "*integrate"]
+
+  # Launch Operations
+  launch-operations-manager:
+    id: launch-operations-manager
+    expertise: [launch-management, campaign-coordination, deadlines]
+    frameworks: [launch-checklist, campaign-timeline]
+    best_for: [gerenciar-lancamentos, coordenar-campanhas]
+    commands: ["*launch-ops"]
+
+  # Content Operations
+  content-operations-manager:
+    id: content-operations-manager
+    expertise: [content-calendar, editorial-workflow, publishing]
+    frameworks: [editorial-calendar, content-pipeline]
+    best_for: [gerenciar-conteudo, calendario-editorial]
+    commands: ["*content-ops"]
+
+  # CRM Building
+  crm-builder:
+    id: crm-builder
+    expertise: [crm-setup, lead-management, pipeline-design]
+    frameworks: [crm-in-clickup, lead-stages]
+    best_for: [criar-crm, gerenciar-leads]
+    commands: ["*crm-setup"]
+
+  # SaaS Operations
+  saas-operations-specialist:
+    id: saas-operations-specialist
+    expertise: [saas-ops, subscription-management, metrics]
+    frameworks: [saas-metrics, subscription-lifecycle]
+    best_for: [operacoes-saas, metricas-assinatura]
+    commands: ["*saas-ops"]
+
+  # Support Operations
+  support-operations-specialist:
+    id: support-operations-specialist
+    expertise: [support-ticketing, escalation, sla-management]
+    frameworks: [support-workflow, escalation-matrix]
+    best_for: [gerenciar-suporte, tickets, escalacao]
+    commands: ["*support-ops"]
+
+routing_matrix:
+  diagnosis: process-diagnostician
+  clickup_setup: clickup-architect
+  automation: automation-engineer
+  launches: launch-operations-manager
+  content: content-operations-manager
+  crm: crm-builder
+  saas: saas-operations-specialist
+  support: support-operations-specialist
+
+tasks:
+  - diagnose-process
+  - setup-clickup-workspace
+  - configure-crm
+  - setup-launch-workspace
+  - create-automations
+  - setup-content-pipeline
+  - setup-saas-workspace
+  - setup-support-system
+  - weekly-review
+
+workflows:
+  - wf-process-documentation
+  - wf-clickup-advanced-setup
+  - wf-crm-implementation
+  - wf-launch-operations
+  - wf-content-operations
+  - wf-support-setup
+
+global_commands:
+  "*pm": "Route to pm-orchestrator"
+  "*clickup": "ClickUp operations"
+  "*workflow": "Workflow design"
+  "*weekly-review": "Weekly GTD review"
+  "*saas-setup": "Setup SaaS workspace"
+  "*support-setup": "Setup support system"
+
+mcp_tools:
+  clickup: 12
+  mission_control: 6

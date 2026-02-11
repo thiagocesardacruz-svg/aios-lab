@@ -1,0 +1,42 @@
+[
+  {
+    "name": "CRM - Nova Task Criada",
+    "endpoint": "https://n8n.nataliatanaka.com.br/webhook/clickup-crm/task-created",
+    "events": [
+      "taskCreated"
+    ],
+    "space_id": "901313097927",
+    "description": "Dispara quando um novo lead/task é criado no CRM",
+    "id": "61f1fe1a-d231-411c-8209-cba171b546e5"
+  },
+  {
+    "name": "CRM - Status Alterado",
+    "endpoint": "https://n8n.nataliatanaka.com.br/webhook/clickup-crm/task-status-updated",
+    "events": [
+      "taskStatusUpdated"
+    ],
+    "space_id": "901313097927",
+    "description": "Dispara quando o status de uma task muda (ex: carrinho abandonado, comprou, etc)",
+    "id": "957fb155-1c05-4131-bd48-1ca364459b39"
+  },
+  {
+    "name": "CRM - Task Atualizada",
+    "endpoint": "https://n8n.nataliatanaka.com.br/webhook/clickup-crm/task-updated",
+    "events": [
+      "taskUpdated"
+    ],
+    "space_id": "901313097927",
+    "description": "Dispara quando qualquer campo de uma task é atualizado",
+    "id": "80233de5-4c4a-4d4a-8d88-b63b7fbbb27f"
+  },
+  {
+    "name": "CRM - Comentário Adicionado",
+    "endpoint": "https://n8n.nataliatanaka.com.br/webhook/clickup-crm/task-comment",
+    "events": [
+      "taskCommentPosted"
+    ],
+    "space_id": "901313097927",
+    "description": "Dispara quando um comentário é adicionado",
+    "id": "3b86c6f7-1d32-44cd-9abc-6eff93ab1cf9"
+  }
+]

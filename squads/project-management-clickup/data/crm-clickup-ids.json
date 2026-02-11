@@ -1,0 +1,619 @@
+{
+  "space": {
+    "id": "901313097927",
+    "name": "COMERCIAL",
+    "color": null,
+    "private": false,
+    "avatar": null,
+    "admin_can_manage": null,
+    "statuses": [
+      {
+        "id": "p901313097927_cIKqvARO",
+        "status": "to do",
+        "type": "open",
+        "orderindex": 0,
+        "color": "#87909e"
+      },
+      {
+        "id": "p901313097927_yveLOHt9",
+        "status": "complete",
+        "type": "closed",
+        "orderindex": 1,
+        "color": "#008844"
+      }
+    ],
+    "multiple_assignees": true,
+    "features": {
+      "due_dates": {
+        "enabled": true,
+        "start_date": true,
+        "remap_due_dates": true,
+        "remap_closed_due_date": false
+      },
+      "sprints": {
+        "enabled": false
+      },
+      "time_tracking": {
+        "enabled": true,
+        "harvest": false,
+        "rollup": false,
+        "default_to_billable": 2
+      },
+      "points": {
+        "enabled": false
+      },
+      "custom_items": {
+        "enabled": false
+      },
+      "priorities": {
+        "enabled": true,
+        "priorities": [
+          {
+            "color": "#f50000",
+            "id": "1",
+            "orderindex": "1",
+            "priority": "urgent"
+          },
+          {
+            "color": "#f8ae00",
+            "id": "2",
+            "orderindex": "2",
+            "priority": "high"
+          },
+          {
+            "color": "#6fddff",
+            "id": "3",
+            "orderindex": "3",
+            "priority": "normal"
+          },
+          {
+            "color": "#d8d8d8",
+            "id": "4",
+            "orderindex": "4",
+            "priority": "low"
+          }
+        ]
+      },
+      "tags": {
+        "enabled": true
+      },
+      "milestones": {
+        "enabled": false
+      },
+      "custom_fields": {
+        "enabled": true
+      },
+      "remap_dependencies": {
+        "enabled": true
+      },
+      "dependency_warning": {
+        "enabled": true
+      },
+      "status_pies": {
+        "enabled": false
+      },
+      "multiple_assignees": {
+        "enabled": true
+      },
+      "emails": {
+        "enabled": true
+      },
+      "scheduler_enabled": false,
+      "dependency_type_enabled": false,
+      "dependency_enforcement": {
+        "enforcement_enabled": false,
+        "enforcement_mode": 0
+      },
+      "reschedule_closed_dependencies": true
+    },
+    "archived": false
+  },
+  "folders": [
+    {
+      "id": "901316866137",
+      "name": "Pipeline de Vendas",
+      "orderindex": 0,
+      "override_statuses": false,
+      "hidden": false,
+      "space": {
+        "id": "901313097927",
+        "name": "COMERCIAL",
+        "access": true
+      },
+      "task_count": "0",
+      "archived": false,
+      "statuses": [],
+      "deleted": false,
+      "lists": [],
+      "permission_level": "create"
+    },
+    {
+      "id": "901316866150",
+      "name": "Clientes",
+      "orderindex": 1,
+      "override_statuses": false,
+      "hidden": false,
+      "space": {
+        "id": "901313097927",
+        "name": "COMERCIAL",
+        "access": true
+      },
+      "task_count": "0",
+      "archived": false,
+      "statuses": [],
+      "deleted": false,
+      "lists": [],
+      "permission_level": "create"
+    },
+    {
+      "id": "901316866162",
+      "name": "Perdidos & Nurture",
+      "orderindex": 2,
+      "override_statuses": false,
+      "hidden": false,
+      "space": {
+        "id": "901313097927",
+        "name": "COMERCIAL",
+        "access": true
+      },
+      "task_count": "0",
+      "archived": false,
+      "statuses": [],
+      "deleted": false,
+      "lists": [],
+      "permission_level": "create"
+    }
+  ],
+  "lists": [
+    {
+      "id": "901325077568",
+      "name": "🎯 Leads (Geral)",
+      "deleted": false,
+      "orderindex": 0,
+      "content": "",
+      "priority": null,
+      "assignee": null,
+      "task_count": 0,
+      "due_date": null,
+      "start_date": null,
+      "folder": {
+        "id": "901316866137",
+        "name": "Pipeline de Vendas",
+        "hidden": false,
+        "access": true
+      },
+      "space": {
+        "id": "901313097927",
+        "name": "COMERCIAL",
+        "access": true
+      },
+      "inbound_address": "a.t.901325077568.u-42953089.2400eab9-dbe2-43e5-8896-12c800e68859@tasks.clickup.com",
+      "archived": false,
+      "override_statuses": false,
+      "statuses": [
+        {
+          "id": "p901313097927_cIKqvARO",
+          "status": "to do",
+          "orderindex": 0,
+          "color": "#87909e",
+          "type": "open",
+          "status_group": "proj_901313097927"
+        },
+        {
+          "id": "p901313097927_yveLOHt9",
+          "status": "complete",
+          "orderindex": 1,
+          "color": "#008844",
+          "type": "closed",
+          "status_group": "proj_901313097927"
+        }
+      ],
+      "permission_level": "create"
+    },
+    {
+      "id": "901325077571",
+      "name": "🛒 Low Ticket (Funil Perpétuo)",
+      "deleted": false,
+      "orderindex": 1,
+      "content": "",
+      "priority": null,
+      "assignee": null,
+      "task_count": 0,
+      "due_date": null,
+      "start_date": null,
+      "folder": {
+        "id": "901316866137",
+        "name": "Pipeline de Vendas",
+        "hidden": false,
+        "access": true
+      },
+      "space": {
+        "id": "901313097927",
+        "name": "COMERCIAL",
+        "access": true
+      },
+      "inbound_address": "a.t.901325077571.u-42953089.0b656697-d52c-46ef-9282-f362ec9b73ae@tasks.clickup.com",
+      "archived": false,
+      "override_statuses": false,
+      "statuses": [
+        {
+          "id": "p901313097927_cIKqvARO",
+          "status": "to do",
+          "orderindex": 0,
+          "color": "#87909e",
+          "type": "open",
+          "status_group": "proj_901313097927"
+        },
+        {
+          "id": "p901313097927_yveLOHt9",
+          "status": "complete",
+          "orderindex": 1,
+          "color": "#008844",
+          "type": "closed",
+          "status_group": "proj_901313097927"
+        }
+      ],
+      "permission_level": "create"
+    },
+    {
+      "id": "901325077575",
+      "name": "📈 Upsell/Cross-sell",
+      "deleted": false,
+      "orderindex": 2,
+      "content": "",
+      "priority": null,
+      "assignee": null,
+      "task_count": 0,
+      "due_date": null,
+      "start_date": null,
+      "folder": {
+        "id": "901316866137",
+        "name": "Pipeline de Vendas",
+        "hidden": false,
+        "access": true
+      },
+      "space": {
+        "id": "901313097927",
+        "name": "COMERCIAL",
+        "access": true
+      },
+      "inbound_address": "a.t.901325077575.u-42953089.dbc221c3-a1b4-4c9c-90fb-c60ee6f4cc31@tasks.clickup.com",
+      "archived": false,
+      "override_statuses": false,
+      "statuses": [
+        {
+          "id": "p901313097927_cIKqvARO",
+          "status": "to do",
+          "orderindex": 0,
+          "color": "#87909e",
+          "type": "open",
+          "status_group": "proj_901313097927"
+        },
+        {
+          "id": "p901313097927_yveLOHt9",
+          "status": "complete",
+          "orderindex": 1,
+          "color": "#008844",
+          "type": "closed",
+          "status_group": "proj_901313097927"
+        }
+      ],
+      "permission_level": "create"
+    },
+    {
+      "id": "901325077580",
+      "name": "🚀 Lançamento (MCPM)",
+      "deleted": false,
+      "orderindex": 3,
+      "content": "",
+      "priority": null,
+      "assignee": null,
+      "task_count": 0,
+      "due_date": null,
+      "start_date": null,
+      "folder": {
+        "id": "901316866137",
+        "name": "Pipeline de Vendas",
+        "hidden": false,
+        "access": true
+      },
+      "space": {
+        "id": "901313097927",
+        "name": "COMERCIAL",
+        "access": true
+      },
+      "inbound_address": "a.t.901325077580.u-42953089.992544db-5264-4109-9b7d-940d4cfb74d8@tasks.clickup.com",
+      "archived": false,
+      "override_statuses": false,
+      "statuses": [
+        {
+          "id": "p901313097927_cIKqvARO",
+          "status": "to do",
+          "orderindex": 0,
+          "color": "#87909e",
+          "type": "open",
+          "status_group": "proj_901313097927"
+        },
+        {
+          "id": "p901313097927_yveLOHt9",
+          "status": "complete",
+          "orderindex": 1,
+          "color": "#008844",
+          "type": "closed",
+          "status_group": "proj_901313097927"
+        }
+      ],
+      "permission_level": "create"
+    },
+    {
+      "id": "901325077585",
+      "name": "💎 High Ticket (Mentoria MAV)",
+      "deleted": false,
+      "orderindex": 4,
+      "content": "",
+      "priority": null,
+      "assignee": null,
+      "task_count": 0,
+      "due_date": null,
+      "start_date": null,
+      "folder": {
+        "id": "901316866137",
+        "name": "Pipeline de Vendas",
+        "hidden": false,
+        "access": true
+      },
+      "space": {
+        "id": "901313097927",
+        "name": "COMERCIAL",
+        "access": true
+      },
+      "inbound_address": "a.t.901325077585.u-42953089.bd033cff-bfdb-4ea0-a46a-854981078c31@tasks.clickup.com",
+      "archived": false,
+      "override_statuses": false,
+      "statuses": [
+        {
+          "id": "p901313097927_cIKqvARO",
+          "status": "to do",
+          "orderindex": 0,
+          "color": "#87909e",
+          "type": "open",
+          "status_group": "proj_901313097927"
+        },
+        {
+          "id": "p901313097927_yveLOHt9",
+          "status": "complete",
+          "orderindex": 1,
+          "color": "#008844",
+          "type": "closed",
+          "status_group": "proj_901313097927"
+        }
+      ],
+      "permission_level": "create"
+    },
+    {
+      "id": "901325077592",
+      "name": "👥 Base de Clientes",
+      "deleted": false,
+      "orderindex": 0,
+      "content": "",
+      "priority": null,
+      "assignee": null,
+      "task_count": 0,
+      "due_date": null,
+      "start_date": null,
+      "folder": {
+        "id": "901316866150",
+        "name": "Clientes",
+        "hidden": false,
+        "access": true
+      },
+      "space": {
+        "id": "901313097927",
+        "name": "COMERCIAL",
+        "access": true
+      },
+      "inbound_address": "a.t.901325077592.u-42953089.97855514-652b-4d8a-86b3-dba67aaa3796@tasks.clickup.com",
+      "archived": false,
+      "override_statuses": false,
+      "statuses": [
+        {
+          "id": "p901313097927_cIKqvARO",
+          "status": "to do",
+          "orderindex": 0,
+          "color": "#87909e",
+          "type": "open",
+          "status_group": "proj_901313097927"
+        },
+        {
+          "id": "p901313097927_yveLOHt9",
+          "status": "complete",
+          "orderindex": 1,
+          "color": "#008844",
+          "type": "closed",
+          "status_group": "proj_901313097927"
+        }
+      ],
+      "permission_level": "create"
+    },
+    {
+      "id": "901325077600",
+      "name": "🌟 Clientes VIP",
+      "deleted": false,
+      "orderindex": 1,
+      "content": "",
+      "priority": null,
+      "assignee": null,
+      "task_count": 0,
+      "due_date": null,
+      "start_date": null,
+      "folder": {
+        "id": "901316866150",
+        "name": "Clientes",
+        "hidden": false,
+        "access": true
+      },
+      "space": {
+        "id": "901313097927",
+        "name": "COMERCIAL",
+        "access": true
+      },
+      "inbound_address": "a.t.901325077600.u-42953089.674579b2-3951-480d-ba13-7071e23c50cd@tasks.clickup.com",
+      "archived": false,
+      "override_statuses": false,
+      "statuses": [
+        {
+          "id": "p901313097927_cIKqvARO",
+          "status": "to do",
+          "orderindex": 0,
+          "color": "#87909e",
+          "type": "open",
+          "status_group": "proj_901313097927"
+        },
+        {
+          "id": "p901313097927_yveLOHt9",
+          "status": "complete",
+          "orderindex": 1,
+          "color": "#008844",
+          "type": "closed",
+          "status_group": "proj_901313097927"
+        }
+      ],
+      "permission_level": "create"
+    },
+    {
+      "id": "901325077604",
+      "name": "🔄 Recompra/Renovação",
+      "deleted": false,
+      "orderindex": 2,
+      "content": "",
+      "priority": null,
+      "assignee": null,
+      "task_count": 0,
+      "due_date": null,
+      "start_date": null,
+      "folder": {
+        "id": "901316866150",
+        "name": "Clientes",
+        "hidden": false,
+        "access": true
+      },
+      "space": {
+        "id": "901313097927",
+        "name": "COMERCIAL",
+        "access": true
+      },
+      "inbound_address": "a.t.901325077604.u-42953089.0025b4ce-3b96-4444-90e4-08039419ac7a@tasks.clickup.com",
+      "archived": false,
+      "override_statuses": false,
+      "statuses": [
+        {
+          "id": "p901313097927_cIKqvARO",
+          "status": "to do",
+          "orderindex": 0,
+          "color": "#87909e",
+          "type": "open",
+          "status_group": "proj_901313097927"
+        },
+        {
+          "id": "p901313097927_yveLOHt9",
+          "status": "complete",
+          "orderindex": 1,
+          "color": "#008844",
+          "type": "closed",
+          "status_group": "proj_901313097927"
+        }
+      ],
+      "permission_level": "create"
+    },
+    {
+      "id": "901325077610",
+      "name": "❌ Não Convertidos",
+      "deleted": false,
+      "orderindex": 0,
+      "content": "",
+      "priority": null,
+      "assignee": null,
+      "task_count": 0,
+      "due_date": null,
+      "start_date": null,
+      "folder": {
+        "id": "901316866162",
+        "name": "Perdidos & Nurture",
+        "hidden": false,
+        "access": true
+      },
+      "space": {
+        "id": "901313097927",
+        "name": "COMERCIAL",
+        "access": true
+      },
+      "inbound_address": "a.t.901325077610.u-42953089.3f1efe4d-079d-450b-9dbb-4b93006a8a20@tasks.clickup.com",
+      "archived": false,
+      "override_statuses": false,
+      "statuses": [
+        {
+          "id": "p901313097927_cIKqvARO",
+          "status": "to do",
+          "orderindex": 0,
+          "color": "#87909e",
+          "type": "open",
+          "status_group": "proj_901313097927"
+        },
+        {
+          "id": "p901313097927_yveLOHt9",
+          "status": "complete",
+          "orderindex": 1,
+          "color": "#008844",
+          "type": "closed",
+          "status_group": "proj_901313097927"
+        }
+      ],
+      "permission_level": "create"
+    },
+    {
+      "id": "901325077615",
+      "name": "🌱 Nurture (Longo Prazo)",
+      "deleted": false,
+      "orderindex": 1,
+      "content": "",
+      "priority": null,
+      "assignee": null,
+      "task_count": 0,
+      "due_date": null,
+      "start_date": null,
+      "folder": {
+        "id": "901316866162",
+        "name": "Perdidos & Nurture",
+        "hidden": false,
+        "access": true
+      },
+      "space": {
+        "id": "901313097927",
+        "name": "COMERCIAL",
+        "access": true
+      },
+      "inbound_address": "a.t.901325077615.u-42953089.08d49bf4-17b0-468b-88d3-810a82c189c8@tasks.clickup.com",
+      "archived": false,
+      "override_statuses": false,
+      "statuses": [
+        {
+          "id": "p901313097927_cIKqvARO",
+          "status": "to do",
+          "orderindex": 0,
+          "color": "#87909e",
+          "type": "open",
+          "status_group": "proj_901313097927"
+        },
+        {
+          "id": "p901313097927_yveLOHt9",
+          "status": "complete",
+          "orderindex": 1,
+          "color": "#008844",
+          "type": "closed",
+          "status_group": "proj_901313097927"
+        }
+      ],
+      "permission_level": "create"
+    }
+  ]
+}

@@ -1,0 +1,365 @@
+# ============================================================================
+# SQUAD: PROJECT MANAGEMENT CLICKUP
+# ============================================================================
+# Squad especialista em gestão de projetos com conhecimento avançado em ClickUp
+# Focado em infoprodutos, SaaS e operações de lançamento
+# ============================================================================
+
+name: Project Management ClickUp
+version: 2.0.0
+description: >
+  Squad especialista em gestão de projetos com domínio avançado do ClickUp.
+  Combina metodologias GTD, PARA e Ágeis para estruturar, documentar e
+  automatizar todos os processos do negócio - desde operações internas até
+  lançamentos de infoprodutos e gestão de SaaS.
+
+squad_type: hybrid  # Combines orchestration with specialist execution
+domain: project-management
+
+# ============================================================================
+# METADATA
+# ============================================================================
+
+metadata:
+  created_at: "2025-02-03"
+  created_by: "squad-creator"
+  target_user: "Rafael (estrategista) + Natália Tanaka (expert) + Squads de agentes"
+  business_context:
+    type: "Infoprodutos + SaaS"
+    ticket_range: "R$ 29,97 - R$ 10.997"
+    launch_models:
+      - "Fórmula de Lançamento (PLF)"
+      - "Lançamento Perpétuo"
+      - "High Ticket / Aplicação"
+      - "Webinário"
+      - "Desafios"
+    current_clickup_level: "intermediário"
+    target_clickup_level: "avançado"
+
+# ============================================================================
+# COMPONENTS
+# ============================================================================
+
+components:
+  agents:
+    orchestrator:
+      - pm-orchestrator
+    tier_0:
+      - process-diagnostician
+    tier_1:
+      - clickup-architect
+      - automation-engineer
+    tier_2:
+      - launch-operations-manager
+      - content-operations-manager
+      - crm-builder
+    tier_3:
+      - saas-operations-specialist
+      - support-operations-specialist
+
+  tasks:
+    # Diagnóstico e Mapeamento
+    - diagnose-process            # Diagnosticar processo (implementado)
+    - setup-clickup-workspace     # Configurar workspace (implementado)
+    - configure-crm               # Configurar CRM (implementado)
+
+    # Novos (implementados)
+    - setup-launch-workspace      # Setup lançamento (implementado)
+    - create-automations          # Criar automações (implementado)
+    - setup-content-pipeline      # Pipeline de conteúdo (implementado)
+    - setup-saas-workspace        # Setup SaaS workspace (implementado)
+    - setup-support-system        # Setup sistema de suporte (implementado)
+    - weekly-review               # Review semanal GTD (implementado)
+
+  workflows:
+    - wf-process-documentation
+    - wf-clickup-advanced-setup
+    - wf-crm-implementation
+    - wf-launch-operations
+    - wf-content-operations
+    - wf-support-setup
+
+  checklists:
+    - process-documentation-checklist
+    - clickup-workspace-checklist
+    - crm-implementation-checklist
+    - launch-readiness-checklist
+    - content-production-checklist
+    - release-checklist
+    - ticket-resolution-checklist
+
+  templates:
+    - template-task-complete
+    - template-project-brief
+    - template-launch-tracker
+    - template-content-calendar
+    - template-crm-deal
+    - template-space-structure
+    - response-templates
+    - automation-documentation
+    - user-story-template
+
+# ============================================================================
+# METHODOLOGIES
+# ============================================================================
+
+methodologies:
+  productivity:
+    gtd:
+      source: "David Allen - Getting Things Done"
+      principles:
+        - "Capture everything"
+        - "Clarify actionable items"
+        - "Organize by context"
+        - "Review weekly"
+        - "Engage with confidence"
+      application: "Sistema de captura e processamento de demandas"
+
+    para:
+      source: "Tiago Forte - Building a Second Brain"
+      principles:
+        - "Projects: Outcomes with deadlines"
+        - "Areas: Ongoing responsibilities"
+        - "Resources: Reference material"
+        - "Archives: Inactive items"
+      application: "Estruturação de Spaces e Folders no ClickUp"
+
+    time_blocking:
+      source: "Cal Newport - Deep Work"
+      principles:
+        - "Dedicated focus blocks"
+        - "Batch similar tasks"
+        - "Protect deep work time"
+      application: "Time tracking e alocação de recursos"
+
+  agile:
+    scrum:
+      elements:
+        - "Sprints (1-2 semanas)"
+        - "Daily standups"
+        - "Sprint planning"
+        - "Retrospectives"
+      application: "Gestão de sprints de desenvolvimento e produção"
+
+    kanban:
+      elements:
+        - "Visual workflow"
+        - "WIP limits"
+        - "Continuous flow"
+        - "Pull system"
+      application: "Boards de operações contínuas"
+
+  launch:
+    plf:
+      source: "Jeff Walker - Product Launch Formula"
+      phases:
+        - "Pre-Pre-Launch"
+        - "Pre-Launch"
+        - "Launch"
+        - "Post-Launch"
+      application: "Templates de lançamento"
+
+# ============================================================================
+# CAPABILITIES
+# ============================================================================
+
+capabilities:
+  process_management:
+    - "Diagnóstico de processos não documentados"
+    - "Mapeamento e documentação de workflows"
+    - "Identificação de gaps e gargalos"
+    - "Padronização de processos"
+
+  clickup_advanced:
+    - "Estruturação de Workspaces (PARA method)"
+    - "Custom Fields avançados"
+    - "Time Tracking completo"
+    - "Dependências entre tarefas"
+    - "Automações complexas"
+    - "Dashboards personalizados"
+    - "Views customizadas (Board, List, Calendar, Gantt)"
+    - "Templates reutilizáveis"
+    - "Formulários de intake"
+
+  crm:
+    - "Pipeline de vendas multi-ticket"
+    - "Lead scoring"
+    - "Automações de follow-up"
+    - "Relatórios de conversão"
+    - "Integração com squads comerciais"
+
+  launch_operations:
+    - "Setup de workspace por lançamento"
+    - "Checklists por fase (PPL, PL, L, Post)"
+    - "Tracking de métricas de lançamento"
+    - "Coordenação entre squads"
+
+  content_operations:
+    - "Pipeline de produção de conteúdo"
+    - "Calendário editorial"
+    - "Workflow de aprovação"
+    - "Integração com youtube-content squad"
+
+  support_operations:
+    - "Sistema de tickets"
+    - "SLAs e priorização"
+    - "Knowledge base interna"
+    - "Métricas de atendimento"
+
+  saas_operations:
+    - "Roadmap de features"
+    - "Bug tracking"
+    - "Release management"
+    - "Integração com full-stack-dev squad"
+
+# ============================================================================
+# INTEGRATIONS
+# ============================================================================
+
+integrations:
+  internal_squads:
+    - squad: copywriting
+      integration: "Recebe briefs de copy, entrega tasks estruturadas"
+    - squad: full-stack-dev
+      integration: "Gestão de sprints, bugs, features do SaaS"
+    - squad: youtube-content
+      integration: "Pipeline de produção de conteúdo"
+    - squad: youtube-lives
+      integration: "Calendário e checklist de lives"
+    - squad: design-system
+      integration: "Requests de design, entregas"
+    - squad: media-buy
+      integration: "Campanhas, métricas, budgets"
+    - squad: comercial-natalia-tanaka
+      integration: "CRM, pipeline de vendas, leads"
+    - squad: natalia-tanaka
+      integration: "Agenda, prioridades, decisões estratégicas"
+    - squad: orquestrador-global
+      integration: "Visão macro, alocação de recursos"
+
+  clickup:
+    features_used:
+      - "Spaces, Folders, Lists"
+      - "Custom Fields"
+      - "Time Tracking"
+      - "Dependencies"
+      - "Automations"
+      - "Dashboards"
+      - "Goals"
+      - "Docs"
+      - "Whiteboards"
+      - "Forms"
+
+# ============================================================================
+# ENTRY POINTS
+# ============================================================================
+
+entry_agent: pm-orchestrator
+
+commands:
+  - name: "*diagnose"
+    description: "Diagnosticar um processo existente não documentado"
+    routes_to: process-diagnostician
+
+  - name: "*setup-clickup"
+    description: "Configurar ClickUp avançado para uma área"
+    routes_to: clickup-architect
+
+  - name: "*automate"
+    description: "Criar automações no ClickUp"
+    routes_to: automation-engineer
+
+  - name: "*launch-setup"
+    description: "Preparar estrutura para um lançamento"
+    routes_to: launch-operations-manager
+
+  - name: "*content-ops"
+    description: "Estruturar operações de conteúdo"
+    routes_to: content-operations-manager
+
+  - name: "*crm"
+    description: "Configurar ou gerenciar CRM"
+    routes_to: crm-builder
+
+  - name: "*saas-ops"
+    description: "Gerenciar operações do SaaS"
+    routes_to: saas-operations-specialist
+
+  - name: "*support"
+    description: "Estruturar sistema de suporte"
+    routes_to: support-operations-specialist
+
+  - name: "*weekly-review"
+    description: "Executar review semanal GTD"
+    routes_to: pm-orchestrator
+    task: weekly-review
+
+  - name: "*saas-setup"
+    description: "Configurar workspace SaaS no ClickUp"
+    routes_to: saas-operations-specialist
+    task: setup-saas-workspace
+
+  - name: "*support-setup"
+    description: "Configurar sistema de suporte completo"
+    routes_to: support-operations-specialist
+    task: setup-support-system
+
+  - name: "*help"
+    description: "Ver todos os comandos disponíveis"
+    routes_to: pm-orchestrator
+
+# ============================================================================
+# MCP TOOLS
+# ============================================================================
+
+mcp_tools:
+  clickup:
+    tools: 12
+    used_by: [pm-orchestrator, clickup-architect, crm-builder, launch-operations-manager, content-operations-manager, saas-operations-specialist, support-operations-specialist, process-diagnostician]
+    operations:
+      - mcp__clickup__searchTasks
+      - mcp__clickup__getTaskById
+      - mcp__clickup__createTask
+      - mcp__clickup__updateTask
+      - mcp__clickup__addComment
+      - mcp__clickup__getListInfo
+      - mcp__clickup__searchSpaces
+      - mcp__clickup__getTimeEntries
+      - mcp__clickup__createTimeEntry
+      - mcp__clickup__readDocument
+      - mcp__clickup__updateDocumentPage
+      - mcp__clickup__createDocumentOrPage
+
+  mission_control:
+    tools: 6
+    used_by: [automation-engineer, pm-orchestrator]
+    operations:
+      - mcp__mission-control__setup_automations
+      - mcp__mission-control__list_automations
+      - mcp__mission-control__toggle_automation
+      - mcp__mission-control__test_automation
+      - mcp__mission-control__add_route
+      - mcp__mission-control__get_automation_logs
+
+# ============================================================================
+# QUALITY STANDARDS
+# ============================================================================
+
+quality_standards:
+  task_requirements:
+    - "Toda tarefa deve ter: título claro, descrição, responsável, prazo"
+    - "Tarefas complexas devem ter checklist e subtarefas"
+    - "Custom fields preenchidos conforme o tipo de tarefa"
+    - "Time estimate quando aplicável"
+
+  process_requirements:
+    - "Todo processo deve ter documentação no ClickUp Docs"
+    - "Workflows devem ter automações quando possível"
+    - "Métricas de acompanhamento definidas"
+    - "Responsáveis claros para cada etapa"
+
+  review_cadence:
+    daily: "Verificar tasks do dia, atualizar status"
+    weekly: "Review de projetos, planejamento da semana"
+    monthly: "Análise de métricas, ajustes de processos"
+    quarterly: "Review estratégico, OKRs"
