@@ -1,0 +1,267 @@
+# Shared Market Research Workflow
+# Consolidated from marketing/market-research and growth/market-research
+# Can be invoked by either squad with different parameters
+
+workflow:
+  id: shared-market-research
+  name: Market Research
+  description: |
+    Comprehensive market research workflow supporting multiple use cases:
+    - Marketing: ICP definition, competitor messaging, content strategy
+    - Growth: Market sizing, opportunity identification, expansion strategy
+  version: "2.0.0"
+  type: shared
+  consumers:
+    - marketing
+    - growth
+    - sales
+
+# Unified input schema
+inputs:
+  - name: target
+    type: string
+    required: true
+    description: "Product, market, or segment to research"
+
+  - name: focus
+    type: enum
+    options: [icp, sizing, competitors, trends, full]
+    default: full
+    description: |
+      icp: Customer profile focus (marketing)
+      sizing: TAM/SAM/SOM focus (growth)
+      competitors: Competitive landscape
+      trends: Market trends and signals
+      full: All of the above
+
+  - name: depth
+    type: enum
+    options: [quick, standard, deep]
+    default: standard
+    description: |
+      quick: 1-2 hours, key insights only
+      standard: Half day, full analysis
+      deep: Multi-day, comprehensive research
+
+  - name: context
+    type: object
+    required: false
+    properties:
+      existing_icp: string
+      known_competitors: array
+      hypothesis: string
+
+outputs:
+  - name: research-report
+    type: markdown
+    path: "docs/research/{target}-market-research-{date}.md"
+
+  - name: icp-profile
+    type: yaml
+    path: "docs/research/{target}-icp.yaml"
+    condition: "focus in [icp, full]"
+
+  - name: competitor-map
+    type: markdown
+    path: "docs/research/{target}-competitors.md"
+    condition: "focus in [competitors, full]"
+
+# Modular phases - can skip based on focus
+phases:
+  - id: scope
+    name: Define Scope
+    always_run: true
+
+  - id: icp
+    name: ICP Definition
+    run_if: "focus in [icp, full]"
+
+  - id: sizing
+    name: Market Sizing
+    run_if: "focus in [sizing, full]"
+
+  - id: trends
+    name: Trend Analysis
+    run_if: "focus in [trends, full]"
+
+  - id: competitors
+    name: Competitive Mapping
+    run_if: "focus in [competitors, full]"
+
+  - id: synthesis
+    name: Synthesis & Recommendations
+    always_run: true
+
+# Flexible agent assignment based on calling squad
+agent_mapping:
+  marketing:
+    lead: content-strategist
+    analyst: marketing-lead
+    reviewer: offer-engine
+
+  growth:
+    lead: growth-lead
+    analyst: data-analyst
+    reviewer: pmf-specialist
+
+  default:
+    lead: analyst
+    analyst: analyst
+    reviewer: pm
+
+sequence:
+  # Phase: Scope
+  - phase: scope
+    name: Define Research Scope
+    agent: "{{agent_mapping[squad].lead}}"
+    action: define_scope
+    inputs:
+      - target
+      - focus
+      - depth
+      - context
+    creates:
+      - research_questions (memory)
+      - data_sources (memory)
+    timeout: 15m
+
+  # Phase: ICP
+  - phase: icp
+    name: Define ICP Profile
+    agent: "{{agent_mapping[squad].lead}}"
+    action: analyze_icp
+    inputs:
+      - target
+      - context.existing_icp
+    creates:
+      - icp-profile.yaml
+    template: templates/icp-profile.yaml
+    notes: |
+      Define:
+      - Demographics (age, role, company size)
+      - Psychographics (values, fears, aspirations)
+      - Pain points (top 5, severity, current solutions)
+      - Goals (primary, secondary)
+      - Objections (common, real concerns)
+      - Language patterns (phrases they use)
+
+  # Phase: Sizing
+  - phase: sizing
+    name: Market Sizing
+    agent: "{{agent_mapping[squad].analyst}}"
+    action: estimate_market
+    inputs:
+      - target
+    creates:
+      - market-sizing.md
+    notes: |
+      Calculate:
+      - TAM (Total Addressable Market)
+      - SAM (Serviceable Addressable Market)
+      - SOM (Serviceable Obtainable Market)
+      - Growth rate (YoY, CAGR)
+      - Key drivers
+
+  # Phase: Trends
+  - phase: trends
+    name: Analyze Trends
+    agent: "{{agent_mapping[squad].analyst}}"
+    action: trend_analysis
+    inputs:
+      - target
+    creates:
+      - trends.md
+    notes: |
+      Identify:
+      - Macro trends (5+ years)
+      - Micro trends (1-2 years)
+      - Emerging signals
+      - Technology shifts
+      - Regulatory changes
+
+  # Phase: Competitors
+  - phase: competitors
+    name: Map Competitive Landscape
+    agent: "{{agent_mapping[squad].lead}}"
+    action: competitor_mapping
+    inputs:
+      - target
+      - context.known_competitors
+    creates:
+      - competitor-map.md
+    notes: |
+      For each competitor:
+      - Positioning (how they describe themselves)
+      - Offers (products, pricing tiers)
+      - Strengths/Weaknesses
+      - Content strategy (channels, frequency, topics)
+      - Customer sentiment (reviews, NPS if available)
+      - Market share estimate
+
+  # Phase: Synthesis
+  - phase: synthesis
+    name: Synthesize & Recommend
+    agent: "{{agent_mapping[squad].reviewer}}"
+    action: synthesize
+    inputs:
+      - all_previous_outputs
+    creates:
+      - research-report.md
+    template: templates/research-report.md
+    quality_gate: research-quality-checklist
+
+# Output format
+output_format: |
+  # Market Research: {{target}}
+  _Generated: {{date}} | Focus: {{focus}} | Depth: {{depth}}_
+
+  ## Executive Summary
+  {{executive_summary}}
+
+  {{#if icp}}
+  ## Ideal Customer Profile
+  {{icp_details}}
+  {{/if}}
+
+  {{#if sizing}}
+  ## Market Size
+  - TAM: {{tam}}
+  - SAM: {{sam}}
+  - SOM: {{som}}
+  - Growth: {{growth_rate}}
+  {{/if}}
+
+  {{#if trends}}
+  ## Market Trends
+  {{trends_details}}
+  {{/if}}
+
+  {{#if competitors}}
+  ## Competitive Landscape
+  {{competitor_details}}
+  {{/if}}
+
+  ## Opportunities
+  {{opportunities}}
+
+  ## Recommendations
+  {{recommendations}}
+
+  ## Next Steps
+  {{next_steps}}
+
+  ---
+  _Research conducted by {{squad}} squad_
+
+# Constraints
+constraints:
+  max_cost: 5.00  # EUR
+  timeout_minutes: 120
+  require_sources: true
+  min_competitors: 3
+  require_data_validation: true
+
+# Quality checklist
+quality:
+  checklist: research-quality-checklist
+  gate_rule: "All critical items pass"

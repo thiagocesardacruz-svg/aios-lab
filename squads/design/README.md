@@ -18,6 +18,7 @@ Transform strategy into visual assets that sell. Every design must stop scrolls,
 | `performance-designer` | **Blaze** | Ads, conversion creatives |
 | `motion-video-specialist` | **Flux** | VSLs, video ads, reels |
 | `visual-systems-designer` | **Grid** | Carousels, infographics, templates |
+| `ai-image-creator` | **Canvas** | AI image generation (OpenRouter) |
 
 ## Commands
 
@@ -40,6 +41,73 @@ Transform strategy into visual assets that sell. Every design must stop scrolls,
 | `/design/vsl-slides` | Design VSL slides |
 | `/design/review` | Review creative assets |
 | `/design/brand-assets` | Create brand assets |
+| `/design/generate-image` | Generate single AI image |
+
+### AI Image Generation (NEW)
+
+| Command | Description |
+|---------|-------------|
+| `/design/ai-image-pack` | Generate complete AI image pack |
+| `/design/ai-image` | Direct CLI for image generation |
+
+## AI Image Generation
+
+Generate images using OpenRouter API with multiple models:
+
+### Available Models
+
+| Model | Alias | Cost/Image | Best For |
+|-------|-------|------------|----------|
+| Gemini 2.5 Flash Image | `nano-banana` | €0.02 | Quick concepts, drafts |
+| GPT-5 Image Mini | `gpt-5-image-mini` | €0.03 | Production assets |
+| Seedream 4.5 | `seedream` | €0.04 | Edits, portraits |
+| Riverflow V2 Pro | `riverflow` | €0.05 | Text in images |
+| GPT-5 Image | `gpt-5-image` | €0.08 | Premium/hero images |
+
+### Quick Start
+
+```bash
+# Generate image with Nano Banana (recommended for drafts)
+node scripts/image-generator.mjs generate "Modern hotel lobby with plants" --style=luxury
+
+# Generate ad creative
+node scripts/image-generator.mjs generate "Facebook ad for hotel booking" --size=fb-ad --style=ad
+
+# Generate with specific model
+node scripts/image-generator.mjs generate "Premium hero image" --model=gpt-5-image
+
+# Cost estimate
+node scripts/image-generator.mjs cost "My prompt" --model=nano-banana --n=5
+```
+
+### Style Presets
+
+| Preset | Description |
+|--------|-------------|
+| `photorealistic` | Professional photography style |
+| `luxury` | Premium, elegant aesthetic |
+| `ad` | Advertising, conversion-focused |
+| `social` | Social media optimized |
+| `minimal` | Clean, minimalist design |
+| `tech` | Modern tech aesthetic |
+| `travel` | Travel photography style |
+
+### Size Presets
+
+| Preset | Dimensions | Platform |
+|--------|------------|----------|
+| `ig-post` | 1080x1080 | Instagram feed |
+| `ig-story` | 1080x1920 | Instagram stories |
+| `fb-ad` | 1200x628 | Facebook ads |
+| `wide` | 1920x1080 | Hero images |
+| `square` | 1024x1024 | General purpose |
+
+### Setup
+
+1. Get API key from [OpenRouter](https://openrouter.ai/keys)
+2. Copy `config/openrouter.example.json` to `config/openrouter.json`
+3. Add your API key
+4. Or set `OPENROUTER_API_KEY` environment variable
 
 ## Structure
 
@@ -183,4 +251,5 @@ Briefing → Design Lead Review → Execution → QA → Handoff
 
 ---
 
-*Design Squad v1.1.0 - Travel Tech Digital AIOS*
+*Design Squad v1.2.0 - Travel Tech Digital AIOS*
+*Now with AI Image Generation via OpenRouter*

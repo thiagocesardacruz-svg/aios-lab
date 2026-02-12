@@ -1,0 +1,18 @@
+{
+  "_comment": "Copy this file to openrouter.json and add your API key",
+  "_docs": "https://openrouter.ai/keys",
+  "apiKey": "sk-or-v1-YOUR_API_KEY_HERE",
+  "defaultModel": "nano-banana",
+  "budgetLimits": {
+    "perImage": 0.10,
+    "daily": 5.00,
+    "monthly": 50.00
+  },
+  "preferredModels": {
+    "concepts": "nano-banana",
+    "production": "gpt-5-image-mini",
+    "premium": "gpt-5-image",
+    "textRendering": "riverflow",
+    "edits": "seedream"
+  }
+}

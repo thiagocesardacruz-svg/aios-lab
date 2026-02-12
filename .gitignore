@@ -6,6 +6,8 @@
 .env.*.local
 *.key
 *.pem
+**/config/openrouter.json
+**/secrets/
 
 # Dependencies (AIOS)
 node_modules/

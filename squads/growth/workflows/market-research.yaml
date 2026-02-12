@@ -1,10 +1,16 @@
 # Market Research Workflow
-# Deep market research and analysis
-# Version: 1.0.0
+# DEPRECATED: Use shared workflow instead
+# Version: 1.1.0
 
 name: market-research
-version: "1.0.0"
+version: "1.1.0"
 description: "Conduct comprehensive market research for growth opportunities"
+deprecated: true
+use_instead: "_shared/workflows/market-research.yaml"
+migration_note: |
+  This workflow has been consolidated into a shared workflow.
+  Use: *workflow _shared/market-research --focus=sizing
+  The shared workflow supports: icp, sizing, competitors, trends, full
 
 trigger:
   command: "/growth/market-research"

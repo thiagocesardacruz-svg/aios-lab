@@ -1,0 +1,334 @@
+# AI Image Pack Workflow
+# Generate complete visual asset pack using AI
+# Version: 1.0.0
+
+workflow:
+  id: ai-image-pack
+  name: AI Image Pack
+  description: |
+    Generate a complete pack of AI images for a campaign or project.
+    Uses model routing for cost optimization (Nano Banana for drafts,
+    higher quality models for finals).
+  version: "1.0.0"
+  squad: design
+  responsible: "@ai-image-creator"
+
+inputs:
+  - name: brief
+    type: string
+    required: true
+    description: "Creative brief describing the visual needs"
+
+  - name: brand
+    type: string
+    required: false
+    description: "Brand name for style consistency"
+
+  - name: pack_type
+    type: enum
+    options: [social, ads, landing, full]
+    default: social
+    description: |
+      social: Instagram/social pack (5-10 images)
+      ads: Ad creatives pack (3-5 variations per size)
+      landing: Landing page visuals (hero + sections)
+      full: Complete campaign pack
+
+  - name: quality_tier
+    type: enum
+    options: [draft, production, premium]
+    default: production
+    description: |
+      draft: All Nano Banana (cheap, fast)
+      production: Mixed (concepts cheap, finals quality)
+      premium: All GPT-5 Image (highest quality)
+
+outputs:
+  - name: image-pack
+    type: folder
+    path: "outputs/images/packs/{date}-{brief_slug}/"
+
+  - name: generation-report
+    type: markdown
+    path: "outputs/images/packs/{date}-{brief_slug}/README.md"
+
+# Model selection based on quality tier
+model_mapping:
+  draft:
+    concepts: nano-banana
+    finals: nano-banana
+    hero: gpt-5-image-mini
+
+  production:
+    concepts: nano-banana
+    finals: gpt-5-image-mini
+    hero: gpt-5-image
+
+  premium:
+    concepts: gpt-5-image-mini
+    finals: gpt-5-image
+    hero: gpt-5-image
+
+# Pack definitions
+pack_definitions:
+  social:
+    assets:
+      - name: "ig-post"
+        size: "ig-post"
+        quantity: 5
+        tier: concepts
+      - name: "ig-story"
+        size: "ig-story"
+        quantity: 3
+        tier: concepts
+      - name: "twitter"
+        size: "twitter"
+        quantity: 2
+        tier: finals
+
+  ads:
+    assets:
+      - name: "fb-ad"
+        size: "fb-ad"
+        quantity: 3
+        tier: finals
+      - name: "ig-ad-square"
+        size: "square"
+        quantity: 3
+        tier: finals
+      - name: "ig-ad-story"
+        size: "ig-story"
+        quantity: 2
+        tier: finals
+
+  landing:
+    assets:
+      - name: "hero"
+        size: "wide"
+        quantity: 2
+        tier: hero
+      - name: "section-1"
+        size: "landscape"
+        quantity: 1
+        tier: finals
+      - name: "section-2"
+        size: "landscape"
+        quantity: 1
+        tier: finals
+      - name: "testimonial-bg"
+        size: "wide"
+        quantity: 1
+        tier: concepts
+
+  full:
+    assets:
+      # Social
+      - name: "ig-post"
+        size: "ig-post"
+        quantity: 5
+        tier: concepts
+      - name: "ig-story"
+        size: "ig-story"
+        quantity: 3
+        tier: concepts
+      # Ads
+      - name: "fb-ad"
+        size: "fb-ad"
+        quantity: 3
+        tier: finals
+      - name: "ig-ad"
+        size: "square"
+        quantity: 3
+        tier: finals
+      # Landing
+      - name: "hero"
+        size: "wide"
+        quantity: 2
+        tier: hero
+      - name: "sections"
+        size: "landscape"
+        quantity: 3
+        tier: finals
+
+phases:
+  - id: brief-analysis
+    name: Analyze Brief
+  - id: prompt-engineering
+    name: Engineer Prompts
+  - id: concept-generation
+    name: Generate Concepts
+  - id: selection
+    name: Select Best
+  - id: final-generation
+    name: Generate Finals
+  - id: delivery
+    name: Package & Deliver
+
+sequence:
+  # Phase 1: Analyze Brief
+  - phase: brief-analysis
+    name: Analyze Creative Brief
+    agent: ai-image-creator
+    action: analyze_brief
+    inputs:
+      - brief
+      - brand
+      - pack_type
+    creates:
+      - visual_direction (memory)
+      - style_keywords (memory)
+      - brand_elements (memory)
+    notes: |
+      Extract:
+      - Main subject/theme
+      - Visual style direction
+      - Color palette suggestions
+      - Mood and atmosphere
+      - Brand-specific requirements
+
+  # Phase 2: Engineer Prompts
+  - phase: prompt-engineering
+    name: Create Optimized Prompts
+    agent: ai-image-creator
+    action: engineer_prompts
+    inputs:
+      - visual_direction
+      - pack_definitions[pack_type]
+    creates:
+      - prompts_by_asset (memory)
+    notes: |
+      For each asset in pack:
+      - Create detailed prompt
+      - Include style keywords
+      - Add technical requirements
+      - Specify brand elements
+
+  # Phase 3: Generate Concepts
+  - phase: concept-generation
+    name: Generate Concept Variations
+    agent: ai-image-creator
+    action: generate_batch
+    script: |
+      for asset in pack_definitions[pack_type].assets:
+        if asset.tier in ['concepts']:
+          run: node scripts/image-generator.mjs generate "{prompts_by_asset[asset.name]}" \
+               --model={model_mapping[quality_tier].concepts} \
+               --size={asset.size} \
+               --n={asset.quantity}
+    creates:
+      - concept_images/
+    timeout: 10m
+
+  # Phase 4: Selection (if interactive)
+  - phase: selection
+    name: Review & Select
+    agent: design-lead
+    action: review_concepts
+    inputs:
+      - concept_images/
+    creates:
+      - selected_concepts (memory)
+      - refinement_notes (memory)
+    notes: |
+      Review concepts and:
+      - Select best directions
+      - Note improvements needed
+      - Approve for final generation
+
+  # Phase 5: Final Generation
+  - phase: final-generation
+    name: Generate Final Assets
+    agent: ai-image-creator
+    action: generate_finals
+    script: |
+      for asset in pack_definitions[pack_type].assets:
+        if asset.tier in ['finals', 'hero']:
+          run: node scripts/image-generator.mjs generate "{refined_prompt}" \
+               --model={model_mapping[quality_tier][asset.tier]} \
+               --size={asset.size} \
+               --n=1
+    creates:
+      - final_images/
+    timeout: 15m
+
+  # Phase 6: Package & Deliver
+  - phase: delivery
+    name: Package Deliverables
+    agent: ai-image-creator
+    action: package
+    inputs:
+      - concept_images/
+      - final_images/
+    creates:
+      - image-pack/
+      - generation-report.md
+    template: templates/image-pack-report.md
+
+output_format: |
+  # AI Image Pack: {brief_slug}
+
+  **Generated:** {date}
+  **Pack Type:** {pack_type}
+  **Quality Tier:** {quality_tier}
+
+  ## Assets Generated
+
+  | Asset | Size | Model | Cost |
+  |-------|------|-------|------|
+  {asset_table}
+
+  ## Total Cost: €{total_cost}
+
+  ## Files
+
+  ```
+  {pack_type}-pack/
+  ├── concepts/
+  │   └── {concept_files}
+  ├── finals/
+  │   └── {final_files}
+  └── README.md
+  ```
+
+  ## Prompts Used
+
+  {prompts_documentation}
+
+  ## Regeneration
+
+  To regenerate any asset:
+  ```bash
+  node scripts/image-generator.mjs generate "{prompt}" --model={model} --size={size}
+  ```
+
+# Cost estimates by pack type and tier
+cost_estimates:
+  social:
+    draft: 0.20      # 10 images @ Nano Banana
+    production: 0.26 # 8 concepts + 2 quality
+    premium: 0.80    # All GPT-5 Image
+
+  ads:
+    draft: 0.16      # 8 images @ Nano Banana
+    production: 0.32 # Mixed models
+    premium: 0.64    # All GPT-5 Image
+
+  landing:
+    draft: 0.10      # 5 images @ Nano Banana
+    production: 0.30 # 2 hero + 3 sections
+    premium: 0.40    # All GPT-5 Image
+
+  full:
+    draft: 0.38      # 19 images @ Nano Banana
+    production: 0.60 # Mixed optimization
+    premium: 1.52    # All GPT-5 Image
+
+constraints:
+  max_cost: 5.00  # EUR per pack
+  timeout_minutes: 30
+  require_brief: true
+  require_brand_review: true
+
+quality:
+  checklist: creative-conversion.md
+  gate_rule: "Design lead approval required for finals"
