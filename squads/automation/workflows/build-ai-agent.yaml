@@ -1,0 +1,253 @@
+# Build AI Agent Workflow
+# Constrói workflows com AI Agent (LangChain nodes)
+
+name: "Build AI Agent Workflow"
+version: "1.0.0"
+description: "Pipeline especializado para construir workflows com AI Agent"
+
+trigger:
+  type: "manual"
+  command: "/auto build-ai"
+
+inputs:
+  - name: "request_id"
+    type: "string"
+    required: true
+
+  - name: "agent_purpose"
+    type: "string"
+    required: true
+    description: "O que o AI Agent deve fazer"
+
+  - name: "tools_needed"
+    type: "array"
+    required: false
+    description: "Tools que o agent precisa usar"
+
+  - name: "model"
+    type: "enum"
+    values: ["gpt-4o", "gpt-4o-mini", "claude-3-5-sonnet", "claude-3-haiku"]
+    default: "gpt-4o-mini"
+
+preconditions:
+  - "Design aprovado (se complexity > simple)"
+  - "OpenAI ou Anthropic credentials configurados"
+
+steps:
+  - id: "understand_requirements"
+    agent: "n8n-architect"
+    action: "Analisar requisitos do AI Agent"
+    output:
+      agent_type: "conversational | task | tools"
+      memory_needed: "boolean"
+      tools_list: "array"
+      output_format: "text | json | structured"
+
+  - id: "select_agent_type"
+    agent: "n8n-builder"
+    action: "Selecionar tipo de AI Agent node"
+    depends_on: ["understand_requirements"]
+    options:
+      conversational: "@n8n/n8n-nodes-langchain.agent"
+      tools: "@n8n/n8n-nodes-langchain.agent"
+      openai_functions: "@n8n/n8n-nodes-langchain.openAiFunctionsAgent"
+    output:
+      agent_node_type: "string"
+
+  - id: "configure_llm"
+    agent: "n8n-builder"
+    action: "Configurar Language Model"
+    depends_on: ["select_agent_type"]
+    node_type: "@n8n/n8n-nodes-langchain.lmChatOpenAi"
+    config:
+      model: "{model}"
+      temperature: 0.7
+      maxTokens: 4096
+    output:
+      llm_node: "json"
+
+  - id: "create_tools"
+    agent: "n8n-builder"
+    action: "Criar Tool nodes"
+    depends_on: ["understand_requirements"]
+    condition: "tools_list.length > 0"
+    for_each: "tools_list"
+    common_tools:
+      http_request:
+        type: "@n8n/n8n-nodes-langchain.toolHttpRequest"
+        purpose: "Chamar APIs externas"
+      code:
+        type: "@n8n/n8n-nodes-langchain.toolCode"
+        purpose: "Executar lógica custom"
+      calculator:
+        type: "@n8n/n8n-nodes-langchain.toolCalculator"
+        purpose: "Cálculos matemáticos"
+      wikipedia:
+        type: "@n8n/n8n-nodes-langchain.toolWikipedia"
+        purpose: "Buscar informações"
+      workflow:
+        type: "@n8n/n8n-nodes-langchain.toolWorkflow"
+        purpose: "Chamar outro workflow"
+    output:
+      tool_nodes: "array"
+
+  - id: "configure_memory"
+    agent: "n8n-builder"
+    action: "Configurar Memory (se necessário)"
+    depends_on: ["understand_requirements"]
+    condition: "memory_needed"
+    options:
+      buffer:
+        type: "@n8n/n8n-nodes-langchain.memoryBufferWindow"
+        config:
+          sessionIdType: "fromInput"
+          contextWindowLength: 10
+      postgres:
+        type: "@n8n/n8n-nodes-langchain.memoryPostgresChat"
+        config:
+          tableName: "n8n_chat_histories"
+    output:
+      memory_node: "json"
+
+  - id: "create_agent_node"
+    agent: "n8n-builder"
+    action: "Criar AI Agent node"
+    depends_on: ["configure_llm", "create_tools", "configure_memory"]
+    config:
+      systemMessage: |
+        {system_prompt_from_design}
+      humanMessage: "={{ $json.input }}"
+      outputParser: "{output_format}"
+    output:
+      agent_node: "json"
+
+  - id: "connect_ai_components"
+    agent: "n8n-builder"
+    action: "Conectar componentes AI"
+    depends_on: ["create_agent_node"]
+    connections:
+      llm_to_agent:
+        from: "llm_node"
+        to: "agent_node"
+        type: "ai_languageModel"
+      tools_to_agent:
+        from: "tool_nodes[]"
+        to: "agent_node"
+        type: "ai_tool"
+      memory_to_agent:
+        from: "memory_node"
+        to: "agent_node"
+        type: "ai_memory"
+    output:
+      ai_connections: "object"
+
+  - id: "add_input_output"
+    agent: "n8n-builder"
+    action: "Adicionar trigger e output"
+    depends_on: ["connect_ai_components"]
+    trigger_options:
+      webhook: "Receber requests HTTP"
+      chat_trigger: "Interface de chat n8n"
+      schedule: "Executar periodicamente"
+    output_options:
+      respond_webhook: "Retornar resposta HTTP"
+      set_output: "Formatar output"
+      send_notification: "Enviar para Slack/Email"
+    output:
+      complete_flow: "json"
+
+  - id: "add_error_handling"
+    agent: "n8n-builder"
+    action: "Adicionar error handling para AI"
+    depends_on: ["add_input_output"]
+    ai_specific_errors:
+      - "Rate limit exceeded"
+      - "Token limit exceeded"
+      - "Invalid response format"
+      - "Tool execution failed"
+    handling:
+      rate_limit: "Wait + retry"
+      token_limit: "Truncate input"
+      invalid_response: "Retry with clarification"
+      tool_failed: "Fallback ou notify"
+    output:
+      error_handling: "json"
+
+  - id: "validate_ai_workflow"
+    agent: "n8n-builder"
+    action: "Validar workflow com profile ai-friendly"
+    depends_on: ["add_error_handling"]
+    tool: "mcp__n8n-mcp__validate_workflow"
+    options:
+      profile: "ai-friendly"
+    output:
+      validation_result: "object"
+
+  - id: "test_ai_agent"
+    agent: "n8n-builder"
+    action: "Testar AI Agent"
+    depends_on: ["validate_ai_workflow"]
+    tests:
+      - name: "Basic conversation"
+        input: "Hello, what can you do?"
+        expect: "Response explains capabilities"
+      - name: "Tool usage"
+        input: "{test_requiring_tool}"
+        expect: "Tool is called correctly"
+      - name: "Error handling"
+        input: "{invalid_input}"
+        expect: "Graceful error response"
+    output:
+      test_results: "object"
+      tokens_used: "number"
+      avg_latency: "number"
+
+  - id: "estimate_costs"
+    agent: "n8n-builder"
+    action: "Estimar custos de operação"
+    depends_on: ["test_ai_agent"]
+    calculation:
+      tokens_per_run: "{from_tests}"
+      cost_per_1k_tokens: "{model_pricing}"
+      estimated_runs_per_month: "{from_requirements}"
+      monthly_cost: "tokens_per_run * runs * cost / 1000"
+    output:
+      cost_estimate: "object"
+
+  - id: "save_and_register"
+    agent: "n8n-builder"
+    action: "Salvar e registrar"
+    depends_on: ["test_ai_agent", "estimate_costs"]
+    saves_to: "workflows/{name}-ai-agent.json"
+    registers_in: "data/workflow-registry.yaml"
+    metadata:
+      has_ai: true
+      model: "{model}"
+      tools_count: "{tools_list.length}"
+      estimated_cost: "{cost_estimate}"
+    output:
+      workflow_id: "string"
+
+outputs:
+  - name: "ai_build_result"
+    type: "object"
+    schema:
+      workflow_id: "string"
+      workflow_file: "string"
+      agent_type: "string"
+      model: "string"
+      tools_count: "number"
+      has_memory: "boolean"
+      estimated_cost_per_run: "number"
+      validation_passed: "boolean"
+      tests_passed: "boolean"
+
+estimated_time: "2-6h"
+
+quality_gate:
+  - "AI Agent responde corretamente"
+  - "Tools funcionam"
+  - "Memory persiste (se aplicável)"
+  - "Error handling robusto"
+  - "Custos estimados documentados"
+  - "Validação passou"

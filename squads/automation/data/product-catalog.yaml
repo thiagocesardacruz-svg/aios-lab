@@ -1,0 +1,586 @@
+# Product Catalog - Automation Squad
+# Catálogo de produtos de automação white-label
+# Atualizado: 2026-02-12
+
+version: "1.0.0"
+
+categories:
+  acquisition:
+    name: "Máquina de Aquisição"
+    description: "Produtos para geração de leads e tráfego"
+    icon: "🎯"
+
+  conversion:
+    name: "Máquina de Conversão"
+    description: "Produtos para converter leads em clientes"
+    icon: "💰"
+
+  content:
+    name: "Máquina de Conteúdo"
+    description: "Produtos para criação e distribuição de conteúdo"
+    icon: "✍️"
+
+  data:
+    name: "Máquina de Dados"
+    description: "Produtos para analytics e decisões data-driven"
+    icon: "📊"
+
+  retention:
+    name: "Máquina de Retenção"
+    description: "Produtos para aumentar LTV e reduzir churn"
+    icon: "🔄"
+
+products:
+  # ============================================
+  # MÁQUINA DE AQUISIÇÃO
+  # ============================================
+
+  - id: "lead-ads-engine"
+    name: "Lead Ads Engine"
+    category: "acquisition"
+    status: "planned"  # planned | development | beta | live
+    version: null
+
+    value_proposition: "Captura leads de Meta/Google Ads e sincroniza com CRM automaticamente"
+
+    features:
+      - "Webhook receiver para Lead Ads"
+      - "Validação e enriquecimento de dados"
+      - "Sync automático com GoHighLevel"
+      - "Notificação no Slack/WhatsApp"
+      - "Deduplicação inteligente"
+
+    integrations:
+      - "Meta Lead Ads"
+      - "Google Ads"
+      - "GoHighLevel"
+      - "Slack"
+
+    complexity: "medium"
+    ai_required: false
+    estimated_build: "8h"
+
+    pricing:
+      model: "tiered"
+      tiers:
+        starter: { price: 97, features: ["1 conta ads", "500 leads/mês"] }
+        professional: { price: 197, features: ["5 contas ads", "5000 leads/mês", "Enriquecimento"] }
+
+    verticals: ["all"]  # all = agnóstico
+
+  - id: "referral-machine"
+    name: "Referral Machine"
+    category: "acquisition"
+    status: "planned"
+    version: null
+
+    value_proposition: "Programa de indicação automatizado com tracking e rewards"
+
+    features:
+      - "Links únicos por indicador"
+      - "Tracking de conversões"
+      - "Cálculo automático de rewards"
+      - "Notificações para indicadores"
+      - "Dashboard de performance"
+
+    integrations:
+      - "GoHighLevel"
+      - "Stripe (rewards)"
+      - "Email/WhatsApp"
+
+    complexity: "complex"
+    ai_required: false
+    estimated_build: "16h"
+
+    pricing:
+      model: "tiered"
+      tiers:
+        starter: { price: 147, features: ["100 indicadores", "Basic tracking"] }
+        professional: { price: 297, features: ["Ilimitado", "Rewards automáticos", "API"] }
+
+    verticals: ["all"]
+
+  - id: "affiliate-tracker"
+    name: "Affiliate Tracker"
+    category: "acquisition"
+    status: "planned"
+    version: null
+
+    value_proposition: "Gestão de afiliados com comissões e pagamentos automáticos"
+
+    features:
+      - "Cadastro de afiliados"
+      - "Links e cupons únicos"
+      - "Tracking multi-touch"
+      - "Cálculo de comissões"
+      - "Relatórios de performance"
+
+    integrations:
+      - "GoHighLevel"
+      - "WooCommerce"
+      - "Stripe"
+
+    complexity: "complex"
+    ai_required: false
+    estimated_build: "24h"
+
+    pricing:
+      model: "percentage"
+      base: 97
+      commission_fee: "2%"
+
+    verticals: ["all"]
+
+  # ============================================
+  # MÁQUINA DE CONVERSÃO
+  # ============================================
+
+  - id: "whatsapp-qualifier"
+    name: "WhatsApp Qualifier"
+    category: "conversion"
+    status: "planned"
+    version: null
+
+    value_proposition: "Bot de WhatsApp com IA para qualificação 24/7"
+
+    features:
+      - "Chatbot conversacional"
+      - "Qualificação BANT/GPCT"
+      - "Agendamento automático"
+      - "Handoff para humano"
+      - "Integração CRM"
+
+    integrations:
+      - "Evolution API / WhatsApp Business"
+      - "OpenAI"
+      - "GoHighLevel"
+      - "Calendly"
+
+    complexity: "complex"
+    ai_required: true
+    ai_cost_per_conversation: 0.05  # EUR
+    estimated_build: "24h"
+
+    pricing:
+      model: "tiered"
+      tiers:
+        starter: { price: 197, features: ["500 conversas/mês", "1 número"] }
+        professional: { price: 397, features: ["2500 conversas/mês", "3 números", "Multi-idioma"] }
+
+    verticals: ["all"]
+
+  - id: "cart-recovery"
+    name: "Cart Recovery Pro"
+    category: "conversion"
+    status: "planned"
+    version: null
+
+    value_proposition: "Recuperação de carrinho abandonado multicanal"
+
+    features:
+      - "Detecção de abandono"
+      - "Sequência email + SMS + WhatsApp"
+      - "Ofertas dinâmicas"
+      - "A/B testing"
+      - "Analytics de conversão"
+
+    integrations:
+      - "WooCommerce"
+      - "Shopify"
+      - "GoHighLevel"
+      - "WhatsApp"
+
+    complexity: "medium"
+    ai_required: true
+    estimated_build: "16h"
+
+    pricing:
+      model: "percentage"
+      base: 147
+      recovery_fee: "5%"
+
+    verticals: ["ecommerce", "hotels", "tours"]
+
+  - id: "call-analyzer"
+    name: "Call Analyzer"
+    category: "conversion"
+    status: "planned"
+    version: null
+
+    value_proposition: "Transcrição e análise automática de calls de vendas"
+
+    features:
+      - "Transcrição automática (whisper.cpp)"
+      - "Análise de sentimento"
+      - "Detecção de objeções"
+      - "Score de qualidade"
+      - "Coaching suggestions"
+
+    integrations:
+      - "GoHighLevel (call recordings)"
+      - "Local: whisper.cpp"
+      - "OpenAI (análise)"
+
+    complexity: "complex"
+    ai_required: true
+    ai_cost_per_call: 0.10  # EUR (5 min avg)
+    estimated_build: "20h"
+
+    pricing:
+      model: "usage"
+      base: 97
+      per_call: 0.50
+
+    verticals: ["all"]
+
+  # ============================================
+  # MÁQUINA DE CONTEÚDO
+  # ============================================
+
+  - id: "blog-seo-machine"
+    name: "Blog SEO Machine"
+    category: "content"
+    status: "planned"
+    version: null
+
+    value_proposition: "Produção de conteúdo SEO em escala"
+
+    features:
+      - "Pesquisa de keywords"
+      - "Geração de briefings"
+      - "Escrita com AI"
+      - "Otimização SEO"
+      - "Publicação automática"
+
+    integrations:
+      - "Ahrefs/SEMrush (keywords)"
+      - "OpenAI"
+      - "WordPress"
+      - "GoHighLevel"
+
+    complexity: "complex"
+    ai_required: true
+    ai_cost_per_article: 0.50  # EUR
+    estimated_build: "24h"
+
+    pricing:
+      model: "tiered"
+      tiers:
+        starter: { price: 297, features: ["10 artigos/mês", "1 idioma"] }
+        professional: { price: 597, features: ["30 artigos/mês", "3 idiomas", "Imagens AI"] }
+
+    verticals: ["all"]
+
+  - id: "newsletter-engine"
+    name: "Newsletter Engine"
+    category: "content"
+    status: "planned"
+    version: null
+
+    value_proposition: "Newsletter automatizada com curadoria AI"
+
+    features:
+      - "Curadoria de conteúdo"
+      - "Geração de summaries"
+      - "Personalização por segmento"
+      - "Agendamento"
+      - "Analytics"
+
+    integrations:
+      - "RSS feeds"
+      - "OpenAI"
+      - "GoHighLevel"
+      - "Mailchimp"
+
+    complexity: "medium"
+    ai_required: true
+    ai_cost_per_issue: 0.20  # EUR
+    estimated_build: "12h"
+
+    pricing:
+      model: "tiered"
+      tiers:
+        starter: { price: 97, features: ["4 newsletters/mês", "1000 subscribers"] }
+        professional: { price: 197, features: ["Semanal", "10000 subscribers", "A/B testing"] }
+
+    verticals: ["all"]
+
+  - id: "social-repurposer"
+    name: "Social Repurposer"
+    category: "content"
+    status: "planned"
+    version: null
+
+    value_proposition: "Transforma 1 conteúdo em 10 formatos"
+
+    features:
+      - "Input: blog post, video, podcast"
+      - "Output: threads, carrosséis, reels scripts"
+      - "Adaptação por plataforma"
+      - "Agendamento"
+
+    integrations:
+      - "OpenAI"
+      - "Buffer/Hootsuite"
+      - "Canva (templates)"
+
+    complexity: "medium"
+    ai_required: true
+    ai_cost_per_repurpose: 0.15  # EUR
+    estimated_build: "16h"
+
+    pricing:
+      model: "tiered"
+      tiers:
+        starter: { price: 147, features: ["20 repurposes/mês"] }
+        professional: { price: 297, features: ["100 repurposes/mês", "Custom templates"] }
+
+    verticals: ["all"]
+
+  # ============================================
+  # MÁQUINA DE DADOS
+  # ============================================
+
+  - id: "ga4-intelligence"
+    name: "GA4 Intelligence"
+    category: "data"
+    status: "planned"
+    version: null
+
+    value_proposition: "Extração e análise automática de dados GA4"
+
+    features:
+      - "Extração diária de métricas"
+      - "Detecção de anomalias"
+      - "Insights automáticos com AI"
+      - "Relatórios semanais"
+      - "Alertas de performance"
+
+    integrations:
+      - "Google Analytics 4"
+      - "OpenAI"
+      - "Slack"
+      - "Google Sheets"
+
+    complexity: "medium"
+    ai_required: true
+    ai_cost_per_analysis: 0.10  # EUR
+    estimated_build: "16h"
+
+    pricing:
+      model: "tiered"
+      tiers:
+        starter: { price: 147, features: ["1 property", "Weekly reports"] }
+        professional: { price: 297, features: ["5 properties", "Daily reports", "Custom dashboards"] }
+
+    verticals: ["all"]
+
+  - id: "ads-optimizer"
+    name: "Ads Optimizer"
+    category: "data"
+    status: "planned"
+    version: null
+
+    value_proposition: "Otimização automática de campanhas de Ads"
+
+    features:
+      - "Monitoramento de ROAS"
+      - "Alertas de performance"
+      - "Sugestões de otimização"
+      - "Pause automático de ads ruins"
+      - "Relatórios de ROI"
+
+    integrations:
+      - "Meta Ads"
+      - "Google Ads"
+      - "OpenAI"
+      - "Slack"
+
+    complexity: "complex"
+    ai_required: true
+    estimated_build: "24h"
+
+    pricing:
+      model: "percentage"
+      base: 197
+      ad_spend_fee: "3%"
+
+    verticals: ["all"]
+
+  - id: "competitor-watch"
+    name: "Competitor Watch"
+    category: "data"
+    status: "planned"
+    version: null
+
+    value_proposition: "Monitoramento automático de concorrentes"
+
+    features:
+      - "Tracking de preços"
+      - "Monitoramento de ofertas"
+      - "Alertas de mudanças"
+      - "Análise comparativa"
+
+    integrations:
+      - "Apify (scraping)"
+      - "OpenAI"
+      - "Slack"
+
+    complexity: "medium"
+    ai_required: true
+    estimated_build: "16h"
+
+    pricing:
+      model: "tiered"
+      tiers:
+        starter: { price: 197, features: ["5 concorrentes", "Weekly updates"] }
+        professional: { price: 397, features: ["20 concorrentes", "Daily updates", "Price alerts"] }
+
+    verticals: ["hotels", "ecommerce", "tours"]
+
+  # ============================================
+  # MÁQUINA DE RETENÇÃO
+  # ============================================
+
+  - id: "review-harvester"
+    name: "Review Harvester"
+    category: "retention"
+    status: "planned"
+    version: null
+
+    value_proposition: "Coleta e resposta automática de reviews"
+
+    features:
+      - "Monitoramento multi-plataforma"
+      - "Classificação por sentimento"
+      - "Resposta gerada por AI"
+      - "Dashboard de reputação"
+      - "Alertas de reviews negativos"
+
+    integrations:
+      - "TripAdvisor (scraping)"
+      - "Google Business"
+      - "Booking.com"
+      - "OpenAI"
+
+    complexity: "complex"
+    ai_required: true
+    ai_cost_per_review: 0.03  # EUR
+    estimated_build: "20h"
+
+    pricing:
+      model: "tiered"
+      tiers:
+        starter: { price: 97, features: ["1 property", "50 reviews/mês"] }
+        professional: { price: 197, features: ["5 properties", "500 reviews/mês", "Auto-respond"] }
+
+    verticals: ["hotels", "restaurants"]
+
+  - id: "cross-sell-engine"
+    name: "Cross-sell Engine"
+    category: "retention"
+    status: "planned"
+    version: null
+
+    value_proposition: "Recomendações personalizadas baseadas em comportamento"
+
+    features:
+      - "Análise de histórico"
+      - "Recomendações AI"
+      - "Campanhas automáticas"
+      - "A/B testing"
+
+    integrations:
+      - "GoHighLevel"
+      - "WooCommerce"
+      - "OpenAI"
+
+    complexity: "complex"
+    ai_required: true
+    estimated_build: "24h"
+
+    pricing:
+      model: "percentage"
+      base: 147
+      upsell_fee: "5%"
+
+    verticals: ["all"]
+
+  - id: "reactivation-bot"
+    name: "Reactivation Bot"
+    category: "retention"
+    status: "planned"
+    version: null
+
+    value_proposition: "Recupera clientes inativos automaticamente"
+
+    features:
+      - "Detecção de inatividade"
+      - "Sequências personalizadas"
+      - "Ofertas dinâmicas"
+      - "Multi-canal"
+
+    integrations:
+      - "GoHighLevel"
+      - "OpenAI"
+      - "WhatsApp"
+
+    complexity: "medium"
+    ai_required: true
+    estimated_build: "16h"
+
+    pricing:
+      model: "tiered"
+      tiers:
+        starter: { price: 147, features: ["1000 contatos/mês"] }
+        professional: { price: 297, features: ["10000 contatos/mês", "Custom sequences"] }
+
+    verticals: ["all"]
+
+  - id: "nps-automator"
+    name: "NPS Automator"
+    category: "retention"
+    status: "planned"
+    version: null
+
+    value_proposition: "Pesquisa NPS com follow-up inteligente"
+
+    features:
+      - "Envio automático pós-compra"
+      - "Análise de feedback"
+      - "Routing por score"
+      - "Follow-up personalizado"
+
+    integrations:
+      - "GoHighLevel"
+      - "Typeform"
+      - "OpenAI"
+
+    complexity: "medium"
+    ai_required: true
+    estimated_build: "12h"
+
+    pricing:
+      model: "tiered"
+      tiers:
+        starter: { price: 97, features: ["500 surveys/mês"] }
+        professional: { price: 197, features: ["5000 surveys/mês", "AI analysis"] }
+
+    verticals: ["all"]
+
+# Métricas do catálogo
+summary:
+  total_products: 16
+  by_category:
+    acquisition: 3
+    conversion: 4
+    content: 3
+    data: 3
+    retention: 4
+  by_status:
+    planned: 16
+    development: 0
+    beta: 0
+    live: 0
+  estimated_total_build_hours: 288
+  mrr_potential_per_product: "€150-300"

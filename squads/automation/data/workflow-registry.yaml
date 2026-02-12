@@ -1,0 +1,127 @@
+# Workflow Registry - Automation Squad
+# Registro de todos os workflows construídos
+# Atualizado: 2026-02-12
+
+version: "1.0.0"
+
+# Estrutura de registro
+# Cada workflow construído é registrado aqui para:
+# 1. Rastreabilidade
+# 2. Reuso
+# 3. Métricas
+
+workflows: []
+  # Template de registro:
+  # - id: "wf-unique-id"
+  #   name: "Workflow Name"
+  #   version: "1.0.0"
+  #   product_id: "product-id"  # null se interno
+  #   status: "draft | active | deprecated"
+  #
+  #   # Metadados técnicos
+  #   technical:
+  #     nodes_count: 10
+  #     has_ai: true
+  #     trigger_type: "webhook | schedule | manual"
+  #     complexity: "simple | medium | complex"
+  #
+  #   # Arquivo
+  #   file: "workflows/wf-unique-id.json"
+  #
+  #   # Custos estimados
+  #   costs:
+  #     ai_per_run: 0.05  # EUR
+  #     api_calls_per_run: 3
+  #     avg_execution_time: 5  # seconds
+  #
+  #   # Integrações
+  #   integrations:
+  #     - "gohighlevel"
+  #     - "openai"
+  #
+  #   # Histórico
+  #   created_at: "2026-02-12"
+  #   created_by: "@n8n-builder"
+  #   last_updated: "2026-02-12"
+  #
+  #   # Uso
+  #   usage:
+  #     deployed_to: []  # lista de instâncias
+  #     runs_total: 0
+  #     runs_last_30d: 0
+  #     success_rate: null
+
+# Templates reutilizáveis (building blocks)
+templates:
+  - id: "tmpl-webhook-receiver"
+    name: "Webhook Receiver with Validation"
+    description: "Recebe webhook, valida payload, responde"
+    nodes:
+      - "Webhook"
+      - "If (validation)"
+      - "Respond to Webhook"
+    file: "templates/tmpl-webhook-receiver.json"
+    reuse_count: 0
+
+  - id: "tmpl-ai-classifier"
+    name: "AI Classifier"
+    description: "Classifica input usando AI Agent"
+    nodes:
+      - "AI Agent"
+      - "Classifier Tool"
+      - "Switch"
+    file: "templates/tmpl-ai-classifier.json"
+    reuse_count: 0
+
+  - id: "tmpl-multi-channel-sender"
+    name: "Multi-channel Sender"
+    description: "Envia mensagem por email, SMS, WhatsApp"
+    nodes:
+      - "Set (prepare)"
+      - "Switch (channel)"
+      - "Email"
+      - "SMS"
+      - "WhatsApp"
+    file: "templates/tmpl-multi-channel-sender.json"
+    reuse_count: 0
+
+  - id: "tmpl-data-enricher"
+    name: "Data Enricher"
+    description: "Enriquece dados com APIs externas"
+    nodes:
+      - "HTTP Request (enrich)"
+      - "Merge"
+      - "Set (transform)"
+    file: "templates/tmpl-data-enricher.json"
+    reuse_count: 0
+
+  - id: "tmpl-error-handler"
+    name: "Error Handler with Notification"
+    description: "Captura erros e notifica"
+    nodes:
+      - "Error Trigger"
+      - "Set (format error)"
+      - "Slack/Email"
+    file: "templates/tmpl-error-handler.json"
+    reuse_count: 0
+
+  - id: "tmpl-scheduled-report"
+    name: "Scheduled Report Generator"
+    description: "Gera e envia relatório em schedule"
+    nodes:
+      - "Schedule Trigger"
+      - "HTTP Request (fetch data)"
+      - "Code (transform)"
+      - "Email"
+    file: "templates/tmpl-scheduled-report.json"
+    reuse_count: 0
+
+# Métricas agregadas
+metrics:
+  total_workflows: 0
+  total_templates: 6
+  total_deployments: 0
+  avg_nodes_per_workflow: 0
+  ai_workflows_percentage: 0
+  total_runs_last_30d: 0
+  avg_success_rate: 0

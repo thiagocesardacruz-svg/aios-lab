@@ -1,0 +1,332 @@
+# Squad Automation - n8n Platform Infrastructure
+# Agnóstico de nicho - serve todos os squads e projetos
+# Version: 1.0.0
+
+name: automation
+version: "1.0.0"
+description: "Squad de infraestrutura de automação. Constrói, mantém e productiza workflows n8n que potencializam todos os outros squads. Agnóstico de nicho."
+
+aios:
+  minVersion: "2.1.0"
+  type: squad
+  domain: operations  # infrastructure squad
+
+config:
+  slashPrefix: "auto"
+  entry_point: "workflows/request-workflow.yaml"
+
+# Filosofia
+philosophy: |
+  "Automação é alavanca, não produto final."
+
+  Este squad NÃO executa tarefas de negócio - ele CONSTRÓI as máquinas
+  que outros squads usam para executar. Pense em fábrica de ferramentas,
+  não em linha de produção.
+
+  Princípios:
+  1. Build once, use everywhere - workflows reutilizáveis
+  2. Agnóstico de vertical - funciona para hotel, restaurante, qualquer nicho
+  3. Productização - todo workflow pode virar produto vendável
+  4. Custo zero quando possível - ferramentas locais primeiro
+
+lead:
+  agent: "automation-lead"
+  role: "Squad Lead & Automation Strategist"
+
+# Agentes especializados
+agents:
+  # ESTRATÉGICO
+  - id: "automation-lead"
+    file: "agents/automation-lead.md"
+    name: "Flux"
+    role: "Estratégia de automação, priorização, ROI"
+    tier: strategic
+
+  # TÉCNICO - Arquitetura
+  - id: "n8n-architect"
+    file: "agents/n8n-architect.md"
+    name: "Blueprint"
+    role: "Design de workflows complexos, arquitetura técnica"
+    tier: technical
+
+  # TÉCNICO - Implementação
+  - id: "n8n-builder"
+    file: "agents/n8n-builder.md"
+    name: "Forge"
+    role: "Implementação de código n8n, nodes, conexões"
+    tier: technical
+
+  # TÉCNICO - Integrações
+  - id: "integration-engineer"
+    file: "agents/integration-engineer.md"
+    name: "Bridge"
+    role: "APIs, webhooks, conectores, MCPs"
+    tier: technical
+
+  # COMERCIAL - Produtos
+  - id: "product-engineer"
+    file: "agents/product-engineer.md"
+    name: "Package"
+    role: "Productização, pricing, documentação de produtos"
+    tier: commercial
+
+components:
+  agents:
+    - "automation-lead.md"
+    - "n8n-architect.md"
+    - "n8n-builder.md"
+    - "integration-engineer.md"
+    - "product-engineer.md"
+
+  tasks:
+    # Core
+    - "design-workflow.md"
+    - "build-workflow.md"
+    - "validate-workflow.md"
+    - "deploy-workflow.md"
+    - "debug-workflow.md"
+    # Produtos
+    - "create-product.md"
+    - "price-product.md"
+    - "document-product.md"
+    # Suporte
+    - "audit-integrations.md"
+    - "optimize-workflow.md"
+    - "migrate-workflow.md"
+
+  workflows:
+    # Intake
+    - "request-workflow.yaml"          # Receber pedido de automação
+    - "triage-request.yaml"            # Classificar complexidade
+    # Build
+    - "build-simple.yaml"              # Workflow simples (1-3 nodes)
+    - "build-complex.yaml"             # Workflow complexo (4+ nodes, AI)
+    - "build-ai-agent.yaml"            # Workflow com AI Agent
+    # Validate & Deploy
+    - "validate-and-fix.yaml"          # Validar e corrigir
+    - "deploy-to-n8n.yaml"             # Deploy para instância
+    # Products
+    - "package-product.yaml"           # Empacotar como produto
+    - "generate-docs.yaml"             # Gerar documentação
+
+  templates:
+    # Workflow Templates (n8n JSON)
+    - "tmpl-webhook-receiver.json"
+    - "tmpl-ai-classifier.json"
+    - "tmpl-multi-channel-sender.json"
+    - "tmpl-data-enricher.json"
+    - "tmpl-lead-qualifier.json"
+    - "tmpl-content-repurposer.json"
+    # Doc Templates
+    - "tmpl-product-spec.md"
+    - "tmpl-integration-doc.md"
+    - "tmpl-workflow-readme.md"
+
+  checklists:
+    - "workflow-design-review.md"
+    - "pre-deploy-validation.md"
+    - "product-launch-ready.md"
+    - "integration-security.md"
+
+  data:
+    # Registros
+    - "workflow-registry.yaml"         # Todos os workflows construídos
+    - "product-catalog.yaml"           # Produtos disponíveis
+    - "integration-catalog.yaml"       # Integrações disponíveis
+    # Referências
+    - "n8n-node-reference.yaml"        # Nodes mais usados
+    - "pricing-matrix.yaml"            # Matriz de preços por complexidade
+    - "vertical-adapters.yaml"         # Adaptadores por vertical
+
+  scripts:
+    - "workflow-validator.mjs"         # Validação local
+    - "workflow-deployer.mjs"          # Deploy para n8n
+    - "product-packager.mjs"           # Empacotamento
+    - "cost-estimator.mjs"             # Estimativa de custo
+
+# Skills do Squad
+skills:
+  - name: "build-workflow"
+    description: "Construir workflow n8n do zero ou a partir de template"
+    auto_invoke: true
+    triggers:
+      keywords:
+        - "criar workflow"
+        - "build workflow"
+        - "automatizar"
+        - "n8n"
+      patterns:
+        - "preciso de.*automação"
+        - "quero automatizar"
+
+  - name: "package-product"
+    description: "Transformar workflow em produto vendável"
+    auto_invoke: false
+
+  - name: "audit-integrations"
+    description: "Auditar integrações e conexões de um workflow"
+    auto_invoke: false
+
+# O que este squad fornece para outros
+dependencies:
+  requires:
+    - "ops"  # Para tracking de custos e tasks
+  provides:
+    - "workflow-building"
+    - "n8n-expertise"
+    - "integration-engineering"
+    - "automation-products"
+    - "api-connections"
+
+# n8n Instance Configuration
+n8n_instance:
+  name: "TTD Production"
+  provider: "Hostinger"
+  url: "https://n8n.srv855345.hstgr.cloud"
+  api_base: "https://n8n.srv855345.hstgr.cloud/api/v1"
+  webhook_base: "https://n8n.srv855345.hstgr.cloud/webhook"
+  api_key_env: "N8N_API_KEY"  # Store actual key in environment
+  status: "connected"  # verified 2026-02-12
+
+# Integrações técnicas
+integrations:
+  - name: "n8n"
+    type: "mcp"
+    required: true
+    status: "operational"
+    description: "n8n MCP - build, validate, deploy workflows"
+    tools:
+      - "mcp__n8n-mcp__validate_workflow"
+      - "mcp__n8n-mcp__search_nodes"
+      - "mcp__n8n-mcp__get_node"
+      - "mcp__n8n-mcp__search_templates"
+      - "mcp__n8n-mcp__get_template"
+      - "mcp__n8n-mcp__validate_node"
+      - "mcp__n8n-mcp__tools_documentation"
+
+  - name: "n8n-api"
+    type: "rest"
+    required: true
+    status: "operational"
+    description: "Direct n8n REST API for deploy and management"
+    config_file: "config/n8n-instance.json"
+    endpoints:
+      - "GET /workflows"
+      - "POST /workflows"
+      - "PUT /workflows/{id}"
+      - "POST /workflows/{id}/activate"
+      - "POST /workflows/{id}/deactivate"
+
+  - name: "gohighlevel"
+    type: "mcp"
+    required: false
+    description: "GoHighLevel MCP - CRM, contacts, workflows"
+
+  - name: "local-tools"
+    type: "tool"
+    required: true
+    description: "Ferramentas locais (whisper, tesseract, ollama)"
+
+tags:
+  - "infrastructure"
+  - "platform"
+  - "n8n"
+  - "automation"
+  - "products"
+  - "agnostic"
+
+# Comandos públicos
+commands:
+  # Intake
+  - name: "request"
+    workflow: "workflows/request-workflow.yaml"
+    description: "Solicitar nova automação"
+    visibility: "full"
+
+  - name: "triage"
+    workflow: "workflows/triage-request.yaml"
+    description: "Classificar pedido por complexidade"
+    visibility: "quick"
+
+  # Build
+  - name: "build"
+    workflow: "workflows/build-complex.yaml"
+    description: "Construir workflow n8n"
+    visibility: "full"
+
+  - name: "build-ai"
+    workflow: "workflows/build-ai-agent.yaml"
+    description: "Construir workflow com AI Agent"
+    visibility: "full"
+
+  # Validate & Deploy
+  - name: "validate"
+    workflow: "workflows/validate-and-fix.yaml"
+    description: "Validar e corrigir workflow"
+    visibility: "full"
+
+  - name: "deploy"
+    workflow: "workflows/deploy-to-n8n.yaml"
+    description: "Deploy workflow para n8n"
+    visibility: "full"
+
+  # Products
+  - name: "package"
+    workflow: "workflows/package-product.yaml"
+    description: "Empacotar workflow como produto"
+    visibility: "full"
+
+  - name: "catalog"
+    task: "tasks/show-catalog.md"
+    description: "Mostrar catálogo de produtos"
+    visibility: "quick"
+
+# Configurações de qualidade
+quality:
+  min_checklist_coverage: 90
+  require_qa_gate: true
+  require_documentation: true
+  workflow_validation_profile: "strict"  # minimal | runtime | strict
+
+# Handover Contracts
+handover_contracts:
+  enabled: true
+  mode: "warn"
+
+  defaults:
+    request_to_architect:
+      required_fields:
+        - use_case
+        - expected_triggers
+        - expected_outputs
+      min_confidence: "medium"
+
+    architect_to_builder:
+      required_fields:
+        - workflow_design
+        - nodes_required
+        - connections_map
+      min_confidence: "high"
+      require_evidence: true
+
+    builder_to_deploy:
+      required_fields:
+        - workflow_json
+        - validation_passed
+        - test_results
+      min_confidence: "high"
+      require_evidence: true
+
+# Métricas do Squad
+metrics:
+  track:
+    - workflows_built
+    - workflows_deployed
+    - products_created
+    - integrations_connected
+    - avg_build_time
+    - validation_pass_rate
+  goals:
+    workflows_per_month: 10
+    products_per_quarter: 5
+    validation_pass_rate: 95

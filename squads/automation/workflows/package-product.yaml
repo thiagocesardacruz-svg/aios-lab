@@ -1,0 +1,209 @@
+# Package Product Workflow
+# Empacota workflow como produto vendável
+
+name: "Package Product"
+version: "1.0.0"
+description: "Transforma workflow em produto white-label pronto para venda"
+
+trigger:
+  type: "manual"
+  command: "/auto package"
+
+inputs:
+  - name: "workflow_id"
+    type: "string"
+    required: true
+
+  - name: "product_name"
+    type: "string"
+    required: true
+
+  - name: "category"
+    type: "enum"
+    values: ["acquisition", "conversion", "content", "data", "retention"]
+    required: true
+
+preconditions:
+  - "Workflow validado e testado"
+  - "Workflow deployado com sucesso"
+
+steps:
+  - id: "load_workflow"
+    agent: "product-engineer"
+    action: "Carregar workflow e analisar"
+    output:
+      workflow_json: "object"
+      nodes_count: "number"
+      has_ai: "boolean"
+      integrations_used: "array"
+      credentials_needed: "array"
+
+  - id: "create_product_spec"
+    agent: "product-engineer"
+    action: "Criar especificação do produto"
+    depends_on: ["load_workflow"]
+    task: "tasks/create-product.md"
+    output:
+      product_spec: "yaml"
+      product_id: "string"
+
+  - id: "define_pricing"
+    agent: "product-engineer"
+    action: "Definir pricing"
+    depends_on: ["create_product_spec"]
+    task: "tasks/price-product.md"
+    output:
+      pricing: "yaml"
+      tiers: "array"
+
+  - id: "create_documentation"
+    agent: "product-engineer"
+    action: "Criar documentação completa"
+    depends_on: ["create_product_spec"]
+    task: "tasks/document-product.md"
+    output:
+      user_guide: "markdown"
+      setup_guide: "markdown"
+      faq: "markdown"
+
+  - id: "create_sales_materials"
+    agent: "product-engineer"
+    action: "Criar materiais de vendas"
+    depends_on: ["define_pricing"]
+    creates:
+      - "one-pager.md"
+      - "pitch-script.md"
+      - "demo-script.md"
+    output:
+      sales_materials: "array"
+
+  - id: "prepare_workflow_for_distribution"
+    agent: "product-engineer"
+    action: "Preparar workflow para distribuição"
+    depends_on: ["load_workflow"]
+    modifications:
+      - "Remove hardcoded values"
+      - "Add configuration nodes"
+      - "Add clear documentation in node notes"
+      - "Create .env template"
+    output:
+      distributable_workflow: "json"
+
+  - id: "create_product_structure"
+    agent: "product-engineer"
+    action: "Criar estrutura de arquivos do produto"
+    depends_on: ["create_documentation", "create_sales_materials", "prepare_workflow_for_distribution"]
+    structure: |
+      products/{product_id}/
+      ├── spec.yaml
+      ├── README.md
+      ├── workflow.json
+      ├── .env.template
+      ├── docs/
+      │   ├── user-guide.md
+      │   ├── setup-guide.md
+      │   └── faq.md
+      ├── sales/
+      │   ├── one-pager.md
+      │   ├── pitch-script.md
+      │   └── demo-script.md
+      └── assets/
+          └── (screenshots, diagrams)
+    output:
+      product_path: "string"
+
+  - id: "run_product_checklist"
+    agent: "product-engineer"
+    action: "Executar checklist de produto"
+    depends_on: ["create_product_structure"]
+    checklist: "checklists/product-launch-ready.md"
+    output:
+      checklist_result: "object"
+      ready_for_launch: "boolean"
+
+  - id: "update_catalog"
+    agent: "product-engineer"
+    action: "Atualizar catálogo de produtos"
+    depends_on: ["run_product_checklist"]
+    condition: "ready_for_launch"
+    target: "data/product-catalog.yaml"
+    update:
+      status: "beta"  # ou "live"
+      version: "1.0.0"
+      launched_at: "{timestamp}"
+    output:
+      catalog_updated: "boolean"
+
+  - id: "generate_launch_brief"
+    agent: "product-engineer"
+    action: "Gerar brief de lançamento"
+    depends_on: ["update_catalog"]
+    template: |
+      # Product Launch Brief
+
+      ## Product: {product_name}
+
+      ### Summary
+      - Category: {category}
+      - Pricing: {pricing_summary}
+      - Target: {icp}
+
+      ### Files
+      - Spec: products/{product_id}/spec.yaml
+      - Docs: products/{product_id}/docs/
+      - Sales: products/{product_id}/sales/
+
+      ### Launch Checklist
+      {checklist_summary}
+
+      ### Next Steps
+      1. Review and approve
+      2. Configure demo environment
+      3. Train sales team
+      4. Announce launch
+
+      ### Responsible
+      - Product: @product-engineer
+      - Sales: (assign)
+      - Support: (assign)
+    output:
+      launch_brief: "markdown"
+
+outputs:
+  - name: "package_result"
+    type: "object"
+    schema:
+      product_id: "string"
+      product_name: "string"
+      category: "string"
+      product_path: "string"
+      pricing:
+        starter: "number"
+        professional: "number"
+        enterprise: "number"
+      ready_for_launch: "boolean"
+      launch_brief_path: "string"
+
+handover:
+  from_agent: "product-engineer"
+  to_agent: "automation-lead"
+  artifact_type: "product"
+  required_fields:
+    - product_spec
+    - pricing
+    - documentation
+    - sales_materials
+  next_actions:
+    - "Review product"
+    - "Approve for launch"
+    - "Configure sales pipeline"
+
+estimated_time: "4-8h"
+
+quality_gate:
+  - "Product spec completo"
+  - "Pricing definido"
+  - "Documentação criada"
+  - "Sales materials prontos"
+  - "Checklist de launch passou"
+  - "Catálogo atualizado"
