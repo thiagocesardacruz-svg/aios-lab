@@ -5,8 +5,8 @@
 # This index provides fast lookup by keywords, date, and category
 
 version: "1.0.0"
-last_updated: "2025-02-11"
-total_entries: 0
+last_updated: "2026-02-12"
+total_entries: 4
 
 # Decision categories
 categories:
@@ -55,6 +55,38 @@ entries:
     superseded_by: null
     related: []
 
+  - id: DEC-2025-002
+    title: "Sistema de Activity Logging Automático"
+    date: "2025-02-12"
+    category: architectural
+    participants:
+      - Director (Thiago)
+      - "@aios-master"
+    keywords:
+      - logging
+      - activity
+      - capture
+      - hooks
+      - jsonl
+      - batch
+      - digest
+      - zero-cost
+      - memory
+      - learning
+    outcome: positive
+    superseded_by: null
+    related:
+      - DEC-2025-001
+
+# Date index (for timeline queries)
+by_date:
+  "2025-02-11": [DEC-2025-001]
+  "2025-02-12": [DEC-2025-002]
+
+# Month index (for monthly reports)
+by_month:
+  "2025-02": [DEC-2025-001, DEC-2025-002]
+
 # Keyword index (auto-generated)
 keywords:
   skills: [DEC-2025-001]
@@ -62,10 +94,14 @@ keywords:
   tokens: [DEC-2025-001]
   optimization: [DEC-2025-001]
   circuit-breaker: [DEC-2025-001]
-  learning: [DEC-2025-001]
-  memory: [DEC-2025-001]
+  learning: [DEC-2025-001, DEC-2025-002]
+  memory: [DEC-2025-001, DEC-2025-002]
   moat: [DEC-2025-001]
   compound-intelligence: [DEC-2025-001]
   cost-control: [DEC-2025-001]
   budget: [DEC-2025-001]
   auto-routing: [DEC-2025-001]
+  logging: [DEC-2025-002]
+  activity: [DEC-2025-002]
+  hooks: [DEC-2025-002]
+  zero-cost: [DEC-2025-002]
