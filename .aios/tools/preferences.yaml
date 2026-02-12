@@ -1,0 +1,70 @@
+# Tool Preferences
+# Managed by /tool-discovery skill
+#
+# Learned preferences by squad and agent
+# Used to provide personalized recommendations
+
+version: "1.0.0"
+last_updated: "2025-02-11"
+
+# Squad preferences
+squads:
+
+  tech:
+    preferred_categories: [mcp, framework, library]
+    default_evaluation: rice
+    auto_adopt_threshold: 2.5  # RICE score to auto-recommend
+    notes: "Prefers well-documented, actively maintained tools"
+
+  deep-research:
+    preferred_categories: [mcp, api, saas]
+    default_evaluation: rice
+    auto_adopt_threshold: 2.0
+    notes: "Prioritizes data access and research capabilities"
+
+  qa:
+    preferred_categories: [library, cli, mcp]
+    default_evaluation: rice
+    auto_adopt_threshold: 2.5
+    notes: "Focuses on testing and automation tools"
+
+  ops:
+    preferred_categories: [saas, cli, mcp]
+    default_evaluation: wsjf
+    auto_adopt_threshold: 2.0
+    notes: "Prioritizes integration and automation"
+
+  design-system:
+    preferred_categories: [library, framework]
+    default_evaluation: rice
+    auto_adopt_threshold: 3.0  # Higher bar for design tools
+    notes: "Strict about consistency and accessibility"
+
+# Agent preferences
+agents:
+
+  devops:
+    specializes_in: [mcp, cli, infrastructure]
+    delegates_install: true
+    notes: "Gateway for all MCP installations"
+
+  architect:
+    specializes_in: [framework, library, patterns]
+    evaluation_focus: [maintainability, scalability]
+    notes: "Evaluates long-term architectural fit"
+
+  dev:
+    specializes_in: [library, framework, sdk]
+    evaluation_focus: [dx, performance, bundle_size]
+    notes: "Focuses on developer experience"
+
+# Global preferences
+global:
+  avoid_categories: []
+  require_license: [mit, apache-2.0, bsd]
+  require_active_maintenance: true
+  max_monthly_cost: 50  # EUR per tool
+  prefer_open_source: true
+
+# Learned patterns (populated by /learning-loop)
+learned_patterns: []

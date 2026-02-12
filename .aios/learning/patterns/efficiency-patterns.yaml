@@ -31,7 +31,27 @@ pattern_schema:
   total_time_saved_minutes: float
 
 # Active optimizations
-patterns: []
+patterns:
+  - id: EP-001
+    optimization: "Criar múltiplas skills em batch ao invés de uma por vez"
+    baseline: "Criar skills individualmente com contexto separado"
+    savings:
+      tokens: 15000
+      time_minutes: 30
+    confidence: 0.70
+    evidence:
+      - task_id: "session-2025-02-11-batch-skills"
+        tokens_saved: 15000
+        date: "2025-02-11"
+        notes: "6 skills criadas em sequência aproveitando contexto compartilhado"
+    scope:
+      task_types: [skill-creation, batch-operations]
+      contexts: [multiple-similar-tasks]
+    created: "2025-02-11"
+    last_validated: "2025-02-11"
+    times_applied: 1
+    total_tokens_saved: 15000
+    total_time_saved_minutes: 30
 
 # Candidate optimizations (need more evidence)
 candidates: []

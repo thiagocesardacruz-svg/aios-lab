@@ -294,6 +294,69 @@ skills:
     priority: medium
     confirm_before_invoke: false
 
+  tool-discovery:
+    path: .claude/skills/tool-discovery/
+    auto_invoke: true
+    description: Intelligent tool discovery with RICE/WSJF evaluation and global registry
+    triggers:
+      keywords:
+        - "qual ferramenta"
+        - "which tool"
+        - "preciso de uma lib"
+        - "need a library"
+        - "melhor MCP para"
+        - "best MCP for"
+        - "avaliar ferramentas"
+        - "compare tools"
+        - "descobrir ferramenta"
+        - "find tool"
+        - "tool for"
+        - "biblioteca para"
+      patterns:
+        - "(?i)what.*tool.*for"
+        - "(?i)qual.*lib.*para"
+        - "(?i)best.*framework"
+        - "(?i)melhor.*package"
+        - "(?i)mcp.*para"
+    agents_allowed: all
+    priority: medium
+    confirm_before_invoke: false
+
+  data-insight:
+    path: .claude/skills/data-insight/
+    auto_invoke: true
+    description: Fast research for data-driven decisions with squad escalation
+    triggers:
+      keywords:
+        - "pesquisar sobre"
+        - "research about"
+        - "dados sobre"
+        - "data about"
+        - "análise de mercado"
+        - "market analysis"
+        - "quem são os competidores"
+        - "competitor analysis"
+        - "tendências de"
+        - "trends in"
+        - "validar hipótese"
+        - "validate hypothesis"
+        - "entender mercado"
+        - "understand market"
+        - "qual o tamanho do mercado"
+        - "market size"
+      patterns:
+        - "(?i)research.*about"
+        - "(?i)dados.*para.*decis"
+        - "(?i)analyze.*market"
+        - "(?i)who.*competitors"
+        - "(?i)tendencia.*de"
+    agents_allowed: all
+    priority: medium
+    confirm_before_invoke: false
+    integrates_with:
+      - squad: deep-research
+        escalation: complexity > standard
+
   # ---------------------------------------------------------------------------
   # META-SKILLS (User-Invocable Only)
   # ---------------------------------------------------------------------------
