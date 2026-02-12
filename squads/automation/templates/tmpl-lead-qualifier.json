@@ -1,0 +1,304 @@
+{
+  "name": "Template: Lead Qualifier",
+  "nodes": [
+    {
+      "id": "webhook",
+      "name": "Receive Lead",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [250, 300],
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "qualify-lead",
+        "responseMode": "responseNode"
+      }
+    },
+    {
+      "id": "validate-lead",
+      "name": "Validate Lead Data",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [450, 300],
+      "parameters": {
+        "conditions": {
+          "conditions": [
+            {
+              "leftValue": "={{ $json.email }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "ai-qualifier",
+      "name": "AI Lead Qualifier",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [650, 200],
+      "parameters": {
+        "options": {
+          "systemMessage": "You are a lead qualification agent. Analyze the lead data and determine their quality.\n\nScoring criteria:\n- Budget fit (1-10)\n- Timeline urgency (1-10)\n- Authority level (1-10)\n- Need alignment (1-10)\n\nClassify the lead as:\n- HOT: Score >= 32\n- WARM: Score 20-31\n- COLD: Score < 20\n\nRespond with JSON: {\"score\": number, \"category\": \"HOT|WARM|COLD\", \"reasoning\": \"brief explanation\"}"
+        },
+        "text": "Lead data:\nName: {{ $json.name }}\nEmail: {{ $json.email }}\nCompany: {{ $json.company }}\nMessage: {{ $json.message }}\nSource: {{ $json.source }}"
+      }
+    },
+    {
+      "id": "llm",
+      "name": "OpenAI",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [650, 400],
+      "parameters": {
+        "model": "gpt-4o-mini",
+        "options": {
+          "temperature": 0.3
+        }
+      }
+    },
+    {
+      "id": "parse-result",
+      "name": "Parse AI Result",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [850, 200],
+      "parameters": {
+        "jsCode": "const aiOutput = $input.first().json.output;\n\n// Try to parse JSON from AI response\nlet parsed;\ntry {\n  // Extract JSON from response\n  const jsonMatch = aiOutput.match(/\\{[\\s\\S]*\\}/);\n  if (jsonMatch) {\n    parsed = JSON.parse(jsonMatch[0]);\n  } else {\n    parsed = { score: 0, category: 'COLD', reasoning: 'Could not parse' };\n  }\n} catch (e) {\n  parsed = { score: 0, category: 'COLD', reasoning: 'Parse error' };\n}\n\nreturn {\n  json: {\n    ...$input.first().json,\n    qualification: parsed\n  }\n};"
+      }
+    },
+    {
+      "id": "route-by-quality",
+      "name": "Route by Quality",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3,
+      "position": [1050, 200],
+      "parameters": {
+        "rules": {
+          "rules": [
+            {
+              "outputKey": "hot",
+              "conditions": {
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.qualification.category }}",
+                    "rightValue": "HOT",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "outputKey": "warm",
+              "conditions": {
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.qualification.category }}",
+                    "rightValue": "WARM",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ]
+              }
+            }
+          ],
+          "fallbackOutput": {
+            "outputKey": "cold"
+          }
+        }
+      }
+    },
+    {
+      "id": "notify-hot",
+      "name": "Notify: HOT Lead",
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.2,
+      "position": [1250, 100],
+      "parameters": {
+        "resource": "message",
+        "operation": "post",
+        "channel": "#sales-hot-leads",
+        "text": "🔥 HOT LEAD!\n\nName: {{ $json.name }}\nEmail: {{ $json.email }}\nCompany: {{ $json.company }}\nScore: {{ $json.qualification.score }}\n\n{{ $json.qualification.reasoning }}"
+      }
+    },
+    {
+      "id": "add-to-nurture",
+      "name": "Add to Nurture",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [1250, 200],
+      "parameters": {}
+    },
+    {
+      "id": "log-cold",
+      "name": "Log Cold Lead",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [1250, 300],
+      "parameters": {}
+    },
+    {
+      "id": "respond-success",
+      "name": "Respond Success",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [1450, 200],
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ { \"success\": true, \"leadId\": $json.email, \"category\": $json.qualification.category } }}"
+      }
+    },
+    {
+      "id": "respond-error",
+      "name": "Respond Error",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [650, 400],
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ { \"success\": false, \"error\": \"Invalid lead data\" } }}",
+        "options": {
+          "responseCode": 400
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Receive Lead": {
+      "main": [
+        [
+          {
+            "node": "Validate Lead Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validate Lead Data": {
+      "main": [
+        [
+          {
+            "node": "AI Lead Qualifier",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Respond Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Lead Qualifier",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Lead Qualifier": {
+      "main": [
+        [
+          {
+            "node": "Parse AI Result",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse AI Result": {
+      "main": [
+        [
+          {
+            "node": "Route by Quality",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Route by Quality": {
+      "main": [
+        [
+          {
+            "node": "Notify: HOT Lead",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Add to Nurture",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Log Cold Lead",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Notify: HOT Lead": {
+      "main": [
+        [
+          {
+            "node": "Respond Success",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Add to Nurture": {
+      "main": [
+        [
+          {
+            "node": "Respond Success",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Log Cold Lead": {
+      "main": [
+        [
+          {
+            "node": "Respond Success",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "meta": {
+    "templateId": "tmpl-lead-qualifier",
+    "templateVersion": "1.0.0",
+    "description": "AI-powered lead qualification with routing"
+  }
+}

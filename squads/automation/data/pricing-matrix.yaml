@@ -1,0 +1,244 @@
+# Pricing Matrix - Automation Squad
+# Matriz de preços por complexidade e modelo
+# Atualizado: 2026-02-12
+
+version: "1.0.0"
+
+# Princípios de pricing
+principles:
+  - "Preço baseado em valor, não em custo"
+  - "Margem mínima target: 65%"
+  - "Upsell path claro entre tiers"
+  - "Preços arredondados (€97, €147, €197, etc.)"
+
+# Faixas de complexidade
+complexity_tiers:
+  simple:
+    nodes: "1-5"
+    has_ai: false
+    build_time: "1-4h"
+    maintenance: "low"
+    price_range:
+      min: 47
+      max: 97
+    margin_target: 80
+
+  medium:
+    nodes: "6-15"
+    has_ai: "optional"
+    build_time: "4-16h"
+    maintenance: "medium"
+    price_range:
+      min: 97
+      max: 197
+    margin_target: 75
+
+  complex:
+    nodes: "15+"
+    has_ai: true
+    build_time: "16-40h"
+    maintenance: "high"
+    price_range:
+      min: 197
+      max: 497
+    margin_target: 70
+
+  enterprise:
+    nodes: "custom"
+    has_ai: true
+    build_time: "40h+"
+    maintenance: "dedicated"
+    price_range:
+      min: 497
+      max: null  # custom
+    margin_target: 65
+
+# Modelos de pricing
+pricing_models:
+  flat:
+    description: "Preço fixo mensal"
+    when_to_use:
+      - "Uso previsível"
+      - "Custo estável"
+      - "Simplicidade para cliente"
+    pros:
+      - "Previsibilidade de receita"
+      - "Fácil de vender"
+    cons:
+      - "Não escala com uso"
+      - "Heavy users são menos lucrativos"
+
+  tiered:
+    description: "Múltiplos planos com features diferentes"
+    when_to_use:
+      - "Segmentos de clientes diferentes"
+      - "Features incrementais"
+      - "Upsell path natural"
+    pros:
+      - "Captura diferentes willingness-to-pay"
+      - "Natural upgrade path"
+    cons:
+      - "Mais complexo de gerenciar"
+      - "Choice paralysis para clientes"
+    recommended_tiers:
+      - name: "Starter"
+        target: "Small business, testing"
+        price_multiplier: 1.0
+      - name: "Professional"
+        target: "Growing business"
+        price_multiplier: 2.0
+      - name: "Enterprise"
+        target: "Large business"
+        price_multiplier: 4.0
+
+  usage:
+    description: "Preço base + custo por uso"
+    when_to_use:
+      - "Uso variável"
+      - "Custos variáveis significativos"
+      - "Alinhamento com valor entregue"
+    pros:
+      - "Justo para todos os tamanhos"
+      - "Escala com uso"
+    cons:
+      - "Receita imprevisível"
+      - "Clientes podem limitar uso"
+    structure:
+      base_fee: "€47-147/mês"
+      per_unit: "€0.10-1.00"
+      units: "runs, contacts, messages, etc."
+
+  percentage:
+    description: "Percentual do resultado"
+    when_to_use:
+      - "Resultado mensurável"
+      - "Alto valor por transação"
+      - "Alinhamento total com cliente"
+    pros:
+      - "Zero risco para cliente"
+      - "Alinhamento perfeito"
+    cons:
+      - "Difícil de medir"
+      - "Receita imprevisível"
+    structure:
+      base_fee: "€97-197/mês"
+      percentage: "3-10%"
+      of: "recovered_revenue, sales, etc."
+
+# Tabela de preços sugeridos por categoria
+category_pricing:
+  acquisition:
+    products:
+      - name: "Lead Ads Engine"
+        complexity: "medium"
+        suggested: { starter: 97, professional: 197 }
+      - name: "Referral Machine"
+        complexity: "complex"
+        suggested: { starter: 147, professional: 297 }
+      - name: "Affiliate Tracker"
+        complexity: "complex"
+        suggested: { starter: 97, professional: 197 }
+        model: "percentage"
+        percentage_fee: "2%"
+
+  conversion:
+    products:
+      - name: "WhatsApp Qualifier"
+        complexity: "complex"
+        suggested: { starter: 197, professional: 397 }
+      - name: "Cart Recovery"
+        complexity: "medium"
+        suggested: { starter: 147, professional: 297 }
+        model: "percentage"
+        percentage_fee: "5%"
+      - name: "Call Analyzer"
+        complexity: "complex"
+        suggested: { starter: 97, professional: 197 }
+        model: "usage"
+        per_call: 0.50
+
+  content:
+    products:
+      - name: "Blog SEO Machine"
+        complexity: "complex"
+        suggested: { starter: 297, professional: 597 }
+      - name: "Newsletter Engine"
+        complexity: "medium"
+        suggested: { starter: 97, professional: 197 }
+      - name: "Social Repurposer"
+        complexity: "medium"
+        suggested: { starter: 147, professional: 297 }
+
+  data:
+    products:
+      - name: "GA4 Intelligence"
+        complexity: "medium"
+        suggested: { starter: 147, professional: 297 }
+      - name: "Ads Optimizer"
+        complexity: "complex"
+        suggested: { starter: 197, professional: 397 }
+        model: "percentage"
+        percentage_fee: "3%"
+      - name: "Competitor Watch"
+        complexity: "medium"
+        suggested: { starter: 197, professional: 397 }
+
+  retention:
+    products:
+      - name: "Review Harvester"
+        complexity: "complex"
+        suggested: { starter: 97, professional: 197 }
+      - name: "Cross-sell Engine"
+        complexity: "complex"
+        suggested: { starter: 147, professional: 297 }
+        model: "percentage"
+        percentage_fee: "5%"
+      - name: "Reactivation Bot"
+        complexity: "medium"
+        suggested: { starter: 147, professional: 297 }
+      - name: "NPS Automator"
+        complexity: "medium"
+        suggested: { starter: 97, professional: 197 }
+
+# Custos de referência para cálculo de margem
+cost_reference:
+  ai_tokens:
+    gpt_4o:
+      input_per_1k: 0.0025
+      output_per_1k: 0.01
+    gpt_4o_mini:
+      input_per_1k: 0.00015
+      output_per_1k: 0.0006
+    claude_3_5_sonnet:
+      input_per_1k: 0.003
+      output_per_1k: 0.015
+
+  api_calls:
+    gohighlevel: 0  # Included in GHL subscription
+    openai: "varies"
+    twilio_sms: 0.05
+    whatsapp: 0.05
+
+  infrastructure:
+    n8n_self_hosted: 0  # Already paid
+    storage_per_gb: 0.02
+
+# Calculadora de margem
+margin_calculator:
+  formula: "(price - total_cost) / price * 100"
+  example:
+    price: 197
+    costs:
+      ai_tokens: 15
+      api_calls: 5
+      support: 10
+      infrastructure: 5
+    total_cost: 35
+    margin: 82.2  # (197-35)/197*100
+
+# Notas
+notes:
+  - "Preços em EUR"
+  - "Billing mensal (desconto para anual: 15-20%)"
+  - "Revisar preços trimestralmente"
+  - "Ajustar baseado em feedback de vendas"

@@ -1,0 +1,360 @@
+# Integration Catalog - Automation Squad
+# Catálogo de todas as integrações disponíveis e configuradas
+# Atualizado: 2026-02-12
+
+version: "1.0.0"
+
+# Tiers de integração
+tiers:
+  tier_1:
+    name: "Core"
+    description: "Integrações essenciais sempre disponíveis"
+  tier_2:
+    name: "Marketing"
+    description: "Integrações de marketing e ads"
+  tier_3:
+    name: "Data"
+    description: "Integrações de dados e analytics"
+  tier_4:
+    name: "Communication"
+    description: "Integrações de comunicação"
+
+integrations:
+  # ============================================
+  # TIER 1: CORE
+  # ============================================
+
+  - id: "gohighlevel"
+    name: "GoHighLevel"
+    tier: "tier_1"
+    type: "mcp"
+    status: "active"
+
+    auth:
+      type: "oauth2"
+      scopes:
+        - "contacts.readonly"
+        - "contacts.write"
+        - "opportunities.readonly"
+        - "opportunities.write"
+        - "workflows.readonly"
+
+    rate_limits:
+      requests_per_10s: 100
+      daily_limit: null
+
+    capabilities:
+      - "contacts"
+      - "opportunities"
+      - "pipelines"
+      - "workflows"
+      - "conversations"
+      - "forms"
+      - "calendars"
+
+    mcp_tools:
+      - "mcp__gohighlevel__get-contact"
+      - "mcp__gohighlevel__create-contact"
+      - "mcp__gohighlevel__update-contact"
+      - "mcp__gohighlevel__Upsert-opportunity"
+      - "mcp__gohighlevel__add-contact-to-workflow"
+
+    docs: "https://highlevel.stoplight.io/docs/integrations"
+    last_audit: "2026-02-12"
+
+  - id: "n8n"
+    name: "n8n"
+    tier: "tier_1"
+    type: "mcp"
+    status: "active"
+
+    auth:
+      type: "api_key"
+      header: "X-N8N-API-KEY"
+
+    rate_limits:
+      requests_per_s: null  # Self-hosted, no limit
+
+    capabilities:
+      - "workflow_management"
+      - "execution_management"
+      - "validation"
+      - "templates"
+
+    mcp_tools:
+      - "mcp__n8n-mcp__validate_workflow"
+      - "mcp__n8n-mcp__search_nodes"
+      - "mcp__n8n-mcp__n8n_create_workflow"
+      - "mcp__n8n-mcp__n8n_test_workflow"
+
+    docs: "https://docs.n8n.io/api/"
+    last_audit: "2026-02-12"
+
+  - id: "supabase"
+    name: "Supabase"
+    tier: "tier_1"
+    type: "api"
+    status: "active"
+
+    auth:
+      type: "api_key"
+      header: "apikey"
+
+    rate_limits:
+      requests_per_min: 500
+
+    capabilities:
+      - "database"
+      - "auth"
+      - "storage"
+      - "edge_functions"
+      - "realtime"
+
+    n8n_nodes:
+      - "n8n-nodes-base.supabase"
+      - "n8n-nodes-base.postgres"
+
+    docs: "https://supabase.com/docs"
+    last_audit: "2026-02-12"
+
+  - id: "openai"
+    name: "OpenAI"
+    tier: "tier_1"
+    type: "api"
+    status: "active"
+
+    auth:
+      type: "api_key"
+      header: "Authorization"
+      format: "Bearer {key}"
+
+    rate_limits:
+      tokens_per_min: 90000  # Depends on tier
+      requests_per_min: 3500
+
+    capabilities:
+      - "chat_completion"
+      - "embeddings"
+      - "image_generation"
+      - "audio_transcription"
+
+    n8n_nodes:
+      - "@n8n/n8n-nodes-langchain.lmChatOpenAi"
+      - "@n8n/n8n-nodes-langchain.embeddingsOpenAi"
+      - "n8n-nodes-base.openAi"
+
+    pricing:
+      gpt_4o: { input: 0.0025, output: 0.01 }  # per 1k tokens
+      gpt_4o_mini: { input: 0.00015, output: 0.0006 }
+
+    docs: "https://platform.openai.com/docs"
+    last_audit: "2026-02-12"
+
+  # ============================================
+  # TIER 2: MARKETING
+  # ============================================
+
+  - id: "meta_ads"
+    name: "Meta Ads (Facebook/Instagram)"
+    tier: "tier_2"
+    type: "api"
+    status: "planned"
+
+    auth:
+      type: "oauth2"
+      scopes:
+        - "ads_read"
+        - "ads_management"
+
+    rate_limits:
+      requests_per_hour: 200
+
+    capabilities:
+      - "campaign_management"
+      - "lead_ads"
+      - "insights"
+      - "audiences"
+
+    n8n_nodes:
+      - "n8n-nodes-base.facebookGraphApi"
+
+    docs: "https://developers.facebook.com/docs/marketing-apis/"
+    last_audit: null
+
+  - id: "google_ads"
+    name: "Google Ads"
+    tier: "tier_2"
+    type: "api"
+    status: "planned"
+
+    auth:
+      type: "oauth2"
+      scopes:
+        - "https://www.googleapis.com/auth/adwords"
+
+    rate_limits:
+      requests_per_day: 15000
+
+    capabilities:
+      - "campaign_management"
+      - "keywords"
+      - "reporting"
+
+    n8n_nodes:
+      - "n8n-nodes-base.googleAds"
+
+    docs: "https://developers.google.com/google-ads/api/docs/start"
+    last_audit: null
+
+  # ============================================
+  # TIER 3: DATA
+  # ============================================
+
+  - id: "google_analytics"
+    name: "Google Analytics 4"
+    tier: "tier_3"
+    type: "api"
+    status: "planned"
+
+    auth:
+      type: "oauth2"
+      scopes:
+        - "https://www.googleapis.com/auth/analytics.readonly"
+
+    rate_limits:
+      requests_per_second: 10
+
+    capabilities:
+      - "reporting"
+      - "realtime"
+      - "dimensions"
+      - "metrics"
+
+    n8n_nodes:
+      - "n8n-nodes-base.googleAnalytics"
+
+    docs: "https://developers.google.com/analytics/devguides/reporting/data/v1"
+    last_audit: null
+
+  - id: "airtable"
+    name: "Airtable"
+    tier: "tier_3"
+    type: "api"
+    status: "planned"
+
+    auth:
+      type: "api_key"
+      header: "Authorization"
+      format: "Bearer {key}"
+
+    rate_limits:
+      requests_per_second: 5
+
+    capabilities:
+      - "records"
+      - "bases"
+      - "tables"
+      - "views"
+
+    n8n_nodes:
+      - "n8n-nodes-base.airtable"
+
+    docs: "https://airtable.com/developers/web/api/introduction"
+    last_audit: null
+
+  # ============================================
+  # TIER 4: COMMUNICATION
+  # ============================================
+
+  - id: "slack"
+    name: "Slack"
+    tier: "tier_4"
+    type: "api"
+    status: "active"
+
+    auth:
+      type: "oauth2"
+      scopes:
+        - "chat:write"
+        - "channels:read"
+
+    rate_limits:
+      tier_1: 1  # per second
+      tier_2: 20  # per minute
+      tier_3: 50  # per minute
+
+    capabilities:
+      - "messages"
+      - "channels"
+      - "files"
+      - "reactions"
+
+    n8n_nodes:
+      - "n8n-nodes-base.slack"
+
+    docs: "https://api.slack.com/docs"
+    last_audit: "2026-02-12"
+
+  - id: "whatsapp_evolution"
+    name: "WhatsApp (Evolution API)"
+    tier: "tier_4"
+    type: "api"
+    status: "planned"
+
+    auth:
+      type: "api_key"
+      header: "apikey"
+
+    rate_limits:
+      messages_per_day: 1000  # WhatsApp limit
+
+    capabilities:
+      - "send_message"
+      - "receive_message"
+      - "media"
+      - "contacts"
+
+    n8n_nodes:
+      - "n8n-nodes-base.httpRequest"  # Custom integration
+
+    docs: "https://doc.evolution-api.com/"
+    last_audit: null
+
+  - id: "email_smtp"
+    name: "Email (SMTP)"
+    tier: "tier_4"
+    type: "protocol"
+    status: "active"
+
+    auth:
+      type: "smtp_credentials"
+
+    rate_limits:
+      depends_on_provider: true
+
+    capabilities:
+      - "send_email"
+      - "attachments"
+      - "html_content"
+
+    n8n_nodes:
+      - "n8n-nodes-base.emailSend"
+
+    docs: null
+    last_audit: "2026-02-12"
+
+# Métricas do catálogo
+summary:
+  total_integrations: 10
+  by_tier:
+    tier_1: 4
+    tier_2: 2
+    tier_3: 2
+    tier_4: 3
+  by_status:
+    active: 5
+    planned: 5
+  by_type:
+    mcp: 2
+    api: 7
+    protocol: 1

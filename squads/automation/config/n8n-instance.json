@@ -1,0 +1,29 @@
+{
+  "instance": {
+    "name": "TTD Production",
+    "provider": "Hostinger",
+    "url": "https://n8n.srv855345.hstgr.cloud",
+    "api_base": "https://n8n.srv855345.hstgr.cloud/api/v1",
+    "webhook_base": "https://n8n.srv855345.hstgr.cloud/webhook"
+  },
+  "environments": {
+    "production": {
+      "url": "https://n8n.srv855345.hstgr.cloud",
+      "api_key_env": "N8N_API_KEY",
+      "auto_activate": false,
+      "require_validation": true
+    }
+  },
+  "settings": {
+    "default_environment": "production",
+    "validation_profile": "runtime",
+    "backup_before_update": true,
+    "max_retries": 3
+  },
+  "notes": {
+    "api_key_location": "Store N8N_API_KEY in environment variables or .env file",
+    "docs": "https://docs.n8n.io/api/",
+    "created": "2026-02-12",
+    "created_by": "@devops"
+  }
+}

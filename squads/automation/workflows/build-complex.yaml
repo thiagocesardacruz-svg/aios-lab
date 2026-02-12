@@ -1,0 +1,206 @@
+# Build Complex Workflow
+# Constrói workflows complexos (4+ nodes, multi-step)
+
+name: "Build Complex Workflow"
+version: "1.0.0"
+description: "Pipeline completo para construir workflows complexos com design formal"
+
+trigger:
+  type: "manual"
+  command: "/auto build"
+
+inputs:
+  - name: "request_id"
+    type: "string"
+    required: true
+
+  - name: "design_file"
+    type: "string"
+    required: true
+    description: "Path para design YAML aprovado"
+
+preconditions:
+  - "Design aprovado existe em designs/{name}.yaml"
+  - "Complexity == 'medium' ou 'complex'"
+
+steps:
+  - id: "load_design"
+    agent: "n8n-builder"
+    action: "Carregar design document"
+    input: "{design_file}"
+    output:
+      workflow_design: "yaml"
+      nodes_required: "array"
+      connections_map: "object"
+
+  - id: "verify_nodes_exist"
+    agent: "n8n-builder"
+    action: "Verificar que todos os nodes existem"
+    depends_on: ["load_design"]
+    tool: "mcp__n8n-mcp__get_node"
+    for_each: "nodes_required"
+    output:
+      nodes_verified: "boolean"
+      missing_nodes: "array"
+
+  - id: "check_credentials"
+    agent: "n8n-builder"
+    action: "Verificar credentials necessárias"
+    depends_on: ["load_design"]
+    output:
+      credentials_needed: "array"
+      credentials_available: "array"
+      credentials_missing: "array"
+
+  - id: "create_base_structure"
+    agent: "n8n-builder"
+    action: "Criar estrutura base do workflow"
+    depends_on: ["verify_nodes_exist", "check_credentials"]
+    template: |
+      {
+        "name": "{workflow_name}",
+        "nodes": [],
+        "connections": {},
+        "settings": {
+          "executionOrder": "v1"
+        }
+      }
+    output:
+      base_workflow: "json"
+
+  - id: "implement_nodes"
+    agent: "n8n-builder"
+    action: "Implementar cada node"
+    depends_on: ["create_base_structure"]
+    for_each: "nodes_required"
+    sub_steps:
+      - "Criar node com ID único"
+      - "Configurar type e typeVersion"
+      - "Configurar parameters"
+      - "Adicionar position"
+      - "Adicionar notes se complexo"
+    output:
+      implemented_nodes: "array"
+
+  - id: "implement_code_nodes"
+    agent: "n8n-builder"
+    action: "Escrever código para Code nodes"
+    depends_on: ["implement_nodes"]
+    condition: "has_code_nodes"
+    patterns:
+      - "Usar $input para acessar dados"
+      - "Retornar array de items"
+      - "Incluir try-catch"
+      - "Não usar console.log"
+    output:
+      code_nodes: "array"
+
+  - id: "implement_connections"
+    agent: "n8n-builder"
+    action: "Implementar connections"
+    depends_on: ["implement_nodes"]
+    source: "connections_map"
+    types:
+      main: "Fluxo principal"
+      ai_tool: "Tool para AI Agent"
+      ai_languageModel: "LLM para AI Agent"
+      ai_memory: "Memory para AI Agent"
+    output:
+      connections: "object"
+
+  - id: "implement_error_handling"
+    agent: "n8n-builder"
+    action: "Implementar error handling"
+    depends_on: ["implement_connections"]
+    strategy_from_design: "error_handling.strategy"
+    patterns:
+      retry: "Wait + retry até N vezes"
+      fallback: "Fluxo alternativo"
+      notify: "Enviar alerta e parar"
+    output:
+      error_handling_nodes: "array"
+
+  - id: "assemble_workflow"
+    agent: "n8n-builder"
+    action: "Montar workflow completo"
+    depends_on: ["implement_nodes", "implement_code_nodes", "implement_connections", "implement_error_handling"]
+    output:
+      complete_workflow: "json"
+
+  - id: "validate_strict"
+    agent: "n8n-builder"
+    action: "Validar com profile strict"
+    depends_on: ["assemble_workflow"]
+    tool: "mcp__n8n-mcp__validate_workflow"
+    options:
+      profile: "strict"
+      validateNodes: true
+      validateConnections: true
+      validateExpressions: true
+    output:
+      validation_result: "object"
+
+  - id: "fix_issues"
+    agent: "n8n-builder"
+    action: "Corrigir issues encontrados"
+    depends_on: ["validate_strict"]
+    condition: "validation_result.errors.length > 0"
+    sub_steps:
+      - "Aplicar autofix para erros corrigíveis"
+      - "Corrigir manualmente erros complexos"
+      - "Re-validar"
+    output:
+      fixed_workflow: "json"
+
+  - id: "test_workflow"
+    agent: "n8n-builder"
+    action: "Testar workflow"
+    depends_on: ["fix_issues"]
+    tests:
+      - "Happy path com dados mock"
+      - "Error path"
+      - "Edge cases do design"
+    output:
+      test_results: "object"
+
+  - id: "save_and_register"
+    agent: "n8n-builder"
+    action: "Salvar e registrar workflow"
+    depends_on: ["test_workflow"]
+    saves_to: "workflows/{name}.json"
+    registers_in: "data/workflow-registry.yaml"
+    output:
+      workflow_id: "string"
+      workflow_file: "string"
+
+outputs:
+  - name: "build_result"
+    type: "object"
+    schema:
+      workflow_id: "string"
+      workflow_file: "string"
+      nodes_count: "number"
+      complexity: "string"
+      validation_passed: "boolean"
+      tests_passed: "boolean"
+      ready_for_deploy: "boolean"
+
+handover:
+  from_agent: "n8n-builder"
+  to_agent: "automation-lead"
+  artifact_type: "workflow"
+  required_fields:
+    - workflow_json
+    - validation_passed
+    - test_results
+  confidence: "high"
+
+estimated_time: "2-8h (depends on complexity)"
+
+quality_gate:
+  - "Design seguido fielmente"
+  - "Validação strict passou"
+  - "Testes passaram"
+  - "Error handling implementado"
+  - "Código documentado"
+  - "Registrado no registry"

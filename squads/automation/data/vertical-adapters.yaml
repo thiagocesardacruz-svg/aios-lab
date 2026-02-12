@@ -1,0 +1,287 @@
+# Vertical Adapters - Automation Squad
+# Adaptadores por vertical para produtos agnósticos
+# Atualizado: 2026-02-12
+
+version: "1.0.0"
+
+# Conceito
+# --------
+# Produtos de automação são construídos de forma agnóstica.
+# Vertical Adapters customizam esses produtos para nichos específicos.
+#
+# Product (agnóstico) + Adapter (vertical) = Solução específica
+
+verticals:
+  # ============================================
+  # HOTELS
+  # ============================================
+
+  hotels:
+    name: "Hotels & Hospitality"
+    code: "HTL"
+    squad: "hotel-mkt"
+    mind_clones:
+      - "Chip Conley (50%)"
+      - "Ian Schrager (30%)"
+      - "Hormozi (20%)"
+
+    terminology:
+      lead: "hóspede potencial"
+      customer: "hóspede"
+      sale: "reserva"
+      revenue: "receita de hospedagem"
+      cart_abandonment: "abandono de reserva"
+      review: "avaliação"
+      upsell: "upgrade de quarto / serviços extras"
+
+    integrations:
+      primary:
+        - "Booking.com (channel manager)"
+        - "TripAdvisor"
+        - "Google Hotel Ads"
+      crm: "GoHighLevel"
+      pms: "Cloudbeds / RoomCloud"
+
+    adapters:
+      review_harvester:
+        sources:
+          - "TripAdvisor"
+          - "Google Business"
+          - "Booking.com"
+        response_tone: "hospitality_warm"
+        key_metrics:
+          - "Review response rate"
+          - "Average rating"
+          - "Guest satisfaction score"
+
+      lead_qualifier:
+        questions:
+          - "Data de check-in?"
+          - "Quantas noites?"
+          - "Quantos hóspedes?"
+          - "Ocasião especial?"
+        scoring:
+          high_value:
+            - "Stay > 3 nights"
+            - "Special occasion"
+            - "Direct booking"
+
+      cart_recovery:
+        trigger: "Booking started but not completed"
+        sequence:
+          - "1h: Email reminder"
+          - "24h: WhatsApp with offer"
+          - "72h: Final email"
+        incentives:
+          - "Late checkout"
+          - "Room upgrade"
+          - "Breakfast included"
+
+      cross_sell:
+        products:
+          - "Spa treatments"
+          - "Restaurant reservations"
+          - "Tours & activities"
+          - "Airport transfer"
+        timing:
+          - "Pre-arrival: 3 days before"
+          - "During stay: Day 1 evening"
+
+  # ============================================
+  # RESTAURANTS
+  # ============================================
+
+  restaurants:
+    name: "Restaurants & F&B"
+    code: "RST"
+    squad: null  # To be created
+    mind_clones:
+      - "Danny Meyer"
+      - "Will Guidara"
+
+    terminology:
+      lead: "cliente potencial"
+      customer: "cliente"
+      sale: "reserva / pedido"
+      revenue: "faturamento"
+      review: "avaliação"
+      upsell: "adicionais / harmonização"
+
+    integrations:
+      primary:
+        - "TheFork"
+        - "TripAdvisor"
+        - "Google Business"
+      crm: "GoHighLevel"
+      pos: "iFood Merchant / Rappi"
+
+    adapters:
+      review_harvester:
+        sources:
+          - "Google Business"
+          - "TripAdvisor"
+          - "TheFork"
+        response_tone: "friendly_professional"
+
+      lead_qualifier:
+        questions:
+          - "Quantas pessoas?"
+          - "Data e horário?"
+          - "Ocasião especial?"
+          - "Restrições alimentares?"
+
+      reactivation:
+        trigger: "No visit in 60 days"
+        incentives:
+          - "Sobremesa cortesia"
+          - "Desconto na próxima visita"
+
+  # ============================================
+  # TOURS & ACTIVITIES
+  # ============================================
+
+  tours:
+    name: "Tours & Activities"
+    code: "TRA"
+    squad: null  # To be created
+
+    terminology:
+      lead: "viajante interessado"
+      customer: "viajante"
+      sale: "reserva de tour"
+      revenue: "receita de tours"
+      review: "avaliação"
+
+    integrations:
+      primary:
+        - "GetYourGuide"
+        - "Viator"
+        - "TripAdvisor Experiences"
+      crm: "GoHighLevel"
+      booking: "FareHarbor / Checkfront"
+
+    adapters:
+      lead_qualifier:
+        questions:
+          - "Data do tour?"
+          - "Quantas pessoas?"
+          - "Idioma preferido?"
+          - "Mobilidade reduzida?"
+
+      cart_recovery:
+        trigger: "Booking started but not completed"
+        urgency: "Limited spots available"
+
+  # ============================================
+  # TRAVEL AGENCIES
+  # ============================================
+
+  agencies:
+    name: "Travel Agencies"
+    code: "AGY"
+    squad: null  # To be created
+
+    terminology:
+      lead: "viajante"
+      customer: "cliente"
+      sale: "pacote vendido"
+      revenue: "comissão"
+
+    integrations:
+      crm: "GoHighLevel"
+      gds: "Amadeus / Sabre"
+
+    adapters:
+      lead_qualifier:
+        questions:
+          - "Destino de interesse?"
+          - "Datas flexíveis?"
+          - "Budget estimado?"
+          - "Viagem de lazer ou trabalho?"
+        scoring:
+          high_value:
+            - "International travel"
+            - "Budget > €2000"
+            - "Flexible dates"
+
+  # ============================================
+  # E-COMMERCE (GENERIC)
+  # ============================================
+
+  ecommerce:
+    name: "E-commerce"
+    code: "ECO"
+    squad: null  # Generic
+
+    terminology:
+      lead: "visitante"
+      customer: "cliente"
+      sale: "compra"
+      revenue: "faturamento"
+      cart_abandonment: "carrinho abandonado"
+
+    integrations:
+      primary:
+        - "WooCommerce"
+        - "Shopify"
+      crm: "GoHighLevel"
+
+    adapters:
+      cart_recovery:
+        trigger: "Cart abandoned"
+        sequence:
+          - "1h: Email"
+          - "24h: SMS/WhatsApp"
+          - "72h: Email with discount"
+        incentives:
+          - "Frete grátis"
+          - "Desconto 10%"
+          - "Brinde"
+
+      cross_sell:
+        methods:
+          - "Related products"
+          - "Frequently bought together"
+          - "Customers also viewed"
+
+# Adapter Template
+adapter_template:
+  structure: |
+    # Adapter para {product} - {vertical}
+
+    ## Terminology Mapping
+    {terminology_mapping}
+
+    ## Integration Points
+    {integrations}
+
+    ## Customizations
+    ### Messaging
+    {message_templates}
+
+    ### Scoring Rules
+    {scoring_adaptations}
+
+    ### Workflow Modifications
+    {workflow_changes}
+
+# Como usar adapters
+usage:
+  steps:
+    1: "Identificar vertical do cliente"
+    2: "Carregar adapter correspondente"
+    3: "Aplicar terminology mapping"
+    4: "Configurar integrations específicas"
+    5: "Customizar messaging"
+    6: "Ajustar scoring rules"
+
+  code_example: |
+    // Em workflow n8n
+    const vertical = $input.first().json.vertical; // 'hotels'
+    const adapter = loadAdapter(vertical);
+
+    // Aplicar terminologia
+    const message = adapter.terminology.sale; // 'reserva'
+
+    // Aplicar scoring
+    const isHighValue = adapter.scoring.evaluate(lead);

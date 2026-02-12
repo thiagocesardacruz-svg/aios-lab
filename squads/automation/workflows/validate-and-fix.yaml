@@ -1,0 +1,192 @@
+# Validate and Fix Workflow
+# Valida workflow n8n e aplica correções automáticas
+
+name: "Validate and Fix Workflow"
+version: "1.0.0"
+description: "Pipeline de validação completa com auto-fix"
+
+trigger:
+  type: "manual"
+  command: "/auto validate"
+
+inputs:
+  - name: "workflow_source"
+    type: "string"
+    required: true
+    description: "Path para JSON ou workflow ID"
+
+  - name: "profile"
+    type: "enum"
+    values: ["minimal", "runtime", "strict", "ai-friendly"]
+    default: "strict"
+
+  - name: "auto_fix"
+    type: "boolean"
+    default: true
+
+steps:
+  - id: "load_workflow"
+    agent: "n8n-builder"
+    action: "Carregar workflow"
+    sources:
+      local_file: "Read JSON from path"
+      n8n_instance: "Fetch via MCP"
+    output:
+      workflow_json: "object"
+      source_type: "string"
+
+  - id: "validate_initial"
+    agent: "n8n-builder"
+    action: "Validação inicial"
+    depends_on: ["load_workflow"]
+    tool: "mcp__n8n-mcp__validate_workflow"
+    options:
+      profile: "{profile}"
+      validateNodes: true
+      validateConnections: true
+      validateExpressions: true
+    output:
+      errors: "array"
+      warnings: "array"
+      suggestions: "array"
+
+  - id: "categorize_issues"
+    agent: "n8n-builder"
+    action: "Categorizar issues"
+    depends_on: ["validate_initial"]
+    categories:
+      auto_fixable:
+        - "typeVersion mismatch"
+        - "expression format"
+        - "missing error output"
+        - "stale connections"
+      manual_required:
+        - "node type not found"
+        - "credential missing"
+        - "logic error"
+        - "security issue"
+    output:
+      auto_fixable_count: "number"
+      manual_required_count: "number"
+      issues_by_category: "object"
+
+  - id: "apply_auto_fix"
+    agent: "n8n-builder"
+    action: "Aplicar auto-fix"
+    depends_on: ["categorize_issues"]
+    condition: "auto_fix && auto_fixable_count > 0"
+    tool: "mcp__n8n-mcp__n8n_autofix_workflow"
+    fixes_applied:
+      - "Expression format: ${} → {{ }}"
+      - "typeVersion upgrade"
+      - "Error output addition"
+      - "Webhook path uniqueness"
+      - "Stale connections cleanup"
+    output:
+      fixed_workflow: "object"
+      fixes_applied: "array"
+
+  - id: "validate_after_fix"
+    agent: "n8n-builder"
+    action: "Re-validar após fix"
+    depends_on: ["apply_auto_fix"]
+    condition: "fixes_applied.length > 0"
+    tool: "mcp__n8n-mcp__validate_workflow"
+    output:
+      errors_remaining: "array"
+      warnings_remaining: "array"
+
+  - id: "check_manual_issues"
+    agent: "n8n-builder"
+    action: "Listar issues que requerem atenção manual"
+    depends_on: ["validate_after_fix"]
+    condition: "manual_required_count > 0"
+    output:
+      manual_issues: "array"
+      instructions: "array"
+
+  - id: "generate_report"
+    agent: "n8n-builder"
+    action: "Gerar relatório de validação"
+    depends_on: ["validate_after_fix", "check_manual_issues"]
+    template: |
+      # Validation Report
+
+      **Workflow:** {workflow_name}
+      **Profile:** {profile}
+      **Validated at:** {timestamp}
+
+      ## Summary
+      - Initial errors: {initial_error_count}
+      - Auto-fixed: {fixes_applied_count}
+      - Remaining errors: {remaining_error_count}
+      - Warnings: {warning_count}
+
+      ## Status: {PASSED | FAILED | NEEDS_ATTENTION}
+
+      ## Fixes Applied
+      {fixes_list}
+
+      ## Manual Actions Required
+      {manual_issues_list}
+
+      ## Recommendations
+      {suggestions_list}
+    output:
+      report: "markdown"
+      report_file: "reports/validation-{date}.md"
+
+  - id: "determine_result"
+    agent: "n8n-builder"
+    action: "Determinar resultado final"
+    depends_on: ["generate_report"]
+    rules:
+      - condition: "errors_remaining == 0"
+        result: "PASSED"
+        ready_for_deploy: true
+      - condition: "errors_remaining > 0 && all_are_warnings"
+        result: "PASSED_WITH_WARNINGS"
+        ready_for_deploy: true
+      - condition: "manual_required_count > 0"
+        result: "NEEDS_ATTENTION"
+        ready_for_deploy: false
+      - default:
+        result: "FAILED"
+        ready_for_deploy: false
+    output:
+      result: "string"
+      ready_for_deploy: "boolean"
+
+  - id: "save_if_fixed"
+    agent: "n8n-builder"
+    action: "Salvar workflow corrigido"
+    depends_on: ["determine_result"]
+    condition: "fixes_applied.length > 0 && result != 'FAILED'"
+    saves_to: "{original_path}"
+    backup: "{original_path}.backup"
+    output:
+      saved: "boolean"
+      backup_path: "string"
+
+outputs:
+  - name: "validation_result"
+    type: "object"
+    schema:
+      result: "PASSED | PASSED_WITH_WARNINGS | NEEDS_ATTENTION | FAILED"
+      ready_for_deploy: "boolean"
+      errors_initial: "number"
+      errors_fixed: "number"
+      errors_remaining: "number"
+      warnings: "number"
+      fixes_applied: "array"
+      manual_required: "array"
+      report_path: "string"
+
+estimated_time: "5-15min"
+
+quality_gate:
+  - "Validação executada com profile correto"
+  - "Auto-fix aplicado (se habilitado)"
+  - "Re-validação confirmada"
+  - "Relatório gerado"
+  - "Backup criado (se modificado)"

@@ -1,0 +1,250 @@
+{
+  "name": "Template: Content Repurposer",
+  "nodes": [
+    {
+      "id": "trigger",
+      "name": "Manual Trigger",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [250, 300],
+      "parameters": {}
+    },
+    {
+      "id": "ai-repurposer",
+      "name": "AI Content Repurposer",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [450, 300],
+      "parameters": {
+        "options": {
+          "systemMessage": "You are a content repurposing expert. Given source content, you will create multiple formats for different platforms.\n\nFor each format, follow platform best practices:\n- Twitter/X: Max 280 chars, engaging hook, hashtags\n- LinkedIn: Professional tone, 1300 chars max, call to action\n- Instagram: Visual description, emojis, 30 hashtags\n- Blog summary: 2-3 paragraphs, SEO-friendly\n\nRespond with JSON:\n{\n  \"twitter\": [\"tweet1\", \"tweet2\", \"tweet3\"],\n  \"linkedin\": \"post content\",\n  \"instagram\": \"caption with hashtags\",\n  \"blog_summary\": \"summary text\"\n}"
+        },
+        "text": "Source content to repurpose:\n\n{{ $json.content }}\n\nTarget tone: {{ $json.tone || 'professional' }}"
+      }
+    },
+    {
+      "id": "llm",
+      "name": "OpenAI",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [450, 500],
+      "parameters": {
+        "model": "gpt-4o-mini",
+        "options": {
+          "temperature": 0.7,
+          "maxTokens": 2000
+        }
+      }
+    },
+    {
+      "id": "parse-output",
+      "name": "Parse Output",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [650, 300],
+      "parameters": {
+        "jsCode": "const aiOutput = $input.first().json.output;\n\nlet parsed;\ntry {\n  const jsonMatch = aiOutput.match(/\\{[\\s\\S]*\\}/);\n  if (jsonMatch) {\n    parsed = JSON.parse(jsonMatch[0]);\n  } else {\n    throw new Error('No JSON found');\n  }\n} catch (e) {\n  parsed = {\n    twitter: [],\n    linkedin: '',\n    instagram: '',\n    blog_summary: '',\n    error: 'Failed to parse AI output'\n  };\n}\n\nreturn {\n  json: {\n    original_content: $input.first().json.content,\n    repurposed: parsed,\n    created_at: new Date().toISOString()\n  }\n};"
+      }
+    },
+    {
+      "id": "split-formats",
+      "name": "Split by Format",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [850, 300],
+      "parameters": {
+        "jsCode": "const data = $input.first().json;\nconst results = [];\n\n// Twitter threads\nif (data.repurposed.twitter && data.repurposed.twitter.length > 0) {\n  data.repurposed.twitter.forEach((tweet, index) => {\n    results.push({\n      json: {\n        platform: 'twitter',\n        content: tweet,\n        index: index + 1,\n        total: data.repurposed.twitter.length\n      }\n    });\n  });\n}\n\n// LinkedIn\nif (data.repurposed.linkedin) {\n  results.push({\n    json: {\n      platform: 'linkedin',\n      content: data.repurposed.linkedin\n    }\n  });\n}\n\n// Instagram\nif (data.repurposed.instagram) {\n  results.push({\n    json: {\n      platform: 'instagram',\n      content: data.repurposed.instagram\n    }\n  });\n}\n\n// Blog\nif (data.repurposed.blog_summary) {\n  results.push({\n    json: {\n      platform: 'blog',\n      content: data.repurposed.blog_summary\n    }\n  });\n}\n\nreturn results;"
+      }
+    },
+    {
+      "id": "route-platform",
+      "name": "Route by Platform",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3,
+      "position": [1050, 300],
+      "parameters": {
+        "rules": {
+          "rules": [
+            {
+              "outputKey": "twitter",
+              "conditions": {
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.platform }}",
+                    "rightValue": "twitter",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "outputKey": "linkedin",
+              "conditions": {
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.platform }}",
+                    "rightValue": "linkedin",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "outputKey": "instagram",
+              "conditions": {
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.platform }}",
+                    "rightValue": "instagram",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ]
+              }
+            }
+          ],
+          "fallbackOutput": {
+            "outputKey": "blog"
+          }
+        }
+      }
+    },
+    {
+      "id": "queue-twitter",
+      "name": "Queue: Twitter",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [1250, 150],
+      "parameters": {}
+    },
+    {
+      "id": "queue-linkedin",
+      "name": "Queue: LinkedIn",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [1250, 250],
+      "parameters": {}
+    },
+    {
+      "id": "queue-instagram",
+      "name": "Queue: Instagram",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [1250, 350],
+      "parameters": {}
+    },
+    {
+      "id": "queue-blog",
+      "name": "Queue: Blog",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [1250, 450],
+      "parameters": {}
+    }
+  ],
+  "connections": {
+    "Manual Trigger": {
+      "main": [
+        [
+          {
+            "node": "AI Content Repurposer",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Content Repurposer",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Content Repurposer": {
+      "main": [
+        [
+          {
+            "node": "Parse Output",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse Output": {
+      "main": [
+        [
+          {
+            "node": "Split by Format",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split by Format": {
+      "main": [
+        [
+          {
+            "node": "Route by Platform",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Route by Platform": {
+      "main": [
+        [
+          {
+            "node": "Queue: Twitter",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Queue: LinkedIn",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Queue: Instagram",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Queue: Blog",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "meta": {
+    "templateId": "tmpl-content-repurposer",
+    "templateVersion": "1.0.0",
+    "description": "Repurpose content for multiple social platforms"
+  }
+}

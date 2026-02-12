@@ -1,0 +1,365 @@
+# n8n Node Reference - Automation Squad
+# Referência rápida dos nodes mais usados
+# Atualizado: 2026-02-12
+
+version: "1.0.0"
+
+categories:
+  triggers:
+    name: "Triggers"
+    description: "Nodes que iniciam workflows"
+
+  actions:
+    name: "Actions"
+    description: "Nodes que executam operações"
+
+  flow:
+    name: "Flow Control"
+    description: "Nodes que controlam fluxo"
+
+  transform:
+    name: "Transform"
+    description: "Nodes que transformam dados"
+
+  ai:
+    name: "AI/LangChain"
+    description: "Nodes de AI e LangChain"
+
+nodes:
+  # ============================================
+  # TRIGGERS
+  # ============================================
+
+  - name: "Webhook"
+    type: "n8n-nodes-base.webhook"
+    typeVersion: 2
+    category: "triggers"
+    frequency: "very_high"
+
+    description: "Recebe HTTP requests"
+
+    common_config:
+      httpMethod: "POST"
+      responseMode: "responseNode"  # ou lastNode
+      path: "unique-path"
+
+    tips:
+      - "Sempre use responseMode: responseNode para controlar resposta"
+      - "Use path único para evitar conflitos"
+      - "Adicione autenticação em produção"
+
+  - name: "Schedule Trigger"
+    type: "n8n-nodes-base.scheduleTrigger"
+    typeVersion: 1.2
+    category: "triggers"
+    frequency: "high"
+
+    description: "Executa em schedule (cron)"
+
+    common_config:
+      rule:
+        interval:
+          - field: "hours"
+            hoursInterval: 1
+
+    tips:
+      - "Atenção ao timezone"
+      - "Use cron expression para schedules complexos"
+
+  - name: "Manual Trigger"
+    type: "n8n-nodes-base.manualTrigger"
+    typeVersion: 1
+    category: "triggers"
+    frequency: "medium"
+
+    description: "Execução manual"
+
+  # ============================================
+  # ACTIONS
+  # ============================================
+
+  - name: "HTTP Request"
+    type: "n8n-nodes-base.httpRequest"
+    typeVersion: 4.2
+    category: "actions"
+    frequency: "very_high"
+
+    description: "Faz chamadas HTTP para APIs"
+
+    common_config:
+      method: "POST"
+      url: "https://api.example.com/endpoint"
+      authentication: "genericCredentialType"
+      options:
+        timeout: 30000
+        retry:
+          maxTries: 3
+
+    tips:
+      - "Sempre configure timeout"
+      - "Use retry para APIs instáveis"
+      - "Nunca hardcode credentials"
+
+  - name: "Code"
+    type: "n8n-nodes-base.code"
+    typeVersion: 2
+    category: "actions"
+    frequency: "very_high"
+
+    description: "Executa código JavaScript"
+
+    common_patterns:
+      transform: |
+        const items = $input.all();
+        return items.map(item => ({
+          json: {
+            ...item.json,
+            transformed: true
+          }
+        }));
+
+      validate: |
+        const data = $input.first().json;
+        if (!data.email) {
+          throw new Error('Email required');
+        }
+        return { json: data };
+
+    tips:
+      - "Use $input para acessar dados"
+      - "Sempre retorne array de items"
+      - "Não use console.log em produção"
+
+  - name: "Respond to Webhook"
+    type: "n8n-nodes-base.respondToWebhook"
+    typeVersion: 1.1
+    category: "actions"
+    frequency: "high"
+
+    description: "Retorna resposta para webhook"
+
+    common_config:
+      respondWith: "json"
+      responseBody: '={{ $json }}'
+
+  # ============================================
+  # FLOW CONTROL
+  # ============================================
+
+  - name: "If"
+    type: "n8n-nodes-base.if"
+    typeVersion: 2
+    category: "flow"
+    frequency: "very_high"
+
+    description: "Branch condicional"
+
+    common_config:
+      conditions:
+        options:
+          caseSensitive: true
+        conditions:
+          - leftValue: '={{ $json.status }}'
+            rightValue: "active"
+            operator:
+              type: "string"
+              operation: "equals"
+
+  - name: "Switch"
+    type: "n8n-nodes-base.switch"
+    typeVersion: 3
+    category: "flow"
+    frequency: "high"
+
+    description: "Branch múltiplo"
+
+    tips:
+      - "Use para mais de 2 branches"
+      - "Defina fallback output"
+
+  - name: "Merge"
+    type: "n8n-nodes-base.merge"
+    typeVersion: 3
+    category: "flow"
+    frequency: "high"
+
+    description: "Combina dados de múltiplos branches"
+
+    modes:
+      append: "Junta todos os items"
+      combine: "Combina por posição ou campo"
+      chooseBranch: "Escolhe um branch"
+
+  - name: "Loop Over Items"
+    type: "n8n-nodes-base.splitInBatches"
+    typeVersion: 3
+    category: "flow"
+    frequency: "medium"
+
+    description: "Processa items em batches"
+
+    common_config:
+      batchSize: 10
+      options:
+        reset: false
+
+    tips:
+      - "Use para evitar rate limits"
+      - "Combine com Wait para throttling"
+
+  - name: "Wait"
+    type: "n8n-nodes-base.wait"
+    typeVersion: 1.1
+    category: "flow"
+    frequency: "medium"
+
+    description: "Pausa execução"
+
+    common_config:
+      resume: "timeInterval"
+      amount: 1
+      unit: "seconds"
+
+  # ============================================
+  # TRANSFORM
+  # ============================================
+
+  - name: "Set"
+    type: "n8n-nodes-base.set"
+    typeVersion: 3.4
+    category: "transform"
+    frequency: "very_high"
+
+    description: "Define/modifica campos"
+
+    common_config:
+      mode: "manual"
+      assignments:
+        - name: "newField"
+          value: '={{ $json.oldField }}'
+
+  - name: "Aggregate"
+    type: "n8n-nodes-base.aggregate"
+    typeVersion: 1
+    category: "transform"
+    frequency: "medium"
+
+    description: "Agrega múltiplos items em um"
+
+  - name: "Sort"
+    type: "n8n-nodes-base.sort"
+    typeVersion: 1
+    category: "transform"
+    frequency: "low"
+
+    description: "Ordena items"
+
+  # ============================================
+  # AI / LANGCHAIN
+  # ============================================
+
+  - name: "AI Agent"
+    type: "@n8n/n8n-nodes-langchain.agent"
+    typeVersion: 1.7
+    category: "ai"
+    frequency: "high"
+
+    description: "Agente AI com tools"
+
+    connections:
+      ai_languageModel: "LLM (obrigatório)"
+      ai_tool: "Tools (opcional)"
+      ai_memory: "Memory (opcional)"
+      ai_outputParser: "Output Parser (opcional)"
+
+    common_config:
+      systemMessage: "You are a helpful assistant..."
+      humanMessage: '={{ $json.input }}'
+
+  - name: "OpenAI Chat Model"
+    type: "@n8n/n8n-nodes-langchain.lmChatOpenAi"
+    typeVersion: 1.2
+    category: "ai"
+    frequency: "high"
+
+    description: "LLM da OpenAI"
+
+    common_config:
+      model: "gpt-4o-mini"
+      temperature: 0.7
+      maxTokens: 4096
+
+    connects_to:
+      - ai_languageModel
+
+  - name: "Tool HTTP Request"
+    type: "@n8n/n8n-nodes-langchain.toolHttpRequest"
+    typeVersion: 1.1
+    category: "ai"
+    frequency: "medium"
+
+    description: "Tool para AI Agent chamar APIs"
+
+    connects_to:
+      - ai_tool
+
+  - name: "Tool Code"
+    type: "@n8n/n8n-nodes-langchain.toolCode"
+    typeVersion: 1.1
+    category: "ai"
+    frequency: "medium"
+
+    description: "Tool para AI Agent executar código"
+
+    connects_to:
+      - ai_tool
+
+  - name: "Buffer Memory"
+    type: "@n8n/n8n-nodes-langchain.memoryBufferWindow"
+    typeVersion: 1.3
+    category: "ai"
+    frequency: "medium"
+
+    description: "Memory de conversação em buffer"
+
+    common_config:
+      sessionIdType: "fromInput"
+      sessionKey: "sessionId"
+      contextWindowLength: 10
+
+    connects_to:
+      - ai_memory
+
+# Quick reference
+quick_patterns:
+  webhook_api:
+    description: "Receber request, processar, responder"
+    nodes:
+      - "Webhook"
+      - "Set (validate)"
+      - "HTTP Request (process)"
+      - "Respond to Webhook"
+
+  ai_chat:
+    description: "Chat com AI Agent"
+    nodes:
+      - "Webhook"
+      - "AI Agent"
+      - "OpenAI Chat Model"
+      - "Buffer Memory"
+      - "Respond to Webhook"
+
+  scheduled_report:
+    description: "Relatório agendado"
+    nodes:
+      - "Schedule Trigger"
+      - "HTTP Request (fetch data)"
+      - "Code (transform)"
+      - "Slack (send)"
+
+  error_handling:
+    description: "Capturar e notificar erros"
+    nodes:
+      - "Error Trigger"
+      - "Set (format)"
+      - "Slack (notify)"
