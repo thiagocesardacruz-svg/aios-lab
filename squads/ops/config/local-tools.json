@@ -1,0 +1,65 @@
+{
+  "name": "local-tools",
+  "description": "Ferramentas locais instaladas para processamento offline",
+  "version": "1.0.0",
+  "tools": {
+    "whisper": {
+      "name": "whisper.cpp",
+      "binary": "C:\\tools\\whisper.cpp\\Release\\whisper-cli.exe",
+      "model": "C:\\tools\\whisper.cpp\\models\\ggml-base.bin",
+      "description": "Speech-to-text local (áudio → texto)",
+      "formats": ["wav", "mp3", "flac", "ogg"],
+      "cost_per_use": 0
+    },
+    "ffmpeg": {
+      "name": "FFmpeg",
+      "binary": "C:\\Users\\thiag\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-8.0.1-full_build\\bin\\ffmpeg.exe",
+      "description": "Conversão de áudio/vídeo",
+      "cost_per_use": 0
+    },
+    "tesseract": {
+      "name": "Tesseract OCR",
+      "binary": "C:\\Program Files\\Tesseract-OCR\\tesseract.exe",
+      "languages": ["eng"],
+      "description": "OCR de imagens (imagem → texto)",
+      "formats": ["png", "jpg", "jpeg", "tiff", "bmp"],
+      "cost_per_use": 0
+    },
+    "pdftotext": {
+      "name": "Poppler pdftotext",
+      "binary": "pdftotext",
+      "description": "Extração de texto de PDFs",
+      "formats": ["pdf"],
+      "cost_per_use": 0
+    },
+    "ollama": {
+      "name": "Ollama",
+      "binary": "C:\\Users\\thiag\\AppData\\Local\\Programs\\Ollama\\ollama.exe",
+      "models": ["llama3.2:1b"],
+      "description": "LLM local para queries simples",
+      "cost_per_use": 0
+    },
+    "pandoc": {
+      "name": "Pandoc",
+      "binary": "C:\\Users\\thiag\\AppData\\Local\\Pandoc\\pandoc.exe",
+      "description": "Conversor universal de documentos (PDF→MD, DOCX→MD, etc.)",
+      "formats_in": ["pdf", "docx", "html", "epub", "rst", "tex", "odt"],
+      "formats_out": ["md", "html", "pdf", "docx", "epub", "txt"],
+      "cost_per_use": 0
+    },
+    "calibre": {
+      "name": "Calibre ebook-convert",
+      "binary": "C:\\Program Files\\Calibre2\\ebook-convert.exe",
+      "meta_binary": "C:\\Program Files\\Calibre2\\ebook-meta.exe",
+      "description": "ETL de ebooks (EPUB, MOBI, AZW → MD/TXT/PDF)",
+      "formats": ["epub", "mobi", "azw", "azw3", "fb2", "lit", "pdb", "pdf", "rtf", "txt", "docx", "html", "cbz", "cbr"],
+      "cost_per_use": 0
+    }
+  },
+  "cost_savings": {
+    "whisper_api_per_minute": 0.006,
+    "gpt4_per_1k_tokens": 0.03,
+    "ocr_services_per_page": 0.05,
+    "estimated_monthly_savings": "€150-200"
+  }
+}
