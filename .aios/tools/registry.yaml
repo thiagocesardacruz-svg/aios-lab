@@ -1,0 +1,178 @@
+# Tool Registry
+# Managed by /tool-discovery skill
+#
+# Master registry of all evaluated and adopted tools
+# Enables fast lookup and prevents redundant evaluations
+
+version: "1.0.0"
+last_updated: "2025-02-11"
+
+# Statistics
+stats:
+  total_tools: 6
+  adopted: 6
+  evaluated: 0
+  candidates: 0
+  deprecated: 0
+
+# Categories
+categories:
+  - mcp
+  - library
+  - framework
+  - api
+  - cli
+  - saas
+
+# =============================================================================
+# TOOLS
+# =============================================================================
+
+tools:
+
+  # ---------------------------------------------------------------------------
+  # MCPs (Model Context Protocol)
+  # ---------------------------------------------------------------------------
+
+  - id: TOOL-mcp-001
+    name: context7
+    category: mcp
+    description: Library documentation lookup via Context7
+    scores:
+      rice: 2.67
+      rice_breakdown:
+        reach: 8       # Many squads need docs
+        impact: 1      # High - saves research time
+        confidence: 1  # Well tested
+        effort: 3      # Easy to enable
+    adoption:
+      status: adopted
+      adopted_date: "2025-01-15"
+      used_by: [tech, deep-research, squad-creator]
+    metadata:
+      url: https://context7.dev
+      install_command: "docker mcp enable context7"
+    tags: [documentation, library, research]
+
+  - id: TOOL-mcp-002
+    name: exa
+    category: mcp
+    description: Web search via Exa API
+    scores:
+      rice: 3.20
+      rice_breakdown:
+        reach: 10      # All squads can use
+        impact: 1      # High - enables research
+        confidence: 0.8
+        effort: 2.5
+    adoption:
+      status: adopted
+      adopted_date: "2025-01-15"
+      used_by: [tech, deep-research, marketing, growth]
+    metadata:
+      url: https://exa.ai
+      install_command: "docker mcp enable exa"
+      requires_key: true
+    tags: [search, research, web]
+
+  - id: TOOL-mcp-003
+    name: apify
+    category: mcp
+    description: Web scraping and automation via Apify Actors
+    scores:
+      rice: 2.00
+      rice_breakdown:
+        reach: 6       # Specific use cases
+        impact: 2      # Massive when needed
+        confidence: 0.8
+        effort: 4      # More complex setup
+    adoption:
+      status: adopted
+      adopted_date: "2025-01-20"
+      used_by: [deep-research, marketing, growth]
+    metadata:
+      url: https://apify.com
+      install_command: "docker mcp enable apify"
+      requires_key: true
+    tags: [scraping, automation, data-extraction]
+
+  - id: TOOL-mcp-004
+    name: playwright
+    category: mcp
+    description: Browser automation and testing
+    scores:
+      rice: 2.40
+      rice_breakdown:
+        reach: 6       # QA, dev, screenshots
+        impact: 2      # Massive - enables browser ops
+        confidence: 1
+        effort: 5      # Resource intensive
+    adoption:
+      status: adopted
+      adopted_date: "2025-01-15"
+      used_by: [tech, qa, design]
+    metadata:
+      url: https://playwright.dev
+      install_command: "Direct in Claude Code"
+    tags: [browser, testing, automation, screenshots]
+
+  # ---------------------------------------------------------------------------
+  # Frameworks
+  # ---------------------------------------------------------------------------
+
+  - id: TOOL-framework-001
+    name: supabase
+    category: framework
+    description: Backend-as-a-Service with PostgreSQL, Auth, Storage
+    scores:
+      rice: 3.33
+      rice_breakdown:
+        reach: 10      # Core infrastructure
+        impact: 2      # Massive - entire backend
+        confidence: 1
+        effort: 6      # Significant setup
+    adoption:
+      status: adopted
+      adopted_date: "2025-01-10"
+      used_by: [tech, ops]
+      decision_record: DEC-2025-001
+    metadata:
+      url: https://supabase.com
+      docs: https://supabase.com/docs
+    tags: [database, auth, storage, backend, postgresql]
+
+  # ---------------------------------------------------------------------------
+  # SaaS
+  # ---------------------------------------------------------------------------
+
+  - id: TOOL-saas-001
+    name: clickup
+    category: saas
+    description: Project management and task tracking
+    scores:
+      rice: 2.67
+      rice_breakdown:
+        reach: 10      # All squads use
+        impact: 1      # High - central hub
+        confidence: 0.8
+        effort: 3
+    adoption:
+      status: adopted
+      adopted_date: "2025-01-01"
+      used_by: [ops, all-squads]
+    metadata:
+      url: https://clickup.com
+      integration: squads/ops/scripts/clickup-sync.mjs
+    tags: [project-management, tasks, tracking]
+
+# =============================================================================
+# PENDING EVALUATIONS
+# =============================================================================
+
+pending_evaluations: []
+
+# =============================================================================
+# DEPRECATED TOOLS
+# =============================================================================
+
+deprecated: []

@@ -8,18 +8,18 @@ last_updated: "2025-02-11"
 
 # Overall metrics
 overall:
-  total_patterns: 0
-  active_patterns: 0
-  average_confidence: 0.0
+  total_patterns: 3
+  active_patterns: 3
+  average_confidence: 0.80
   patterns_applied_today: 0
-  patterns_validated_today: 0
+  patterns_validated_today: 3
 
 # Pattern type breakdown
 by_type:
   success:
-    count: 0
-    avg_confidence: 0.0
-    total_applications: 0
+    count: 3
+    avg_confidence: 0.80
+    total_applications: 3
   failure:
     count: 0
     avg_confidence: 0.0

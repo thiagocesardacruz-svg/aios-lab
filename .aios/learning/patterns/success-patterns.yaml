@@ -6,7 +6,7 @@
 
 version: "1.0.0"
 last_updated: "2025-02-11"
-total_patterns: 0
+total_patterns: 3
 
 # Pattern schema
 pattern_schema:
@@ -29,7 +29,72 @@ pattern_schema:
   success_rate: float
 
 # Active patterns (confidence >= 0.5)
-patterns: []
+patterns:
+  - id: SP-001
+    trigger: "Decisão arquitetural importante ou criação de múltiplos componentes"
+    action: "Consultar Board Advisors antes de implementar - cada advisor traz perspectiva única"
+    rationale: |
+      Board consultation gerou 6 skills de alta qualidade com filosofias claras.
+      Musk (first principles), Thiel (moat), Gates (platform), Munger (risk).
+      Decisões ficam mais robustas com múltiplas perspectivas.
+    confidence: 0.85
+    evidence:
+      - task_id: "session-2025-02-11-skills"
+        outcome: success
+        date: "2025-02-11"
+        notes: "6 skills criadas, todas com filosofia clara e propósito definido"
+    scope:
+      task_types: [architecture, strategic-decision, multi-component]
+      contexts: [aios-lab, skill-creation, framework-development]
+      agents: [aios-master, architect, pm]
+    created: "2025-02-11"
+    last_validated: "2025-02-11"
+    times_applied: 1
+    success_rate: 1.0
+
+  - id: SP-002
+    trigger: "Criação de skills que precisam de persistência (memória, learning, tracking)"
+    action: "Criar estrutura de storage (.aios/) junto com a skill, não depois"
+    rationale: |
+      Skills de memória sem storage são inúteis. Criar storage junto garante
+      que a skill funciona imediatamente. Estrutura inclui: índices, schemas,
+      e primeira entrada de exemplo.
+    confidence: 0.80
+    evidence:
+      - task_id: "session-2025-02-11-storage"
+        outcome: success
+        date: "2025-02-11"
+        notes: "Storage criado junto com skills, teste de recall funcionou imediatamente"
+    scope:
+      task_types: [skill-creation, storage-design]
+      contexts: [memory-skills, learning-skills, tracking-skills]
+      agents: [aios-master, dev, architect]
+    created: "2025-02-11"
+    last_validated: "2025-02-11"
+    times_applied: 1
+    success_rate: 1.0
+
+  - id: SP-003
+    trigger: "Implementação de sistema de auto-invoke/auto-routing para skills"
+    action: "Usar governança OPT-IN (auto_invoke: false por padrão) ao invés de opt-out"
+    rationale: |
+      Opt-in é mais seguro: skills só auto-invocam se explicitamente configuradas.
+      Evita surpresas, dá controle ao criador da skill, e permite rollout gradual.
+      Registry central (_registry.yaml) facilita gestão.
+    confidence: 0.75
+    evidence:
+      - task_id: "session-2025-02-11-autorouting"
+        outcome: success
+        date: "2025-02-11"
+        notes: "Sistema implementado, 11 skills registradas, nenhum auto-invoke indesejado"
+    scope:
+      task_types: [skill-creation, framework-design]
+      contexts: [auto-routing, skill-registry]
+      agents: [aios-master, architect]
+    created: "2025-02-11"
+    last_validated: "2025-02-11"
+    times_applied: 1
+    success_rate: 1.0
 
 # Candidate patterns (confidence < 0.5, need more evidence)
 candidates: []

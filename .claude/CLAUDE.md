@@ -76,6 +76,8 @@ Skills extend agent capabilities with specialized workflows. Some skills support
 | `/institutional-memory` | Memória organizacional acumulada que persiste entre sessões | Yes | High |
 | `/cost-guardian` | Controle rigoroso de budget com enforcement automático | Yes | Critical |
 | `/skill-composer` | Combina múltiplas skills em workflows complexos orquestrados | Yes | Medium |
+| `/tool-discovery` | Descoberta inteligente de ferramentas com RICE/WSJF e registry global | Yes | Medium |
+| `/data-insight` | Pesquisa rápida para decisões data-driven (integra com squad deep-research) | Yes | Medium |
 
 ### Skill Auto-Routing
 
