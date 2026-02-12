@@ -1,0 +1,239 @@
+# GoHighLevel Squad
+# Specialized agents for GoHighLevel CRM, funnels, and automation
+# Version: 1.0.0
+
+name: "ghl"
+version: "1.0.0"
+description: "Squad especializado em GoHighLevel: CRM, funis, automações, email marketing e snapshots. Opera via MCP Server oficial (36+ tools)."
+
+# Metadados AIOS
+aios:
+  minVersion: "2.1.0"
+  type: squad
+  domain: "go-to-market"
+
+# Configuração do squad
+config:
+  slashPrefix: "ghl"
+  entry_point: "workflows/onboard-client.yaml"
+
+# Squad Lead
+lead:
+  agent: "ghl-automation-specialist"
+  role: "Squad Lead - Orquestra workflows e integrações"
+
+# Agentes do squad (5 especializados conforme arquitetura)
+agents:
+  - id: "ghl-snapshot-architect"
+    file: "agents/ghl-snapshot-architect.md"
+    role: "Arquiteto de Snapshots"
+    description: "Provisionamento, versionamento de ativos, gestão de subcontas"
+
+  - id: "ghl-funnel-engineer"
+    file: "agents/ghl-funnel-engineer.md"
+    role: "Engenheiro de Funis"
+    description: "Construção de páginas, injeção de código, UX de conversão"
+
+  - id: "ghl-crm-structuralist"
+    file: "agents/ghl-crm-structuralist.md"
+    role: "Estruturalista de CRM"
+    description: "Campos personalizados, pipelines, taxonomias, objetos custom"
+
+  - id: "ghl-email-strategist"
+    file: "agents/ghl-email-strategist.md"
+    role: "Estrategista de Email Marketing"
+    description: "Templates, campanhas, deliverability, conformidade LGPD"
+
+  - id: "ghl-automation-specialist"
+    file: "agents/ghl-automation-specialist.md"
+    role: "Especialista em Automação"
+    description: "Workflows, webhooks, lógica de gatilhos, integração n8n"
+
+# Componentes
+components:
+  agents:
+    - "ghl-snapshot-architect.md"
+    - "ghl-funnel-engineer.md"
+    - "ghl-crm-structuralist.md"
+    - "ghl-email-strategist.md"
+    - "ghl-automation-specialist.md"
+  tasks:
+    - "provision-subaccount.md"
+    - "create-custom-fields.md"
+    - "clone-funnel-step.md"
+    - "create-email-template.md"
+    - "configure-workflow.md"
+  workflows:
+    - "onboard-client.yaml"
+    - "setup-crm-schema.yaml"
+    - "deploy-funnel.yaml"
+  templates:
+    - "crm-schema-template.md"
+    - "email-template-structure.md"
+  checklists:
+    - "subaccount-provisioning-checklist.md"
+    - "funnel-launch-checklist.md"
+  data:
+    - "mcp-tools-reference.md"
+    - "rate-limits.md"
+
+# Dependências de outros squads
+dependencies:
+  requires:
+    - "tech"       # Para setup de MCP e infraestrutura
+    - "marketing"  # Para campanhas e estratégia
+    - "customer"   # Para CRM e atendimento
+  provides:
+    - "ghl-automation"
+    - "funnel-deployment"
+    - "crm-configuration"
+    - "email-campaigns"
+
+# Integrações
+integrations:
+  - name: "GoHighLevel MCP"
+    type: "mcp"
+    required: true
+    endpoint: "https://services.leadconnectorhq.com/mcp/"
+    transport: "HTTP Streamable"
+    auth: "Bearer {PIT}"
+    tools_available: 36
+    docs: "https://marketplace.gohighlevel.com/docs/other/mcp/index.html"
+
+  - name: "GoHighLevel API v2"
+    type: "api"
+    required: true
+    base_url: "https://services.leadconnectorhq.com"
+    auth: "Bearer {PIT} or OAuth 2.0"
+    rate_limits:
+      burst: "100 req/10s"
+      daily: "200,000 req/day"
+
+  - name: "n8n"
+    type: "mcp"
+    required: false
+    purpose: "Webhook processing, complex logic off-platform"
+
+# Tags
+tags:
+  - "crm"
+  - "marketing-automation"
+  - "funnels"
+  - "email"
+  - "gohighlevel"
+  - "mcp"
+
+# Comandos públicos
+commands:
+  - name: "provision"
+    workflow: "workflows/onboard-client.yaml"
+    description: "Provisionar nova subconta com snapshot"
+    visibility: "full"
+
+  - name: "setup-crm"
+    workflow: "workflows/setup-crm-schema.yaml"
+    description: "Configurar esquema CRM (campos, pipelines)"
+    visibility: "full"
+
+  - name: "deploy-funnel"
+    workflow: "workflows/deploy-funnel.yaml"
+    description: "Deploy de funil com domínio"
+    visibility: "full"
+
+  - name: "create-campaign"
+    task: "tasks/create-email-template.md"
+    description: "Criar campanha de email"
+    visibility: "quick"
+
+# Configurações de qualidade
+quality:
+  min_checklist_coverage: 80
+  require_qa_gate: true
+  require_documentation: true
+
+# Rate Limiting Strategy
+rate_limiting:
+  strategy: "token-bucket"
+  delay_between_requests: "0.1s"
+  max_retries: 3
+  backoff: "exponential"
+  queue: "redis"  # ou "in-memory" para setup simples
+
+# Handover Contracts (AIOS-GOV-001)
+handover_contracts:
+  enabled: true
+  mode: "warn"
+
+  defaults:
+    snapshot_to_crm:
+      from_agent: "@ghl-snapshot-architect"
+      to_agent: "@ghl-crm-structuralist"
+      required_fields:
+        - location_id
+        - snapshot_id
+        - client_niche
+      min_confidence: "high"
+
+    crm_to_funnel:
+      from_agent: "@ghl-crm-structuralist"
+      to_agent: "@ghl-funnel-engineer"
+      required_fields:
+        - custom_field_ids
+        - pipeline_ids
+        - form_requirements
+      min_confidence: "high"
+
+    funnel_to_marketing:
+      from_agent: "@ghl-funnel-engineer"
+      to_agent: "@ghl-email-strategist"
+      required_fields:
+        - funnel_url
+        - form_fields
+        - brand_voice
+      min_confidence: "high"
+
+    marketing_to_automation:
+      from_agent: "@ghl-email-strategist"
+      to_agent: "@ghl-automation-specialist"
+      required_fields:
+        - template_ids
+        - trigger_events
+        - sequence_logic
+      min_confidence: "high"
+
+  skip_conditions:
+    - task_steps_less_than: 3
+    - same_agent_continuation: true
+    - emergency_with_reason: true
+
+# Security (Princípio do Privilégio Mínimo)
+security:
+  pit_scopes_by_agent:
+    ghl-snapshot-architect:
+      - "locations.write"
+      - "locations.read"
+      - "snapshots.read"
+    ghl-funnel-engineer:
+      - "funnels.write"
+      - "funnels.read"
+      - "sites.write"
+    ghl-crm-structuralist:
+      - "contacts.write"
+      - "contacts.read"
+      - "opportunities.write"
+      - "customFields.write"
+    ghl-email-strategist:
+      - "emails.write"
+      - "emails.read"
+      - "campaigns.write"
+    ghl-automation-specialist:
+      - "workflows.write"
+      - "workflows.read"
+      - "webhooks.write"
+      - "contacts.write"
+
+  hitl_required_for:
+    - "Disparar email para >1000 contatos"
+    - "Deletar pipeline"
+    - "Deletar contatos em massa"
+    - "Modificar configurações de DNS"

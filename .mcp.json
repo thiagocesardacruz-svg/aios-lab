@@ -1,13 +1,27 @@
 {
-    "mcpServers":  {
-                       "context7":  {
-                                        "command":  "cmd",
-                                        "args":  [
-                                                     "/c",
-                                                     "npx",
-                                                     "-y",
-                                                     "@upstash/context7-mcp"
-                                                 ]
-                                    }
-                   }
+    "mcpServers": {
+        "context7": {
+            "command": "cmd",
+            "args": ["/c", "npx", "-y", "@upstash/context7-mcp"]
+        },
+        "gohighlevel": {
+            "command": "cmd",
+            "args": ["/c", "npx", "-y", "@drausal/gohighlevel-mcp"],
+            "env": {
+                "BEARER_TOKEN_BEARERAUTH": "YOUR_GHL_PRIVATE_INTEGRATION_TOKEN_HERE",
+                "BEARER_TOKEN_BEARER": "YOUR_GHL_PRIVATE_INTEGRATION_TOKEN_HERE"
+            }
+        },
+        "n8n-mcp": {
+            "command": "cmd",
+            "args": ["/c", "npx", "-y", "n8n-mcp"],
+            "env": {
+                "MCP_MODE": "stdio",
+                "LOG_LEVEL": "error",
+                "DISABLE_CONSOLE_OUTPUT": "true",
+                "N8N_API_URL": "YOUR_N8N_INSTANCE_URL_HERE",
+                "N8N_API_KEY": "YOUR_N8N_API_KEY_HERE"
+            }
+        }
+    }
 }
