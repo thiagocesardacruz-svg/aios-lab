@@ -26,6 +26,33 @@ default_auto_invoke: false
 skills:
 
   # ---------------------------------------------------------------------------
+  # GOVERNANCE & COMPLIANCE
+  # ---------------------------------------------------------------------------
+
+  handover-validator:
+    path: .claude/skills/handover-validator/
+    auto_invoke: true
+    description: Validates handover contracts between agents, enforcing Five Trust Behaviors
+    triggers:
+      keywords:
+        - "handover"
+        - "handoff"
+        - "transferir para"
+        - "passar para @"
+        - "delegate to"
+        - "entregar para"
+        - "handover contract"
+        - "contrato de handover"
+      patterns:
+        - "(?i)@[a-z-]+.*recebe"
+        - "(?i)handoff.*to.*@"
+        - "(?i)pass.*to.*@"
+        - "(?i)transfer.*to.*@"
+    agents_allowed: all
+    priority: high
+    confirm_before_invoke: false
+
+  # ---------------------------------------------------------------------------
   # ARCHITECTURE & DESIGN
   # ---------------------------------------------------------------------------
 

@@ -8,11 +8,20 @@
  * - Executor Type (Human/AI/Hybrid)
  * - Agent (if AI/Hybrid)
  *
+ * HANDOVER VALIDATION (GOV-001.3):
+ * - The `done` command validates handover contracts before marking complete
+ * - Use --skip-handover --reason="..." to bypass validation (logged for audit)
+ * - Use --handover='{"from_agent":"@pm",...}' to provide contract inline
+ *
  * Usage:
  *   node clickup-sync.mjs create "Task name" --agent=@dev --priority=2
  *   node clickup-sync.mjs start <task_id>
  *   node clickup-sync.mjs done <task_id> "Summary"
+ *   node clickup-sync.mjs done <task_id> "Summary" --handover='{"from_agent":"@pm",...}'
+ *   node clickup-sync.mjs done <task_id> "Summary" --skip-handover --reason="Emergency"
  */
+
+// Note: handover-gate.mjs is dynamically imported in markDone() for graceful degradation
 
 const CLICKUP_API = 'https://api.clickup.com/api/v2';
 const API_KEY = 'pk_278673009_AQK7LDDPQ9PKSWKXI7ILF2XWY4YG8Y3O';
@@ -180,8 +189,76 @@ async function awaitHuman(taskId, message) {
   await addComment(taskId, `⏸️ **Awaiting Human Input**\n\n${message}`);
 }
 
-// DONE
-async function markDone(taskId, summary) {
+// DONE with Handover Validation (GOV-001.3)
+async function markDone(taskId, summary, options = {}) {
+  const { handoverContract, skipHandover, skipReason } = options;
+
+  // Handle skip handover
+  if (skipHandover) {
+    if (!skipReason) {
+      console.error('❌ Error: --reason required when using --skip-handover');
+      process.exit(1);
+    }
+
+    // Log the skip
+    try {
+      const { recordSkip } = await import('./handover-gate.mjs');
+      recordSkip(taskId, skipReason);
+    } catch (err) {
+      console.warn('Warning: Could not record skip:', err.message);
+    }
+
+    // Add warning comment
+    await addComment(taskId, `⚠️ **Handover validation skipped**\n\nReason: ${skipReason}\n\n_This skip is logged for audit purposes._`);
+    console.warn('⚠️ Handover validation skipped. This is logged for audit.');
+
+    // Proceed with completion
+    await addComment(taskId, `✅ **Completed**\n\n${summary}`);
+    await updateStatus(taskId, 'done');
+    return;
+  }
+
+  // Validate handover contract if provided
+  if (handoverContract) {
+    try {
+      const { validateHandover, generatePaperTrailComment } = await import('./handover-gate.mjs');
+
+      let contract;
+      try {
+        contract = typeof handoverContract === 'string'
+          ? JSON.parse(handoverContract)
+          : handoverContract;
+      } catch (parseErr) {
+        console.error('❌ Error: Invalid handover contract JSON');
+        process.exit(1);
+      }
+
+      const result = await validateHandover(contract, { quick: false });
+
+      if (!result.valid) {
+        console.error('❌ Handover Validation Failed\n');
+        console.error('Errors:');
+        result.errors.forEach(err => console.error(`   ${err}`));
+        if (result.suggestions.length > 0) {
+          console.error('\nSuggestions:');
+          result.suggestions.forEach(s => console.error(`   • ${s}`));
+        }
+        console.error('\nUse --skip-handover --reason="..." to bypass (logged for audit)');
+        process.exit(1);
+      }
+
+      // Handover valid - add paper trail comment
+      const paperTrail = generatePaperTrailComment(contract);
+      await addComment(taskId, paperTrail);
+      console.log('✅ Handover contract validated');
+
+    } catch (importErr) {
+      // Graceful degradation - handover-gate.mjs not available
+      console.warn('⚠️ Handover validation unavailable (graceful degradation)');
+    }
+  }
+
+  // Mark as done
   await addComment(taskId, `✅ **Completed**\n\n${summary}`);
   await updateStatus(taskId, 'done');
 }
@@ -243,7 +320,11 @@ async function main() {
       break;
 
     case 'done':
-      await markDone(args[1], args[2]);
+      await markDone(args[1], args[2], {
+        handoverContract: getArg('handover'),
+        skipHandover: args.includes('--skip-handover'),
+        skipReason: getArg('reason')
+      });
       break;
 
     case 'cost':
@@ -260,11 +341,17 @@ Commands:
   update <task_id> --status="in progress"
   comment <task_id> "text"
   await-human <task_id> "what I need"
-  done <task_id> "summary"
+  done <task_id> "summary" [--handover='{"from_agent":"@pm",...}']
+  done <task_id> "summary" --skip-handover --reason="Emergency hotfix"
   cost <task_id> <eur> <tokens>
 
 Priority: 1=urgent, 2=high, 3=normal, 4=low
 Executor: HUMAN, AI, HYBRID
+
+Handover Validation (GOV-001.3):
+  --handover='JSON'       Provide handover contract for validation
+  --skip-handover         Skip validation (requires --reason)
+  --reason="text"         Reason for skipping (logged for audit)
 
 Required Fields (auto-set):
   - Assignee: Thiago
