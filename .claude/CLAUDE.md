@@ -256,6 +256,78 @@ Dashboard: https://app.clickup.com/t/86c86bz0w
 | `squads/ops/data/command-center-data.json` | Usage tracking data |
 | `.claude/rules/clickup-auto-sync.md` | Agent sync rules |
 
+## Clawdbot Integration
+
+Clawdbot is an **operational extension** of AIOS Lab that provides 24/7 availability when the terminal is offline.
+
+### Architecture
+
+```
+Claude Code (AIOS Lab)          Clawdbot (AWS EC2)
+═══════════════════════         ═══════════════════
+Motor Principal                 Extensão Operacional
+├── 19 squads, 44 agents        ├── Slack interface
+├── Produção massiva            ├── Scripts Python
+├── MCP tools (GHL 36 tools)    ├── n8n workflows (8 ativos)
+├── Ferramentas locais          ├── Background tasks 24/7
+└── ONDE TRABALHO ACONTECE      └── Quando terminal OFF
+         │                               │
+         └───────── ClickUp ─────────────┘
+                (Command Center)
+```
+
+### When to Use Each
+
+| Cenário | Use |
+|---------|-----|
+| Desenvolver código | Claude Code |
+| Arquitetura/Design | Claude Code |
+| Criar workflows n8n | Claude Code |
+| Tasks complexas | Claude Code |
+| **Quick command via Slack** | **Clawdbot** |
+| **Verificar status (mobile)** | **Clawdbot** |
+| **Automação 24/7** | **Clawdbot** |
+| **Quando longe do terminal** | **Clawdbot** |
+
+### Delegating Tasks to Clawdbot
+
+```bash
+# Delegate task to Clawdbot via ClickUp
+node squads/ops/scripts/delegate-to-clawdbot.mjs "Task name" --script=script_name.py
+```
+
+This creates a ClickUp task with tag `clawdbot:execute`. Clawdbot polls (5 min) and executes.
+
+### Slack Commands
+
+| Comando | Descrição |
+|---------|-----------|
+| `/status` | Status geral do sistema |
+| `/budget` | Budget atual (daily/monthly) |
+| `/health` | Health check dos sistemas |
+| `/tasks` | Tasks pendentes |
+| `/create` | Criar nova task |
+| `/run` | Executar script |
+| `/safemode on/off` | Ativar/desativar SAFE_MODE |
+
+### Budget (Shared)
+
+Both systems share the same budget limits:
+- **Daily Alert**: €15
+- **Daily Hard**: €20 (triggers SAFE_MODE)
+- **Monthly**: €468
+
+Config: `shared/budget-limits.yaml`
+
+### Documentation
+
+| File | Purpose |
+|------|---------|
+| `squads/ops/clawdbot/README.md` | Overview |
+| `squads/ops/clawdbot/OPERATIONAL-DIRECTIVE.md` | Identity, principles, limits |
+| `squads/ops/clawdbot/COMMANDS.md` | Slack commands |
+| `squads/ops/clawdbot/INTEGRATIONS.md` | n8n, GHL, Notion integrations |
+
 ## MCP Usage
 
 ### Native Claude Code Tools (ALWAYS preferred)
@@ -291,6 +363,10 @@ Ferramentas instaladas localmente para processamento offline. **Custo: €0 por 
 | **Calibre** | `ebook-etl.mjs` | Ebook ETL (EPUB/MOBI → MD) | ~€0.20/livro |
 | **Ollama** | `llm-local.mjs` | LLM local (Llama 3.2) | ~€0.03/1k tokens (GPT-4) |
 | **FFmpeg** | (direto) | Conversão mídia | - |
+| **MarkItDown** | `markitdown-convert.mjs` | Universal → MD (Microsoft) | Melhor que Pandoc |
+| **DuckDB** | Python/SQL | Analytics OLAP local | Substitui Postgres |
+| **FastMCP** | Python | Builder de MCP servers | Extensibilidade |
+| **uv** | CLI | Package manager 100x faster | Dev productivity |
 
 ### Usage (Agents SHOULD use these automatically)
 
@@ -316,6 +392,16 @@ node squads/ops/scripts/llm-local.mjs "Resuma este texto em 2 frases: ..."
 
 # Converter áudio para whisper (FFmpeg)
 ffmpeg -i video.mp4 -ar 16000 -ac 1 audio.wav
+
+# Converter documento para Markdown (MarkItDown - melhor que Pandoc)
+node squads/ops/scripts/markitdown-convert.mjs document.pdf
+node squads/ops/scripts/markitdown-convert.mjs report.docx --output report.md
+
+# Query analytics local (DuckDB)
+python -c "import duckdb; conn = duckdb.connect('squads/ops/data/analytics.duckdb'); print(conn.execute('SELECT * FROM daily_costs').fetchall())"
+
+# Instalar pacotes Python (uv - 100x mais rápido que pip)
+C:/Users/thiag/.local/bin/uv pip install <package>
 ```
 
 ### When to Use Local Tools

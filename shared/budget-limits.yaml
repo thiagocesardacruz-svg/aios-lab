@@ -1,0 +1,102 @@
+# AIOS Unified Budget Limits
+# Shared between Claude Code (AIOS Lab) and Clawdbot (AWS EC2)
+#
+# Both systems read this file for budget enforcement:
+# - Claude Code: reads directly from repo
+# - Clawdbot: git pulls and reads from /opt/clawdbot/shared/
+#
+# Last updated: 2026-02-12
+
+budget:
+  # Currency
+  currency: EUR
+
+  # Daily limits
+  daily:
+    alert: 15        # Alert Director when reached
+    hard: 20         # Trigger SAFE_MODE automatically
+    per_task: 10     # Approval required if exceeded
+
+  # Monthly limits
+  monthly:
+    total: 468       # Hard limit (£400 ≈ €468)
+    alert: 350       # Alert when approaching limit
+
+  # Per-model limits (optional granularity)
+  per_model:
+    opus:
+      daily_max: 15  # Opus is expensive, limit more strictly
+    sonnet:
+      daily_max: 18  # Moderate limit
+    haiku:
+      daily_max: 20  # Cheapest, allow full limit
+
+# SAFE_MODE configuration
+safe_mode:
+  # Automatic triggers
+  triggers:
+    daily_cost_exceeded: true      # When daily > daily.hard
+    error_rate_high: true          # When error_rate > 5%
+    critical_failures: true        # When 3+ critical failures in 15 min
+    manual_killswitch: true        # When /killswitch command issued
+
+  # In SAFE_MODE, these actions are allowed
+  allowed_actions:
+    - read
+    - log
+    - alert
+    - health_check
+
+  # In SAFE_MODE, these are blocked
+  blocked_actions:
+    - write
+    - execute
+    - api_calls
+    - deployments
+
+  # Exit requires Director approval
+  exit_requires: Director
+
+# Model costs (EUR per 1k tokens) - for cost estimation
+model_costs:
+  claude-opus-4:
+    input: 0.015
+    output: 0.075
+  claude-sonnet-4:
+    input: 0.003
+    output: 0.015
+  claude-haiku-3-5:
+    input: 0.0008
+    output: 0.004
+
+# System sources that report costs
+cost_sources:
+  - name: claude_code
+    description: Claude Code sessions (AIOS Lab)
+    report_to: clickup_goals
+  - name: clawdbot
+    description: Clawdbot AWS operations
+    report_to: clickup_goals
+
+# ClickUp Goals integration
+clickup_goals:
+  daily_budget: "fd3f4a06-8fe7-403a-90f9-bd7cbb05f45e"
+  monthly_budget: "bc42bf77-3c6d-4f64-9c2f-f8f3b5b28e10"
+  token_usage: "a62dfe69-87f7-4a2e-8d2c-7f0b7e5f5c8e"
+
+# Alerts configuration
+alerts:
+  channels:
+    - slack:#command-center
+    - clickup:comment
+
+  thresholds:
+    - percent: 75
+      action: info
+      message: "Budget at 75%"
+    - percent: 90
+      action: warning
+      message: "Budget at 90% - reduce activity"
+    - percent: 100
+      action: critical
+      message: "Budget exceeded - SAFE_MODE activated"
