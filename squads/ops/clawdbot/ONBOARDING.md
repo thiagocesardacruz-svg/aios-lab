@@ -1,895 +1,478 @@
-# Clawdbot - Guia Completo de Onboarding
+# Clawdbot - Guia de Setup (Hostinger)
 
-**Data:** 2026-02-12
-**Versão:** 2.0
-**Status:** CANONICAL (Source of Truth)
+**Versão:** 3.0
+**Infraestrutura:** Hostinger VPS (junto com n8n)
+**Custo Adicional:** €0
 
 ---
 
-## ATENÇÃO: Leia Isto Primeiro
-
-### Source of Truth
-
-A partir de agora, a **única fonte de verdade** para sua operação é:
+## Visão Geral
 
 ```
-REPOSITÓRIO: aios-lab
-BRANCH: main
-URL: https://github.com/thiagocesardacruz-svg/aios-lab
-```
-
-### O Que Ignorar (Documentos Antigos)
-
-**IGNORE completamente** os seguintes documentos do repositório `thiago-os`:
-
-| Documento Antigo | Status | Substituído Por |
-|------------------|--------|-----------------|
-| `16-CLAWDBOT-OPERATIONAL-DIRECTIVE.md` | DEPRECATED | `aios-lab/squads/ops/clawdbot/OPERATIONAL-DIRECTIVE.md` |
-| `43-CLAWDBOT-COMMS-CONTRACT.md` | DEPRECATED | `aios-lab/squads/ops/clawdbot/COMMANDS.md` |
-| `27-COMMAND-MATRIX-COMPLETE.md` | DEPRECATED | `aios-lab/squads/ops/clawdbot/COMMANDS.md` |
-| `30-N8N-WORKFLOWS-SPEC.md` | DEPRECATED | `aios-lab/squads/ops/clawdbot/INTEGRATIONS.md` |
-| Qualquer outro doc de `thiago-os` | DEPRECATED | Consultar `aios-lab` |
-
-**Ação Necessária:**
-```bash
-# No EC2, remover referências antigas
-rm -rf /opt/clawdbot/docs/thiago-os/
-rm -f /opt/clawdbot/config/old-*.yaml
-
-# Clonar/atualizar aios-lab
-cd /opt/clawdbot
-git clone https://github.com/thiagocesardacruz-svg/aios-lab.git repo
-# ou se já existe:
-cd /opt/clawdbot/repo && git pull origin main
+┌─────────────────────────────────────────────────────────────────┐
+│                     HOSTINGER VPS                               │
+│                    (Já pago, n8n rodando)                       │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                 │
+│   ┌─────────────────────────────────────────────────────────┐   │
+│   │                        n8n                              │   │
+│   │  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐     │   │
+│   │  │ WF-COMMANDS │  │ WF-MONITORS │  │ WF-REPORTS  │     │   │
+│   │  │ (Slack)     │  │ (Cron)      │  │ (Daily)     │     │   │
+│   │  └─────────────┘  └─────────────┘  └─────────────┘     │   │
+│   └─────────────────────────────────────────────────────────┘   │
+│                              │                                  │
+│   ┌──────────────────────────┴──────────────────────────────┐   │
+│   │                   Scripts Python                        │   │
+│   │  platform_checks.py | clickup_ops.py | report_gen.py   │   │
+│   └─────────────────────────────────────────────────────────┘   │
+│                              │                                  │
+│   ┌──────────────────────────┴──────────────────────────────┐   │
+│   │                    Slack Bot                            │   │
+│   │                    (Clawdbot)                           │   │
+│   └─────────────────────────────────────────────────────────┘   │
+│                                                                 │
+└─────────────────────────────────────────────────────────────────┘
 ```
 
 ---
 
-## Parte 1: Sua Identidade
+## Parte 1: O Que é o Clawdbot
 
-### Quem Você É
+### Identidade
 
 | Campo | Valor |
 |-------|-------|
 | **Nome** | Clawdbot |
-| **Role** | Extensão Operacional do AIOS Lab |
-| **Owner** | Travel Tech Digital (Thiago - Director) |
-| **Localização** | AWS EC2 (eu-north-1) |
-| **Interface Principal** | Slack |
-| **Modelo** | Configurável (foco em economia) |
+| **Role** | Platform Operations Agent |
+| **Squad** | OPS |
+| **Função** | Monitora plataformas, cria tasks, reporta status |
+| **Interface** | Slack |
+| **Infra** | Hostinger VPS (compartilhado com n8n) |
 
-### Sua Relação com o AIOS Lab
+### O Que Clawdbot Faz
 
-```
-┌─────────────────────────────────────────────────────────────────┐
-│                        HIERARQUIA                                │
-├─────────────────────────────────────────────────────────────────┤
-│                                                                  │
-│   Director (Thiago)                                              │
-│        │                                                         │
-│        ▼                                                         │
-│   Orion (AIOS Master) ─── Claude Code ─── Motor Principal       │
-│        │                       │                                 │
-│        │                       │ 19 squads, 44 agents            │
-│        │                       │ Produção massiva                │
-│        │                       │ MCP tools, ferramentas locais   │
-│        │                       │                                 │
-│        ▼                       │                                 │
-│   Clawdbot (Você) ◄────────────┘                                │
-│        │                                                         │
-│        │ Extensão operacional                                    │
-│        │ 24/7 availability                                       │
-│        │ Slack interface                                         │
-│        │ Scripts determinísticos                                 │
-│                                                                  │
-└─────────────────────────────────────────────────────────────────┘
-```
+1. **Monitora Plataformas:** ClickUp, Notion, GHL, n8n, WordPress, Supabase
+2. **Recebe Comandos:** Via Slack do Director
+3. **Cria Tasks:** No ClickUp para squads executarem
+4. **Reporta Status:** Alertas e reports diários/semanais
+5. **QA Contínuo:** Verifica saúde de todas as integrações
 
-### O Que Você É vs O Que Você NÃO É
+### O Que Clawdbot NÃO Faz
 
-**VOCÊ É:**
-- Executor de tarefas delegadas pelo Claude Code
-- Monitor de saúde e custos 24/7
-- Interface Slack quando terminal está offline
-- Executor de scripts determinísticos (zero-cost)
-- Sincronizador de ClickUp, Notion, n8n
-
-**VOCÊ NÃO É:**
-- Decision-maker para estratégia
-- Substituto do Claude Code
-- Publisher de conteúdo customer-facing
-- Handler de credentials ou secrets
-- Deleter de dados
+- ❌ Escrever código (função do Claude Code)
+- ❌ Interagir com squads (função do AIOS Master)
+- ❌ Falar com clientes
+- ❌ Tomar decisões estratégicas
 
 ---
 
-## Parte 2: Estrutura de Diretórios
+## Parte 2: Arquitetura no Hostinger
 
-### No EC2 (AWS)
+### Componentes
 
 ```
-/opt/clawdbot/
-├── repo/                          # Clone do aios-lab (git pull diário)
-│   └── squads/ops/clawdbot/       # Sua documentação canônica
-│       ├── README.md
-│       ├── OPERATIONAL-DIRECTIVE.md
-│       ├── COMMANDS.md
-│       ├── INTEGRATIONS.md
-│       └── ONBOARDING.md          # Este arquivo
-│
-├── scripts/                       # Scripts Python executáveis
-│   ├── state_manager.py           # Single-writer state files
-│   ├── spend_monitor.py           # Track API costs, SAFE_MODE
-│   ├── health_check.py            # System health monitoring
-│   ├── context_sync.py            # Sync Notion → AWS cache
-│   ├── so_executor.py             # Execute Service Orders
-│   ├── clickup_poller.py          # Poll ClickUp para tasks delegadas
-│   ├── daily_digest.py            # Gerar resumo diário
-│   └── finance_import.py          # Import finance CSV
+/home/user/clawdbot/
+├── scripts/
+│   ├── platform_checks.py    # Health checks das plataformas
+│   ├── clickup_ops.py        # Operações no ClickUp
+│   ├── ghl_monitor.py        # Monitoramento do GHL
+│   ├── notion_audit.py       # Auditoria do Notion
+│   ├── site_monitor.py       # Monitoramento WordPress
+│   └── report_generator.py   # Geração de reports
 │
 ├── config/
-│   ├── budget-limits.yaml         # Symlink → repo/shared/budget-limits.yaml
-│   ├── integrations.yaml          # Credentials e endpoints
-│   └── slack-config.yaml          # Slack workspace config
-│
-├── state/                         # Estado persistente
-│   ├── current_state.json         # Estado atual do sistema
-│   ├── daily_costs.json           # Custos do dia
-│   └── safe_mode.flag             # Flag de SAFE_MODE (se existir, está ativo)
+│   ├── platforms.yaml        # Credenciais e endpoints
+│   └── alerts.yaml           # Configuração de alertas
 │
 ├── logs/
-│   ├── activity/                  # Logs de atividade (formato JSONL)
-│   ├── errors/                    # Logs de erro
-│   └── audit/                     # Audit trail
+│   └── activity.jsonl        # Logs de atividade
 │
-└── cache/
-    ├── notion/                    # Cache do Notion
-    └── clickup/                   # Cache do ClickUp
+└── data/
+    └── state.json            # Estado atual
 ```
 
-### No aios-lab (Repositório)
+### Workflows n8n
 
-```
-aios-lab/
-├── .claude/CLAUDE.md              # Instruções do Claude Code (tem seção Clawdbot)
-├── shared/
-│   └── budget-limits.yaml         # Limites de budget (SOURCE OF TRUTH)
-├── squads/ops/
-│   ├── clawdbot/                  # Sua documentação
-│   │   ├── README.md
-│   │   ├── OPERATIONAL-DIRECTIVE.md
-│   │   ├── COMMANDS.md
-│   │   ├── INTEGRATIONS.md
-│   │   └── ONBOARDING.md
-│   ├── scripts/
-│   │   ├── delegate-to-clawdbot.mjs   # Como Claude Code delega para você
-│   │   ├── clickup-sync.mjs           # Sync com ClickUp
-│   │   └── activity-logger.mjs        # Logger de atividades
-│   └── data/
-│       └── command-center-data.json   # Dados do Command Center
-└── docs/plans/
-    └── CLAWDBOT-INTEGRATION-PLAN.md   # Plano de integração
-```
+| Workflow | Trigger | Função |
+|----------|---------|--------|
+| `WF-CLAWDBOT-COMMANDS` | Webhook Slack | Processa comandos do Director |
+| `WF-CLAWDBOT-MONITORS` | Cron (30min) | Executa health checks |
+| `WF-CLAWDBOT-ALERTS` | On event | Envia alertas para Slack |
+| `WF-CLAWDBOT-REPORTS` | Cron (daily 09:00) | Gera report diário |
+| `WF-CLAWDBOT-CLICKUP` | Cron (5min) | Sync com ClickUp |
 
 ---
 
-## Parte 3: Comunicação com Claude Code
+## Parte 3: Setup Passo a Passo
 
-### Via ClickUp (Método Principal)
-
-```
-┌──────────────────┐                    ┌──────────────────┐
-│   Claude Code    │                    │    Clawdbot      │
-│   (AIOS Lab)     │                    │    (AWS EC2)     │
-└────────┬─────────┘                    └────────┬─────────┘
-         │                                       │
-         │ 1. Cria task com tag                  │
-         │    'clawdbot:execute'                 │
-         │                                       │
-         ├───────────────────────────────────────►
-         │                                       │
-         │              ClickUp                  │
-         │         (Command Center)              │
-         │                                       │
-         │ 2. Poll a cada 5 minutos              │
-         │◄───────────────────────────────────────
-         │                                       │
-         │ 3. Executa script especificado        │
-         │                                       │
-         │ 4. Atualiza status no ClickUp         │
-         │◄───────────────────────────────────────
-         │                                       │
-```
-
-### Como Detectar Tasks Delegadas
-
-**Script: `/opt/clawdbot/scripts/clickup_poller.py`**
-
-```python
-#!/usr/bin/env python3
-"""
-ClickUp Poller - Detecta tasks delegadas pelo Claude Code
-Executar via cron a cada 5 minutos
-"""
-
-import requests
-import json
-import subprocess
-from datetime import datetime
-from pathlib import Path
-
-CLICKUP_API = 'https://api.clickup.com/api/v2'
-API_KEY = 'pk_278673009_AQK7LDDPQ9PKSWKXI7ILF2XWY4YG8Y3O'
-INBOX_LIST = '901521080779'
-STATE_FILE = '/opt/clawdbot/state/processed_tasks.json'
-LOG_FILE = '/opt/clawdbot/logs/activity/poller.jsonl'
-
-def log(action, data):
-    """Log em formato JSONL compatível com AIOS"""
-    entry = {
-        "timestamp": datetime.utcnow().isoformat() + "Z",
-        "action": action,
-        "type": "action",
-        "agent": "@clawdbot",
-        "source": "clawdbot",
-        "data": data
-    }
-    with open(LOG_FILE, 'a') as f:
-        f.write(json.dumps(entry) + '\n')
-
-def get_delegated_tasks():
-    """Busca tasks com tag clawdbot:execute"""
-    headers = {'Authorization': API_KEY}
-
-    # Buscar tasks no inbox com a tag
-    response = requests.get(
-        f'{CLICKUP_API}/list/{INBOX_LIST}/task',
-        headers=headers,
-        params={
-            'tags[]': 'clawdbot:execute',
-            'statuses[]': ['daemon_queue', 'inbox']
-        }
-    )
-
-    if response.status_code != 200:
-        log('error', {'message': 'Failed to fetch tasks', 'status': response.status_code})
-        return []
-
-    return response.json().get('tasks', [])
-
-def parse_execution_details(task):
-    """Extrai detalhes de execução do comentário da task"""
-    headers = {'Authorization': API_KEY}
-
-    # Buscar comentários
-    response = requests.get(
-        f'{CLICKUP_API}/task/{task["id"]}/comment',
-        headers=headers
-    )
-
-    if response.status_code != 200:
-        return None
-
-    comments = response.json().get('comments', [])
-
-    for comment in comments:
-        text = comment.get('comment_text', '')
-        if '```json' in text and 'script' in text:
-            # Extrair JSON do comentário
-            try:
-                json_start = text.index('```json') + 7
-                json_end = text.index('```', json_start)
-                return json.loads(text[json_start:json_end])
-            except:
-                continue
-
-    return None
-
-def execute_script(script_name, args=None):
-    """Executa script Python"""
-    script_path = f'/opt/clawdbot/scripts/{script_name}'
-
-    if not Path(script_path).exists():
-        return {'success': False, 'error': f'Script not found: {script_name}'}
-
-    cmd = ['python3', script_path]
-    if args:
-        cmd.extend(args.split())
-
-    try:
-        result = subprocess.run(cmd, capture_output=True, text=True, timeout=300)
-        return {
-            'success': result.returncode == 0,
-            'stdout': result.stdout,
-            'stderr': result.stderr
-        }
-    except subprocess.TimeoutExpired:
-        return {'success': False, 'error': 'Script timeout (5 min)'}
-    except Exception as e:
-        return {'success': False, 'error': str(e)}
-
-def update_task_status(task_id, status, comment=None):
-    """Atualiza status da task no ClickUp"""
-    headers = {
-        'Authorization': API_KEY,
-        'Content-Type': 'application/json'
-    }
-
-    # Atualizar status
-    requests.put(
-        f'{CLICKUP_API}/task/{task_id}',
-        headers=headers,
-        json={'status': status}
-    )
-
-    # Adicionar comentário se fornecido
-    if comment:
-        requests.post(
-            f'{CLICKUP_API}/task/{task_id}/comment',
-            headers=headers,
-            json={'comment_text': comment}
-        )
-
-def load_processed():
-    """Carrega lista de tasks já processadas"""
-    if Path(STATE_FILE).exists():
-        with open(STATE_FILE) as f:
-            return set(json.load(f))
-    return set()
-
-def save_processed(processed):
-    """Salva lista de tasks processadas"""
-    with open(STATE_FILE, 'w') as f:
-        json.dump(list(processed), f)
-
-def main():
-    log('poll_start', {'timestamp': datetime.utcnow().isoformat()})
-
-    # Carregar tasks já processadas
-    processed = load_processed()
-
-    # Buscar tasks delegadas
-    tasks = get_delegated_tasks()
-    log('tasks_found', {'count': len(tasks)})
-
-    for task in tasks:
-        task_id = task['id']
-
-        # Pular se já processada
-        if task_id in processed:
-            continue
-
-        log('task_processing', {'task_id': task_id, 'name': task['name']})
-
-        # Extrair detalhes de execução
-        details = parse_execution_details(task)
-
-        if not details or not details.get('script'):
-            update_task_status(task_id, 'waiting',
-                '⚠️ **Clawdbot Error**\n\nNo execution details found in task comments.')
-            processed.add(task_id)
-            continue
-
-        # Atualizar para in_progress
-        update_task_status(task_id, 'in progress',
-            f'🤖 **Clawdbot Executing**\n\nScript: `{details["script"]}`')
-
-        # Executar script
-        result = execute_script(details['script'], details.get('args'))
-
-        if result['success']:
-            update_task_status(task_id, 'done',
-                f'✅ **Clawdbot Completed**\n\n```\n{result["stdout"][:1000]}\n```')
-            log('task_completed', {'task_id': task_id, 'script': details['script']})
-        else:
-            update_task_status(task_id, 'waiting',
-                f'❌ **Clawdbot Failed**\n\nError: {result.get("error", result.get("stderr", "Unknown"))}')
-            log('task_failed', {'task_id': task_id, 'error': result.get('error')})
-
-        processed.add(task_id)
-
-    # Salvar estado
-    save_processed(processed)
-    log('poll_end', {'processed': len(processed)})
-
-if __name__ == '__main__':
-    main()
-```
-
-### Cron Setup
+### 3.1 Conectar ao Hostinger
 
 ```bash
-# Adicionar ao crontab
-crontab -e
-
-# Adicionar estas linhas:
-*/5 * * * * /usr/bin/python3 /opt/clawdbot/scripts/clickup_poller.py >> /opt/clawdbot/logs/cron.log 2>&1
-*/30 * * * * /usr/bin/python3 /opt/clawdbot/scripts/spend_monitor.py >> /opt/clawdbot/logs/cron.log 2>&1
-*/30 * * * * /usr/bin/python3 /opt/clawdbot/scripts/health_check.py >> /opt/clawdbot/logs/cron.log 2>&1
-0 9 * * * /usr/bin/python3 /opt/clawdbot/scripts/daily_digest.py >> /opt/clawdbot/logs/cron.log 2>&1
+ssh user@your-hostinger-vps
 ```
 
----
-
-## Parte 4: Budget e SAFE_MODE
-
-### Limites de Budget
-
-**Source of Truth:** `aios-lab/shared/budget-limits.yaml`
-
-```yaml
-budget:
-  currency: EUR
-  daily:
-    alert: 15        # Alert Director
-    hard: 20         # Trigger SAFE_MODE
-    per_task: 10     # Approval required
-  monthly:
-    total: 468       # Hard limit
-    alert: 350       # Warning
-```
-
-### Como Ler o Budget
-
-```python
-#!/usr/bin/env python3
-"""budget_reader.py - Lê limites de budget do arquivo compartilhado"""
-
-import yaml
-from pathlib import Path
-
-BUDGET_FILE = '/opt/clawdbot/repo/shared/budget-limits.yaml'
-
-def get_budget_limits():
-    with open(BUDGET_FILE) as f:
-        config = yaml.safe_load(f)
-    return config['budget']
-
-def check_daily_limit(current_spend):
-    limits = get_budget_limits()
-    daily = limits['daily']
-
-    if current_spend >= daily['hard']:
-        return {'status': 'EXCEEDED', 'action': 'SAFE_MODE'}
-    elif current_spend >= daily['alert']:
-        return {'status': 'WARNING', 'action': 'ALERT_DIRECTOR'}
-    else:
-        return {'status': 'OK', 'action': None}
-```
-
-### SAFE_MODE
-
-**Triggers Automáticos:**
-- Daily cost > €20
-- Error rate > 5%
-- 3+ critical failures em 15 minutos
-- Manual `/killswitch` command
-
-**Em SAFE_MODE pode:** read, log, alert, health_check
-**Em SAFE_MODE NÃO pode:** write, execute, API calls, deployments
-
-**Script: `/opt/clawdbot/scripts/safe_mode_manager.py`**
-
-```python
-#!/usr/bin/env python3
-"""safe_mode_manager.py - Gerencia SAFE_MODE"""
-
-from pathlib import Path
-from datetime import datetime
-import json
-
-SAFE_MODE_FLAG = '/opt/clawdbot/state/safe_mode.flag'
-LOG_FILE = '/opt/clawdbot/logs/activity/safe_mode.jsonl'
-
-def is_safe_mode():
-    """Verifica se SAFE_MODE está ativo"""
-    return Path(SAFE_MODE_FLAG).exists()
-
-def activate_safe_mode(reason):
-    """Ativa SAFE_MODE"""
-    with open(SAFE_MODE_FLAG, 'w') as f:
-        f.write(json.dumps({
-            'activated': datetime.utcnow().isoformat(),
-            'reason': reason
-        }))
-
-    log_entry = {
-        'timestamp': datetime.utcnow().isoformat() + 'Z',
-        'action': 'SAFE_MODE_ACTIVATED',
-        'type': 'alert',
-        'agent': '@clawdbot',
-        'data': {'reason': reason}
-    }
-
-    with open(LOG_FILE, 'a') as f:
-        f.write(json.dumps(log_entry) + '\n')
-
-    # TODO: Enviar alerta para Slack
-    # send_slack_alert(f"🚨 SAFE_MODE ACTIVATED: {reason}")
-
-def deactivate_safe_mode():
-    """Desativa SAFE_MODE (somente Director pode chamar)"""
-    if Path(SAFE_MODE_FLAG).exists():
-        Path(SAFE_MODE_FLAG).unlink()
-
-    log_entry = {
-        'timestamp': datetime.utcnow().isoformat() + 'Z',
-        'action': 'SAFE_MODE_DEACTIVATED',
-        'type': 'alert',
-        'agent': '@clawdbot',
-        'data': {'deactivated_by': 'Director'}
-    }
-
-    with open(LOG_FILE, 'a') as f:
-        f.write(json.dumps(log_entry) + '\n')
-
-def check_before_action(action_type):
-    """Verifica se ação é permitida"""
-    if not is_safe_mode():
-        return True
-
-    allowed = ['read', 'log', 'alert', 'health_check']
-    return action_type in allowed
-```
-
----
-
-## Parte 5: Comandos Slack
-
-### Implementação dos Comandos
-
-Você deve responder aos seguintes comandos via Slack:
-
-| Comando | Função | Resposta Esperada |
-|---------|--------|-------------------|
-| `/status` | Status geral | Tasks, budget, health |
-| `/budget` | Budget atual | Daily/monthly spend |
-| `/health` | Health check | Status dos sistemas |
-| `/tasks` | Tasks pendentes | Lista de tasks |
-| `/create [Type] Name` | Criar task | Task criada no ClickUp |
-| `/start <id>` | Iniciar task | Status atualizado |
-| `/done <id> "summary"` | Completar task | Task marcada done |
-| `/run <script>` | Executar script | Output do script |
-| `/safemode on/off` | Toggle SAFE_MODE | Status atualizado |
-
-### Formato de Resposta (SEMPRE)
-
-```
-STATUS: <COMPLETED | BLOCKED | WAITING_AUTH | ERROR>
-
-SUMMARY:
-- <ponto 1>
-- <ponto 2>
-
-NEXT ACTIONS:
-- <ação 1>
-- <ação 2>
-
-NEEDS FROM THIAGO: <None | pedido específico>
-```
-
-### Exemplo de Handler Slack
-
-```python
-#!/usr/bin/env python3
-"""slack_handler.py - Processa comandos do Slack"""
-
-import json
-from datetime import datetime
-
-def handle_status():
-    """Handler para /status"""
-    # Coletar dados
-    tasks_pending = get_pending_tasks_count()
-    daily_spend = get_daily_spend()
-    health = run_health_check()
-
-    return f"""STATUS: COMPLETED
-
-SUMMARY:
-- Tasks pending: {tasks_pending}
-- Daily spend: €{daily_spend:.2f} / €20.00 ({daily_spend/20*100:.0f}%)
-- Health: {health['status']}
-
-NEXT ACTIONS:
-- Continue monitoring
-- Process delegated tasks
-
-NEEDS FROM THIAGO: None"""
-
-def handle_budget():
-    """Handler para /budget"""
-    daily = get_daily_spend()
-    monthly = get_monthly_spend()
-
-    return f"""STATUS: COMPLETED
-
-SUMMARY:
-- Daily: €{daily:.2f} / €20.00 ({daily/20*100:.0f}%)
-- Monthly: €{monthly:.2f} / €468.00 ({monthly/468*100:.0f}%)
-- Status: {'⚠️ WARNING' if daily > 15 else '✅ OK'}
-
-NEXT ACTIONS:
-- {'Reduce activity - approaching limit' if daily > 15 else 'Continue normal operation'}
-
-NEEDS FROM THIAGO: None"""
-
-def handle_run(script_name):
-    """Handler para /run"""
-    if is_safe_mode():
-        return """STATUS: BLOCKED
-
-SUMMARY:
-- SAFE_MODE is active
-- Script execution not allowed
-
-NEXT ACTIONS:
-- Wait for Director to deactivate SAFE_MODE
-
-NEEDS FROM THIAGO: Run `/safemode off` to deactivate"""
-
-    result = execute_script(script_name)
-
-    if result['success']:
-        return f"""STATUS: COMPLETED
-
-SUMMARY:
-- Script: {script_name}
-- Execution: Success
-
-OUTPUT:
-```
-{result['stdout'][:500]}
-```
-
-NEXT ACTIONS:
-- None
-
-NEEDS FROM THIAGO: None"""
-    else:
-        return f"""STATUS: ERROR
-
-SUMMARY:
-- Script: {script_name}
-- Execution: Failed
-- Error: {result['error']}
-
-NEXT ACTIONS:
-- Review script logs
-- Fix issue
-
-NEEDS FROM THIAGO: Review error and provide guidance"""
-```
-
----
-
-## Parte 6: Logging (Formato AIOS)
-
-### Formato de Log (JSONL)
-
-Todos os logs devem seguir este formato para compatibilidade com o sistema de memória do AIOS:
-
-```json
-{
-  "timestamp": "2026-02-12T10:30:00Z",
-  "action": "Executed health check",
-  "type": "action",
-  "tags": ["health", "monitoring"],
-  "agent": "@clawdbot",
-  "source": "clawdbot",
-  "data": {
-    "result": "healthy",
-    "latency_ms": 150
-  }
-}
-```
-
-### Tipos de Log
-
-| Type | Uso |
-|------|-----|
-| `action` | Ação executada |
-| `decision` | Decisão tomada |
-| `alert` | Alerta gerado |
-| `error` | Erro ocorrido |
-| `metric` | Métrica coletada |
-
-### Onde Salvar
-
-```
-/opt/clawdbot/logs/
-├── activity/
-│   ├── 2026-02-12.jsonl    # Logs do dia
-│   └── ...
-├── errors/
-│   └── 2026-02-12.jsonl    # Erros do dia
-└── audit/
-    └── commands.jsonl       # Audit trail de comandos
-```
-
----
-
-## Parte 7: Setup Passo a Passo
-
-### 1. Preparar Ambiente EC2
+### 3.2 Criar Estrutura
 
 ```bash
-# Conectar ao EC2
-ssh -i your-key.pem ec2-user@your-ec2-ip
+# Criar diretórios
+mkdir -p ~/clawdbot/{scripts,config,logs,data}
 
-# Criar estrutura de diretórios
-sudo mkdir -p /opt/clawdbot/{scripts,config,state,logs/{activity,errors,audit},cache/{notion,clickup}}
-sudo chown -R ec2-user:ec2-user /opt/clawdbot
+# Verificar
+ls -la ~/clawdbot/
 ```
 
-### 2. Clonar Repositório
-
-```bash
-cd /opt/clawdbot
-git clone https://github.com/thiagocesardacruz-svg/aios-lab.git repo
-
-# Criar symlink para budget
-ln -s /opt/clawdbot/repo/shared/budget-limits.yaml /opt/clawdbot/config/budget-limits.yaml
-```
-
-### 3. Instalar Dependências
+### 3.3 Instalar Dependências
 
 ```bash
 # Python packages
 pip3 install requests pyyaml slack_sdk
 
-# Verificar instalação
+# Verificar
 python3 -c "import requests, yaml, slack_sdk; print('OK')"
 ```
 
-### 4. Copiar Scripts
+### 3.4 Configurar Credenciais
 
 ```bash
-# Copiar scripts do repositório para o diretório de execução
-# (os scripts estão documentados neste arquivo)
+# Criar config de plataformas
+cat > ~/clawdbot/config/platforms.yaml << 'EOF'
+# Platform Credentials
+# WARNING: Keep this file secure!
 
-# Criar clickup_poller.py
-cat > /opt/clawdbot/scripts/clickup_poller.py << 'EOF'
-# [Copiar o código do clickup_poller.py acima]
-EOF
+clickup:
+  api_key: "pk_278673009_AQK7LDDPQ9PKSWKXI7ILF2XWY4YG8Y3O"
+  team_id: "90152366829"
+  inbox_list: "901521080779"
 
-# Criar safe_mode_manager.py
-cat > /opt/clawdbot/scripts/safe_mode_manager.py << 'EOF'
-# [Copiar o código do safe_mode_manager.py acima]
-EOF
+notion:
+  token: "YOUR_NOTION_TOKEN"
+  workspace: "thiago-os"
 
-# Tornar executáveis
-chmod +x /opt/clawdbot/scripts/*.py
-```
+ghl:
+  api_key: "YOUR_GHL_API_KEY"
+  location_id: "YOUR_LOCATION_ID"
 
-### 5. Configurar Cron
-
-```bash
-crontab -e
-
-# Adicionar:
-*/5 * * * * /usr/bin/python3 /opt/clawdbot/scripts/clickup_poller.py >> /opt/clawdbot/logs/cron.log 2>&1
-*/30 * * * * /usr/bin/python3 /opt/clawdbot/scripts/spend_monitor.py >> /opt/clawdbot/logs/cron.log 2>&1
-*/30 * * * * /usr/bin/python3 /opt/clawdbot/scripts/health_check.py >> /opt/clawdbot/logs/cron.log 2>&1
-0 9 * * * /usr/bin/python3 /opt/clawdbot/scripts/daily_digest.py >> /opt/clawdbot/logs/cron.log 2>&1
-0 0 * * * cd /opt/clawdbot/repo && git pull origin main >> /opt/clawdbot/logs/cron.log 2>&1
-```
-
-### 6. Configurar Slack App
-
-```yaml
-# /opt/clawdbot/config/slack-config.yaml
 slack:
-  workspace: travel-tech-digital
-  bot_token: xoxb-your-token
-  signing_secret: your-signing-secret
-  channels:
-    command_center: "#command-center"
-    alerts: "#alerts"
-  bot_name: Clawdbot
+  bot_token: "xoxb-YOUR-BOT-TOKEN"
+  signing_secret: "YOUR_SIGNING_SECRET"
+  channel_commands: "#command-center"
+  channel_alerts: "#alerts"
+
+wordpress:
+  sites:
+    - url: "https://traveltechdigital.com"
+      name: "Main Site"
+
+supabase:
+  url: "https://YOUR_PROJECT.supabase.co"
+  service_key: "YOUR_SERVICE_KEY"
+EOF
+
+# Proteger arquivo
+chmod 600 ~/clawdbot/config/platforms.yaml
 ```
 
-### 7. Inicializar Estado
+### 3.5 Criar Scripts
 
 ```bash
-# Criar estado inicial
-echo '{"initialized": true, "timestamp": "'$(date -u +%Y-%m-%dT%H:%M:%SZ)'"}' > /opt/clawdbot/state/current_state.json
-echo '{"date": "'$(date +%Y-%m-%d)'", "total": 0, "by_source": {}}' > /opt/clawdbot/state/daily_costs.json
+# Health Check principal
+cat > ~/clawdbot/scripts/platform_checks.py << 'SCRIPT'
+#!/usr/bin/env python3
+"""Platform health checks para todas as plataformas"""
+
+import requests
+import yaml
+from datetime import datetime
+from pathlib import Path
+
+CONFIG_FILE = Path.home() / "clawdbot/config/platforms.yaml"
+LOG_FILE = Path.home() / "clawdbot/logs/activity.jsonl"
+
+def load_config():
+    with open(CONFIG_FILE) as f:
+        return yaml.safe_load(f)
+
+def check_clickup(config):
+    """Check ClickUp connectivity"""
+    try:
+        response = requests.get(
+            "https://api.clickup.com/api/v2/team",
+            headers={"Authorization": config["clickup"]["api_key"]},
+            timeout=10
+        )
+        return {
+            "status": "ok" if response.status_code == 200 else "error",
+            "latency_ms": int(response.elapsed.total_seconds() * 1000)
+        }
+    except Exception as e:
+        return {"status": "error", "error": str(e)}
+
+def check_n8n():
+    """Check n8n local"""
+    try:
+        response = requests.get("http://localhost:5678/healthz", timeout=5)
+        return {"status": "ok" if response.status_code == 200 else "error"}
+    except:
+        return {"status": "error", "error": "n8n not responding"}
+
+def check_wordpress(config):
+    """Check WordPress sites"""
+    results = []
+    for site in config.get("wordpress", {}).get("sites", []):
+        try:
+            response = requests.get(site["url"], timeout=10)
+            results.append({
+                "name": site["name"],
+                "status": "ok" if response.status_code == 200 else "error",
+                "latency_ms": int(response.elapsed.total_seconds() * 1000)
+            })
+        except Exception as e:
+            results.append({"name": site["name"], "status": "error", "error": str(e)})
+    return results
+
+def run_all_checks():
+    config = load_config()
+
+    results = {
+        "timestamp": datetime.utcnow().isoformat() + "Z",
+        "platforms": {
+            "clickup": check_clickup(config),
+            "n8n": check_n8n(),
+            "wordpress": check_wordpress(config)
+        }
+    }
+
+    # Calculate overall
+    statuses = []
+    for p in results["platforms"].values():
+        if isinstance(p, list):
+            statuses.extend([x.get("status") for x in p])
+        else:
+            statuses.append(p.get("status"))
+
+    results["overall"] = "ok" if all(s == "ok" for s in statuses) else "error"
+
+    return results
+
+if __name__ == "__main__":
+    import json
+    results = run_all_checks()
+    print(json.dumps(results, indent=2))
+SCRIPT
+
+chmod +x ~/clawdbot/scripts/platform_checks.py
 ```
 
-### 8. Testar
+### 3.6 Configurar Workflows no n8n
+
+#### Workflow 1: Commands (Webhook)
+
+```
+1. Abrir n8n: http://your-vps:5678
+2. Create new workflow: "WF-CLAWDBOT-COMMANDS"
+3. Add nodes:
+   - Webhook (POST /clawdbot/command)
+   - Switch (route by command)
+   - Execute Command (run Python scripts)
+   - Slack (send response)
+4. Activate workflow
+```
+
+#### Workflow 2: Monitors (Cron)
+
+```
+1. Create workflow: "WF-CLAWDBOT-MONITORS"
+2. Add nodes:
+   - Cron (every 30 min)
+   - Execute Command (python3 ~/clawdbot/scripts/platform_checks.py)
+   - IF (check for errors)
+   - Slack (send alert if errors)
+3. Activate workflow
+```
+
+#### Workflow 3: Daily Report (Cron)
+
+```
+1. Create workflow: "WF-CLAWDBOT-REPORTS"
+2. Add nodes:
+   - Cron (daily 09:00)
+   - Execute Command (generate report)
+   - Slack (send to #command-center)
+3. Activate workflow
+```
+
+### 3.7 Configurar Slack App
+
+1. Criar App em https://api.slack.com/apps
+2. Bot Token Scopes:
+   - `chat:write`
+   - `commands`
+   - `channels:read`
+3. Event Subscriptions:
+   - Request URL: `https://your-vps/webhook/clawdbot/command`
+4. Install to Workspace
+5. Add bot to channels: `#command-center`, `#alerts`
+
+### 3.8 Testar
 
 ```bash
-# Testar poller
-python3 /opt/clawdbot/scripts/clickup_poller.py
+# Testar health check
+python3 ~/clawdbot/scripts/platform_checks.py
 
+# Testar via Slack
+# No Slack: @Clawdbot status
+```
+
+---
+
+## Parte 4: Comandos Disponíveis
+
+### Via Slack
+
+| Comando | Ação |
+|---------|------|
+| `status` | Status de todas as plataformas |
+| `status clickup` | Status específico do ClickUp |
+| `cria task [desc]` | Criar task no ClickUp |
+| `tasks pendentes` | Listar tasks abertas |
+| `health check` | Executar health check completo |
+| `report` | Gerar report atual |
+
+### Formato de Resposta
+
+```
+STATUS: OK
+
+PLATFORMS:
+• ClickUp: ✅ ok (45ms)
+• Notion: ✅ ok
+• GHL: ⚠️ 2 leads need followup
+• n8n: ✅ ok
+• WordPress: ✅ ok (1.2s)
+
+ALERTS: None
+
+NEEDS ATTENTION: None
+```
+
+---
+
+## Parte 5: Monitoramento
+
+### Checks Periódicos
+
+| Check | Frequência | Script |
+|-------|------------|--------|
+| Platform health | 30min | `platform_checks.py` |
+| ClickUp tasks | 5min | `clickup_ops.py` |
+| GHL leads | 4h | `ghl_monitor.py` |
+| Site uptime | 5min | `site_monitor.py` |
+
+### Alertas
+
+| Nível | Quando | Canal |
+|-------|--------|-------|
+| INFO | Status normal | Log only |
+| WARNING | Anomalia | #command-center |
+| ERROR | Falha crítica | #alerts + @thiago |
+
+---
+
+## Parte 6: Manutenção
+
+### Daily
+
+```bash
 # Verificar logs
-tail -f /opt/clawdbot/logs/activity/*.jsonl
+tail -f ~/clawdbot/logs/activity.jsonl
+
+# Verificar n8n executions
+# (via n8n UI)
+```
+
+### Weekly
+
+```bash
+# Atualizar scripts do repo
+cd ~/clawdbot
+git pull origin main 2>/dev/null || echo "Not a git repo"
+
+# Limpar logs antigos
+find ~/clawdbot/logs -name "*.jsonl" -mtime +30 -delete
 ```
 
 ---
 
-## Parte 8: Checklist de Validação
+## Parte 7: Troubleshooting
 
-### Antes de Operar
+### n8n não responde
 
-- [ ] Repositório aios-lab clonado em `/opt/clawdbot/repo`
-- [ ] Documentos antigos de thiago-os removidos/ignorados
-- [ ] Symlink de budget-limits.yaml criado
-- [ ] Scripts Python instalados e executáveis
-- [ ] Cron configurado
+```bash
+# Verificar status
+systemctl status n8n
+
+# Restart
+systemctl restart n8n
+
+# Ver logs
+journalctl -u n8n -f
+```
+
+### Script falha
+
+```bash
+# Testar manualmente
+python3 ~/clawdbot/scripts/platform_checks.py
+
+# Ver erros
+cat ~/clawdbot/logs/activity.jsonl | tail -20
+```
+
+### Slack não recebe mensagens
+
+1. Verificar bot token em `platforms.yaml`
+2. Verificar se bot está nos canais
+3. Testar webhook do n8n
+
+---
+
+## Parte 8: Migração do AWS
+
+Se estiver migrando do AWS EC2:
+
+```bash
+# 1. No EC2, exportar configs
+scp -r /opt/clawdbot/config user@hostinger:~/clawdbot/
+
+# 2. No Hostinger, ajustar paths
+sed -i 's|/opt/clawdbot|/home/user/clawdbot|g' ~/clawdbot/config/*.yaml
+
+# 3. Desligar EC2
+# (via AWS Console)
+
+# 4. Testar tudo no Hostinger
+python3 ~/clawdbot/scripts/platform_checks.py
+```
+
+---
+
+## Checklist Final
+
+- [ ] VPS Hostinger acessível
+- [ ] Python 3 instalado
+- [ ] Dependências instaladas (requests, pyyaml, slack_sdk)
+- [ ] Estrutura de diretórios criada
+- [ ] Credenciais configuradas em `platforms.yaml`
+- [ ] Scripts copiados e executáveis
+- [ ] n8n workflows criados e ativos
 - [ ] Slack App configurado
-- [ ] Estado inicial criado
+- [ ] Bot adicionado aos canais
 - [ ] Health check passando
-- [ ] Poller detectando tasks no ClickUp
-
-### Diariamente
-
-- [ ] `git pull` do repositório executou (cron 00:00)
-- [ ] Health check passando
-- [ ] Budget dentro do limite
-- [ ] Logs sendo gerados
-- [ ] Tasks delegadas sendo processadas
+- [ ] Comando `status` respondendo no Slack
 
 ---
 
-## Parte 9: Troubleshooting
-
-### Task Não Detectada
-
-1. Verificar se task tem tag `clawdbot:execute`
-2. Verificar se status é `daemon_queue` ou `inbox`
-3. Verificar logs: `tail /opt/clawdbot/logs/activity/*.jsonl`
-4. Testar API manualmente:
-   ```bash
-   curl -H "Authorization: pk_278673009_AQK7LDDPQ9PKSWKXI7ILF2XWY4YG8Y3O" \
-        "https://api.clickup.com/api/v2/list/901521080779/task?tags[]=clawdbot:execute"
-   ```
-
-### SAFE_MODE Inesperado
-
-1. Verificar flag: `cat /opt/clawdbot/state/safe_mode.flag`
-2. Verificar gastos: `cat /opt/clawdbot/state/daily_costs.json`
-3. Verificar logs de ativação: `grep SAFE_MODE /opt/clawdbot/logs/activity/*.jsonl`
-
-### Script Falhou
-
-1. Verificar se script existe: `ls -la /opt/clawdbot/scripts/`
-2. Testar manualmente: `python3 /opt/clawdbot/scripts/script_name.py`
-3. Verificar dependências: `pip3 list`
-4. Verificar logs de erro: `tail /opt/clawdbot/logs/errors/*.jsonl`
-
----
-
-## Parte 10: Contatos e Escalação
-
-| Situação | Ação | Contato |
-|----------|------|---------|
-| Budget > €15 | Alert via Slack | Director |
-| Budget > €20 | SAFE_MODE + Alert | Director |
-| Critical error | Log + Alert | Director |
-| 3+ failures | SAFE_MODE + Alert | Director |
-| Dúvida operacional | Log + Wait | Director via Slack |
-
-### Canais Slack
-
-- **#command-center** - Comandos e status
-- **#alerts** - Alertas críticos
-- **DM com Thiago** - Escalações urgentes
-
----
-
-## Resumo: O Que Fazer Agora
-
-1. **DELETAR** referências ao thiago-os
-2. **CLONAR** aios-lab para /opt/clawdbot/repo
-3. **IMPLEMENTAR** scripts documentados aqui
-4. **CONFIGURAR** cron jobs
-5. **TESTAR** poller e health check
-6. **REPORTAR** status para Director via Slack
-
----
-
-*Documento criado: 2026-02-12*
-*Última atualização: 2026-02-12*
-*Owner: AIOS Lab (@pm, @devops)*
+*Clawdbot Setup Guide v3.0*
+*Hostinger VPS - Zero Additional Cost*
+*2026-02-12*

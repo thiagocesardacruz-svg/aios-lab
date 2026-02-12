@@ -1,100 +1,113 @@
-# Clawdbot - Extensão Operacional do AIOS
+# Clawdbot - Platform Operations Agent
 
-**Status:** Ativo (AWS EC2)
+**Squad:** OPS
+**Role:** Platform Operations & QA
+**Location:** Hostinger VPS (junto com n8n)
 **Interface:** Slack
-**Modelo:** Configurável (economia em foco)
 
 ---
 
 ## O Que é o Clawdbot
 
-Clawdbot é uma **extensão** do AIOS Lab que permite:
+Clawdbot é o **agente de operações de plataforma** do AIOS. Ele:
 
-- **Acesso quando terminal está OFF** - via Slack
-- **Automações background** - n8n, GHL, scripts
-- **Sync contínuo** - ClickUp, Notion
-- **Monitoramento 24/7** - health checks, budget
+- **Monitora** todas as plataformas (ClickUp, Notion, GHL, n8n, WordPress, etc.)
+- **Executa** operações cross-platform
+- **Cria tasks** no ClickUp para os squads executarem
+- **Recebe comandos** do Director via Slack
+- **Reporta** status e alertas
 
-**IMPORTANTE:** O foco principal continua sendo Claude Code (AIOS Lab). Clawdbot é complementar.
+**IMPORTANTE:** Clawdbot NÃO interage diretamente com squads. Ele opera plataformas e cria tasks que o Claude Code (AIOS Master) distribui para os squads.
 
 ---
 
-## Arquitetura
+## Hierarquia
 
 ```
-Claude Code (AIOS Lab)          Clawdbot (AWS EC2)
-═══════════════════════         ═══════════════════
-Motor Principal                 Extensão
-├── 19 squads, 44 agents        ├── Slack interface
-├── Produção massiva            ├── Scripts Python
-├── MCP tools (GHL 36 tools)    ├── n8n workflows
-├── Ferramentas locais          ├── Background tasks
-└── ONDE TRABALHO ACONTECE      └── Quando terminal OFF
-         │                               │
-         └───────── ClickUp ─────────────┘
-                (Command Center)
+Director (Thiago)
+    │
+    ├── Clawdbot (Platform Ops)
+    │   └── Opera: ClickUp, Notion, GHL, n8n, WordPress, Supabase
+    │
+    └── Claude Code (AIOS Master)
+        └── Orquestra: 19 squads, 44 agents
 ```
 
----
-
-## Quando Usar Cada Um
-
-| Cenário | Use |
-|---------|-----|
-| Desenvolver código | Claude Code |
-| Arquitetura/Design | Claude Code |
-| Criar workflows n8n | Claude Code |
-| Estruturar GHL | Claude Code |
-| Tasks complexas | Claude Code |
-| **Quick command via Slack** | **Clawdbot** |
-| **Verificar status (mobile)** | **Clawdbot** |
-| **Automação 24/7** | **Clawdbot** |
-| **Quando longe do terminal** | **Clawdbot** |
+**Fluxo:**
+1. Thiago comanda Clawdbot via Slack
+2. Clawdbot cria/gerencia tasks no ClickUp
+3. Claude Code vê tasks e distribui para squads
+4. Squads executam
+5. Clawdbot monitora plataformas e reporta
 
 ---
 
-## Comandos Slack
+## Funções Principais
 
-Ver: [COMMANDS.md](./COMMANDS.md)
+### 1. Command Interface (Slack)
 
-## Integrações
-
-Ver: [INTEGRATIONS.md](./INTEGRATIONS.md)
-
-## Diretiva Operacional
-
-Ver: [OPERATIONAL-DIRECTIVE.md](./OPERATIONAL-DIRECTIVE.md)
-
----
-
-## Como Delegar para Clawdbot
-
-No Claude Code:
-```bash
-node squads/ops/scripts/delegate-to-clawdbot.mjs "Nome da task" --script=script_name.py
+```
+Thiago: "Cria task para implementar feature X"
+Clawdbot: Cria no ClickUp → Claude Code executa
 ```
 
-Isso cria task no ClickUp com tag `clawdbot:execute`. Clawdbot detecta e executa.
+### 2. QA Cross-Platform
+
+| Plataforma | Monitoramento |
+|------------|---------------|
+| ClickUp | Tasks órfãs, overdue, blocked |
+| Notion | Docs desatualizados, estrutura |
+| GHL | Leads sem followup, pipelines |
+| n8n | Workflows falhando |
+| WordPress | Uptime, performance |
+| Supabase | DB health, queries |
+
+### 3. Reports & Alertas
+
+- Daily status de todas as plataformas
+- Alertas quando algo está errado
+- Weekly digest
 
 ---
 
-## Budget
+## O Que Clawdbot NÃO Faz
 
-Clawdbot compartilha o mesmo budget do AIOS:
-- Daily Alert: €15
-- Daily Hard: €20 (SAFE_MODE)
-- Monthly: €468
-
-Limites em: `shared/budget-limits.yaml`
-
----
-
-## Repositório de Referência
-
-Documentação original: `C:\Users\thiag\workspace\thiago-os`
-
-Scripts EC2: `/opt/clawdbot/` (AWS)
+| ❌ NÃO faz | ✅ Quem faz |
+|-----------|-------------|
+| Escrever código | Claude Code (@dev) |
+| Arquitetura | Claude Code (@architect) |
+| Falar com clientes | Humano / GHL |
+| Decisões estratégicas | Director |
+| Interagir com squads | Claude Code |
 
 ---
 
+## Infraestrutura
+
+```
+Hostinger VPS (já pago)
+├── n8n (já rodando)
+│   └── Workflows Clawdbot
+├── Scripts Python
+│   └── QA checks, operations
+└── Slack Bot
+    └── Command interface
+```
+
+**Custo adicional:** €0 (usa infra existente)
+
+---
+
+## Documentação
+
+| Arquivo | Conteúdo |
+|---------|----------|
+| `OPERATIONAL-DIRECTIVE.md` | Identidade, princípios, limites |
+| `COMMANDS.md` | Comandos Slack |
+| `PLATFORMS.md` | Plataformas monitoradas e checks |
+| `ONBOARDING.md` | Guia de setup completo |
+
+---
+
+*Squad OPS - Platform Operations*
 *Última atualização: 2026-02-12*
