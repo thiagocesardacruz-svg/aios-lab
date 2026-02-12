@@ -276,6 +276,71 @@ Dashboard: https://app.clickup.com/t/86c86bz0w
 
 **CRITICAL:** Avoid docker-gateway for local file operations - causes path mismatches.
 
+## Local Tools (Zero Cost)
+
+Ferramentas instaladas localmente para processamento offline. **Custo: €0 por uso.**
+
+### Available Tools
+
+| Tool | Script | Função | Economia vs API |
+|------|--------|--------|-----------------|
+| **whisper.cpp** | `transcribe.mjs` | Áudio → Texto | ~€0.006/min (Whisper API) |
+| **Tesseract** | `ocr.mjs` | Imagem → Texto | ~€0.05/página (serviços OCR) |
+| **pdftotext** | `pdf-extract.mjs` | PDF → Texto | ~€0.02/página |
+| **Pandoc** | `pdf-to-md.mjs` | PDF/DOCX → Markdown | ~€0.10/doc (serviços) |
+| **Calibre** | `ebook-etl.mjs` | Ebook ETL (EPUB/MOBI → MD) | ~€0.20/livro |
+| **Ollama** | `llm-local.mjs` | LLM local (Llama 3.2) | ~€0.03/1k tokens (GPT-4) |
+| **FFmpeg** | (direto) | Conversão mídia | - |
+
+### Usage (Agents SHOULD use these automatically)
+
+```bash
+# Transcrever áudio (whisper.cpp)
+node squads/ops/scripts/transcribe.mjs audio.mp3 --lang pt
+
+# OCR de imagem (Tesseract)
+node squads/ops/scripts/ocr.mjs screenshot.png --json
+
+# Extrair texto de PDF (pdftotext)
+node squads/ops/scripts/pdf-extract.mjs document.pdf
+
+# PDF para Markdown (Pandoc)
+node squads/ops/scripts/pdf-to-md.mjs document.pdf --extract-media
+
+# ETL de ebook (Calibre) - EPUB/MOBI/AZW → Markdown
+node squads/ops/scripts/ebook-etl.mjs book.epub --to md
+node squads/ops/scripts/ebook-etl.mjs book.mobi --metadata --json
+
+# Query LLM local (Ollama) - para tasks simples, economiza tokens Claude
+node squads/ops/scripts/llm-local.mjs "Resuma este texto em 2 frases: ..."
+
+# Converter áudio para whisper (FFmpeg)
+ffmpeg -i video.mp4 -ar 16000 -ac 1 audio.wav
+```
+
+### When to Use Local Tools
+
+| Cenário | Use Local Tool | Economia |
+|---------|----------------|----------|
+| Transcrever reunião/vídeo | `transcribe.mjs` | 100% |
+| OCR de screenshots/docs | `ocr.mjs` | 100% |
+| Extrair texto de PDF | `pdf-extract.mjs` | 100% |
+| Converter PDF para Markdown | `pdf-to-md.mjs` | 100% |
+| ETL de livros (EPUB/MOBI/AZW) | `ebook-etl.mjs` | 100% |
+| Resumir/traduzir texto simples | `llm-local.mjs` | 90%+ |
+| Converter formatos de mídia | `ffmpeg` | 100% |
+
+### Configuration
+
+Tool paths and settings: `squads/ops/config/local-tools.json`
+
+### Installed Models
+
+| Tool | Model | Size |
+|------|-------|------|
+| whisper.cpp | ggml-base | 141MB |
+| Ollama | llama3.2:1b | 1.3GB |
+
 ## Key Architectural Decisions
 
 ### Design System Coupling
