@@ -73,3 +73,37 @@ quality:
   min_checklist_coverage: 80
   require_qa_gate: true
   require_documentation: true
+
+# Handover Contracts (AIOS-GOV-001)
+# Define contracts for agent-to-agent work transfers
+# Schema: governance/schemas/handover-contract-schema.json
+# Rules: .claude/rules/handover-contracts.md
+handover_contracts:
+  enabled: true  # Enable handover validation for this squad
+  mode: "warn"   # enforce | warn | disabled
+
+  # Default contracts for this squad's workflows
+  defaults:
+    # When squad lead hands off to dev
+    lead_to_dev:
+      required_fields:
+        - acceptance_criteria
+        - technical_specs
+        - files_to_modify
+      min_confidence: "medium"
+      require_evidence: true
+
+    # When dev hands off to QA
+    dev_to_qa:
+      required_fields:
+        - implementation_summary
+        - test_instructions
+        - files_modified
+      min_confidence: "high"
+      require_evidence: true
+
+  # Skip conditions (when handover can be skipped)
+  skip_conditions:
+    - task_steps_less_than: 3
+    - same_agent_continuation: true
+    - emergency_with_reason: true
