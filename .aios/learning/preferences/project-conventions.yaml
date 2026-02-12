@@ -1,0 +1,51 @@
+# Project Conventions
+# Managed by /learning-loop skill
+#
+# Learned conventions specific to this project/codebase
+# Ensures consistency across sessions
+
+version: "1.0.0"
+last_updated: "2025-02-11"
+project: "aios-lab"
+
+# File organization
+file_organization:
+  component_location: null      # src/components | app/components | etc.
+  util_location: null           # src/utils | lib | etc.
+  test_location: null           # __tests__ | *.test.ts | tests/
+  style_location: null          # co-located | styles/ | etc.
+
+# Naming conventions
+naming:
+  components: null              # PascalCase | kebab-case
+  files: null                   # kebab-case | camelCase | PascalCase
+  functions: null               # camelCase | snake_case
+  constants: null               # UPPER_SNAKE | camelCase
+  types: null                   # PascalCase with prefix | PascalCase
+
+# Code patterns
+patterns:
+  state_management: null        # useState | redux | zustand | context
+  data_fetching: null           # react-query | swr | fetch | axios
+  styling: null                 # tailwind | css-modules | styled-components
+  testing: null                 # jest | vitest | playwright
+
+# Git conventions
+git:
+  branch_format: null           # feature/xxx | feat/xxx | xxx
+  commit_format: null           # conventional | freeform
+  pr_template: null             # path to template
+
+# Learned convention entries
+conventions: []
+
+# Convention schema
+convention_schema:
+  id: "PC-NNN"
+  category: string
+  convention: string
+  value: any
+  examples: list
+  confidence: float
+  source: "observed | documented | user_specified"
+  last_validated: "YYYY-MM-DD"

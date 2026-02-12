@@ -1,0 +1,56 @@
+# Business Rules
+# Managed by /learning-loop skill
+#
+# Learned business rules and constraints
+# "Feature A requires approval", "Data X is sensitive", etc.
+
+version: "1.0.0"
+last_updated: "2025-02-11"
+project: "aios-lab"
+
+# Access and permissions
+access_rules: []
+
+# Access rule schema
+access_schema:
+  id: "BR-NNN"
+  resource: string
+  rule: string
+  reason: string
+  enforcement: "hard | soft"    # hard = must comply, soft = should comply
+  confidence: float
+
+# Data sensitivity
+data_sensitivity: []
+
+# Sensitivity schema
+sensitivity_schema:
+  id: "BR-NNN"
+  data_type: string
+  sensitivity: "public | internal | confidential | restricted"
+  handling: string
+  examples: list
+
+# Process rules
+process_rules: []
+
+# Process schema
+process_schema:
+  id: "BR-NNN"
+  process: string
+  rule: string
+  trigger: string               # When this rule applies
+  action: string                # What must happen
+  exception: string | null      # When rule can be bypassed
+  confidence: float
+
+# Compliance requirements
+compliance: []
+
+# Compliance schema
+compliance_schema:
+  id: "BR-NNN"
+  requirement: string
+  regulation: string            # GDPR, SOC2, etc.
+  affected_areas: list
+  verification: string

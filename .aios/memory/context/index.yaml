@@ -1,0 +1,40 @@
+# Context Snapshots Index
+# Managed by /institutional-memory skill
+#
+# Periodic snapshots of project state, constraints, and external factors
+# Useful for understanding "why things were the way they were"
+
+version: "1.0.0"
+last_updated: "2025-02-11"
+total_entries: 0
+
+# Snapshot triggers
+triggers:
+  - quarterly          # Q1, Q2, Q3, Q4
+  - major_release      # After significant launches
+  - pivot              # After strategic changes
+  - milestone          # After major milestones
+  - manual             # On-demand capture
+
+# Entry template
+entry_schema:
+  id: "CTX-YYYY-QN | CTX-YYYY-NNN"
+  title: string
+  date: "YYYY-MM-DD"
+  trigger: string
+  project_state: string
+  active_constraints: list
+  team_context: string
+  external_factors: list
+  key_priorities: list
+  budget_status: string
+  keywords: list
+
+# Entries (populated by skill)
+entries: []
+
+# Current context (latest snapshot summary)
+current:
+  snapshot_id: null
+  summary: "No snapshots yet"
+  last_updated: null

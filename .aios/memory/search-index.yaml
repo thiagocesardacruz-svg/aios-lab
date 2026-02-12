@@ -1,0 +1,68 @@
+# Global Search Index
+# Managed by /institutional-memory skill
+#
+# Aggregated keyword index across all memory types
+# Enables fast cross-category search
+
+version: "1.0.0"
+last_updated: "2025-02-11"
+last_reindex: null
+
+# Index statistics
+stats:
+  total_entries: 1
+  decisions: 1
+  errors: 0
+  tacit: 0
+  context: 0
+  unique_keywords: 12
+
+# Keyword to entries mapping
+# Format: keyword: [list of entry IDs]
+keywords:
+  skills: [DEC-2025-001]
+  performance: [DEC-2025-001]
+  tokens: [DEC-2025-001]
+  optimization: [DEC-2025-001]
+  circuit-breaker: [DEC-2025-001]
+  learning: [DEC-2025-001]
+  memory: [DEC-2025-001]
+  moat: [DEC-2025-001]
+  compound-intelligence: [DEC-2025-001]
+  cost-control: [DEC-2025-001]
+  budget: [DEC-2025-001]
+  auto-routing: [DEC-2025-001]
+
+# Semantic clusters (related keywords)
+# Format: cluster_name: [list of keywords]
+clusters:
+  authentication:
+    - auth
+    - login
+    - session
+    - jwt
+    - oauth
+  database:
+    - supabase
+    - postgresql
+    - migration
+    - rls
+    - schema
+  frontend:
+    - react
+    - nextjs
+    - component
+    - ui
+    - tailwind
+  infrastructure:
+    - vercel
+    - docker
+    - ci
+    - deployment
+    - mcp
+
+# Recent searches (for suggestions)
+recent_searches: []
+
+# Popular entries (frequently accessed)
+popular_entries: []

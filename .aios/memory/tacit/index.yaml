@@ -1,0 +1,39 @@
+# Tacit Knowledge Index
+# Managed by /institutional-memory skill
+#
+# Tacit knowledge = things that aren't documented but people "just know"
+# This captures tribal knowledge, shortcuts, and unwritten rules
+
+version: "1.0.0"
+last_updated: "2025-02-11"
+total_entries: 0
+
+# Knowledge categories
+categories:
+  - how_things_work     # "Module X behaves unexpectedly when..."
+  - debugging_tips      # "To debug Z, always start with..."
+  - shortcuts           # "Fastest way to do X is..."
+  - stakeholder_prefs   # "User prefers when we..."
+  - unwritten_rules     # "The unwritten rule is..."
+
+# Entry template
+entry_schema:
+  id: "TAC-YYYY-NNN"
+  title: string
+  date: "YYYY-MM-DD"
+  category: string
+  context: string
+  knowledge: string
+  keywords: list
+  source: "experience | user_feedback | observation"
+  confidence: "low | medium | high"
+  last_validated: "YYYY-MM-DD"
+
+# Entries (populated by skill)
+entries: []
+
+# Keyword index (auto-generated)
+keywords: {}
+
+# Quick tips (most frequently accessed)
+quick_tips: []

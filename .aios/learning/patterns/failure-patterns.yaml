@@ -1,0 +1,37 @@
+# Failure Patterns
+# Managed by /learning-loop skill
+#
+# Patterns that consistently lead to failure
+# Format: "Approach X always fails for task type Y"
+
+version: "1.0.0"
+last_updated: "2025-02-11"
+total_patterns: 0
+
+# Pattern schema
+pattern_schema:
+  id: "FP-NNN"
+  anti_pattern: string      # What NOT to do
+  failure_mode: string      # How it fails
+  alternative: string       # What to do instead
+  confidence: float         # 0.0 to 1.0
+  evidence:
+    - task_id: string
+      error: string
+      date: "YYYY-MM-DD"
+  scope:
+    task_types: list
+    contexts: list
+    error_types: list
+  created: "YYYY-MM-DD"
+  last_validated: "YYYY-MM-DD"
+  times_prevented: integer
+
+# Active anti-patterns (confidence >= 0.5)
+patterns: []
+
+# Candidate anti-patterns (need more evidence)
+candidates: []
+
+# Resolved patterns (fixed in codebase/process)
+resolved: []

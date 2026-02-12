@@ -1,0 +1,49 @@
+# User Preferences
+# Managed by /learning-loop skill
+#
+# Learned preferences from user interactions
+# These customize agent behavior to match user style
+
+version: "1.0.0"
+last_updated: "2025-02-11"
+
+# Communication preferences
+communication:
+  tone: null                # formal | casual | technical
+  verbosity: null           # concise | detailed | adaptive
+  language: null            # en | pt-BR | mixed
+  emoji_usage: null         # never | minimal | moderate
+  explanation_depth: null   # brief | standard | thorough
+
+# Code style preferences
+code_style:
+  comments: null            # minimal | moderate | thorough
+  naming: null              # camelCase | snake_case | kebab-case
+  documentation: null       # jsdoc | inline | minimal
+  error_handling: null      # defensive | optimistic | balanced
+
+# Workflow preferences
+workflow:
+  confirmation_level: null  # always | important_only | minimal
+  progress_updates: null    # frequent | milestones | completion_only
+  question_style: null      # ask_first | suggest_then_ask | decide_and_inform
+
+# Review preferences
+review:
+  detail_level: null        # summary | standard | comprehensive
+  focus_areas: []           # security | performance | readability | etc.
+
+# Learned preference entries
+preferences: []
+
+# Preference schema
+preference_schema:
+  id: "UP-NNN"
+  category: string
+  preference: string
+  value: any
+  confidence: float
+  evidence:
+    - interaction_date: "YYYY-MM-DD"
+      context: string
+  last_validated: "YYYY-MM-DD"
