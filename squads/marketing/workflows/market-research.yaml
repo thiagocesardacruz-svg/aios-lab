@@ -1,13 +1,20 @@
 # /mkt/market-research Workflow
-# Pesquisa de mercado e ICP
+# DEPRECATED: Use shared workflow instead
+# This file is kept for backward compatibility
 
 workflow:
   id: market-research
   name: Market Research
   description: "Pesquisa completa de mercado, ICP, concorrência e oportunidades"
-  version: "1.0.0"
+  version: "1.1.0"
   squad: marketing
   responsible: "@content-strategist"
+  deprecated: true
+  use_instead: "_shared/workflows/market-research.yaml"
+  migration_note: |
+    This workflow has been consolidated into a shared workflow.
+    Use: *workflow _shared/market-research --focus=icp
+    The shared workflow supports: icp, sizing, competitors, trends, full
 
 inputs:
   - name: product

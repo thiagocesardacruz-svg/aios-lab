@@ -3,8 +3,8 @@
 # Version: 1.1.0
 
 name: design
-version: "1.1.0"
-description: "Creative design squad for conversion-focused visual assets. Ads, social content, VSLs, brand kits, landing visuals."
+version: "1.2.0"
+description: "Creative design squad for conversion-focused visual assets. Ads, social content, VSLs, brand kits, landing visuals. Now with AI image generation via OpenRouter (Nano Banana, GPT-5 Image)."
 
 aios:
   minVersion: "2.1.0"
@@ -37,6 +37,10 @@ agents:
     file: "agents/visual-systems-designer.md"
     name: "Grid"
     role: "Carousels, infographics, templates, slides"
+  - id: "ai-image-creator"
+    file: "agents/ai-image-creator.md"
+    name: "Canvas"
+    role: "AI image generation via OpenRouter (Nano Banana, GPT-5)"
 
 components:
   agents:
@@ -44,18 +48,23 @@ components:
     - "performance-designer.md"
     - "motion-video-specialist.md"
     - "visual-systems-designer.md"
+    - "ai-image-creator.md"
   tasks:
     - "design-ad-creative.md"
     - "design-social-post.md"
     - "design-vsl-slides.md"
     - "review-creative.md"
     - "create-brand-assets.md"
+    - "generate-ai-image.md"
   workflows:
     - "ad-creative-pack.yaml"
     - "social-content-pack.yaml"
     - "vsl-kit.yaml"
     - "brand-kit.yaml"
     - "landing-visual.yaml"
+    - "ai-image-pack.yaml"
+  scripts:
+    - "image-generator.mjs"
   templates:
     - "creative-brief.md"
     - "brand-guidelines.md"
@@ -119,6 +128,20 @@ commands:
   - name: "brand-assets"
     task: "tasks/create-brand-assets.md"
     description: "Create brand assets"
+    visibility: "quick"
+
+  # AI Image Generation (NEW)
+  - name: "ai-image-pack"
+    workflow: "workflows/ai-image-pack.yaml"
+    description: "Generate AI image pack (social, ads, landing)"
+    visibility: "full"
+  - name: "generate-image"
+    task: "tasks/generate-ai-image.md"
+    description: "Generate single AI image"
+    visibility: "quick"
+  - name: "ai-image"
+    script: "scripts/image-generator.mjs"
+    description: "Direct AI image generation CLI"
     visibility: "quick"
 
 # Interface rules

@@ -120,4 +120,53 @@ Agent action:
 
 ---
 
-*Local Tools Auto-Use Rules v1.0 - AIOS Cost Optimization*
+## Intelligent Tool Router
+
+For automatic tool selection, use the **Tool Router** script:
+
+```bash
+# Analyze file and get recommendation
+node squads/ops/scripts/tool-router.mjs analyze document.pdf
+
+# Auto-process with best tool
+node squads/ops/scripts/tool-router.mjs process meeting.mp3
+
+# View cost savings
+node squads/ops/scripts/tool-router.mjs savings
+```
+
+The Tool Router:
+- Detects file type automatically
+- Selects optimal local tool
+- Tracks cost savings vs API alternatives
+- Logs all savings for reporting
+
+---
+
+## Deterministic Scripts (NO AI Needed)
+
+These scripts replace AI agents in workflows for deterministic tasks:
+
+| Script | Replaces | Usage |
+|--------|----------|-------|
+| `budget-calculator.mjs` | AI in budget-check workflow | `node budget-calculator.mjs --check-limits` |
+| `status-aggregator.mjs` | AI in status/standup workflows | `node status-aggregator.mjs --include-cost` |
+| `checklist-runner.mjs` | AI in run-checklist workflow | `node checklist-runner.mjs --checklist=qa/release-readiness` |
+| `sla-monitor.mjs` | AI SLA checking | `node sla-monitor.mjs --check-violations` |
+| `cost-tracker.mjs` | Manual cost logging | `node cost-tracker.mjs log <task> <in> <out>` |
+| `kpi-dashboard.mjs` | AI KPI aggregation | `node kpi-dashboard.mjs --category=finance` |
+
+### When to Use Deterministic Scripts
+
+| Task Type | Use Script | NOT AI |
+|-----------|------------|--------|
+| Calculate budget totals | `budget-calculator.mjs` | Agent doing math |
+| Count tasks by status | `status-aggregator.mjs` | Agent reading files |
+| Validate checklists | `checklist-runner.mjs` | Agent checking boxes |
+| Monitor SLAs | `sla-monitor.mjs` | Agent comparing times |
+| Track costs | `cost-tracker.mjs` | Agent logging manually |
+| Aggregate KPIs | `kpi-dashboard.mjs` | Agent summarizing data |
+
+---
+
+*Local Tools Auto-Use Rules v2.0 - AIOS Cost Optimization*
