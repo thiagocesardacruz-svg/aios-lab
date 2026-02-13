@@ -38,6 +38,11 @@ async function main() {
     'GHL CRM': [],
     'Functional Machines': [],
     'Base Marketing/Sales': [],
+    'Strategy & Offers (Hormozi)': [],
+    'Copywriting': [],
+    'Hotel Marketing': [],
+    'Marketing Performance': [],
+    'Customer Success': [],
     'Other': []
   };
 
@@ -49,6 +54,16 @@ async function main() {
       categories['Functional Machines'].push(w);
     } else if (['Lead Qualifier', 'Content Repurposer', 'Social Media', 'Blog Post', 'Review Response'].some(k => name.includes(k))) {
       categories['Base Marketing/Sales'].push(w);
+    } else if (['Offer Builder', 'Lead Magnet', 'Cash Machine'].some(k => name.includes(k))) {
+      categories['Strategy & Offers (Hormozi)'].push(w);
+    } else if (['Copy Brief', 'Headline'].some(k => name.includes(k))) {
+      categories['Copywriting'].push(w);
+    } else if (['Seasonal Campaign', 'OTA Review', 'Review Aggregator'].some(k => name.includes(k))) {
+      categories['Hotel Marketing'].push(w);
+    } else if (['Campaign Performance', 'Campaign Report'].some(k => name.includes(k))) {
+      categories['Marketing Performance'].push(w);
+    } else if (['NPS Survey', 'Churn Risk', 'Churn Detector'].some(k => name.includes(k))) {
+      categories['Customer Success'].push(w);
     } else {
       categories['Other'].push(w);
     }
