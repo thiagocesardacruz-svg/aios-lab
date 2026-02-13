@@ -1,0 +1,98 @@
+# Glossary Update Workflow
+# Squad: translator
+# Version: 1.0.0
+
+name: glossary-update
+description: "Update terminology glossary with new terms"
+version: "1.0.0"
+
+trigger:
+  command: "/translate/glossary-update"
+  inputs:
+    - name: terms
+      type: list
+      required: true
+      description: "New terms to add (term, context, translations)"
+    - name: glossary_file
+      type: string
+      required: false
+      default: "data/glossary-master.yaml"
+    - name: action
+      type: string
+      required: false
+      default: "add"
+      options: ["add", "update", "review", "export"]
+
+steps:
+  - id: validate-terms
+    name: "Validate Terms"
+    agent: translation-lead
+    action: validate-terms
+    inputs:
+      terms: "{{inputs.terms}}"
+      existing_glossary: "{{inputs.glossary_file}}"
+    outputs:
+      - valid_terms
+      - duplicates
+      - conflicts
+
+  - id: translate-terms
+    name: "Translate New Terms"
+    agent: translators
+    condition: "{{inputs.action}} == 'add'"
+    action: translate-terms
+    inputs:
+      terms: "{{steps.validate-terms.outputs.valid_terms}}"
+      languages: ["PT-BR", "ES", "FR", "DE"]
+    outputs:
+      - translated_terms
+
+  - id: review-translations
+    name: "Review Term Translations"
+    agent: translation-lead
+    action: review-terms
+    inputs:
+      terms: "{{steps.translate-terms.outputs.translated_terms}}"
+    outputs:
+      - approved_terms
+      - needs_revision
+
+  - id: update-glossary
+    name: "Update Glossary File"
+    agent: translation-lead
+    action: update-glossary
+    inputs:
+      glossary_file: "{{inputs.glossary_file}}"
+      new_terms: "{{steps.review-translations.outputs.approved_terms}}"
+    outputs:
+      - updated_glossary
+      - changelog
+
+output:
+  format: markdown
+  template: |
+    # Glossary Update Complete
+
+    ## Summary
+    - **Terms Added:** {{approved_terms.length}}
+    - **Duplicates Skipped:** {{duplicates.length}}
+    - **Conflicts Resolved:** {{conflicts.length}}
+
+    ## New Terms
+    {{for term in approved_terms}}
+    ### {{term.source}}
+    | Language | Translation |
+    |----------|-------------|
+    {{for lang, trans in term.translations}}
+    | {{lang}} | {{trans}} |
+    {{endfor}}
+    **Context:** {{term.context}}
+    {{endfor}}
+
+    ## Changelog
+    {{changelog}}
+
+success_criteria:
+  - "No duplicate terms"
+  - "All languages covered"
+  - "Glossary file updated"

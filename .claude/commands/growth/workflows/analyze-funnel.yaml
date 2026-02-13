@@ -1,0 +1,100 @@
+# Analyze Funnel Workflow
+# Deep analysis of conversion funnel
+# Version: 1.0.0
+
+name: analyze-funnel
+version: "1.0.0"
+description: "Analyze conversion funnel to identify drop-offs and optimization opportunities"
+
+trigger:
+  command: "/growth/analyze-funnel"
+  inputs:
+    - name: funnel_name
+      type: string
+      required: true
+      description: "Name of funnel to analyze"
+    - name: date_range
+      type: string
+      required: false
+      description: "Analysis period (default: last 30 days)"
+    - name: segments
+      type: list
+      required: false
+      description: "User segments to analyze"
+
+steps:
+  - id: collect
+    name: "Collect Funnel Data"
+    agent: data-analyst
+    task: collect-funnel-data
+    inputs:
+      funnel: "{{inputs.funnel_name}}"
+      date_range: "{{inputs.date_range}}"
+    outputs:
+      - raw_data
+      - stage_counts
+
+  - id: calculate
+    name: "Calculate Conversion Rates"
+    agent: data-analyst
+    task: calculate-conversions
+    inputs:
+      data: "{{collect.raw_data}}"
+    outputs:
+      - conversion_rates
+      - drop_off_rates
+
+  - id: segment
+    name: "Segment Analysis"
+    agent: data-analyst
+    task: segment-funnel
+    inputs:
+      data: "{{collect.raw_data}}"
+      segments: "{{inputs.segments}}"
+    outputs:
+      - segment_performance
+      - best_segments
+      - worst_segments
+
+  - id: identify
+    name: "Identify Bottlenecks"
+    agent: growth-lead
+    task: identify-bottlenecks
+    inputs:
+      conversions: "{{calculate.conversion_rates}}"
+      segments: "{{segment.segment_performance}}"
+    outputs:
+      - bottlenecks
+      - priority_order
+
+  - id: recommend
+    name: "Generate Recommendations"
+    agent: growth-lead
+    task: recommend-optimizations
+    inputs:
+      bottlenecks: "{{identify.bottlenecks}}"
+      segments: "{{segment.best_segments}}"
+    outputs:
+      - recommendations
+      - experiment_ideas
+
+  - id: report
+    name: "Create Report"
+    agent: data-analyst
+    task: create-funnel-report
+    inputs:
+      conversions: "{{calculate.conversion_rates}}"
+      bottlenecks: "{{identify.bottlenecks}}"
+      recommendations: "{{recommend.recommendations}}"
+    outputs:
+      - funnel_report
+
+outputs:
+  - funnel_report
+  - recommendations
+  - experiment_ideas
+
+quality:
+  require_baseline: true
+  require_segments: true
+  min_sample_size: 1000

@@ -1,0 +1,1284 @@
+# ═══════════════════════════════════════════════════════════════
+# AIOS Workflow: Email Lifecycle System
+# ═══════════════════════════════════════════════════════════════
+# Squad: hotel-mkt
+# Version: 1.0.0
+# Duration: 2-3 weeks setup, ongoing automation
+# Target: Complete guest email lifecycle from first contact to loyalty
+# DNA: Hormozi (Proof>Promise>Plan) + Conley (emotional journey) + Schrager (luxury touch)
+# ═══════════════════════════════════════════════════════════════
+
+workflow:
+  name: "Email Lifecycle System"
+  id: "wf-email-lifecycle"
+  squad: "hotel-mkt"
+  version: "1.0.0"
+
+  metadata:
+    description: "Complete email automation system covering entire guest lifecycle"
+    target_audience: "All guest segments from prospects to VIP loyalists"
+    email_sequences:
+      - "Welcome Series (new subscribers)"
+      - "Pre-Arrival Series (confirmed bookings)"
+      - "Post-Stay Series (after checkout)"
+      - "Win-Back Series (inactive guests)"
+      - "Seasonal Campaigns (tied to events)"
+      - "Anniversary Series (booking/stay anniversaries)"
+      - "Abandoned Cart Recovery"
+      - "Review Generation"
+      - "Loyalty & VIP Nurture"
+    success_metrics:
+      - "Email open rate >35%"
+      - "Click-through rate >5%"
+      - "Email-attributed bookings >20% of direct bookings"
+      - "Review generation rate >30%"
+      - "Win-back conversion >10%"
+      - "Unsubscribe rate <0.5%"
+
+  inputs:
+    - name: "guest_database"
+      type: "database"
+      required: true
+      description: "Guest list with emails, booking history, preferences"
+    - name: "brand_guidelines"
+      type: "document"
+      required: true
+      description: "Voice, tone, visual identity for emails"
+    - name: "segmentation_model"
+      type: "document"
+      required: true
+      description: "RFM and psychographic segments"
+    - name: "email_platform_access"
+      type: "credentials"
+      required: true
+      description: "ESP login (RD Station, Mailchimp, ActiveCampaign)"
+
+  outputs:
+    - name: "lifecycle_strategy"
+      type: "document"
+      description: "Complete email lifecycle map with sequences and triggers"
+    - name: "email_sequences"
+      type: "collection"
+      description: "All email copy for all sequences (40+ emails)"
+    - name: "automation_flows"
+      type: "automation"
+      description: "Configured triggers, timing, segmentation rules"
+    - name: "email_templates"
+      type: "collection"
+      description: "Designed HTML templates (mobile-responsive)"
+    - name: "performance_dashboard"
+      type: "analytics"
+      description: "Real-time email metrics and attribution"
+
+  duration:
+    estimated: "2-3 weeks setup, ongoing optimization"
+    phases:
+      segmentation: "3-5 days"
+      sequence_design: "5-7 days"
+      copy_creation: "5-7 days"
+      automation_setup: "3-5 days"
+      launch_optimize: "Ongoing"
+
+# ═══════════════════════════════════════════════════════════════
+# PHASE 1: SEGMENTATION
+# ═══════════════════════════════════════════════════════════════
+
+phases:
+  - name: "Guest Segmentation"
+    id: "phase-1-segmentation"
+    duration: "3-5 days"
+    agents:
+      - role: "hotel-guest-strategist"
+        responsibility: "primary"
+        tasks:
+          - "Analyze guest database with RFM model"
+          - "Define lifecycle stages"
+          - "Create psychographic profiles"
+          - "Map segments to email sequences"
+
+    tasks:
+      - id: "segment-001"
+        name: "RFM Analysis"
+        agent: "hotel-guest-strategist"
+        inputs:
+          - "guest_database"
+        actions:
+          - "Calculate Recency, Frequency, Monetary scores for all guests"
+          - "Segment into 5 tiers: Champions, Loyal, Potential, New, At-Risk"
+          - "Analyze booking patterns (seasonality, length of stay, room type)"
+          - "Identify VIP guests (high spend, frequent stays)"
+          - "Flag dormant guests (no booking in 12+ months)"
+        outputs:
+          - "rfm_segmentation.xlsx"
+        duration: "2 days"
+
+      - id: "segment-002"
+        name: "Lifecycle Stage Mapping"
+        agent: "hotel-guest-strategist"
+        actions:
+          - "Define 8 lifecycle stages:"
+          - "1. Prospect (newsletter subscriber, no booking)"
+          - "2. Lead (abandoned cart, inquiry)"
+          - "3. First-Time Guest (1 booking)"
+          - "4. Repeat Guest (2-3 bookings)"
+          - "5. Loyal Guest (4+ bookings)"
+          - "6. VIP (high spend or frequency)"
+          - "7. At-Risk (no booking in 6-12 months)"
+          - "8. Dormant (no booking in 12+ months)"
+          - "Map RFM segments to lifecycle stages"
+        outputs:
+          - "lifecycle_stage_map.json"
+        duration: "1 day"
+
+      - id: "segment-003"
+        name: "Psychographic Profiling"
+        agent: "hotel-guest-strategist"
+        actions:
+          - "Analyze guest preferences (business vs leisure, family vs couples)"
+          - "Identify motivations (relaxation, adventure, celebration, work)"
+          - "Document pain points and desires per segment"
+          - "Create persona documents (3-5 primary personas)"
+        outputs:
+          - "guest_personas.pdf"
+        duration: "1 day"
+
+      - id: "segment-004"
+        name: "Sequence Mapping"
+        agent: "hotel-guest-strategist"
+        actions:
+          - "Map email sequences to lifecycle stages"
+          - "Define trigger events for each sequence"
+          - "Set sequence priorities (which sequences take precedence)"
+          - "Plan personalization variables (name, stay dates, preferences)"
+        outputs:
+          - "sequence_lifecycle_map.json"
+        duration: "1 day"
+
+    checkpoint:
+      name: "Segmentation Validation"
+      criteria:
+        - "All guests assigned to RFM segments"
+        - "Lifecycle stages clearly defined"
+        - "Personas validated with hotel management"
+        - "Sequence triggers documented"
+      approvers:
+        - "hotel-guest-strategist"
+        - "hotel-mkt-chief"
+      output_required: true
+
+    quality_gates:
+      - metric: "Segment coverage"
+        threshold: "100% of database"
+      - metric: "Persona clarity"
+        threshold: ">9/10"
+
+# ═══════════════════════════════════════════════════════════════
+# PHASE 2: SEQUENCE DESIGN
+# ═══════════════════════════════════════════════════════════════
+
+  - name: "Sequence Design"
+    id: "phase-2-sequence-design"
+    duration: "5-7 days"
+    depends_on: ["phase-1-segmentation"]
+    agents:
+      - role: "hotel-email-maestro"
+        responsibility: "primary"
+        tasks:
+          - "Design all email sequences with timing and flow"
+          - "Map emotional journey for each sequence"
+          - "Define triggers, delays, and conditions"
+          - "Plan A/B testing opportunities"
+
+    tasks:
+      - id: "design-001"
+        name: "Welcome Series"
+        agent: "hotel-email-maestro"
+        inputs:
+          - "lifecycle_stage_map.json"
+        actions:
+          - "Email 1: Welcome + brand story (send immediately)"
+          - "Email 2: Value proposition + what to expect (day 2)"
+          - "Email 3: Social proof + testimonials (day 4)"
+          - "Email 4: Exclusive offer (10% off first booking) (day 7)"
+          - "Email 5: Content highlight (local guide, blog) (day 10)"
+          - "Set goal: Convert subscriber to first booking within 30 days"
+        outputs:
+          - "welcome_series_design.json"
+        duration: "1 day"
+
+      - id: "design-002"
+        name: "Pre-Arrival Series"
+        agent: "hotel-email-maestro"
+        actions:
+          - "Email 1: Booking confirmation + thank you (immediate)"
+          - "Email 2: Pre-arrival guide (7 days before check-in)"
+          - "Email 3: Local recommendations (3 days before)"
+          - "Email 4: Check-in details + concierge offer (1 day before)"
+          - "Set goal: Enhance guest experience, upsell services"
+        outputs:
+          - "pre_arrival_series_design.json"
+        duration: "1 day"
+
+      - id: "design-003"
+        name: "Post-Stay Series"
+        agent: "hotel-email-maestro"
+        actions:
+          - "Email 1: Thank you + review request (1 day after checkout)"
+          - "Email 2: Photo memories + share on social (3 days after)"
+          - "Email 3: Re-booking incentive (10% off next stay) (7 days after)"
+          - "Email 4: Referral program (14 days after)"
+          - "Set goal: Generate reviews, drive repeat bookings"
+        outputs:
+          - "post_stay_series_design.json"
+        duration: "1 day"
+
+      - id: "design-004"
+        name: "Win-Back Series"
+        agent: "hotel-email-maestro"
+        actions:
+          - "Email 1: We miss you + nostalgic reminder (trigger: 6 months inactive)"
+          - "Email 2: What's new + hotel updates (2 days later)"
+          - "Email 3: Exclusive comeback offer (20% off) (5 days later)"
+          - "Email 4: Final call (48h deadline) (7 days later)"
+          - "Set goal: Reactivate dormant guests, 10% conversion"
+        outputs:
+          - "winback_series_design.json"
+        duration: "1 day"
+
+      - id: "design-005"
+        name: "Abandoned Cart Series"
+        agent: "hotel-email-maestro"
+        actions:
+          - "Email 1: Reminder (1 hour after abandonment)"
+          - "Email 2: Incentive (5% discount) (24 hours later)"
+          - "Email 3: Urgency (limited rooms, deadline) (48 hours later)"
+          - "Include dynamic content (show abandoned room)"
+          - "Set goal: Recover 15-20% of abandoned carts"
+        outputs:
+          - "abandoned_cart_series_design.json"
+        duration: "1 day"
+
+      - id: "design-006"
+        name: "Anniversary Series"
+        agent: "hotel-email-maestro"
+        actions:
+          - "Email 1: Anniversary of first stay (personalized, nostalgic)"
+          - "Email 2: Birthday celebration (if data available)"
+          - "Email 3: Booking anniversary (annual reminder + offer)"
+          - "Include personalized touches (photos from stay, custom message)"
+          - "Set goal: Deepen emotional connection, drive loyalty"
+        outputs:
+          - "anniversary_series_design.json"
+        duration: "1 day"
+
+      - id: "design-007"
+        name: "Seasonal Campaigns"
+        agent: "hotel-email-maestro"
+        actions:
+          - "Design campaign structure (teaser → launch → urgency → last call)"
+          - "Plan for major seasons (Carnaval, Réveillon, Férias, São João)"
+          - "Integrate with broader seasonal campaign workflow"
+          - "Segment by past booking behavior (who books for this season)"
+          - "Set goal: Drive seasonal bookings, 30%+ open rate"
+        outputs:
+          - "seasonal_campaign_design.json"
+        duration: "1 day"
+
+      - id: "design-008"
+        name: "VIP & Loyalty Nurture"
+        agent: "hotel-email-maestro"
+        actions:
+          - "Monthly VIP newsletter (exclusive content, first access to offers)"
+          - "Loyalty milestone emails (after 3rd, 5th, 10th stay)"
+          - "Personalized recommendations based on past stays"
+          - "Surprise & delight (unexpected upgrade, birthday gift)"
+          - "Set goal: Increase lifetime value, reduce churn"
+        outputs:
+          - "vip_nurture_design.json"
+        duration: "1 day"
+
+    checkpoint:
+      name: "Sequence Design Approval"
+      criteria:
+        - "All sequences mapped with triggers and timing"
+        - "Emotional journey validated for each sequence"
+        - "Goals and KPIs set for each sequence"
+        - "A/B testing opportunities identified"
+      approvers:
+        - "hotel-email-maestro"
+        - "hotel-mkt-chief"
+      output_required: true
+
+    quality_gates:
+      - metric: "Sequence completeness"
+        threshold: "100%"
+      - metric: "Timing optimization"
+        threshold: ">8/10"
+
+# ═══════════════════════════════════════════════════════════════
+# PHASE 3: COPY CREATION
+# ═══════════════════════════════════════════════════════════════
+
+  - name: "Email Copy Creation"
+    id: "phase-3-copy"
+    duration: "5-7 days"
+    depends_on: ["phase-2-sequence-design"]
+    agents:
+      - role: "hotel-copywriter"
+        responsibility: "primary"
+        tasks:
+          - "Write all email copy using Proof>Promise>Plan framework"
+          - "Personalize for segments and lifecycle stages"
+          - "Optimize subject lines and preview text"
+          - "Create compelling CTAs"
+
+    tasks:
+      - id: "copy-001"
+        name: "Welcome Series Copy"
+        agent: "hotel-copywriter"
+        inputs:
+          - "welcome_series_design.json"
+          - "brand_guidelines"
+          - "guest_personas.pdf"
+        actions:
+          - "Write 5 emails (300-500 words each)"
+          - "Apply Proof>Promise>Plan framework"
+          - "Email 1 subject: 'Bem-vindo à [Hotel Name] - Sua próxima experiência incrível começa aqui'"
+          - "Include brand story, values, what makes hotel unique"
+          - "Add social proof (reviews, awards, guest count)"
+          - "Strong CTA in email 4 (Reserve com 10% de desconto)"
+        outputs:
+          - "welcome_series_copy.json"
+        duration: "1 day"
+
+      - id: "copy-002"
+        name: "Pre-Arrival Series Copy"
+        agent: "hotel-copywriter"
+        actions:
+          - "Write 4 emails (200-400 words each)"
+          - "Email 1: Warm confirmation, set expectations"
+          - "Email 2: Practical info (check-in time, parking, amenities)"
+          - "Email 3: Local recommendations (restaurants, attractions, tips)"
+          - "Email 4: Final details + upsell (spa, dinner reservation)"
+          - "Subject lines: Clear, informative, personalized"
+        outputs:
+          - "pre_arrival_series_copy.json"
+        duration: "1 day"
+
+      - id: "copy-003"
+        name: "Post-Stay Series Copy"
+        agent: "hotel-copywriter"
+        actions:
+          - "Write 4 emails (200-400 words each)"
+          - "Email 1: Heartfelt thank you, review request (Google, TripAdvisor)"
+          - "Email 2: Nostalgia trigger (remember your amazing stay?)"
+          - "Email 3: Re-booking offer (Come back soon - 10% off)"
+          - "Email 4: Referral ask (Share the love, both get discount)"
+          - "Use emotional language (gratitude, nostalgia, anticipation)"
+        outputs:
+          - "post_stay_series_copy.json"
+        duration: "1 day"
+
+      - id: "copy-004"
+        name: "Win-Back Series Copy"
+        agent: "hotel-copywriter"
+        actions:
+          - "Write 4 emails (300-500 words each)"
+          - "Email 1: We miss you (personalized, nostalgic)"
+          - "Email 2: What's new (renovations, new amenities, events)"
+          - "Email 3: Irresistible offer (20% off + upgrade)"
+          - "Email 4: Last call (FOMO, deadline, scarcity)"
+          - "Acknowledge time away, renew emotional connection"
+        outputs:
+          - "winback_series_copy.json"
+        duration: "1 day"
+
+      - id: "copy-005"
+        name: "Abandoned Cart Series Copy"
+        agent: "hotel-copywriter"
+        actions:
+          - "Write 3 emails (150-300 words each)"
+          - "Email 1: Gentle reminder (You left something behind...)"
+          - "Email 2: Add incentive (Complete your booking + save 5%)"
+          - "Email 3: Urgency (Rooms selling fast, don't miss out)"
+          - "Include dynamic content placeholder (room image, dates, price)"
+          - "One-click return to checkout"
+        outputs:
+          - "abandoned_cart_series_copy.json"
+        duration: "0.5 day"
+
+      - id: "copy-006"
+        name: "Anniversary Series Copy"
+        agent: "hotel-copywriter"
+        actions:
+          - "Write 3 emails (200-400 words each)"
+          - "Email 1: Anniversary of first stay (personalized message)"
+          - "Email 2: Birthday (if available) with special offer"
+          - "Email 3: Booking anniversary (It's been a year since...)"
+          - "Deeply personalized, reference specific details from past stays"
+          - "Include exclusive gift or discount"
+        outputs:
+          - "anniversary_series_copy.json"
+        duration: "0.5 day"
+
+      - id: "copy-007"
+        name: "Seasonal Campaign Copy"
+        agent: "hotel-copywriter"
+        actions:
+          - "Write template structure for seasonal campaigns"
+          - "4-email sequence: Teaser → Launch → Urgency → Last Call"
+          - "Customize for each season (Carnaval, Réveillon, etc.)"
+          - "Emphasize FOMO, scarcity, exclusivity"
+          - "Include Grand Slam Offer details"
+        outputs:
+          - "seasonal_campaign_copy_template.json"
+        duration: "1 day"
+
+      - id: "copy-008"
+        name: "VIP & Loyalty Copy"
+        agent: "hotel-copywriter"
+        actions:
+          - "Write VIP monthly newsletter (500-700 words)"
+          - "Exclusive tone (you're special, insider access)"
+          - "Content: hotel updates, local events, first access to offers"
+          - "Write milestone emails (3rd, 5th, 10th stay)"
+          - "Celebrate guest loyalty, offer surprise rewards"
+        outputs:
+          - "vip_loyalty_copy.json"
+        duration: "1 day"
+
+      - id: "copy-009"
+        name: "Subject Line & Preview Text Optimization"
+        agent: "hotel-copywriter"
+        actions:
+          - "Write 3-5 subject line variations per email for A/B testing"
+          - "Optimize for 40-50 characters (mobile display)"
+          - "Test different hooks (question, benefit, urgency, curiosity)"
+          - "Write compelling preview text (90-100 characters)"
+          - "Avoid spam trigger words"
+        outputs:
+          - "subject_lines_library.json"
+        duration: "1 day"
+
+    checkpoint:
+      name: "Copy Review"
+      criteria:
+        - "All sequence copy complete (40+ emails)"
+        - "Follows Proof>Promise>Plan framework"
+        - "Personalization variables documented"
+        - "Portuguese grammar and spelling verified"
+        - "CTAs clear and action-oriented"
+        - "Mobile-friendly formatting"
+      approvers:
+        - "hotel-copywriter"
+        - "hotel-mkt-chief"
+      output_required: true
+
+    quality_gates:
+      - metric: "Readability score"
+        threshold: ">60 (Flesch)"
+      - metric: "Emotional appeal"
+        threshold: ">8/10"
+      - metric: "CTA clarity"
+        threshold: ">9/10"
+
+# ═══════════════════════════════════════════════════════════════
+# PHASE 4: AUTOMATION SETUP
+# ═══════════════════════════════════════════════════════════════
+
+  - name: "Automation Setup"
+    id: "phase-4-automation"
+    duration: "3-5 days"
+    depends_on: ["phase-3-copy"]
+    agents:
+      - role: "hotel-email-maestro"
+        responsibility: "primary"
+        tasks:
+          - "Configure all automation flows in ESP"
+          - "Set up triggers and timing"
+          - "Implement segmentation rules"
+          - "Test all sequences"
+
+    tasks:
+      - id: "automation-001"
+        name: "ESP Configuration"
+        agent: "hotel-email-maestro"
+        inputs:
+          - "email_platform_access"
+          - "all sequence copy files"
+        actions:
+          - "Import all email copy into ESP (RD Station, Mailchimp, ActiveCampaign)"
+          - "Create email templates (HTML, mobile-responsive)"
+          - "Set up merge tags for personalization (name, dates, room type, etc.)"
+          - "Configure sender authentication (SPF, DKIM, DMARC)"
+          - "Verify domain reputation"
+        outputs:
+          - "esp_configuration.json"
+        duration: "1 day"
+
+      - id: "automation-002"
+        name: "Trigger Setup"
+        agent: "hotel-email-maestro"
+        actions:
+          - "Configure triggers for each sequence:"
+          - "Welcome: Email signup"
+          - "Pre-Arrival: Booking confirmation"
+          - "Post-Stay: Checkout date"
+          - "Win-Back: 6 months inactivity"
+          - "Abandoned Cart: Cart abandonment event"
+          - "Anniversary: Date-based trigger"
+          - "VIP: Segment membership"
+          - "Test all triggers with dummy data"
+        outputs:
+          - "trigger_configuration.json"
+        duration: "1 day"
+
+      - id: "automation-003"
+        name: "Segmentation Rules"
+        agent: "hotel-email-maestro"
+        inputs:
+          - "rfm_segmentation.xlsx"
+          - "lifecycle_stage_map.json"
+        actions:
+          - "Import guest segments into ESP"
+          - "Create dynamic segments that auto-update"
+          - "Set segment conditions (RFM scores, lifecycle stage, preferences)"
+          - "Configure sequence priority (which sequences override others)"
+          - "Set up exclusion rules (don't email if recently booked)"
+        outputs:
+          - "segmentation_rules.json"
+        duration: "1 day"
+
+      - id: "automation-004"
+        name: "Timing & Frequency Control"
+        agent: "hotel-email-maestro"
+        actions:
+          - "Set email delays for each sequence"
+          - "Configure send times (optimal: 9am, 2pm, 7pm BRT)"
+          - "Implement frequency caps (max 2 emails/week per contact)"
+          - "Set up email suppression (unsubscribed, bounced, complained)"
+          - "Plan holiday send adjustments"
+        outputs:
+          - "timing_configuration.json"
+        duration: "0.5 day"
+
+      - id: "automation-005"
+        name: "Testing & QA"
+        agent: "hotel-email-maestro"
+        actions:
+          - "Test all sequences with test contacts"
+          - "Verify triggers fire correctly"
+          - "Check personalization (merge tags populate)"
+          - "Test emails on 10+ email clients (Gmail, Outlook, Apple Mail)"
+          - "Verify mobile rendering (iOS, Android)"
+          - "Test unsubscribe links"
+          - "Check spam scores (<3/10)"
+          - "Validate tracking links (opens, clicks, conversions)"
+        outputs:
+          - "qa_testing_report.pdf"
+        duration: "1 day"
+
+    checkpoint:
+      name: "Automation QA"
+      criteria:
+        - "All sequences configured and tested"
+        - "Triggers fire correctly (100% success rate)"
+        - "Personalization working"
+        - "Email rendering verified on major clients"
+        - "Spam score <3/10"
+        - "Tracking links functional"
+      approvers:
+        - "hotel-email-maestro"
+        - "hotel-mkt-chief"
+      output_required: true
+
+    quality_gates:
+      - metric: "Trigger accuracy"
+        threshold: "100%"
+      - metric: "Email deliverability"
+        threshold: ">95%"
+      - metric: "Spam score"
+        threshold: "<3/10"
+
+# ═══════════════════════════════════════════════════════════════
+# PHASE 5: LAUNCH & OPTIMIZE
+# ═══════════════════════════════════════════════════════════════
+
+  - name: "Launch & Optimize"
+    id: "phase-5-launch"
+    duration: "Ongoing"
+    depends_on: ["phase-4-automation"]
+    agents:
+      - role: "hotel-email-maestro"
+        responsibility: "primary"
+        tasks:
+          - "Monitor email performance"
+          - "Optimize based on engagement data"
+          - "A/B test subject lines and content"
+          - "Clean email list regularly"
+      - role: "hotel-reputation-guardian"
+        responsibility: "secondary"
+        tasks:
+          - "Integrate review generation with post-stay emails"
+          - "Monitor review submissions from email campaigns"
+
+    tasks:
+      - id: "launch-001"
+        name: "Performance Dashboard Setup"
+        agent: "hotel-email-maestro"
+        actions:
+          - "Create real-time email performance dashboard"
+          - "Track: open rate, click rate, conversion rate, unsubscribe rate"
+          - "Segment metrics by sequence, lifecycle stage, segment"
+          - "Set up revenue attribution (email-driven bookings)"
+          - "Configure alerts for anomalies (deliverability drops, spam spikes)"
+        outputs:
+          - "email_performance_dashboard.json"
+        duration: "1 day"
+        frequency: "One-time setup"
+
+      - id: "launch-002"
+        name: "Daily Monitoring"
+        agent: "hotel-email-maestro"
+        actions:
+          - "Check dashboard every morning"
+          - "Monitor: deliverability, engagement, conversions"
+          - "Flag issues (high bounce rate, low open rate)"
+          - "Review complaints and unsubscribes for patterns"
+        outputs:
+          - "daily_email_log.json"
+        duration: "15 min/day"
+        frequency: "Daily"
+
+      - id: "launch-003"
+        name: "A/B Testing"
+        agent: "hotel-email-maestro"
+        actions:
+          - "Test subject lines (2 variations per email)"
+          - "Test send times (morning vs evening)"
+          - "Test email length (short vs long)"
+          - "Test CTA placement and wording"
+          - "Implement winners after statistical significance"
+        outputs:
+          - "ab_test_results.xlsx"
+        duration: "Ongoing"
+        frequency: "Weekly"
+
+      - id: "launch-004"
+        name: "Sequence Optimization"
+        agent: "hotel-email-maestro"
+        actions:
+          - "Review sequence performance monthly"
+          - "Identify high-performing emails (scale up)"
+          - "Identify low-performing emails (rewrite or remove)"
+          - "Adjust timing based on engagement patterns"
+          - "Update copy to reflect seasonal changes"
+        outputs:
+          - "sequence_optimization_log.json"
+        duration: "2 hours"
+        frequency: "Monthly"
+
+      - id: "launch-005"
+        name: "List Hygiene"
+        agent: "hotel-email-maestro"
+        actions:
+          - "Remove hard bounces immediately"
+          - "Suppress chronic non-openers (6+ months)"
+          - "Re-engagement campaign for soft bounces"
+          - "Verify email addresses for high-value contacts"
+          - "Monitor spam complaint rate (<0.1%)"
+        outputs:
+          - "list_hygiene_report.json"
+        duration: "1 hour"
+        frequency: "Monthly"
+
+      - id: "launch-006"
+        name: "Review Generation Integration"
+        agent: "hotel-reputation-guardian"
+        actions:
+          - "Monitor review submission rate from post-stay emails"
+          - "Track review links clicks"
+          - "Follow up with non-reviewers (gentle reminder)"
+          - "Feature new reviews in subsequent emails"
+          - "Thank guests who leave reviews"
+        outputs:
+          - "review_generation_report.json"
+        duration: "30 min"
+        frequency: "Weekly"
+
+      - id: "launch-007"
+        name: "Revenue Attribution"
+        agent: "hotel-email-maestro"
+        actions:
+          - "Track bookings attributed to email campaigns"
+          - "Calculate email ROI (revenue / email cost)"
+          - "Identify highest-value sequences"
+          - "Report email contribution to direct bookings"
+        outputs:
+          - "email_revenue_attribution.xlsx"
+        duration: "1 hour"
+        frequency: "Monthly"
+
+      - id: "launch-008"
+        name: "Monthly Reporting"
+        agent: "hotel-email-maestro"
+        actions:
+          - "Compile monthly email performance report"
+          - "Summary: emails sent, open rate, click rate, conversions, revenue"
+          - "Highlight wins and learnings"
+          - "Recommend optimizations for next month"
+          - "Present to management"
+        outputs:
+          - "monthly_email_report.pdf"
+        duration: "2 hours"
+        frequency: "Monthly"
+
+    checkpoint:
+      name: "30-Day Performance Review"
+      criteria:
+        - "Email open rate >30%"
+        - "Click-through rate >4%"
+        - "Email-attributed bookings tracked"
+        - "Unsubscribe rate <0.5%"
+        - "Review generation rate >20%"
+      approvers:
+        - "hotel-email-maestro"
+        - "hotel-mkt-chief"
+      output_required: true
+      timing: "30 days after launch"
+
+    quality_gates:
+      - metric: "Email open rate"
+        threshold: ">35%"
+      - metric: "Click-through rate"
+        threshold: ">5%"
+      - metric: "Email-attributed bookings"
+        threshold: ">20% of direct bookings"
+      - metric: "Unsubscribe rate"
+        threshold: "<0.5%"
+      - metric: "Review generation rate"
+        threshold: ">30%"
+
+# ═══════════════════════════════════════════════════════════════
+# EMAIL SEQUENCE DETAILS
+# ═══════════════════════════════════════════════════════════════
+
+sequences:
+  welcome:
+    name: "Welcome Series"
+    trigger: "Email signup"
+    goal: "Convert to first booking"
+    emails: 5
+    duration: "10 days"
+    target_conversion: ">15%"
+
+  pre_arrival:
+    name: "Pre-Arrival Series"
+    trigger: "Booking confirmation"
+    goal: "Enhance experience, upsell"
+    emails: 4
+    duration: "7 days before check-in"
+    target_upsell_rate: ">10%"
+
+  post_stay:
+    name: "Post-Stay Series"
+    trigger: "Checkout date"
+    goal: "Reviews, re-bookings, referrals"
+    emails: 4
+    duration: "14 days after checkout"
+    target_review_rate: ">30%"
+    target_rebook_rate: ">20%"
+
+  winback:
+    name: "Win-Back Series"
+    trigger: "6 months inactivity"
+    goal: "Reactivate dormant guests"
+    emails: 4
+    duration: "10 days"
+    target_conversion: ">10%"
+
+  abandoned_cart:
+    name: "Abandoned Cart Series"
+    trigger: "Cart abandonment (30 min)"
+    goal: "Recover lost bookings"
+    emails: 3
+    duration: "48 hours"
+    target_recovery: ">15%"
+
+  anniversary:
+    name: "Anniversary Series"
+    trigger: "Date-based (anniversary, birthday)"
+    goal: "Deepen loyalty"
+    emails: 3
+    duration: "Event-based"
+    target_booking_rate: ">25%"
+
+  seasonal:
+    name: "Seasonal Campaigns"
+    trigger: "Manual launch"
+    goal: "Drive seasonal bookings"
+    emails: 4-7
+    duration: "Campaign period"
+    target_conversion: ">5%"
+
+  vip:
+    name: "VIP & Loyalty Nurture"
+    trigger: "Segment membership"
+    goal: "Retain high-value guests"
+    emails: "Monthly newsletter + milestones"
+    duration: "Ongoing"
+    target_retention: ">80%"
+
+# ═══════════════════════════════════════════════════════════════
+# ROLLBACK & CONTINGENCY
+# ═══════════════════════════════════════════════════════════════
+
+rollback:
+  triggers:
+    - condition: "Deliverability drops below 85%"
+      action: "Pause all sends, investigate sender reputation, clean list"
+    - condition: "Spam complaint rate >0.3%"
+      action: "Review recent emails for issues, pause problematic sequences"
+    - condition: "Unsubscribe spike (>2% in single campaign)"
+      action: "Investigate email content, reduce frequency, segment better"
+
+  contingency_plans:
+    - scenario: "Email platform outage"
+      actions:
+        - "Switch to backup ESP if available"
+        - "Manual sends for critical emails (booking confirmations)"
+        - "Communicate delays to guests if needed"
+    - scenario: "List import error (duplicate, corrupted data)"
+      actions:
+        - "Pause automation, fix data integrity"
+        - "Re-import with validation"
+        - "Test with small segment before full rollout"
+    - scenario: "Low engagement on new sequence"
+      actions:
+        - "A/B test different subject lines and content"
+        - "Survey subscribers for feedback"
+        - "Revise or retire sequence if no improvement"
+
+# ═══════════════════════════════════════════════════════════════
+# SUCCESS CRITERIA & HANDOFF
+# ═══════════════════════════════════════════════════════════════
+
+success_criteria:
+  primary:
+    - metric: "Email open rate"
+      target: ">35%"
+      measurement: "Unique opens / delivered"
+    - metric: "Click-through rate"
+      target: ">5%"
+      measurement: "Unique clicks / delivered"
+    - metric: "Email-attributed bookings"
+      target: ">20% of direct bookings"
+      measurement: "Bookings with email touchpoint"
+
+  secondary:
+    - metric: "Review generation rate"
+      target: ">30%"
+      measurement: "Reviews submitted / post-stay emails sent"
+    - metric: "Win-back conversion"
+      target: ">10%"
+      measurement: "Reactivated guests / win-back emails sent"
+    - metric: "Abandoned cart recovery"
+      target: ">15%"
+      measurement: "Recovered bookings / abandoned carts"
+    - metric: "Unsubscribe rate"
+      target: "<0.5%"
+      measurement: "Unsubscribes / emails sent"
+    - metric: "Email ROI"
+      target: ">10x"
+      measurement: "Email-attributed revenue / email costs"
+
+handoff:
+  to: "hotel-operations + hotel-reception"
+  deliverables:
+    - "Email performance dashboard (live)"
+    - "All email sequences (editable library)"
+    - "Monthly reporting template"
+    - "Optimization playbook"
+    - "Guest segment database"
+  knowledge_transfer:
+    - "Train reception on capturing emails at check-in"
+    - "Share review generation best practices"
+    - "Document A/B testing process"
+    - "Establish monthly review cadence with management"
+
+# ════════════════════════════════════════════════════════════════
+# 🔒 ENFORCEMENT ENGINE
+# Inspirado em: Cooper's Stage-Gate (P&G) + Salesforce Pipeline + Toyota Andon
+# ════════════════════════════════════════════════════════════════
+
+enforcement_engine:
+  version: "1.0.0"
+  protocol: "stage-gate"
+
+  # ──────────────────────────────────────────────────────────────
+  # STATE MACHINE
+  # ──────────────────────────────────────────────────────────────
+  state_machine:
+    initial_state: "phase-1-segmentation"
+    terminal_states: ["completed", "killed"]
+    transitions:
+      - from: "phase-1-segmentation"
+        to: "phase-2-sequence-design"
+        gate: "G1"
+        trigger: "auto_on_gate_pass"
+      - from: "phase-2-sequence-design"
+        to: "phase-3-copy"
+        gate: "G2"
+        trigger: "auto_on_gate_pass"
+      - from: "phase-3-copy"
+        to: "phase-4-automation"
+        gate: "G3"
+        trigger: "auto_on_gate_pass"
+      - from: "phase-4-automation"
+        to: "phase-5-launch"
+        gate: "G4"
+        trigger: "auto_on_gate_pass"
+      - from: "phase-5-launch"
+        to: "completed"
+        gate: "final-review"
+        trigger: "manual_approval"
+    invalid_transitions:
+      - from: "phase-1-segmentation"
+        to: "phase-3-copy"
+        reason: "Não pode escrever emails sem desenhar sequências primeiro"
+      - from: "phase-2-sequence-design"
+        to: "phase-4-automation"
+        reason: "Não pode configurar automação sem copy aprovado"
+      - from: "phase-3-copy"
+        to: "phase-5-launch"
+        reason: "Não pode lançar sem testar automações"
+
+  # ──────────────────────────────────────────────────────────────
+  # STAGE-GATES
+  # ──────────────────────────────────────────────────────────────
+  gates:
+    G1:
+      name: "Segmentation → Design Gate"
+      between: ["phase-1-segmentation", "phase-2-sequence-design"]
+      gatekeeper: "hotel-guest-strategist"
+      sla: "48h"
+      must_meet:
+        - id: "G1-M1"
+          criterion: "Mínimo 5 lifecycle stages claramente definidos com critérios de entrada/saída"
+          validation: "lifecycle_stage_map.json lista ≥5 stages com campos: entry_condition, exit_condition"
+          on_fail: "BLOCK"
+        - id: "G1-M2"
+          criterion: "RFM segments criados para todos guests no database"
+          validation: "rfm_segmentation.xlsx tem 'segment' field preenchido para 100% dos registros"
+          on_fail: "BLOCK"
+        - id: "G1-M3"
+          criterion: "Trigger conditions especificadas para cada sequência planejada"
+          validation: "sequence_lifecycle_map.json lista triggers para todas sequências"
+          on_fail: "BLOCK"
+      should_meet:
+        - id: "G1-S1"
+          criterion: "Clareza e acionabilidade dos segmentos (não muito genéricos)"
+          weight: 1.0
+          min_score: 8
+        - id: "G1-S2"
+          criterion: "Alinhamento de personas com realidade do hotel"
+          weight: 1.0
+          min_score: 7
+      kill_criteria:
+        - id: "G1-K1"
+          criterion: "Database tem <500 contatos com email válido (insuficiente para automação robusta)"
+          action: "HOLD + focar em crescer lista antes de construir lifecycle complexo"
+      decision_options: ["GO", "KILL", "HOLD", "RECYCLE"]
+
+    G2:
+      name: "Design → Copy Gate"
+      between: ["phase-2-sequence-design", "phase-3-copy"]
+      gatekeeper: "hotel-email-maestro"
+      sla: "48h"
+      must_meet:
+        - id: "G2-M1"
+          criterion: "Mínimo 8 email sequences mapeadas com triggers e timing definidos"
+          validation: "Contar sequências em phase-2 outputs (welcome, pre-arrival, post-stay, winback, etc) ≥8"
+          on_fail: "BLOCK"
+        - id: "G2-M2"
+          criterion: "Cada sequência tem triggers e delays especificados (não ambíguo)"
+          validation: "Todos *_series_design.json têm campos: trigger_event, email_delays_days"
+          on_fail: "BLOCK"
+        - id: "G2-M3"
+          criterion: "A/B testing opportunities identificadas para cada sequência"
+          validation: "Cada design file lista ≥2 elementos para testar (subject, timing, CTA)"
+          on_fail: "BLOCK"
+      should_meet:
+        - id: "G2-S1"
+          criterion: "Emotional journey bem mapeado (sequências contam história coerente)"
+          weight: 1.0
+          min_score: 8
+        - id: "G2-S2"
+          criterion: "Goals e KPIs realistas e mensuráveis"
+          weight: 1.0
+          min_score: 7
+      kill_criteria:
+        - id: "G2-K1"
+          criterion: "Nenhuma plataforma de email configurada (sem ESP)"
+          action: "HOLD + setup email platform antes de desenhar sequências"
+      decision_options: ["GO", "KILL", "HOLD", "RECYCLE"]
+
+    G3:
+      name: "Copy → Automation Gate"
+      between: ["phase-3-copy", "phase-4-automation"]
+      gatekeeper: "hotel-copywriter"
+      sla: "48h"
+      must_meet:
+        - id: "G3-M1"
+          criterion: "Todos emails escritos para todas sequências (40+ emails no total)"
+          validation: "Contar emails em todos *_copy.json files ≥40"
+          on_fail: "BLOCK"
+        - id: "G3-M2"
+          criterion: "Subject lines com 2+ variações cada para A/B testing"
+          validation: "subject_lines_library.json tem ≥2 variations por email"
+          on_fail: "BLOCK"
+        - id: "G3-M3"
+          criterion: "Preview text otimizado para todos emails (90-100 chars)"
+          validation: "Todos emails em *_copy.json têm 'preview_text' field com length 90-100"
+          on_fail: "BLOCK"
+      should_meet:
+        - id: "G3-S1"
+          criterion: "Qualidade do copy (Proof>Promise>Plan framework aplicado corretamente)"
+          weight: 1.0
+          min_score: 8
+        - id: "G3-S2"
+          criterion: "Personalização adequada (merge tags bem usados, não genérico)"
+          weight: 1.0
+          min_score: 7
+      kill_criteria:
+        - id: "G3-K1"
+          criterion: "Copy quality score médio <7/10 após review (muito fraco)"
+          action: "RECYCLE para Copy Creation com feedback detalhado"
+      decision_options: ["GO", "KILL", "HOLD", "RECYCLE"]
+
+    G4:
+      name: "Automation → Launch Gate"
+      between: ["phase-4-automation", "phase-5-launch"]
+      gatekeeper: "hotel-email-maestro"
+      sla: "24h"
+      must_meet:
+        - id: "G4-M1"
+          criterion: "Todas automações testadas end-to-end com contatos de teste (100% functional)"
+          validation: "qa_testing_report.pdf mostra 'All sequences tested' = PASS"
+          on_fail: "BLOCK"
+        - id: "G4-M2"
+          criterion: "Deliverability >90% em teste com amostra de 100 contacts"
+          validation: "Campo 'deliverability_rate' em qa_testing_report.pdf >0.90"
+          on_fail: "BLOCK"
+        - id: "G4-M3"
+          criterion: "LGPD compliance verificado (unsubscribe, opt-in, data handling)"
+          validation: "Checklist 'LGPD Compliance' em qa_testing_report.pdf = 100% OK"
+          on_fail: "BLOCK"
+        - id: "G4-M4"
+          criterion: "Automation não envia para segmento errado em teste"
+          validation: "Test log mostra 0 mis-segmented sends"
+          on_fail: "BLOCK"
+      should_meet:
+        - id: "G4-S1"
+          criterion: "Spam score baixo (<3/10) para todos emails"
+          weight: 1.0
+          min_score: 9
+        - id: "G4-S2"
+          criterion: "Mobile rendering perfeito (iOS e Android testados)"
+          weight: 1.0
+          min_score: 9
+      kill_criteria:
+        - id: "G4-K1"
+          criterion: "Deliverability <80% consistentemente após 2 tentativas de fix"
+          action: "HOLD + resolver sender reputation, warm up domain, corrigir SPF/DKIM"
+        - id: "G4-K2"
+          criterion: "Automação envia para segmento errado em teste (erro crítico de segmentation)"
+          action: "BLOCK + corrigir rules, re-testar tudo"
+      decision_options: ["GO", "KILL", "HOLD", "RECYCLE"]
+
+  # ──────────────────────────────────────────────────────────────
+  # AUTOMATED HANDOFFS
+  # ──────────────────────────────────────────────────────────────
+  handoffs:
+    - id: "H1"
+      from_phase: "phase-1-segmentation"
+      to_phase: "phase-2-sequence-design"
+      from_agent: "@hotel-guest-strategist"
+      to_agent: "@hotel-email-maestro"
+      trigger: "gate_G1_passed"
+      deliverables:
+        - name: "rfm_segmentation.xlsx"
+          format: "excel"
+          required: true
+        - name: "lifecycle_stage_map.json"
+          format: "json"
+          required: true
+        - name: "guest_personas.pdf"
+          format: "pdf"
+          required: true
+        - name: "sequence_lifecycle_map.json"
+          format: "json"
+          required: true
+      acceptance_criteria:
+        - "Todos guests segmentados (100% coverage)"
+        - "Lifecycle stages com critérios claros"
+        - "Personas validados com management"
+      sla: "24h"
+      on_timeout:
+        action: "escalate"
+        notify: "@hotel-mkt-chief"
+      on_reject:
+        action: "return_to_sender"
+        message: "Segmentação incompleta. Revisar: [problemas]. Prazo: 24h."
+
+    - id: "H2"
+      from_phase: "phase-2-sequence-design"
+      to_phase: "phase-3-copy"
+      from_agent: "@hotel-email-maestro"
+      to_agent: "@hotel-copywriter"
+      trigger: "gate_G2_passed"
+      deliverables:
+        - name: "welcome_series_design.json"
+          format: "json"
+          required: true
+        - name: "pre_arrival_series_design.json"
+          format: "json"
+          required: true
+        - name: "post_stay_series_design.json"
+          format: "json"
+          required: true
+        - name: "winback_series_design.json"
+          format: "json"
+          required: true
+        - name: "abandoned_cart_series_design.json"
+          format: "json"
+          required: true
+        - name: "anniversary_series_design.json"
+          format: "json"
+          required: true
+        - name: "seasonal_campaign_design.json"
+          format: "json"
+          required: true
+        - name: "vip_nurture_design.json"
+          format: "json"
+          required: true
+      acceptance_criteria:
+        - "8+ sequências desenhadas com timing e triggers"
+        - "Goals claros para cada sequência"
+        - "Emotional journey validado"
+      sla: "24h"
+      on_timeout:
+        action: "escalate"
+        notify: "@hotel-mkt-chief"
+      on_reject:
+        action: "return_to_sender"
+        message: "Sequence design precisa ajustes: [feedback]. Prazo: 24h."
+
+    - id: "H3"
+      from_phase: "phase-3-copy"
+      to_phase: "phase-4-automation"
+      from_agent: "@hotel-copywriter"
+      to_agent: "@hotel-email-maestro"
+      trigger: "gate_G3_passed"
+      deliverables:
+        - name: "welcome_series_copy.json"
+          format: "json"
+          required: true
+        - name: "pre_arrival_series_copy.json"
+          format: "json"
+          required: true
+        - name: "post_stay_series_copy.json"
+          format: "json"
+          required: true
+        - name: "winback_series_copy.json"
+          format: "json"
+          required: true
+        - name: "abandoned_cart_series_copy.json"
+          format: "json"
+          required: true
+        - name: "anniversary_series_copy.json"
+          format: "json"
+          required: true
+        - name: "seasonal_campaign_copy_template.json"
+          format: "json"
+          required: true
+        - name: "vip_loyalty_copy.json"
+          format: "json"
+          required: true
+        - name: "subject_lines_library.json"
+          format: "json"
+          required: true
+      acceptance_criteria:
+        - "40+ emails escritos (todas sequências completas)"
+        - "Copy aprovado pelo chief"
+        - "Portuguese grammar perfeito"
+      sla: "24h"
+      on_timeout:
+        action: "escalate"
+        notify: "@hotel-mkt-chief"
+      on_reject:
+        action: "return_to_sender"
+        message: "Copy não atende padrões. Revisar: [problemas]. Prazo: 48h."
+
+    - id: "H4"
+      from_phase: "phase-4-automation"
+      to_phase: "phase-5-launch"
+      from_agent: "@hotel-email-maestro"
+      to_agent: "@hotel-direct-booking + @hotel-reputation-guardian"
+      trigger: "gate_G4_passed"
+      deliverables:
+        - name: "esp_configuration.json"
+          format: "json"
+          required: true
+        - name: "trigger_configuration.json"
+          format: "json"
+          required: true
+        - name: "segmentation_rules.json"
+          format: "json"
+          required: true
+        - name: "qa_testing_report.pdf"
+          format: "pdf"
+          required: true
+      acceptance_criteria:
+        - "Todas sequências testadas e funcionais"
+        - "Deliverability >90%"
+        - "LGPD compliance 100%"
+        - "Nenhum erro de segmentação"
+      sla: "24h"
+      on_timeout:
+        action: "escalate"
+        notify: "@hotel-mkt-chief"
+      on_reject:
+        action: "pause_automations"
+        message: "Automação não pronta. Pausar, corrigir: [issues]. Re-testar."
+
+  # ──────────────────────────────────────────────────────────────
+  # AUTO-ROLLBACK TRIGGERS
+  # ──────────────────────────────────────────────────────────────
+  auto_rollback:
+    triggers:
+      - id: "R1"
+        condition: "Open rate <15% por 3 envios consecutivos (muito abaixo do target 35%)"
+        action: "pause"
+        recovery: "1. Pausar sequência problemática. 2. A/B testar novos subject lines (diferentes hooks). 3. Revisar send time (testar manhã vs tarde vs noite). 4. Verificar deliverability (caindo em spam?). 5. Re-lançar após melhorias."
+        notify: "@hotel-email-maestro"
+      - id: "R2"
+        condition: "Unsubscribe rate >2% em um único send (spike anormal)"
+        action: "pause_sequence"
+        recovery: "1. Pausar sequência imediatamente. 2. Revisar conteúdo do email (muito promocional? frequência alta?). 3. Verificar se segmento correto recebeu email. 4. Ajustar messaging e timing. 5. Re-testar com amostra pequena antes de full send."
+        notify: "@hotel-email-maestro + @hotel-mkt-chief"
+      - id: "R3"
+        condition: "Deliverability cai abaixo de 85% (sender reputation em risco)"
+        action: "pause_all"
+        recovery: "1. PAUSAR TODOS ENVIOS imediatamente. 2. Investigar sender reputation (blacklist? spam reports?). 3. Limpar lista (remover bounces, inactives). 4. Verificar SPF/DKIM/DMARC config. 5. Warm up domain se necessário. 6. Retomar gradualmente após fix."
+        notify: "@hotel-email-maestro + tech-support"
+      - id: "R4"
+        condition: "Automação envia para segmento errado em produção (detectado via logs)"
+        action: "immediate_stop"
+        recovery: "1. STOP automation imediatamente. 2. Identificar causa (bug em segmentation rules?). 3. Enviar email de desculpas para quem recebeu por engano (se crítico). 4. Corrigir regras de segmentação. 5. Re-testar exaustivamente. 6. Relançar apenas após validação 100%."
+        notify: "@hotel-email-maestro + @hotel-mkt-chief"
+      - id: "R5"
+        condition: "Review generation rate <10% (muito abaixo do target 30%)"
+        action: "optimize"
+        recovery: "1. Revisar timing do post-stay email (enviar mais cedo? mais tarde?). 2. Simplificar processo (direct link para review, não multi-step). 3. Testar incentivo (oferecer desconto futuro por review?). 4. Personalizar pedido (mencionar detalhes da estadia). 5. A/B testar novas abordagens."
+        notify: "@hotel-reputation-guardian + @hotel-email-maestro"

@@ -1,0 +1,1334 @@
+# ═══════════════════════════════════════════════════════════════
+# AIOS Workflow: Direct Booking Funnel (Anti-OTA Strategy)
+# ═══════════════════════════════════════════════════════════════
+# Squad: hotel-mkt
+# Version: 1.0.0
+# Duration: 2-4 weeks setup, ongoing optimization
+# Target: 60%+ direct bookings, reduce OTA dependency
+# DNA: Hormozi (value-stacked offers) + Conley (guest loyalty) + Schrager (brand differentiation)
+# ═══════════════════════════════════════════════════════════════
+
+workflow:
+  name: "Direct Booking Funnel Optimization"
+  id: "wf-direct-booking-funnel"
+  squad: "hotel-mkt"
+  version: "1.0.0"
+
+  metadata:
+    description: "Complete anti-OTA system to maximize direct bookings and reduce commission costs"
+    target_audience: "All guest segments, focus on repeat guests and high-value travelers"
+    context: "Brazilian hospitality market where OTAs capture 60-80% of bookings at 15-20% commission"
+    success_metrics:
+      - "Direct booking share >60% (from baseline ~30%)"
+      - "Cost per acquisition <50% of OTA commission"
+      - "Repeat guest rate >40%"
+      - "Website conversion rate >3%"
+      - "Email-driven bookings >20% of total direct"
+
+  inputs:
+    - name: "current_booking_data"
+      type: "dataset"
+      required: true
+      description: "12 months of booking data (source, revenue, channel)"
+    - name: "website_analytics"
+      type: "analytics"
+      required: true
+      description: "GA4 data, conversion funnel, traffic sources"
+    - name: "guest_database"
+      type: "database"
+      required: true
+      description: "Past guests with emails and booking history"
+    - name: "budget_allocation"
+      type: "number"
+      required: true
+      description: "Marketing budget for direct booking initiatives"
+
+  outputs:
+    - name: "direct_booking_strategy"
+      type: "document"
+      description: "Complete strategy with tactics, timelines, KPIs"
+    - name: "seo_content_plan"
+      type: "document"
+      description: "100+ pages content plan with keyword mapping"
+    - name: "optimized_booking_engine"
+      type: "system"
+      description: "Improved UX with WhatsApp, Pix, installments"
+    - name: "retargeting_campaigns"
+      type: "campaigns"
+      description: "Multi-channel retargeting (Google, Meta, email)"
+    - name: "email_automation"
+      type: "automation"
+      description: "Abandoned cart, post-stay, win-back sequences"
+    - name: "performance_dashboard"
+      type: "analytics"
+      description: "Real-time tracking of direct vs OTA bookings"
+
+  duration:
+    estimated: "2-4 weeks setup, ongoing optimization"
+    phases:
+      audit: "3-5 days"
+      seo_foundation: "7-10 days"
+      conversion_optimization: "5-7 days"
+      retargeting_setup: "3-5 days"
+      email_capture: "5-7 days"
+      launch_monitor: "Ongoing"
+
+# ═══════════════════════════════════════════════════════════════
+# PHASE 1: AUDIT & BASELINE
+# ═══════════════════════════════════════════════════════════════
+
+phases:
+  - name: "Audit & Baseline"
+    id: "phase-1-audit"
+    duration: "3-5 days"
+    agents:
+      - role: "hotel-direct-booking"
+        responsibility: "primary"
+        tasks:
+          - "Analyze current direct vs OTA booking ratio"
+          - "Calculate cost per booking by channel"
+          - "Audit booking engine UX and conversion funnel"
+          - "Review rate parity compliance"
+          - "Identify friction points in direct booking path"
+
+    tasks:
+      - id: "audit-001"
+        name: "Channel Distribution Analysis"
+        agent: "hotel-direct-booking"
+        inputs:
+          - "current_booking_data"
+        actions:
+          - "Calculate % bookings by channel (direct, Booking.com, Expedia, Decolar, etc)"
+          - "Calculate revenue by channel"
+          - "Calculate commission costs (total and per booking)"
+          - "Identify seasonality patterns by channel"
+          - "Benchmark against industry standards (Brazil hospitality)"
+        outputs:
+          - "channel_distribution_report.pdf"
+        duration: "1 day"
+
+      - id: "audit-002"
+        name: "Booking Engine UX Audit"
+        agent: "hotel-direct-booking"
+        inputs:
+          - "website_analytics"
+        actions:
+          - "Test booking flow on desktop and mobile"
+          - "Identify friction points (too many fields, slow loading, confusing layout)"
+          - "Analyze funnel drop-off (homepage → room selection → checkout → confirmation)"
+          - "Benchmark against competitors' booking engines"
+          - "Test payment options and completion rates"
+        outputs:
+          - "booking_engine_audit.pdf"
+        duration: "1 day"
+
+      - id: "audit-003"
+        name: "Rate Parity Check"
+        agent: "hotel-direct-booking"
+        actions:
+          - "Compare rates across OTAs and direct website (30-day calendar)"
+          - "Identify rate parity violations"
+          - "Document OTA commission structures"
+          - "Calculate potential revenue if parity maintained"
+          - "Check for hidden OTA discounts or loyalty programs"
+        outputs:
+          - "rate_parity_report.xlsx"
+        duration: "1 day"
+
+      - id: "audit-004"
+        name: "Competitor Direct Booking Analysis"
+        agent: "hotel-direct-booking"
+        actions:
+          - "Analyze top 10 competitors' direct booking strategies"
+          - "Document best practices (exclusive perks, price match, flexible cancellation)"
+          - "Identify gaps and opportunities"
+          - "Benchmark conversion rates (estimate via traffic/reviews ratio)"
+        outputs:
+          - "competitor_direct_booking_analysis.pdf"
+        duration: "1 day"
+
+      - id: "audit-005"
+        name: "CAC vs Commission Analysis"
+        agent: "hotel-direct-booking"
+        actions:
+          - "Calculate current cost per direct booking (ads + marketing / bookings)"
+          - "Compare CAC to OTA commission per booking"
+          - "Calculate break-even CAC (where direct = OTA cost)"
+          - "Model ROI scenarios for increased direct booking investment"
+        outputs:
+          - "cac_commission_model.xlsx"
+        duration: "1 day"
+
+    checkpoint:
+      name: "Audit Validation"
+      criteria:
+        - "Baseline direct booking % established"
+        - "Conversion funnel mapped with drop-off points"
+        - "Rate parity status documented"
+        - "CAC targets set based on commission savings"
+      approvers:
+        - "hotel-direct-booking"
+        - "hotel-mkt-chief"
+      output_required: true
+
+    quality_gates:
+      - metric: "Data completeness"
+        threshold: ">95%"
+      - metric: "Audit actionability"
+        threshold: ">8/10"
+
+# ═══════════════════════════════════════════════════════════════
+# PHASE 2: SEO FOUNDATION
+# ═══════════════════════════════════════════════════════════════
+
+  - name: "SEO Foundation"
+    id: "phase-2-seo"
+    duration: "7-10 days"
+    depends_on: ["phase-1-audit"]
+    agents:
+      - role: "hotel-seo-architect"
+        responsibility: "primary"
+        tasks:
+          - "Create 100+ pages content plan"
+          - "Optimize technical SEO"
+          - "Build local SEO presence (Google My Business)"
+          - "Develop content clusters around high-intent keywords"
+
+    tasks:
+      - id: "seo-001"
+        name: "Keyword Research"
+        agent: "hotel-seo-architect"
+        actions:
+          - "Identify 100+ high-intent keywords (hotel + location, event + accommodation)"
+          - "Analyze search volume and difficulty"
+          - "Map keywords to buyer journey stages"
+          - "Prioritize quick-win keywords (low competition, decent volume)"
+          - "Document seasonal keyword patterns"
+        outputs:
+          - "keyword_research.xlsx"
+        duration: "2 days"
+
+      - id: "seo-002"
+        name: "Content Plan"
+        agent: "hotel-seo-architect"
+        inputs:
+          - "keyword_research.xlsx"
+        actions:
+          - "Create content cluster strategy (pillar pages + supporting articles)"
+          - "Plan 100+ pages: location guides, event calendars, experience articles"
+          - "Define internal linking structure"
+          - "Create content briefs (keywords, structure, word count)"
+          - "Prioritize content by ROI potential"
+        outputs:
+          - "seo_content_plan.json"
+        duration: "2 days"
+
+      - id: "seo-003"
+        name: "Technical SEO Optimization"
+        agent: "hotel-seo-architect"
+        actions:
+          - "Audit site speed (goal: <3s load time)"
+          - "Optimize images (compression, lazy loading, alt text)"
+          - "Implement schema markup (Hotel, LocalBusiness, Review)"
+          - "Fix crawl errors and broken links"
+          - "Ensure mobile-friendliness (Core Web Vitals)"
+          - "Create XML sitemap and submit to Google"
+        outputs:
+          - "technical_seo_checklist.md"
+        duration: "2 days"
+
+      - id: "seo-004"
+        name: "Local SEO Setup"
+        agent: "hotel-seo-architect"
+        actions:
+          - "Optimize Google My Business profile (photos, description, attributes)"
+          - "Add hotel to Google Maps"
+          - "Set up Google Posts (weekly updates)"
+          - "Encourage review generation (link in post-stay email)"
+          - "Build local citations (TripAdvisor, Yelp, Foursquare)"
+          - "Create location-specific landing pages"
+        outputs:
+          - "local_seo_setup.pdf"
+        duration: "2 days"
+
+      - id: "seo-005"
+        name: "Content Production Kickoff"
+        agent: "hotel-seo-architect"
+        actions:
+          - "Brief hotel-copywriter on priority content"
+          - "Create content calendar (2-3 articles/week)"
+          - "Establish content quality standards"
+          - "Set up content approval workflow"
+        outputs:
+          - "content_production_plan.gantt"
+        duration: "1 day"
+
+    checkpoint:
+      name: "SEO Foundation Review"
+      criteria:
+        - "Technical SEO issues <5 critical errors"
+        - "Google My Business optimized and verified"
+        - "Content plan covers 100+ keywords"
+        - "Schema markup implemented"
+      approvers:
+        - "hotel-seo-architect"
+        - "hotel-mkt-chief"
+      output_required: true
+
+    quality_gates:
+      - metric: "Site speed (mobile)"
+        threshold: "<3s"
+      - metric: "Core Web Vitals"
+        threshold: "All green"
+      - metric: "Schema markup validity"
+        threshold: "100%"
+
+# ═══════════════════════════════════════════════════════════════
+# PHASE 3: CONVERSION OPTIMIZATION
+# ═══════════════════════════════════════════════════════════════
+
+  - name: "Conversion Optimization"
+    id: "phase-3-conversion"
+    duration: "5-7 days"
+    depends_on: ["phase-1-audit"]
+    agents:
+      - role: "hotel-direct-booking"
+        responsibility: "primary"
+        tasks:
+          - "Optimize booking engine UX"
+          - "Implement WhatsApp booking integration"
+          - "Add Pix and installment payment options"
+          - "Create exclusive direct booking perks"
+          - "Implement exit-intent popups"
+
+    tasks:
+      - id: "conversion-001"
+        name: "Booking Engine Optimization"
+        agent: "hotel-direct-booking"
+        inputs:
+          - "booking_engine_audit.pdf"
+        actions:
+          - "Reduce form fields (minimum required information only)"
+          - "Add progress indicator (3-step checkout)"
+          - "Implement guest checkout (no account required)"
+          - "Add trust badges (secure payment, free cancellation)"
+          - "Show room availability in real-time"
+          - "Add social proof (reviews, recent bookings)"
+        outputs:
+          - "booking_engine_improvements.json"
+        duration: "2 days"
+
+      - id: "conversion-002"
+        name: "Payment Options Expansion"
+        agent: "hotel-direct-booking"
+        actions:
+          - "Integrate Pix payment (instant, zero fees)"
+          - "Add installment options (3x, 6x credit card)"
+          - "Implement WhatsApp Pay (if available)"
+          - "Add multiple credit card brands"
+          - "Show payment icons above checkout"
+        outputs:
+          - "payment_integration_config.json"
+        duration: "2 days"
+
+      - id: "conversion-003"
+        name: "WhatsApp Booking Integration"
+        agent: "hotel-direct-booking"
+        actions:
+          - "Add WhatsApp click-to-chat button on all pages"
+          - "Create booking templates for WhatsApp Business"
+          - "Train reception team on WhatsApp booking protocol"
+          - "Set up automated WhatsApp responses (office hours)"
+          - "Track WhatsApp-sourced bookings"
+        outputs:
+          - "whatsapp_booking_setup.pdf"
+        duration: "1 day"
+
+      - id: "conversion-004"
+        name: "Exclusive Direct Perks"
+        agent: "hotel-direct-booking"
+        actions:
+          - "Design direct booking benefits (free upgrade, late checkout, welcome drink)"
+          - "Add 'Best Rate Guarantee' (match OTA + 10% off)"
+          - "Create flexible cancellation (cancel up to 24h before)"
+          - "Offer loyalty points or discounts for repeat bookings"
+          - "Display perks prominently on homepage and booking engine"
+        outputs:
+          - "direct_booking_perks.json"
+        duration: "1 day"
+
+      - id: "conversion-005"
+        name: "Exit-Intent & Abandoned Cart"
+        agent: "hotel-direct-booking"
+        actions:
+          - "Implement exit-intent popup (5% discount offer)"
+          - "Capture email for abandoned cart recovery"
+          - "Send automated abandoned cart email (1h, 24h, 48h)"
+          - "Add countdown timer for limited-time offers"
+          - "Track abandonment reasons (survey optional)"
+        outputs:
+          - "exit_intent_config.json"
+        duration: "1 day"
+
+    checkpoint:
+      name: "Conversion Optimization QA"
+      criteria:
+        - "Booking engine loads in <3s"
+        - "Mobile checkout works flawlessly"
+        - "All payment methods tested and functional"
+        - "WhatsApp integration tested"
+        - "Exit-intent popup triggers correctly"
+      approvers:
+        - "hotel-direct-booking"
+        - "hotel-mkt-chief"
+      output_required: true
+
+    quality_gates:
+      - metric: "Booking engine load time"
+        threshold: "<3s"
+      - metric: "Mobile usability score"
+        threshold: ">90"
+      - metric: "Payment success rate"
+        threshold: ">98%"
+
+# ═══════════════════════════════════════════════════════════════
+# PHASE 4: RETARGETING SETUP
+# ═══════════════════════════════════════════════════════════════
+
+  - name: "Retargeting Setup"
+    id: "phase-4-retargeting"
+    duration: "3-5 days"
+    depends_on: ["phase-1-audit"]
+    agents:
+      - role: "hotel-ads-specialist"
+        responsibility: "primary"
+        tasks:
+          - "Install tracking pixels (Meta, Google)"
+          - "Create retargeting audiences (website visitors, abandoned carts)"
+          - "Build retargeting campaigns with exclusive direct booking offers"
+          - "Set up cross-channel retargeting (Google + Meta + Email)"
+
+    tasks:
+      - id: "retarget-001"
+        name: "Pixel Installation & Verification"
+        agent: "hotel-ads-specialist"
+        actions:
+          - "Install Meta Pixel and Conversions API"
+          - "Install Google Ads remarketing tag"
+          - "Set up custom events (page view, room view, checkout start, booking complete)"
+          - "Test pixel firing on all pages"
+          - "Verify conversion tracking accuracy"
+        outputs:
+          - "pixel_tracking_config.json"
+        duration: "1 day"
+
+      - id: "retarget-002"
+        name: "Audience Creation"
+        agent: "hotel-ads-specialist"
+        actions:
+          - "Create audiences: all website visitors (180 days)"
+          - "Create audience: room page viewers (90 days)"
+          - "Create audience: checkout abandoners (30 days)"
+          - "Create audience: past bookers (365 days)"
+          - "Set up exclusion audiences (recent bookers, avoid ad fatigue)"
+        outputs:
+          - "retargeting_audiences.json"
+        duration: "1 day"
+
+      - id: "retarget-003"
+        name: "Google Retargeting Campaigns"
+        agent: "hotel-ads-specialist"
+        actions:
+          - "Create Display remarketing campaign"
+          - "Set up YouTube remarketing ads"
+          - "Build dynamic remarketing (show viewed rooms)"
+          - "Set frequency caps (max 5 impressions/week)"
+          - "Allocate 15-20% of total ad budget"
+        outputs:
+          - "google_retargeting_campaigns.json"
+        duration: "1 day"
+
+      - id: "retarget-004"
+        name: "Meta Retargeting Campaigns"
+        agent: "hotel-ads-specialist"
+        actions:
+          - "Create Facebook/Instagram retargeting campaigns"
+          - "Build dynamic product ads (show viewed rooms)"
+          - "Create video ads for warm audiences"
+          - "Test carousel ads (multiple room types)"
+          - "Set frequency caps (max 3 impressions/week)"
+        outputs:
+          - "meta_retargeting_campaigns.json"
+        duration: "1 day"
+
+      - id: "retarget-005"
+        name: "Retargeting Creative Production"
+        agent: "hotel-ads-specialist"
+        actions:
+          - "Create 20+ retargeting ad variations"
+          - "Emphasize direct booking perks (upgrade, discount, flexible cancel)"
+          - "Use scarcity (limited rooms, flash sale)"
+          - "Add testimonials and social proof"
+          - "Test different CTAs (Reserve Agora, Garanta Desconto)"
+        outputs:
+          - "retargeting_ad_creatives.zip"
+        duration: "1 day"
+
+    checkpoint:
+      name: "Retargeting QA"
+      criteria:
+        - "All pixels firing correctly"
+        - "Audiences populating (minimum 100 users each)"
+        - "Campaigns launched with appropriate budgets"
+        - "Frequency caps set to avoid ad fatigue"
+      approvers:
+        - "hotel-ads-specialist"
+        - "hotel-mkt-chief"
+      output_required: true
+
+    quality_gates:
+      - metric: "Pixel accuracy"
+        threshold: "100%"
+      - metric: "Audience size"
+        threshold: ">100 per audience"
+
+# ═══════════════════════════════════════════════════════════════
+# PHASE 5: EMAIL CAPTURE & AUTOMATION
+# ═══════════════════════════════════════════════════════════════
+
+  - name: "Email Capture & Automation"
+    id: "phase-5-email"
+    duration: "5-7 days"
+    depends_on: ["phase-3-conversion"]
+    agents:
+      - role: "hotel-email-maestro"
+        responsibility: "primary"
+        tasks:
+          - "Create lead magnets to capture emails"
+          - "Build abandoned cart recovery sequences"
+          - "Set up post-stay email sequences"
+          - "Develop win-back campaigns for past guests"
+
+    tasks:
+      - id: "email-001"
+        name: "Lead Magnet Creation"
+        agent: "hotel-email-maestro"
+        actions:
+          - "Create 5% discount offer for email signup"
+          - "Design travel guide PDF (local attractions, restaurants)"
+          - "Develop 'Insider Tips' email series (5 emails)"
+          - "Create exit-intent popup with lead magnet"
+          - "Add email capture to blog articles"
+        outputs:
+          - "lead_magnets.zip"
+        duration: "2 days"
+
+      - id: "email-002"
+        name: "Abandoned Cart Sequence"
+        agent: "hotel-email-maestro"
+        actions:
+          - "Email 1: Reminder (1 hour after abandonment)"
+          - "Email 2: Incentive (24h - offer 5% discount)"
+          - "Email 3: Urgency (48h - limited time, rooms selling fast)"
+          - "Add dynamic content (show abandoned room with image)"
+          - "Include one-click return to checkout"
+        outputs:
+          - "abandoned_cart_sequence.json"
+        duration: "1 day"
+
+      - id: "email-003"
+        name: "Post-Stay Sequence"
+        agent: "hotel-email-maestro"
+        actions:
+          - "Email 1: Thank you (day after checkout, request review)"
+          - "Email 2: Re-booking incentive (7 days - 10% off next stay)"
+          - "Email 3: Referral program (14 days - refer a friend, get discount)"
+          - "Personalize based on stay preferences"
+        outputs:
+          - "post_stay_sequence.json"
+        duration: "1 day"
+
+      - id: "email-004"
+        name: "Win-Back Campaign"
+        agent: "hotel-email-maestro"
+        inputs:
+          - "guest_database"
+        actions:
+          - "Segment past guests who haven't booked in 6+ months"
+          - "Create 3-email win-back sequence"
+          - "Email 1: We miss you (nostalgia, highlights)"
+          - "Email 2: Exclusive offer (20% off, upgrade included)"
+          - "Email 3: Final call (48h deadline)"
+        outputs:
+          - "winback_campaign.json"
+        duration: "1 day"
+
+      - id: "email-005"
+        name: "Automation Setup & Testing"
+        agent: "hotel-email-maestro"
+        actions:
+          - "Configure all triggers in ESP (RD Station, Mailchimp)"
+          - "Set up segmentation rules"
+          - "Test all sequences with dummy data"
+          - "Verify tracking (opens, clicks, conversions)"
+          - "Monitor deliverability (spam score, inbox placement)"
+        outputs:
+          - "email_automation_config.json"
+        duration: "2 days"
+
+    checkpoint:
+      name: "Email Automation QA"
+      criteria:
+        - "All sequences tested and functional"
+        - "Deliverability >95%"
+        - "Mobile rendering verified"
+        - "Tracking links working"
+      approvers:
+        - "hotel-email-maestro"
+        - "hotel-mkt-chief"
+      output_required: true
+
+    quality_gates:
+      - metric: "Email deliverability"
+        threshold: ">95%"
+      - metric: "Spam score"
+        threshold: "<3/10"
+
+# ═══════════════════════════════════════════════════════════════
+# PHASE 6: LAUNCH & MONITOR
+# ═══════════════════════════════════════════════════════════════
+
+  - name: "Launch & Monitor"
+    id: "phase-6-launch"
+    duration: "Ongoing (weekly optimization)"
+    depends_on: ["phase-2-seo", "phase-3-conversion", "phase-4-retargeting", "phase-5-email"]
+    agents:
+      - role: "hotel-direct-booking"
+        responsibility: "primary"
+        tasks:
+          - "Monitor direct booking conversion rate"
+          - "Track CAC vs OTA commission savings"
+          - "Optimize funnel based on data"
+      - role: "hotel-ads-specialist"
+        responsibility: "secondary"
+        tasks:
+          - "Monitor retargeting performance"
+          - "Adjust bids and budgets"
+          - "Test new ad creatives"
+      - role: "hotel-email-maestro"
+        responsibility: "secondary"
+        tasks:
+          - "Monitor email engagement"
+          - "Optimize sequences based on performance"
+      - role: "hotel-seo-architect"
+        responsibility: "tertiary"
+        tasks:
+          - "Publish SEO content (2-3 articles/week)"
+          - "Monitor organic traffic growth"
+          - "Build backlinks"
+
+    tasks:
+      - id: "launch-001"
+        name: "Performance Dashboard Setup"
+        agents:
+          - "hotel-direct-booking"
+        actions:
+          - "Create real-time dashboard (Google Data Studio or Tableau)"
+          - "Track: direct booking %, revenue, CAC, conversion rate, ROI"
+          - "Compare: direct vs OTA performance"
+          - "Add: website traffic, email metrics, ad performance"
+          - "Share with management (weekly reports)"
+        outputs:
+          - "direct_booking_dashboard.json"
+        duration: "2 days"
+        frequency: "One-time setup"
+
+      - id: "launch-002"
+        name: "Daily Monitoring"
+        agents:
+          - "hotel-direct-booking"
+          - "hotel-ads-specialist"
+        actions:
+          - "Check dashboard every morning"
+          - "Monitor: direct bookings, conversion rate, CAC"
+          - "Identify anomalies (drops, spikes)"
+          - "Flag issues for immediate action"
+        outputs:
+          - "daily_performance_log.json"
+        duration: "30 min/day"
+        frequency: "Daily"
+
+      - id: "launch-003"
+        name: "Conversion Funnel Optimization"
+        agent: "hotel-direct-booking"
+        actions:
+          - "Analyze funnel drop-off points weekly"
+          - "A/B test landing pages (headline, CTA, images)"
+          - "Test booking engine variations (layout, fields)"
+          - "Optimize payment flow (reduce clicks)"
+          - "Implement user feedback"
+        outputs:
+          - "funnel_optimization_log.json"
+        duration: "2 hours/week"
+        frequency: "Weekly"
+
+      - id: "launch-004"
+        name: "Retargeting Optimization"
+        agent: "hotel-ads-specialist"
+        actions:
+          - "Review retargeting ROAS weekly"
+          - "Pause underperforming audiences or creatives"
+          - "Scale winning campaigns by 20%"
+          - "Refresh ad creatives every 2 weeks"
+          - "Adjust frequency caps based on engagement"
+        outputs:
+          - "retargeting_optimization_log.json"
+        duration: "1 hour/week"
+        frequency: "Weekly"
+
+      - id: "launch-005"
+        name: "Email Performance Optimization"
+        agent: "hotel-email-maestro"
+        actions:
+          - "Review email metrics weekly (open, click, conversion)"
+          - "A/B test subject lines and content"
+          - "Optimize send times"
+          - "Segment non-converters for different approach"
+          - "Clean list (remove bounces, unengaged)"
+        outputs:
+          - "email_optimization_log.json"
+        duration: "1 hour/week"
+        frequency: "Weekly"
+
+      - id: "launch-006"
+        name: "SEO Content Publishing"
+        agent: "hotel-seo-architect"
+        actions:
+          - "Publish 2-3 SEO articles per week"
+          - "Optimize existing pages based on performance"
+          - "Build backlinks (guest posts, partnerships)"
+          - "Monitor keyword rankings (track top 20 keywords)"
+          - "Update content for seasonal relevance"
+        outputs:
+          - "seo_content_log.json"
+        duration: "4 hours/week"
+        frequency: "Weekly"
+
+      - id: "launch-007"
+        name: "Weekly Strategy Review"
+        agents:
+          - "hotel-direct-booking"
+          - "hotel-mkt-chief"
+        actions:
+          - "Review week-over-week performance"
+          - "Compare direct booking % vs target"
+          - "Calculate CAC savings vs OTA commissions"
+          - "Identify top-performing channels"
+          - "Plan next week's priorities"
+        outputs:
+          - "weekly_strategy_review.pdf"
+        duration: "1 hour"
+        frequency: "Weekly"
+
+      - id: "launch-008"
+        name: "Monthly Reporting"
+        agent: "hotel-direct-booking"
+        actions:
+          - "Compile monthly performance report"
+          - "Calculate total direct booking revenue"
+          - "Calculate total commission savings"
+          - "Analyze channel ROI (SEO, retargeting, email)"
+          - "Document learnings and recommendations"
+          - "Present to management"
+        outputs:
+          - "monthly_direct_booking_report.pdf"
+        duration: "3 hours"
+        frequency: "Monthly"
+
+    checkpoint:
+      name: "30-Day Performance Review"
+      criteria:
+        - "Direct booking % increased by at least 5%"
+        - "CAC < 50% of OTA commission"
+        - "Website conversion rate improved"
+        - "Email sequences generating bookings"
+        - "Retargeting ROAS > 300%"
+      approvers:
+        - "hotel-direct-booking"
+        - "hotel-mkt-chief"
+      output_required: true
+      timing: "30 days after launch"
+
+    quality_gates:
+      - metric: "Direct booking share"
+        threshold: ">40% (Month 1), >50% (Month 3), >60% (Month 6)"
+      - metric: "Website conversion rate"
+        threshold: ">2.5%"
+      - metric: "CAC"
+        threshold: "<50% of OTA commission"
+      - metric: "Email conversion rate"
+        threshold: ">1.5%"
+      - metric: "Retargeting ROAS"
+        threshold: ">300%"
+
+# ═══════════════════════════════════════════════════════════════
+# ADVANCED TACTICS (PHASE 7)
+# ═══════════════════════════════════════════════════════════════
+
+  - name: "Advanced Tactics (Optional)"
+    id: "phase-7-advanced"
+    duration: "Ongoing"
+    depends_on: ["phase-6-launch"]
+    description: "Advanced tactics to further optimize direct bookings after foundation is solid"
+    agents:
+      - role: "hotel-direct-booking"
+      - role: "hotel-email-maestro"
+      - role: "hotel-guest-strategist"
+      - role: "hotel-ugc-curator"
+
+    tasks:
+      - id: "advanced-001"
+        name: "Loyalty Program"
+        agent: "hotel-guest-strategist"
+        actions:
+          - "Design points-based loyalty program"
+          - "Offer perks for repeat direct bookings"
+          - "Create VIP tiers (bronze, silver, gold)"
+          - "Integrate with booking engine"
+        outputs:
+          - "loyalty_program_design.pdf"
+
+      - id: "advanced-002"
+        name: "Referral Program"
+        agent: "hotel-direct-booking"
+        actions:
+          - "Create 'Refer a Friend' program (both get 10% off)"
+          - "Build referral tracking system"
+          - "Promote via post-stay email and social"
+        outputs:
+          - "referral_program_config.json"
+
+      - id: "advanced-003"
+        name: "Price Match Guarantee"
+        agent: "hotel-direct-booking"
+        actions:
+          - "Implement 'Best Rate Guarantee' (match OTA + 10% off)"
+          - "Create price match claim form"
+          - "Train staff on price match protocol"
+        outputs:
+          - "price_match_policy.pdf"
+
+      - id: "advanced-004"
+        name: "UGC Integration"
+        agent: "hotel-ugc-curator"
+        actions:
+          - "Feature guest photos on website"
+          - "Create UGC gallery on homepage"
+          - "Use UGC in retargeting ads"
+          - "Request permission and credit guests"
+        outputs:
+          - "ugc_integration_plan.json"
+
+      - id: "advanced-005"
+        name: "Chatbot for Booking Assistance"
+        agent: "hotel-direct-booking"
+        actions:
+          - "Implement AI chatbot for instant support"
+          - "Train bot on FAQs and booking flow"
+          - "Escalate complex queries to human"
+          - "Track chatbot-assisted bookings"
+        outputs:
+          - "chatbot_config.json"
+
+# ═══════════════════════════════════════════════════════════════
+# ROLLBACK & CONTINGENCY
+# ═══════════════════════════════════════════════════════════════
+
+rollback:
+  triggers:
+    - condition: "Direct booking % decreases by >5% for 2 consecutive weeks"
+      action: "Audit funnel, identify issue (technical, pricing, competition)"
+    - condition: "CAC exceeds OTA commission"
+      action: "Pause underperforming channels, reallocate budget"
+    - condition: "Website conversion rate drops below 1.5%"
+      action: "Revert recent booking engine changes, investigate technical issues"
+
+  contingency_plans:
+    - scenario: "OTA launches aggressive discount campaign"
+      actions:
+        - "Match discount temporarily on direct website"
+        - "Emphasize exclusive direct perks (can't be matched by OTA)"
+        - "Increase retargeting budget to capture traffic"
+    - scenario: "Booking engine technical issues"
+      actions:
+        - "Immediate escalation to tech team"
+        - "Promote WhatsApp bookings as backup"
+        - "Monitor lost booking estimates"
+        - "Compensate affected guests with discount"
+    - scenario: "Email deliverability drops"
+      actions:
+        - "Pause sends, investigate sender reputation"
+        - "Clean email list, remove bounces"
+        - "Warm up domain if needed"
+        - "Consider secondary ESP as backup"
+
+# ═══════════════════════════════════════════════════════════════
+# SUCCESS CRITERIA & HANDOFF
+# ═══════════════════════════════════════════════════════════════
+
+success_criteria:
+  primary:
+    - metric: "Direct booking share"
+      target: ">60%"
+      measurement: "Direct bookings / total bookings"
+    - metric: "CAC vs commission savings"
+      target: "CAC < 50% of OTA commission"
+      measurement: "Marketing spend / direct bookings vs OTA commission saved"
+    - metric: "Website conversion rate"
+      target: ">3%"
+      measurement: "Bookings / website visitors"
+
+  secondary:
+    - metric: "Email-driven bookings"
+      target: ">20% of direct bookings"
+    - metric: "Retargeting ROAS"
+      target: ">300%"
+    - metric: "SEO organic traffic"
+      target: "+50% YoY"
+    - metric: "Repeat guest rate"
+      target: ">40%"
+    - metric: "WhatsApp booking share"
+      target: ">15% of direct bookings"
+
+handoff:
+  to: "hotel-operations"
+  deliverables:
+    - "Direct booking performance dashboard (live)"
+    - "Monthly reporting template"
+    - "Optimized booking engine (ongoing maintenance plan)"
+    - "Email automation library (editable sequences)"
+    - "SEO content calendar (100+ pages planned)"
+    - "Retargeting campaigns (ongoing optimization guide)"
+  knowledge_transfer:
+    - "Train reception team on WhatsApp booking protocol"
+    - "Share best practices for rate parity maintenance"
+    - "Document CRO testing process for ongoing optimization"
+    - "Establish monthly review cadence with management"
+
+# ════════════════════════════════════════════════════════════════
+# 🔒 ENFORCEMENT ENGINE
+# Inspirado em: Cooper's Stage-Gate (P&G) + Salesforce Pipeline + Toyota Andon
+# ════════════════════════════════════════════════════════════════
+
+enforcement_engine:
+  version: "1.0.0"
+  protocol: "stage-gate"
+
+  # ──────────────────────────────────────────────────────────────
+  # STATE MACHINE
+  # ──────────────────────────────────────────────────────────────
+  state_machine:
+    initial_state: "phase-1-audit"
+    terminal_states: ["completed", "killed"]
+    transitions:
+      - from: "phase-1-audit"
+        to: "phase-2-seo"
+        gate: "G1"
+        trigger: "auto_on_gate_pass"
+      - from: "phase-1-audit"
+        to: "phase-3-conversion"
+        gate: "G1"
+        trigger: "auto_on_gate_pass"
+      - from: "phase-2-seo"
+        to: "phase-6-launch"
+        gate: "G2"
+        trigger: "auto_on_gate_pass"
+      - from: "phase-3-conversion"
+        to: "phase-4-retargeting"
+        gate: "G3"
+        trigger: "auto_on_gate_pass"
+      - from: "phase-4-retargeting"
+        to: "phase-5-email"
+        gate: "G4"
+        trigger: "auto_on_gate_pass"
+      - from: "phase-5-email"
+        to: "phase-6-launch"
+        gate: "G5"
+        trigger: "auto_on_gate_pass"
+      - from: "phase-6-launch"
+        to: "completed"
+        gate: "final-review"
+        trigger: "manual_approval"
+    invalid_transitions:
+      - from: "phase-1-audit"
+        to: "phase-4-retargeting"
+        reason: "Não pode configurar retargeting sem otimizar conversão primeiro"
+      - from: "phase-2-seo"
+        to: "phase-5-email"
+        reason: "SEO e Email são paralelos, mas Email depende de Conversion otimizado"
+      - from: "phase-3-conversion"
+        to: "phase-6-launch"
+        reason: "Não pode lançar sem retargeting e email configurados"
+
+  # ──────────────────────────────────────────────────────────────
+  # STAGE-GATES
+  # ──────────────────────────────────────────────────────────────
+  gates:
+    G1:
+      name: "Audit → SEO/Conversion Gate"
+      between: ["phase-1-audit", "phase-2-seo"]
+      gatekeeper: "hotel-mkt-chief"
+      sla: "48h"
+      must_meet:
+        - id: "G1-M1"
+          criterion: "Baseline de % direct booking atual documentado (ex: 28% direct, 72% OTA)"
+          validation: "Campo 'current_direct_pct' em channel_distribution_report.pdf está preenchido"
+          on_fail: "BLOCK"
+        - id: "G1-M2"
+          criterion: "Custo de OTA dependency calculado (comissões pagas últimos 12 meses)"
+          validation: "Campo 'total_ota_commission_12m' em channel_distribution_report.pdf >0"
+          on_fail: "BLOCK"
+        - id: "G1-M3"
+          criterion: "Tech stack documentado (booking engine, CMS, ESP, analytics)"
+          validation: "Seção 'Tech Stack' em booking_engine_audit.pdf lista todas ferramentas"
+          on_fail: "BLOCK"
+        - id: "G1-M4"
+          criterion: "Booking engine UX auditado com funnel drop-off mapeado"
+          validation: "booking_engine_audit.pdf contém seção 'Funnel Analysis' com % drop por etapa"
+          on_fail: "BLOCK"
+      should_meet:
+        - id: "G1-S1"
+          criterion: "Qualidade e profundidade do audit (acionabilidade dos insights)"
+          weight: 1.0
+          min_score: 8
+        - id: "G1-S2"
+          criterion: "Benchmark competitivo robusto (insights úteis sobre estratégias dos concorrentes)"
+          weight: 1.0
+          min_score: 7
+      kill_criteria:
+        - id: "G1-K1"
+          criterion: "Hotel não tem website próprio ou booking engine funcional"
+          action: "KILL + recomendar construir infraestrutura básica antes de campanha anti-OTA"
+        - id: "G1-K2"
+          criterion: "Direct booking já >80% (não há problema de OTA dependency)"
+          action: "KILL + direcionar esforços para outros objetivos (revenue, occupancy)"
+      decision_options: ["GO", "KILL", "HOLD", "RECYCLE"]
+
+    G2:
+      name: "SEO → Launch Gate"
+      between: ["phase-2-seo", "phase-6-launch"]
+      gatekeeper: "hotel-seo-architect"
+      sla: "48h"
+      must_meet:
+        - id: "G2-M1"
+          criterion: "Mínimo 50 páginas anti-OTA publicadas com meta tags otimizados"
+          validation: "Contar linhas em seo_content_plan.json onde 'status=published' ≥50"
+          on_fail: "BLOCK"
+        - id: "G2-M2"
+          criterion: "Estrutura de internal linking implementada (pillar + cluster pages)"
+          validation: "technical_seo_checklist.md marca 'Internal Linking' como 'DONE'"
+          on_fail: "BLOCK"
+        - id: "G2-M3"
+          criterion: "Site speed <3s em mobile (Core Web Vitals green)"
+          validation: "Campo 'mobile_load_time' em technical_seo_checklist.md <3.0"
+          on_fail: "BLOCK"
+      should_meet:
+        - id: "G2-S1"
+          criterion: "Qualidade do conteúdo SEO (útil, bem escrito, não spam)"
+          weight: 1.0
+          min_score: 7
+        - id: "G2-S2"
+          criterion: "Local SEO setup completo (GMB otimizado, citations)"
+          weight: 1.0
+          min_score: 8
+      kill_criteria:
+        - id: "G2-K1"
+          criterion: "Website não é mobile-responsive (falha crítica em 2025+)"
+          action: "HOLD + desenvolver versão mobile antes de continuar SEO"
+      decision_options: ["GO", "KILL", "HOLD", "RECYCLE"]
+
+    G3:
+      name: "Conversion → Retargeting Gate"
+      between: ["phase-3-conversion", "phase-4-retargeting"]
+      gatekeeper: "hotel-direct-booking"
+      sla: "48h"
+      must_meet:
+        - id: "G3-M1"
+          criterion: "Booking engine otimizado (checkout em max 3 cliques, campos reduzidos)"
+          validation: "booking_engine_improvements.json lista 'checkout_steps' ≤3"
+          on_fail: "BLOCK"
+        - id: "G3-M2"
+          criterion: "Price Parity Guarantee ativa e visível no site"
+          validation: "Screenshot de homepage mostrando badge 'Melhor Preço Garantido'"
+          on_fail: "BLOCK"
+        - id: "G3-M3"
+          criterion: "WhatsApp booking flow configurado e testado"
+          validation: "whatsapp_booking_setup.pdf contém seção 'Test Results' = PASS"
+          on_fail: "BLOCK"
+      should_meet:
+        - id: "G3-S1"
+          criterion: "UX score do booking engine (usabilidade, clareza)"
+          weight: 1.0
+          min_score: 8
+        - id: "G3-S2"
+          criterion: "Atratividade dos direct booking perks (realmente melhores que OTA?)"
+          weight: 1.0
+          min_score: 7
+      kill_criteria:
+        - id: "G3-K1"
+          criterion: "Booking pages sem SSL (erro de segurança crítico)"
+          action: "HOLD + implementar HTTPS antes de processar pagamentos"
+        - id: "G3-K2"
+          criterion: "Taxa de falha de pagamento >10% em testes (gateway instável)"
+          action: "HOLD + corrigir integração de pagamento"
+      decision_options: ["GO", "KILL", "HOLD", "RECYCLE"]
+
+    G4:
+      name: "Retargeting → Email Gate"
+      between: ["phase-4-retargeting", "phase-5-email"]
+      gatekeeper: "hotel-ads-specialist"
+      sla: "24h"
+      must_meet:
+        - id: "G4-M1"
+          criterion: "Pixels instalados em todas páginas (home, quartos, checkout)"
+          validation: "pixel_tracking_config.json lista 'pages_tracked' ≥5 com 'status=active'"
+          on_fail: "BLOCK"
+        - id: "G4-M2"
+          criterion: "Abandoned cart trigger configurado (<2h após abandono)"
+          validation: "retargeting_audiences.json contém 'abandoned_cart' com 'trigger_delay' <120min"
+          on_fail: "BLOCK"
+        - id: "G4-M3"
+          criterion: "Dynamic ads configurados (mostram quarto visto pelo usuário)"
+          validation: "meta_retargeting_campaigns.json tem campo 'dynamic_product_ads' = true"
+          on_fail: "BLOCK"
+      should_meet:
+        - id: "G4-S1"
+          criterion: "Qualidade criativa dos retargeting ads (relevantes, não repetitivos)"
+          weight: 1.0
+          min_score: 7
+        - id: "G4-S2"
+          criterion: "Frequency caps adequados (não irritar usuário com excesso de ads)"
+          weight: 1.0
+          min_score: 8
+      kill_criteria:
+        - id: "G4-K1"
+          criterion: "Pixel dispara mas nenhum dado flui para plataforma (erro técnico)"
+          action: "HOLD + debug pixel implementation, testar novamente"
+      decision_options: ["GO", "KILL", "HOLD", "RECYCLE"]
+
+    G5:
+      name: "Email → Launch Gate"
+      between: ["phase-5-email", "phase-6-launch"]
+      gatekeeper: "hotel-email-maestro"
+      sla: "24h"
+      must_meet:
+        - id: "G5-M1"
+          criterion: "Welcome, abandoned cart e post-stay sequences testadas end-to-end"
+          validation: "email_automation_config.json lista 3 sequências com 'test_status=PASS'"
+          on_fail: "BLOCK"
+        - id: "G5-M2"
+          criterion: "Deliverability >90% em teste com amostra"
+          validation: "Campo 'deliverability_rate' em email_automation_config.json >0.90"
+          on_fail: "BLOCK"
+        - id: "G5-M3"
+          criterion: "Unsubscribe link presente e funcional (compliance LGPD)"
+          validation: "Teste manual ou automated check em todos templates = 100% OK"
+          on_fail: "BLOCK"
+      should_meet:
+        - id: "G5-S1"
+          criterion: "Qualidade do copy de email (engaging, personalizado)"
+          weight: 1.0
+          min_score: 7
+        - id: "G5-S2"
+          criterion: "Segmentação bem definida (não enviar email genérico para todos)"
+          weight: 1.0
+          min_score: 8
+      kill_criteria:
+        - id: "G5-K1"
+          criterion: "Deliverability <80% consistentemente (sender reputation problemático)"
+          action: "HOLD + warm up domain, resolver SPF/DKIM, limpar lista"
+        - id: "G5-K2"
+          criterion: "Automação envia para segmento errado em teste (falha crítica)"
+          action: "HOLD + corrigir rules de segmentação, re-testar"
+      decision_options: ["GO", "KILL", "HOLD", "RECYCLE"]
+
+  # ──────────────────────────────────────────────────────────────
+  # AUTOMATED HANDOFFS
+  # ──────────────────────────────────────────────────────────────
+  handoffs:
+    - id: "H1"
+      from_phase: "phase-1-audit"
+      to_phase: "phase-2-seo"
+      from_agent: "@hotel-direct-booking"
+      to_agent: "@hotel-seo-architect"
+      trigger: "gate_G1_passed"
+      deliverables:
+        - name: "channel_distribution_report.pdf"
+          format: "pdf"
+          required: true
+        - name: "booking_engine_audit.pdf"
+          format: "pdf"
+          required: true
+        - name: "rate_parity_report.xlsx"
+          format: "excel"
+          required: true
+      acceptance_criteria:
+        - "Baseline metrics claramente documentados"
+        - "Funnel drop-off identificado com %"
+        - "Tech stack completo (não faltam ferramentas críticas)"
+      sla: "24h"
+      on_timeout:
+        action: "escalate"
+        notify: "@hotel-mkt-chief"
+      on_reject:
+        action: "return_to_sender"
+        message: "Audit incompleto. Revisar: [itens faltantes]. Prazo: 24h."
+
+    - id: "H2"
+      from_phase: "phase-2-seo"
+      to_phase: "phase-6-launch"
+      from_agent: "@hotel-seo-architect"
+      to_agent: "@hotel-direct-booking"
+      trigger: "gate_G2_passed"
+      deliverables:
+        - name: "seo_content_plan.json"
+          format: "json"
+          required: true
+        - name: "technical_seo_checklist.md"
+          format: "markdown"
+          required: true
+        - name: "local_seo_setup.pdf"
+          format: "pdf"
+          required: true
+      acceptance_criteria:
+        - "50+ páginas publicadas e indexadas"
+        - "Site speed <3s mobile"
+        - "Schema markup implementado e validado"
+      sla: "24h"
+      on_timeout:
+        action: "escalate"
+        notify: "@hotel-mkt-chief"
+      on_reject:
+        action: "return_to_sender"
+        message: "SEO foundation incompleto. Problemas: [lista]. Corrigir antes de launch."
+
+    - id: "H3"
+      from_phase: "phase-3-conversion"
+      to_phase: "phase-4-retargeting"
+      from_agent: "@hotel-direct-booking"
+      to_agent: "@hotel-ads-specialist"
+      trigger: "gate_G3_passed"
+      deliverables:
+        - name: "booking_engine_improvements.json"
+          format: "json"
+          required: true
+        - name: "whatsapp_booking_setup.pdf"
+          format: "pdf"
+          required: true
+        - name: "direct_booking_perks.json"
+          format: "json"
+          required: true
+      acceptance_criteria:
+        - "Booking engine testado e funcional"
+        - "WhatsApp flow operacional (testado com 5+ bookings simulados)"
+        - "Perks claramente visíveis no site"
+      sla: "24h"
+      on_timeout:
+        action: "escalate"
+        notify: "@hotel-mkt-chief"
+      on_reject:
+        action: "return_to_sender"
+        message: "Conversion optimization não atende critérios. Revisar: [problemas]. Prazo: 48h."
+
+    - id: "H4"
+      from_phase: "phase-4-retargeting"
+      to_phase: "phase-5-email"
+      from_agent: "@hotel-ads-specialist"
+      to_agent: "@hotel-email-maestro"
+      trigger: "gate_G4_passed"
+      deliverables:
+        - name: "pixel_tracking_config.json"
+          format: "json"
+          required: true
+        - name: "retargeting_audiences.json"
+          format: "json"
+          required: true
+        - name: "google_retargeting_campaigns.json"
+          format: "json"
+          required: true
+        - name: "meta_retargeting_campaigns.json"
+          format: "json"
+          required: true
+      acceptance_criteria:
+        - "Pixels 100% funcionais"
+        - "Audiences populando (min 100 users cada)"
+        - "Campanhas live com budget ativo"
+      sla: "24h"
+      on_timeout:
+        action: "escalate"
+        notify: "@hotel-mkt-chief"
+      on_reject:
+        action: "pause_campaigns"
+        message: "Erro em retargeting setup. Pausar campaigns, corrigir: [issue]. Re-lançar após fix."
+
+    - id: "H5"
+      from_phase: "phase-5-email"
+      to_phase: "phase-6-launch"
+      from_agent: "@hotel-email-maestro"
+      to_agent: "@hotel-direct-booking"
+      trigger: "gate_G5_passed"
+      deliverables:
+        - name: "lead_magnets.zip"
+          format: "zip"
+          required: true
+        - name: "abandoned_cart_sequence.json"
+          format: "json"
+          required: true
+        - name: "post_stay_sequence.json"
+          format: "json"
+          required: true
+        - name: "email_automation_config.json"
+          format: "json"
+          required: true
+      acceptance_criteria:
+        - "Todas sequências testadas end-to-end"
+        - "Deliverability >90%"
+        - "Compliance LGPD verificado (unsubscribe, opt-in)"
+      sla: "24h"
+      on_timeout:
+        action: "escalate"
+        notify: "@hotel-mkt-chief"
+      on_reject:
+        action: "pause_automations"
+        message: "Email automation não pronta. Pausar envios, corrigir: [problemas]. Re-testar."
+
+  # ──────────────────────────────────────────────────────────────
+  # AUTO-ROLLBACK TRIGGERS
+  # ──────────────────────────────────────────────────────────────
+  auto_rollback:
+    triggers:
+      - id: "R1"
+        condition: "Direct booking % diminui >5% por 2 semanas consecutivas (vs baseline)"
+        action: "pause"
+        recovery: "1. Auditar funnel completo (onde está vazando?). 2. Verificar se OTAs lançaram promoção agressiva. 3. Revisar pricing e perks diretos. 4. A/B testar mudanças."
+        notify: "@hotel-direct-booking + @hotel-mkt-chief"
+      - id: "R2"
+        condition: "Abandoned cart recovery rate <10% (abaixo do esperado 15%+)"
+        action: "pause"
+        recovery: "1. Revisar timing dos emails (muito cedo? muito tarde?). 2. Testar oferta mais agressiva (10% desconto). 3. Adicionar urgência (limited rooms). 4. Simplificar processo de checkout."
+        notify: "@hotel-email-maestro"
+      - id: "R3"
+        condition: "Violação de rate parity detectada (site direct >OTA por >2%)"
+        action: "alert"
+        recovery: "1. Ajustar pricing imediatamente no booking engine. 2. Verificar contratos OTA (permitido oferecer perks mas não preço menor). 3. Comunicar fix aos parceiros se necessário."
+        notify: "@hotel-direct-booking + @hotel-manager"
+      - id: "R4"
+        condition: "Website conversion rate cai abaixo de 1.5% (vs target 3%)"
+        action: "pause_traffic"
+        recovery: "1. Pausar ads temporariamente. 2. Reverter mudanças recentes no booking engine se houver. 3. Verificar issues técnicos (load time, mobile, payment gateway). 4. A/B testar nova LP. 5. Relançar gradualmente."
+        notify: "@hotel-direct-booking"
+      - id: "R5"
+        condition: "CAC excede comissão média de OTA (ex: CAC >R$150 quando OTA cobra 18% = ~R$120)"
+        action: "pause"
+        recovery: "1. Pausar canais com CAC muito alto. 2. Analisar onde está o gasto excessivo (ads ineficazes? targeting ruim?). 3. Realocar budget para canais orgânicos (SEO, email). 4. Revisar estratégia de paid media."
+        notify: "@hotel-mkt-chief + @hotel-ads-specialist"

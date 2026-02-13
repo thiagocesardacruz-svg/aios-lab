@@ -1,0 +1,99 @@
+# Experiment Workflow
+# Design and run systematic growth experiments
+# Version: 1.0.0
+
+name: experiment
+version: "1.0.0"
+description: "Design, execute, and analyze growth experiments systematically"
+
+trigger:
+  command: "/growth/experiment"
+  inputs:
+    - name: hypothesis
+      type: string
+      required: true
+      description: "What we believe will happen"
+    - name: metric
+      type: string
+      required: true
+      description: "Primary success metric"
+    - name: funnel_stage
+      type: string
+      required: false
+      description: "AARRR stage (acquisition/activation/retention/referral/revenue)"
+
+steps:
+  - id: design
+    name: "Design Experiment"
+    agent: growth-lead
+    task: design-experiment
+    inputs:
+      hypothesis: "{{inputs.hypothesis}}"
+      metric: "{{inputs.metric}}"
+    outputs:
+      - experiment_design
+
+  - id: calculate
+    name: "Calculate Sample Size"
+    agent: data-analyst
+    task: calculate-sample-size
+    inputs:
+      baseline: "{{design.baseline}}"
+      mde: "{{design.minimum_detectable_effect}}"
+    outputs:
+      - sample_size
+      - duration_estimate
+
+  - id: setup
+    name: "Setup Test"
+    agent: growth-hacker
+    task: setup-ab-test
+    inputs:
+      design: "{{design.experiment_design}}"
+      sample_size: "{{calculate.sample_size}}"
+    outputs:
+      - test_config
+      - tracking_plan
+
+  - id: monitor
+    name: "Monitor Progress"
+    agent: data-analyst
+    task: monitor-experiment
+    inputs:
+      test_id: "{{setup.test_id}}"
+    outputs:
+      - progress_report
+      - significance_check
+
+  - id: analyze
+    name: "Analyze Results"
+    agent: data-analyst
+    task: analyze-experiment
+    inputs:
+      test_id: "{{setup.test_id}}"
+      data: "{{monitor.data}}"
+    outputs:
+      - analysis_report
+      - recommendation
+
+  - id: document
+    name: "Document Learnings"
+    agent: growth-lead
+    task: document-experiment
+    inputs:
+      design: "{{design.experiment_design}}"
+      results: "{{analyze.analysis_report}}"
+    outputs:
+      - experiment_record
+      - learnings
+
+outputs:
+  - experiment_design
+  - analysis_report
+  - learnings
+
+quality:
+  require_hypothesis: true
+  require_sample_size: true
+  require_significance: true
+  min_confidence: 0.95

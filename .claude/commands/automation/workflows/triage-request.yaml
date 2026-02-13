@@ -1,0 +1,150 @@
+# Triage Request Workflow
+# Classifica requests de automação por complexidade e prioridade
+
+name: "Triage Automation Request"
+version: "1.0.0"
+description: "Classifica pedidos de automação por complexidade, prioridade e esforço estimado"
+
+trigger:
+  type: "manual"
+  command: "/auto triage"
+
+inputs:
+  - name: "request_id"
+    type: "string"
+    required: true
+
+  - name: "description"
+    type: "string"
+    required: true
+
+  - name: "requesting_squad"
+    type: "string"
+    required: true
+
+  - name: "urgency"
+    type: "enum"
+    values: ["low", "medium", "high", "critical"]
+    default: "medium"
+
+steps:
+  - id: "analyze_request"
+    agent: "automation-lead"
+    action: "Analisar descrição do request"
+    output:
+      use_case: "string"
+      triggers_identified: "array"
+      outputs_expected: "array"
+      integrations_needed: "array"
+
+  - id: "classify_complexity"
+    agent: "automation-lead"
+    action: "Classificar complexidade"
+    depends_on: ["analyze_request"]
+    rules:
+      - condition: "nodes_estimate <= 3 AND no_ai"
+        result: "simple"
+      - condition: "nodes_estimate <= 10 OR has_ai"
+        result: "medium"
+      - condition: "nodes_estimate > 10 OR multi_system"
+        result: "complex"
+    output:
+      complexity: "simple | medium | complex"
+      nodes_estimate: "number"
+      has_ai: "boolean"
+
+  - id: "check_existing"
+    agent: "automation-lead"
+    action: "Verificar workflows existentes similares"
+    depends_on: ["analyze_request"]
+    source: "data/workflow-registry.yaml"
+    output:
+      similar_workflow: "string | null"
+      reuse_potential: "percentage"
+
+  - id: "calculate_rice"
+    agent: "automation-lead"
+    action: "Calcular RICE score"
+    depends_on: ["classify_complexity"]
+    formula:
+      reach: "Quantos squads/clientes usarão? (1-10)"
+      impact: "Qual economia de tempo/custo? (1-10)"
+      confidence: "Temos todos os requisitos? (0.5-1.0)"
+      effort: "Horas estimadas de build"
+      score: "(reach * impact * confidence) / effort"
+    output:
+      rice_score: "number"
+      reach: "number"
+      impact: "number"
+      confidence: "number"
+      effort_hours: "number"
+
+  - id: "assign_priority"
+    agent: "automation-lead"
+    action: "Atribuir prioridade final"
+    depends_on: ["calculate_rice"]
+    rules:
+      - condition: "urgency == 'critical' OR rice_score > 50"
+        result: "P0"
+      - condition: "rice_score > 20"
+        result: "P1"
+      - condition: "rice_score > 10"
+        result: "P2"
+      - default: "P3"
+    output:
+      priority: "P0 | P1 | P2 | P3"
+
+  - id: "estimate_delivery"
+    agent: "automation-lead"
+    action: "Estimar data de entrega"
+    depends_on: ["classify_complexity", "assign_priority"]
+    rules:
+      simple: "1-2 days"
+      medium: "3-5 days"
+      complex: "1-2 weeks"
+    output:
+      estimated_delivery: "date"
+
+  - id: "route_to_agent"
+    agent: "automation-lead"
+    action: "Rotear para agente apropriado"
+    depends_on: ["classify_complexity", "check_existing"]
+    rules:
+      - condition: "similar_workflow AND reuse_potential > 70%"
+        assign: "n8n-builder"
+        action: "Adaptar workflow existente"
+      - condition: "complexity == 'simple'"
+        assign: "n8n-builder"
+        action: "Build direto"
+      - condition: "complexity == 'medium' OR complexity == 'complex'"
+        assign: "n8n-architect"
+        action: "Design primeiro"
+    output:
+      assigned_to: "string"
+      next_action: "string"
+
+outputs:
+  - name: "triage_result"
+    type: "object"
+    schema:
+      request_id: "string"
+      complexity: "string"
+      priority: "string"
+      rice_score: "number"
+      estimated_effort: "string"
+      estimated_delivery: "date"
+      assigned_to: "string"
+      next_action: "string"
+      similar_workflow: "string | null"
+
+handover:
+  from_agent: "automation-lead"
+  to_agent: "{assigned_to}"
+  artifact_type: "triaged_request"
+  required_fields:
+    - request_id
+    - use_case
+    - complexity
+    - priority
+    - integrations_needed
+  confidence: "high"

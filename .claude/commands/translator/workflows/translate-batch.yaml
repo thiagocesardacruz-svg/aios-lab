@@ -1,0 +1,99 @@
+# Translate Batch Workflow
+# Squad: translator
+# Version: 1.0.0
+
+name: translate-batch
+description: "Batch translation for multiple content pieces"
+version: "1.0.0"
+
+trigger:
+  command: "/translate/translate-batch"
+  inputs:
+    - name: content_list
+      type: list
+      required: true
+      description: "List of content items to translate"
+    - name: source_language
+      type: string
+      required: false
+      default: "EN"
+    - name: target_language
+      type: string
+      required: true
+      description: "Target language code"
+    - name: content_type
+      type: string
+      required: false
+      default: "mixed"
+
+steps:
+  - id: batch-analyze
+    name: "Analyze Batch"
+    agent: translation-lead
+    action: analyze-batch
+    inputs:
+      content_list: "{{inputs.content_list}}"
+      source_language: "{{inputs.source_language}}"
+    outputs:
+      - batch_analysis
+      - shared_glossary
+      - estimated_effort
+
+  - id: batch-translate
+    name: "Translate Batch"
+    agent: translators
+    action: translate-batch
+    inputs:
+      content_list: "{{inputs.content_list}}"
+      target_language: "{{inputs.target_language}}"
+      glossary: "{{steps.batch-analyze.outputs.shared_glossary}}"
+    outputs:
+      - translations
+      - batch_notes
+
+  - id: batch-review
+    name: "Batch Quality Check"
+    agent: translation-lead
+    action: batch-review
+    inputs:
+      originals: "{{inputs.content_list}}"
+      translations: "{{steps.batch-translate.outputs.translations}}"
+    outputs:
+      - review_summary
+      - flagged_items
+
+  - id: finalize-batch
+    name: "Finalize Batch"
+    agent: translation-lead
+    action: finalize-batch
+    inputs:
+      translations: "{{steps.batch-translate.outputs.translations}}"
+      review: "{{steps.batch-review.outputs}}"
+    outputs:
+      - final_translations
+      - batch_report
+
+output:
+  format: markdown
+  template: |
+    # Batch Translation Complete
+
+    ## Summary
+    - **Items Translated:** {{content_list.length}}
+    - **Source:** {{inputs.source_language}}
+    - **Target:** {{inputs.target_language}}
+
+    ## Results
+    {{batch_report}}
+
+    ## Translations
+    {{for item in final_translations}}
+    ### Item {{item.index}}
+    **Original:** {{item.original}}
+    **Translation:** {{item.translation}}
+    {{endfor}}
+
+success_criteria:
+  - "All items translated"
+  - "Terminology consistent across batch"
+  - "Quality check passed"

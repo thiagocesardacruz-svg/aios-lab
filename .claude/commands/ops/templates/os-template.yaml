@@ -1,0 +1,38 @@
+# Service Order Template
+# Usado por /ops/new-task para criar novas OS
+
+os_id: "{os_id}"
+title: "{title}"
+squad: "{squad}"
+workflow: "{workflow}"
+status: "intake"
+priority: "{priority}"
+
+requester: "{requester}"
+agents_used: []
+
+created_at: "{created_at}"
+started_at: null
+completed_at: null
+duration_minutes: null
+
+tokens:
+  input: 0
+  output: 0
+
+cost:
+  estimated_eur: 0.00
+  actual_eur: null
+  category: "EXEC"
+  mode: "OP"
+
+outputs: []
+
+blocked_reason: null
+blocked_by: null
+
+project_id: null
+project_name: null
+
+tags: []
+notes: null

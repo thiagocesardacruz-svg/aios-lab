@@ -1,0 +1,1504 @@
+# ═══════════════════════════════════════════════════════════════
+# AIOS Workflow: Seasonal Campaign (Hotel Marketing)
+# ═══════════════════════════════════════════════════════════════
+# Squad: hotel-mkt
+# Version: 1.0.0
+# Duration: 4-6 weeks
+# Target: Complete seasonal campaign launch (Carnaval, Réveillon, Férias, São João)
+# DNA: Hormozi (SUBGN offers) + Conley (guest psychographics) + Schrager (boutique storytelling)
+# ═══════════════════════════════════════════════════════════════
+
+workflow:
+  name: "Seasonal Campaign Launch"
+  id: "wf-seasonal-campaign"
+  squad: "hotel-mkt"
+  version: "1.0.0"
+
+  metadata:
+    description: "Complete seasonal campaign lifecycle from research to optimization"
+    target_audience: "AB class Brazilian travelers"
+    campaign_types:
+      - "Carnaval (Jan-Feb)"
+      - "Réveillon (Nov-Dec)"
+      - "Férias de Verão (Dec-Feb)"
+      - "Férias de Julho (Jul)"
+      - "São João (Jun)"
+      - "Feriados Prolongados"
+    success_metrics:
+      - "ROI > 4x ad spend"
+      - "Direct booking share > 60%"
+      - "Email open rate > 35%"
+      - "Social engagement rate > 8%"
+      - "Conversion rate > 3%"
+
+  inputs:
+    - name: "campaign_brief"
+      type: "document"
+      required: true
+      description: "Season, dates, hotel capacity, budget, special constraints"
+    - name: "historical_data"
+      type: "dataset"
+      required: false
+      description: "Previous seasonal campaign performance"
+    - name: "budget_allocation"
+      type: "number"
+      required: true
+      description: "Total marketing budget in BRL"
+    - name: "target_occupancy"
+      type: "percentage"
+      required: true
+      description: "Desired occupancy rate for the season"
+
+  outputs:
+    - name: "campaign_strategy"
+      type: "document"
+      description: "Complete strategy with segments, messaging, channels"
+    - name: "grand_slam_offer"
+      type: "package"
+      description: "Irresistible offer with SUBGN framework applied"
+    - name: "content_library"
+      type: "collection"
+      description: "All copy, visuals, ads, emails, social posts"
+    - name: "ad_campaigns"
+      type: "collection"
+      description: "150+ ad variations across Google/Meta platforms"
+    - name: "email_sequences"
+      type: "automation"
+      description: "7-10 email launch sequence with triggers"
+    - name: "performance_dashboard"
+      type: "analytics"
+      description: "Real-time metrics: ROI, conversions, revenue, bookings"
+
+  duration:
+    estimated: "4-6 weeks"
+    phases:
+      research: "3-5 days"
+      strategy: "5-7 days"
+      offer_creation: "3-5 days"
+      content_production: "7-10 days"
+      ads_setup: "5-7 days"
+      email_launch: "3-5 days"
+      execution_optimization: "14-21 days (ongoing)"
+
+# ═══════════════════════════════════════════════════════════════
+# PHASE 1: RESEARCH & INTELLIGENCE
+# ═══════════════════════════════════════════════════════════════
+
+phases:
+  - name: "Research & Intelligence"
+    id: "phase-1-research"
+    duration: "3-5 days"
+    agents:
+      - role: "hotel-trend-hunter"
+        responsibility: "primary"
+        tasks:
+          - "Analyze Google Trends for seasonal keywords (last 3 years)"
+          - "Monitor competitor campaigns (pricing, offers, messaging)"
+          - "Track social media conversations (#CarnavalRJ, #Reveillon2026)"
+          - "Identify emerging micro-trends (sustainable travel, workations)"
+          - "Scrape OTA pricing data for competitive intelligence"
+
+    tasks:
+      - id: "research-001"
+        name: "Trend Analysis"
+        agent: "hotel-trend-hunter"
+        inputs:
+          - "campaign_brief"
+          - "historical_data"
+        actions:
+          - "Query Google Trends API for seasonal keywords"
+          - "Analyze search volume patterns (3-year trend)"
+          - "Identify peak interest dates and booking windows"
+          - "Extract top related queries and rising topics"
+        outputs:
+          - "trend_report.pdf"
+        duration: "1 day"
+
+      - id: "research-002"
+        name: "Competitor Intelligence"
+        agent: "hotel-trend-hunter"
+        actions:
+          - "Monitor top 10 competitors' websites and booking engines"
+          - "Track pricing strategies (early bird, last minute, packages)"
+          - "Analyze competitor ad creatives (Meta Ad Library)"
+          - "Document unique selling propositions and offers"
+          - "Identify gaps and opportunities"
+        outputs:
+          - "competitor_matrix.xlsx"
+        duration: "2 days"
+
+      - id: "research-003"
+        name: "Social Listening"
+        agent: "hotel-trend-hunter"
+        actions:
+          - "Monitor seasonal hashtags and conversations"
+          - "Identify guest pain points and desires"
+          - "Track influencer content and engagement"
+          - "Analyze sentiment around seasonal travel"
+        outputs:
+          - "social_listening_insights.md"
+        duration: "1 day"
+
+      - id: "research-004"
+        name: "Pricing Intelligence"
+        agent: "hotel-trend-hunter"
+        actions:
+          - "Scrape OTA pricing for competitive set"
+          - "Analyze rate parity compliance"
+          - "Calculate market pricing index"
+          - "Recommend dynamic pricing strategy"
+        outputs:
+          - "pricing_intelligence.json"
+        duration: "1 day"
+
+    checkpoint:
+      name: "Research Validation"
+      criteria:
+        - "Trend report covers minimum 20 relevant keywords"
+        - "Competitor matrix includes at least 10 properties"
+        - "Social listening captures 500+ mentions"
+        - "Pricing data includes 30-day forward calendar"
+      approvers:
+        - "hotel-mkt-chief"
+      output_required: true
+
+    quality_gates:
+      - metric: "Data completeness"
+        threshold: ">95%"
+      - metric: "Insight actionability score"
+        threshold: ">8/10"
+
+# ═══════════════════════════════════════════════════════════════
+# PHASE 2: STRATEGY & PLANNING
+# ═══════════════════════════════════════════════════════════════
+
+  - name: "Strategy & Planning"
+    id: "phase-2-strategy"
+    duration: "5-7 days"
+    depends_on: ["phase-1-research"]
+    agents:
+      - role: "hotel-mkt-chief"
+        responsibility: "primary"
+        tasks:
+          - "Define campaign objectives (revenue, occupancy, direct bookings)"
+          - "Allocate budget across channels (Google, Meta, Email, SEO)"
+          - "Set KPIs and success metrics"
+          - "Approve final strategy document"
+      - role: "hotel-guest-strategist"
+        responsibility: "secondary"
+        tasks:
+          - "Define target segments (RFM, psychographics, behavioral)"
+          - "Craft messaging pillars for each segment"
+          - "Map guest journey and touchpoints"
+          - "Develop emotional triggers and value propositions"
+
+    tasks:
+      - id: "strategy-001"
+        name: "Segmentation & Targeting"
+        agent: "hotel-guest-strategist"
+        inputs:
+          - "trend_report.pdf"
+          - "competitor_matrix.xlsx"
+          - "historical_data"
+        actions:
+          - "Analyze guest database using RFM model"
+          - "Define 5-7 primary target segments"
+          - "Create psychographic profiles (desires, fears, values)"
+          - "Map segments to seasonal motivations"
+        outputs:
+          - "segment_profiles.json"
+        duration: "2 days"
+
+      - id: "strategy-002"
+        name: "Messaging Architecture"
+        agent: "hotel-guest-strategist"
+        actions:
+          - "Develop core messaging pillars (3-5 per segment)"
+          - "Define emotional hooks (scarcity, exclusivity, FOMO)"
+          - "Create value proposition hierarchy"
+          - "Map messaging to funnel stages (awareness → conversion)"
+        outputs:
+          - "messaging_framework.md"
+        duration: "2 days"
+
+      - id: "strategy-003"
+        name: "Channel Strategy"
+        agent: "hotel-mkt-chief"
+        inputs:
+          - "budget_allocation"
+          - "segment_profiles.json"
+        actions:
+          - "Allocate budget by channel (Google 40%, Meta 35%, Email 15%, Other 10%)"
+          - "Define channel-specific objectives"
+          - "Set CAC targets per channel"
+          - "Plan cross-channel attribution model"
+        outputs:
+          - "channel_budget_plan.xlsx"
+        duration: "1 day"
+
+      - id: "strategy-004"
+        name: "Campaign Timeline"
+        agent: "hotel-mkt-chief"
+        actions:
+          - "Define campaign phases (teaser, launch, last-call)"
+          - "Set key dates and milestones"
+          - "Plan promotional calendar (early bird, flash sales)"
+          - "Coordinate with operations (inventory, staffing)"
+        outputs:
+          - "campaign_timeline.gantt"
+        duration: "1 day"
+
+      - id: "strategy-005"
+        name: "KPI Dashboard Setup"
+        agent: "hotel-mkt-chief"
+        actions:
+          - "Define primary KPIs (ROI, ROAS, conversion rate)"
+          - "Set secondary metrics (CTR, CPC, email open rate)"
+          - "Configure analytics tracking (GA4, Meta Pixel, email)"
+          - "Create real-time dashboard template"
+        outputs:
+          - "kpi_dashboard_config.json"
+        duration: "1 day"
+
+    checkpoint:
+      name: "Strategy Approval"
+      criteria:
+        - "Segment profiles validated by hotel manager"
+        - "Budget allocation approved by finance"
+        - "Messaging framework tested with focus group (optional)"
+        - "Timeline feasible with operations team"
+      approvers:
+        - "hotel-mkt-chief"
+        - "hotel-manager"
+      output_required: true
+
+    quality_gates:
+      - metric: "Segment definition clarity"
+        threshold: ">9/10"
+      - metric: "Budget allocation ROI projection"
+        threshold: ">4x"
+
+# ═══════════════════════════════════════════════════════════════
+# PHASE 3: OFFER CREATION
+# ═══════════════════════════════════════════════════════════════
+
+  - name: "Offer Creation"
+    id: "phase-3-offer"
+    duration: "3-5 days"
+    depends_on: ["phase-2-strategy"]
+    agents:
+      - role: "hotel-offer-architect"
+        responsibility: "primary"
+        tasks:
+          - "Design Grand Slam Offer using SUBGN framework"
+          - "Calculate pricing and margin impact"
+          - "Create offer variations for A/B testing"
+          - "Develop scarcity mechanisms (limited inventory, deadlines)"
+
+    tasks:
+      - id: "offer-001"
+        name: "Grand Slam Offer Design"
+        agent: "hotel-offer-architect"
+        inputs:
+          - "segment_profiles.json"
+          - "messaging_framework.md"
+          - "pricing_intelligence.json"
+        actions:
+          - "Apply SUBGN framework: Scarcity + Urgency + Bonus + Guarantee + Naming"
+          - "Design core package (accommodation + exclusive bonuses)"
+          - "Add high-value bonuses (spa credit, late checkout, upgrade, amenities)"
+          - "Create guarantee (flexible cancellation, best rate guarantee)"
+          - "Craft irresistible naming (Reveillon Royal Experience, Carnaval VIP Escape)"
+        outputs:
+          - "grand_slam_offer.json"
+        duration: "2 days"
+
+      - id: "offer-002"
+        name: "Pricing Strategy"
+        agent: "hotel-offer-architect"
+        actions:
+          - "Calculate cost-plus margin for base package"
+          - "Design tiered pricing (standard, premium, VIP)"
+          - "Set early-bird discounts (20-30% off)"
+          - "Plan flash sale mechanics (24-48h limited offers)"
+          - "Ensure rate parity compliance with OTAs"
+        outputs:
+          - "pricing_tiers.xlsx"
+        duration: "1 day"
+
+      - id: "offer-003"
+        name: "Scarcity & Urgency Mechanisms"
+        agent: "hotel-offer-architect"
+        actions:
+          - "Set inventory caps per offer tier"
+          - "Define booking deadlines (early bird, regular, last minute)"
+          - "Create countdown timers for website and emails"
+          - "Plan 'only X rooms left' messaging triggers"
+        outputs:
+          - "scarcity_rules.json"
+        duration: "1 day"
+
+      - id: "offer-004"
+        name: "Offer Variations for Testing"
+        agent: "hotel-offer-architect"
+        actions:
+          - "Create 3-5 offer variations for A/B testing"
+          - "Test different bonus combinations"
+          - "Test pricing anchors (show original price vs discounted)"
+          - "Test guarantee strength (flexible vs strict)"
+        outputs:
+          - "offer_variations.json"
+        duration: "1 day"
+
+    checkpoint:
+      name: "Offer Validation"
+      criteria:
+        - "Margin analysis shows profitability >40%"
+        - "Offer passes 'no-brainer test' (would you buy this?)"
+        - "Legal compliance verified (cancellation terms, T&C)"
+        - "Operations confirms deliverability of bonuses"
+      approvers:
+        - "hotel-mkt-chief"
+        - "hotel-manager"
+        - "finance-controller"
+      output_required: true
+
+    quality_gates:
+      - metric: "Perceived value ratio"
+        threshold: ">3x (value/price)"
+      - metric: "Offer clarity score"
+        threshold: ">9/10"
+
+# ═══════════════════════════════════════════════════════════════
+# PHASE 4: CONTENT PRODUCTION
+# ═══════════════════════════════════════════════════════════════
+
+  - name: "Content Production"
+    id: "phase-4-content"
+    duration: "7-10 days"
+    depends_on: ["phase-3-offer"]
+    agents:
+      - role: "hotel-copywriter"
+        responsibility: "primary"
+        tasks:
+          - "Write all ad copy using Proof>Promise>Plan framework"
+          - "Create landing page copy"
+          - "Write email sequences (7-10 emails)"
+          - "Craft blog posts and SEO content"
+      - role: "hotel-social-creator"
+        responsibility: "secondary"
+        tasks:
+          - "Design social media content calendar"
+          - "Create Instagram/Facebook post templates"
+          - "Script Reels and TikTok videos"
+          - "Design Stories and carousel posts"
+      - role: "hotel-pr-advertorial"
+        responsibility: "tertiary"
+        tasks:
+          - "Write advertorials for travel blogs and media"
+          - "Craft press releases for seasonal launch"
+          - "Develop influencer briefing documents"
+
+    tasks:
+      - id: "content-001"
+        name: "Ad Copy Creation"
+        agent: "hotel-copywriter"
+        inputs:
+          - "grand_slam_offer.json"
+          - "messaging_framework.md"
+          - "segment_profiles.json"
+        actions:
+          - "Write 50+ ad headlines (Google + Meta)"
+          - "Create 100+ ad descriptions/body copy variations"
+          - "Apply Proof>Promise>Plan framework to all copy"
+          - "Incorporate scarcity and urgency language"
+          - "Optimize for Brazilian Portuguese nuances"
+        outputs:
+          - "ad_copy_library.json"
+        duration: "3 days"
+
+      - id: "content-002"
+        name: "Landing Page Copy"
+        agent: "hotel-copywriter"
+        actions:
+          - "Write hero headline and subheadline"
+          - "Craft offer description with SUBGN elements"
+          - "Create FAQ section (10+ questions)"
+          - "Write social proof section (testimonials, reviews)"
+          - "Design CTAs (Reserve Agora, Garanta Sua Vaga)"
+        outputs:
+          - "landing_page_copy.md"
+        duration: "2 days"
+
+      - id: "content-003"
+        name: "Social Media Content"
+        agent: "hotel-social-creator"
+        inputs:
+          - "grand_slam_offer.json"
+          - "campaign_timeline.gantt"
+        actions:
+          - "Plan 30-day content calendar (60+ posts)"
+          - "Create Instagram carousel templates (10 designs)"
+          - "Script 10 Reels/TikToks (30-60 seconds each)"
+          - "Design Stories templates with countdown stickers"
+          - "Plan UGC integration points"
+        outputs:
+          - "social_content_calendar.xlsx"
+          - "social_templates.figma"
+        duration: "3 days"
+
+      - id: "content-004"
+        name: "Email Sequence Copy"
+        agent: "hotel-copywriter"
+        actions:
+          - "Write 7-10 email sequence (teaser → launch → nurture → close)"
+          - "Email 1: Teaser (coming soon, build anticipation)"
+          - "Email 2: Launch (offer reveal, early bird)"
+          - "Email 3: Proof (testimonials, social proof)"
+          - "Email 4: Urgency (deadline reminder, scarcity)"
+          - "Email 5: Objection handling (FAQ, risk reversal)"
+          - "Email 6: Last call (final 24h, FOMO)"
+          - "Email 7: Encore (bonus for missed deadline, smaller offer)"
+        outputs:
+          - "email_sequences.json"
+        duration: "2 days"
+
+      - id: "content-005"
+        name: "Advertorials & PR"
+        agent: "hotel-pr-advertorial"
+        actions:
+          - "Write 3-5 advertorials for travel blogs"
+          - "Create press release for seasonal launch"
+          - "Develop influencer briefing kit (guidelines, hashtags, key messages)"
+          - "Craft media pitch email template"
+        outputs:
+          - "pr_content_pack.zip"
+        duration: "2 days"
+
+      - id: "content-006"
+        name: "SEO Content"
+        agent: "hotel-copywriter"
+        actions:
+          - "Write 3-5 blog posts (seasonal travel guides)"
+          - "Optimize for seasonal keywords from trend research"
+          - "Create meta titles and descriptions"
+          - "Write alt text for all images"
+        outputs:
+          - "seo_blog_posts.md"
+        duration: "2 days"
+
+    checkpoint:
+      name: "Content Review"
+      criteria:
+        - "All copy follows brand voice guidelines"
+        - "Portuguese grammar and spelling verified"
+        - "CTAs are clear and action-oriented"
+        - "Legal disclaimers included where required"
+        - "Mobile-friendly formatting confirmed"
+      approvers:
+        - "hotel-mkt-chief"
+        - "hotel-copywriter"
+      output_required: true
+
+    quality_gates:
+      - metric: "Readability score (Flesch Reading Ease)"
+        threshold: ">60"
+      - metric: "Emotional appeal score"
+        threshold: ">8/10"
+      - metric: "CTA clarity"
+        threshold: ">9/10"
+
+# ═══════════════════════════════════════════════════════════════
+# PHASE 5: ADS SETUP & LAUNCH
+# ═══════════════════════════════════════════════════════════════
+
+  - name: "Ads Setup & Launch"
+    id: "phase-5-ads"
+    duration: "5-7 days"
+    depends_on: ["phase-4-content"]
+    agents:
+      - role: "hotel-ads-specialist"
+        responsibility: "primary"
+        tasks:
+          - "Build 150+ ad variations (Google + Meta)"
+          - "Set up audience targeting and lookalikes"
+          - "Configure conversion tracking pixels"
+          - "Launch campaigns with tiered budgets"
+
+    tasks:
+      - id: "ads-001"
+        name: "Google Ads Campaign Setup"
+        agent: "hotel-ads-specialist"
+        inputs:
+          - "ad_copy_library.json"
+          - "channel_budget_plan.xlsx"
+          - "segment_profiles.json"
+        actions:
+          - "Create Search campaigns (branded + non-branded)"
+          - "Build Display campaigns (remarketing + prospecting)"
+          - "Set up Performance Max campaigns"
+          - "Configure responsive search ads (15 headlines + 4 descriptions each)"
+          - "Set bid strategies (Target ROAS initially 400%)"
+          - "Install conversion tracking (GA4 + Google Ads tag)"
+        outputs:
+          - "google_campaigns.json"
+        duration: "2 days"
+
+      - id: "ads-002"
+        name: "Meta Ads Campaign Setup"
+        agent: "hotel-ads-specialist"
+        actions:
+          - "Create Facebook/Instagram campaigns (Traffic, Conversions, Messages)"
+          - "Build 100+ ad variations (image + carousel + video)"
+          - "Set up Custom Audiences (website visitors, email list, engaged)"
+          - "Create Lookalike Audiences (1%, 3%, 5%)"
+          - "Configure Facebook Pixel and Conversions API"
+          - "Set campaign budgets and bid caps"
+        outputs:
+          - "meta_campaigns.json"
+        duration: "2 days"
+
+      - id: "ads-003"
+        name: "Audience Segmentation"
+        agent: "hotel-ads-specialist"
+        actions:
+          - "Map RFM segments to ad platform audiences"
+          - "Create cold traffic audiences (interests, behaviors)"
+          - "Build warm traffic audiences (website visitors, engagers)"
+          - "Set up hot traffic audiences (abandoned cart, landing page visitors)"
+          - "Configure exclusion audiences to prevent ad fatigue"
+        outputs:
+          - "audience_map.xlsx"
+        duration: "1 day"
+
+      - id: "ads-004"
+        name: "Landing Page Integration"
+        agent: "hotel-ads-specialist"
+        actions:
+          - "Create UTM tracking parameters for all ads"
+          - "Set up dynamic keyword insertion for Google Ads"
+          - "Configure landing page A/B tests"
+          - "Test all tracking pixels and conversion events"
+          - "Verify mobile responsiveness"
+        outputs:
+          - "tracking_config.json"
+        duration: "1 day"
+
+      - id: "ads-005"
+        name: "Campaign Launch"
+        agent: "hotel-ads-specialist"
+        actions:
+          - "Launch campaigns in phases (10% day 1, 50% day 2, 100% day 3)"
+          - "Monitor initial performance (CTR, CPC, conversion rate)"
+          - "Pause underperforming ads after 48h"
+          - "Scale winning ads by 20% daily"
+          - "Set up automated rules for budget pacing"
+        outputs:
+          - "launch_report.pdf"
+        duration: "2 days"
+
+    checkpoint:
+      name: "Ads QA Check"
+      criteria:
+        - "All tracking pixels firing correctly"
+        - "Ad copy free of typos and policy violations"
+        - "Budgets and bids set according to plan"
+        - "Landing pages load in <3 seconds"
+        - "Mobile experience tested on iOS and Android"
+      approvers:
+        - "hotel-ads-specialist"
+        - "hotel-mkt-chief"
+      output_required: true
+
+    quality_gates:
+      - metric: "Tracking accuracy"
+        threshold: "100%"
+      - metric: "Ad approval rate"
+        threshold: ">95%"
+      - metric: "Landing page load time"
+        threshold: "<3s"
+
+# ═══════════════════════════════════════════════════════════════
+# PHASE 6: EMAIL LAUNCH
+# ═══════════════════════════════════════════════════════════════
+
+  - name: "Email Launch"
+    id: "phase-6-email"
+    duration: "3-5 days"
+    depends_on: ["phase-4-content"]
+    agents:
+      - role: "hotel-email-maestro"
+        responsibility: "primary"
+        tasks:
+          - "Deploy 7-10 email sequence"
+          - "Set up automation triggers"
+          - "Configure segmentation rules"
+          - "Monitor deliverability and engagement"
+
+    tasks:
+      - id: "email-001"
+        name: "Email Platform Setup"
+        agent: "hotel-email-maestro"
+        inputs:
+          - "email_sequences.json"
+          - "segment_profiles.json"
+        actions:
+          - "Import email copy into ESP (e.g., RD Station, Mailchimp)"
+          - "Design email templates (mobile-responsive)"
+          - "Set up merge tags for personalization"
+          - "Configure sender authentication (SPF, DKIM, DMARC)"
+          - "Verify domain reputation and warming if needed"
+        outputs:
+          - "email_templates.html"
+        duration: "1 day"
+
+      - id: "email-002"
+        name: "Segmentation & Triggers"
+        agent: "hotel-email-maestro"
+        actions:
+          - "Create segments based on RFM scores"
+          - "Set up behavioral triggers (link clicks, page visits)"
+          - "Configure time-based triggers (launch sequence timing)"
+          - "Build abandoned cart recovery flow"
+          - "Set up re-engagement sequences for non-openers"
+        outputs:
+          - "automation_flows.json"
+        duration: "1 day"
+
+      - id: "email-003"
+        name: "Testing & QA"
+        agent: "hotel-email-maestro"
+        actions:
+          - "Send test emails to 10+ email clients"
+          - "Verify rendering on desktop and mobile"
+          - "Test all CTAs and tracking links"
+          - "Check spam score (<3/10)"
+          - "Validate personalization tags"
+        outputs:
+          - "email_qa_report.pdf"
+        duration: "1 day"
+
+      - id: "email-004"
+        name: "Launch Sequence"
+        agent: "hotel-email-maestro"
+        actions:
+          - "Schedule Email 1 (Teaser) - T-3 days before launch"
+          - "Schedule Email 2 (Launch) - Launch day, 9am"
+          - "Schedule Email 3 (Proof) - T+2 days"
+          - "Schedule Email 4 (Urgency) - T+5 days"
+          - "Schedule Email 5 (Objection) - T+7 days"
+          - "Schedule Email 6 (Last Call) - T+10 days"
+          - "Schedule Email 7 (Encore) - T+12 days"
+        outputs:
+          - "email_schedule.gantt"
+        duration: "1 day"
+
+      - id: "email-005"
+        name: "Deliverability Monitoring"
+        agent: "hotel-email-maestro"
+        actions:
+          - "Monitor inbox placement rate (>95% goal)"
+          - "Track bounce rate (<2%)"
+          - "Watch spam complaint rate (<0.1%)"
+          - "Adjust sending frequency if issues arise"
+          - "Maintain engagement (opens >35%, clicks >5%)"
+        outputs:
+          - "deliverability_dashboard.json"
+        duration: "Ongoing"
+
+    checkpoint:
+      name: "Email Launch Readiness"
+      criteria:
+        - "Spam score <3/10 on all emails"
+        - "Mobile rendering verified on iOS and Android"
+        - "All tracking links functional"
+        - "Segmentation rules tested with sample data"
+        - "Unsubscribe link present and working"
+      approvers:
+        - "hotel-email-maestro"
+        - "hotel-mkt-chief"
+      output_required: true
+
+    quality_gates:
+      - metric: "Email deliverability rate"
+        threshold: ">95%"
+      - metric: "Template rendering score"
+        threshold: "100%"
+      - metric: "CTA link functionality"
+        threshold: "100%"
+
+# ═══════════════════════════════════════════════════════════════
+# PHASE 7: EXECUTION & OPTIMIZATION
+# ═══════════════════════════════════════════════════════════════
+
+  - name: "Execution & Optimization"
+    id: "phase-7-execution"
+    duration: "14-21 days (ongoing)"
+    depends_on: ["phase-5-ads", "phase-6-email"]
+    agents:
+      - role: "hotel-direct-booking"
+        responsibility: "primary"
+        tasks:
+          - "Monitor direct booking conversion rate"
+          - "Optimize booking engine UX based on funnel data"
+          - "Implement conversion rate optimization (CRO) tests"
+      - role: "hotel-ads-specialist"
+        responsibility: "secondary"
+        tasks:
+          - "Daily ad performance monitoring"
+          - "Pause underperformers, scale winners"
+          - "Adjust bids and budgets based on ROI"
+      - role: "hotel-email-maestro"
+        responsibility: "secondary"
+        tasks:
+          - "Track email engagement and conversions"
+          - "Optimize send times and subject lines"
+          - "Segment non-converters for retargeting"
+      - role: "hotel-reputation-guardian"
+        responsibility: "tertiary"
+        tasks:
+          - "Monitor reviews during campaign period"
+          - "Respond to feedback within 24h"
+          - "Amplify positive reviews in social proof"
+      - role: "hotel-ugc-curator"
+        responsibility: "tertiary"
+        tasks:
+          - "Curate guest content from campaign bookings"
+          - "Request permission and publish UGC"
+          - "Feed UGC into retargeting ads"
+      - role: "hotel-social-creator"
+        responsibility: "tertiary"
+        tasks:
+          - "Post daily social content per calendar"
+          - "Monitor engagement and adjust content"
+          - "Respond to comments and DMs within 2h"
+
+    tasks:
+      - id: "execute-001"
+        name: "Daily Performance Monitoring"
+        agents:
+          - "hotel-ads-specialist"
+          - "hotel-email-maestro"
+          - "hotel-direct-booking"
+        actions:
+          - "Review KPI dashboard every morning"
+          - "Check: ROAS, conversion rate, CAC, revenue, bookings"
+          - "Identify anomalies (sudden drops, spikes)"
+          - "Flag issues for immediate action"
+        outputs:
+          - "daily_performance_report.pdf"
+        duration: "30 min/day"
+        frequency: "Daily"
+
+      - id: "execute-002"
+        name: "Ad Optimization"
+        agent: "hotel-ads-specialist"
+        actions:
+          - "Pause ads with CTR <1% after 48h"
+          - "Pause ads with CPA >target after 72h"
+          - "Scale winning ads by 20% daily (if ROAS >target)"
+          - "Test new ad creatives weekly"
+          - "Adjust targeting based on audience performance"
+          - "Implement dayparting for peak booking hours"
+        outputs:
+          - "ad_optimization_log.json"
+        duration: "1-2 hours/day"
+        frequency: "Daily"
+
+      - id: "execute-003"
+        name: "Email Optimization"
+        agent: "hotel-email-maestro"
+        actions:
+          - "A/B test subject lines (open rate goal >35%)"
+          - "Test send times (morning vs evening)"
+          - "Segment non-openers for resend with new subject"
+          - "Analyze click patterns to optimize CTA placement"
+          - "Re-engage cold subscribers with win-back offer"
+        outputs:
+          - "email_optimization_log.json"
+        duration: "1 hour/day"
+        frequency: "Daily"
+
+      - id: "execute-004"
+        name: "Conversion Rate Optimization"
+        agent: "hotel-direct-booking"
+        actions:
+          - "Analyze booking funnel drop-off points"
+          - "Test landing page variations (headline, CTA, images)"
+          - "Optimize booking engine fields (reduce friction)"
+          - "Implement exit-intent popups with discount offer"
+          - "Add live chat or WhatsApp support during peak hours"
+          - "Test different payment options (Pix, installments)"
+        outputs:
+          - "cro_test_results.xlsx"
+        duration: "2-3 hours/week"
+        frequency: "Weekly"
+
+      - id: "execute-005"
+        name: "Reputation Management"
+        agent: "hotel-reputation-guardian"
+        actions:
+          - "Monitor reviews on Google, TripAdvisor, Booking.com"
+          - "Respond to all reviews within 24h (positive and negative)"
+          - "Escalate negative reviews to management"
+          - "Request reviews from satisfied guests (post-stay email)"
+          - "Feature 5-star reviews in ads and social proof"
+        outputs:
+          - "review_summary.json"
+        duration: "30 min/day"
+        frequency: "Daily"
+
+      - id: "execute-006"
+        name: "UGC Curation & Publishing"
+        agent: "hotel-ugc-curator"
+        actions:
+          - "Monitor hashtags and guest tags"
+          - "Request permission to repost UGC"
+          - "Schedule UGC posts (3-5 per week)"
+          - "Create UGC ad creatives for retargeting"
+          - "Feature UGC in email newsletters"
+        outputs:
+          - "ugc_content_library.json"
+        duration: "1 hour/day"
+        frequency: "Daily"
+
+      - id: "execute-007"
+        name: "Social Media Engagement"
+        agent: "hotel-social-creator"
+        actions:
+          - "Post content per calendar (2-3 posts/day)"
+          - "Respond to comments within 2h"
+          - "Answer DMs within 1h during business hours"
+          - "Monitor engagement metrics (likes, shares, saves)"
+          - "Adjust content strategy based on performance"
+        outputs:
+          - "social_engagement_log.json"
+        duration: "2 hours/day"
+        frequency: "Daily"
+
+      - id: "execute-008"
+        name: "Weekly Strategy Review"
+        agents:
+          - "hotel-mkt-chief"
+          - "hotel-ads-specialist"
+          - "hotel-email-maestro"
+          - "hotel-direct-booking"
+        actions:
+          - "Review week-over-week performance"
+          - "Compare actual vs forecast (revenue, bookings, ROI)"
+          - "Identify what's working and what's not"
+          - "Decide on budget reallocation"
+          - "Plan next week's priorities"
+        outputs:
+          - "weekly_strategy_review.pdf"
+        duration: "2 hours"
+        frequency: "Weekly"
+
+      - id: "execute-009"
+        name: "Campaign Reporting"
+        agent: "hotel-mkt-chief"
+        actions:
+          - "Compile final campaign report at end of period"
+          - "Calculate total ROI and ROAS"
+          - "Analyze channel performance (Google vs Meta vs Email)"
+          - "Document learnings and recommendations"
+          - "Present to hotel management and ownership"
+        outputs:
+          - "campaign_final_report.pdf"
+        duration: "4 hours"
+        frequency: "End of campaign"
+
+    checkpoint:
+      name: "Mid-Campaign Review"
+      criteria:
+        - "ROI tracking on target (>4x)"
+        - "Direct booking share >50%"
+        - "Email engagement above benchmarks"
+        - "Ad performance within acceptable CPA range"
+        - "No major reputation issues"
+      approvers:
+        - "hotel-mkt-chief"
+        - "hotel-manager"
+      output_required: true
+      timing: "Day 7 of execution phase"
+
+    quality_gates:
+      - metric: "Campaign ROI"
+        threshold: ">4x"
+      - metric: "Direct booking conversion rate"
+        threshold: ">3%"
+      - metric: "Email open rate"
+        threshold: ">35%"
+      - metric: "Ad ROAS"
+        threshold: ">400%"
+      - metric: "Review rating"
+        threshold: ">4.5/5"
+
+# ═══════════════════════════════════════════════════════════════
+# ROLLBACK & CONTINGENCY
+# ═══════════════════════════════════════════════════════════════
+
+rollback:
+  triggers:
+    - condition: "ROI <2x after 7 days"
+      action: "Pause underperforming channels, reallocate budget to winners"
+    - condition: "Negative reviews spike >3 in 48h"
+      action: "Pause campaign, investigate root cause, fix operations issue"
+    - condition: "Email deliverability <80%"
+      action: "Pause emails, investigate sender reputation, fix authentication"
+    - condition: "Ad account suspended"
+      action: "Appeal suspension, use backup account, shift budget to other channels"
+
+  contingency_plans:
+    - scenario: "Lower than expected bookings"
+      actions:
+        - "Launch flash sale (24-48h) with deeper discount"
+        - "Increase ad budgets by 30%"
+        - "Send urgency email to warm leads"
+        - "Offer payment installments or Pix discount"
+    - scenario: "Higher than expected bookings (sell out risk)"
+      actions:
+        - "Pause lower-margin offers"
+        - "Increase prices on remaining inventory"
+        - "Create waitlist for sold-out dates"
+        - "Upsell to shoulder dates"
+    - scenario: "Competitor launches aggressive counter-campaign"
+      actions:
+        - "Emphasize unique value props and differentiators"
+        - "Add limited-time bonus to match competitor"
+        - "Increase social proof and testimonials"
+        - "Target competitor's audience with comparison ads"
+
+# ═══════════════════════════════════════════════════════════════
+# SUCCESS CRITERIA & HANDOFF
+# ═══════════════════════════════════════════════════════════════
+
+success_criteria:
+  primary:
+    - metric: "Campaign ROI"
+      target: ">4x"
+      measurement: "Total revenue / total ad spend"
+    - metric: "Direct booking share"
+      target: ">60%"
+      measurement: "Direct bookings / total bookings"
+    - metric: "Target occupancy achieved"
+      target: "As per campaign brief"
+      measurement: "Rooms sold / rooms available"
+
+  secondary:
+    - metric: "Email open rate"
+      target: ">35%"
+    - metric: "Email click rate"
+      target: ">5%"
+    - metric: "Ad ROAS"
+      target: ">400%"
+    - metric: "Landing page conversion rate"
+      target: ">3%"
+    - metric: "Social engagement rate"
+      target: ">8%"
+    - metric: "Review rating"
+      target: ">4.5/5"
+
+handoff:
+  to: "hotel-operations"
+  deliverables:
+    - "Campaign final report with ROI analysis"
+    - "Guest list with preferences for personalization"
+    - "Learnings document for next campaign"
+    - "Content library for repurposing"
+    - "Audience segments for ongoing retargeting"
+  knowledge_transfer:
+    - "Review performance dashboard with operations team"
+    - "Share guest feedback and preferences"
+    - "Document winning offers and messaging"
+    - "Train on ongoing email nurture sequences"
+
+# ════════════════════════════════════════════════════════════════
+# 🔒 ENFORCEMENT ENGINE
+# Inspirado em: Cooper's Stage-Gate (P&G) + Salesforce Pipeline + Toyota Andon
+# ════════════════════════════════════════════════════════════════
+
+enforcement_engine:
+  version: "1.0.0"
+  protocol: "stage-gate"
+
+  # ──────────────────────────────────────────────────────────────
+  # STATE MACHINE
+  # ──────────────────────────────────────────────────────────────
+  state_machine:
+    initial_state: "phase-1-research"
+    terminal_states: ["completed", "killed"]
+    transitions:
+      - from: "phase-1-research"
+        to: "phase-2-strategy"
+        gate: "G1"
+        trigger: "auto_on_gate_pass"
+      - from: "phase-2-strategy"
+        to: "phase-3-offer"
+        gate: "G2"
+        trigger: "auto_on_gate_pass"
+      - from: "phase-3-offer"
+        to: "phase-4-content"
+        gate: "G3"
+        trigger: "auto_on_gate_pass"
+      - from: "phase-4-content"
+        to: "phase-5-ads"
+        gate: "G4"
+        trigger: "auto_on_gate_pass"
+      - from: "phase-4-content"
+        to: "phase-6-email"
+        gate: "G4"
+        trigger: "auto_on_gate_pass"
+      - from: "phase-5-ads"
+        to: "phase-7-execution"
+        gate: "G5"
+        trigger: "auto_on_gate_pass"
+      - from: "phase-6-email"
+        to: "phase-7-execution"
+        gate: "G6"
+        trigger: "auto_on_gate_pass"
+      - from: "phase-7-execution"
+        to: "completed"
+        gate: "final-review"
+        trigger: "manual_approval"
+    invalid_transitions:
+      - from: "phase-1-research"
+        to: "phase-3-offer"
+        reason: "Não pode pular Strategy - precisa definir segmentos e budget"
+      - from: "phase-2-strategy"
+        to: "phase-5-ads"
+        reason: "Não pode criar ads sem conteúdo aprovado"
+      - from: "phase-3-offer"
+        to: "phase-7-execution"
+        reason: "Não pode executar sem conteúdo, ads e emails configurados"
+
+  # ──────────────────────────────────────────────────────────────
+  # STAGE-GATES
+  # ──────────────────────────────────────────────────────────────
+  gates:
+    G1:
+      name: "Research → Strategy Gate"
+      between: ["phase-1-research", "phase-2-strategy"]
+      gatekeeper: "hotel-mkt-chief"
+      sla: "48h"
+      must_meet:
+        - id: "G1-M1"
+          criterion: "Mínimo 20 palavras-chave com volume documentadas no trend report"
+          validation: "Contar linhas em keyword_research sheet do trend_report.pdf"
+          on_fail: "BLOCK"
+        - id: "G1-M2"
+          criterion: "Mínimo 10 propriedades competidoras mapeadas com pricing e ofertas"
+          validation: "Verificar competitor_matrix.xlsx tem ≥10 linhas com dados completos"
+          on_fail: "BLOCK"
+        - id: "G1-M3"
+          criterion: "Calendário sazonal de 90 dias com datas-chave identificadas"
+          validation: "Arquivo social_listening_insights.md contém seção '90-day Calendar'"
+          on_fail: "BLOCK"
+        - id: "G1-M4"
+          criterion: "Mínimo 500 menções sociais capturadas e categorizadas"
+          validation: "Campo 'total_mentions' em social_listening_insights.md ≥500"
+          on_fail: "BLOCK"
+      should_meet:
+        - id: "G1-S1"
+          criterion: "Qualidade dos insights acionáveis (score subjetivo do chief)"
+          weight: 1.0
+          min_score: 7
+        - id: "G1-S2"
+          criterion: "Profundidade da análise competitiva (gaps identificados, oportunidades claras)"
+          weight: 1.0
+          min_score: 7
+      kill_criteria:
+        - id: "G1-K1"
+          criterion: "Nenhuma relevância sazonal identificada nos próximos 90 dias"
+          action: "KILL + notify hotel-mkt-chief: campanha não tem hook sazonal viável"
+        - id: "G1-K2"
+          criterion: "Dados de pesquisa indicam volume de busca <100/mês para todas keywords"
+          action: "KILL + recomendar foco em outras estratégias (ex: direct booking, não sazonal)"
+      decision_options: ["GO", "KILL", "HOLD", "RECYCLE"]
+
+    G2:
+      name: "Strategy → Offer Gate"
+      between: ["phase-2-strategy", "phase-3-offer"]
+      gatekeeper: "hotel-mkt-chief"
+      sla: "48h"
+      must_meet:
+        - id: "G2-M1"
+          criterion: "Mínimo 3 segmentos de audiência definidos com personas completos"
+          validation: "Arquivo segment_profiles.json tem ≥3 objetos com campos: demographics, psychographics, motivations"
+          on_fail: "BLOCK"
+        - id: "G2-M2"
+          criterion: "Campaign brief aprovado formalmente pelo chief"
+          validation: "Campo 'approved_by' em messaging_framework.md = 'hotel-mkt-chief' com data"
+          on_fail: "BLOCK"
+        - id: "G2-M3"
+          criterion: "Budget alocado por canal com percentuais definidos"
+          validation: "channel_budget_plan.xlsx tem coluna 'allocated_budget' preenchida para todos canais"
+          on_fail: "BLOCK"
+      should_meet:
+        - id: "G2-S1"
+          criterion: "Clareza dos perfis de segmento (personas bem definidos, não genéricos)"
+          weight: 1.0
+          min_score: 8
+        - id: "G2-S2"
+          criterion: "Alinhamento da estratégia com capacidade operacional do hotel"
+          weight: 1.0
+          min_score: 7
+      kill_criteria:
+        - id: "G2-K1"
+          criterion: "Budget total abaixo de R$5.000 (insuficiente para campanha multi-canal)"
+          action: "KILL + recomendar campanha single-channel ou orgânica"
+        - id: "G2-K2"
+          criterion: "Segmentos identificados não têm fit com posicionamento do hotel"
+          action: "RECYCLE para Research com foco diferente"
+      decision_options: ["GO", "KILL", "HOLD", "RECYCLE"]
+
+    G3:
+      name: "Offer → Content Gate"
+      between: ["phase-3-offer", "phase-4-content"]
+      gatekeeper: "hotel-mkt-chief"
+      sla: "48h"
+      must_meet:
+        - id: "G3-M1"
+          criterion: "Grand Slam Offer completo com Value Equation score ≥7/10"
+          validation: "Campo 'value_equation_score' em grand_slam_offer.json ≥7"
+          on_fail: "BLOCK"
+        - id: "G3-M2"
+          criterion: "Pricing com paridade OTA verificada (não violar contratos)"
+          validation: "Campo 'ota_parity_check' em pricing_tiers.xlsx = 'PASS'"
+          on_fail: "BLOCK"
+        - id: "G3-M3"
+          criterion: "Mínimo 3 bônus de alto valor definidos e operacionalmente viáveis"
+          validation: "Array 'bonuses' em grand_slam_offer.json tem ≥3 itens com 'operational_approved=true'"
+          on_fail: "BLOCK"
+      should_meet:
+        - id: "G3-S1"
+          criterion: "Força emocional da oferta (passaria no teste 'eu compraria isso?')"
+          weight: 1.0
+          min_score: 8
+        - id: "G3-S2"
+          criterion: "Margem de lucro projetada após descontos e bônus"
+          weight: 1.0
+          min_score: 7
+      kill_criteria:
+        - id: "G3-K1"
+          criterion: "Oferta não passa no Emotional Value Equation test (value/price <2x)"
+          action: "RECYCLE para Offer Design - redesenhar oferta"
+        - id: "G3-K2"
+          criterion: "Margem de lucro <30% após todos custos (inviável financeiramente)"
+          action: "HOLD + revisar pricing ou reduzir bônus"
+      decision_options: ["GO", "KILL", "HOLD", "RECYCLE"]
+
+    G4:
+      name: "Content → Ads/Email Gate"
+      between: ["phase-4-content", "phase-5-ads"]
+      gatekeeper: "hotel-mkt-chief"
+      sla: "48h"
+      must_meet:
+        - id: "G4-M1"
+          criterion: "Mínimo 150 variações de ads criadas (headlines + descriptions + visuals)"
+          validation: "Contar registros em ad_copy_library.json ≥150"
+          on_fail: "BLOCK"
+        - id: "G4-M2"
+          criterion: "Landing pages criadas com tracking pixels configurados"
+          validation: "Arquivo tracking_config.json lista todas LPs com 'pixel_status=active'"
+          on_fail: "BLOCK"
+        - id: "G4-M3"
+          criterion: "Sequências de email completas (mínimo 8 emails escritos)"
+          validation: "email_sequences.json tem ≥8 objetos com campos: subject, body, cta"
+          on_fail: "BLOCK"
+      should_meet:
+        - id: "G4-S1"
+          criterion: "Qualidade criativa dos ads (score de 1-10 por revisor externo ou chief)"
+          weight: 1.0
+          min_score: 7
+        - id: "G4-S2"
+          criterion: "Consistência de voz e tom em todos os materiais"
+          weight: 1.0
+          min_score: 8
+      kill_criteria:
+        - id: "G4-K1"
+          criterion: "Score médio de qualidade criativa <6/10 após revisão"
+          action: "RECYCLE para Content Production - reescrever ou redesenhar"
+        - id: "G4-K2"
+          criterion: "Landing pages não carregam em <3s (falha técnica crítica)"
+          action: "HOLD + corrigir performance antes de ads"
+      decision_options: ["GO", "KILL", "HOLD", "RECYCLE"]
+
+    G5:
+      name: "Ads → Execution Gate"
+      between: ["phase-5-ads", "phase-7-execution"]
+      gatekeeper: "hotel-ads-specialist"
+      sla: "24h"
+      must_meet:
+        - id: "G5-M1"
+          criterion: "Todos tracking pixels disparando corretamente em todas páginas"
+          validation: "Executar pixel_test script, verificar 100% success rate"
+          on_fail: "BLOCK"
+        - id: "G5-M2"
+          criterion: "Campanhas A/B configuradas corretamente nas plataformas"
+          validation: "Screenshot de Google Ads e Meta Ads mostrando campaigns 'Active' status"
+          on_fail: "BLOCK"
+        - id: "G5-M3"
+          criterion: "Budget caps definidos por canal para evitar overspend"
+          validation: "google_campaigns.json e meta_campaigns.json têm 'daily_budget_cap' definido"
+          on_fail: "BLOCK"
+      should_meet:
+        - id: "G5-S1"
+          criterion: "Configuração de targeting bem segmentada (não muito ampla)"
+          weight: 1.0
+          min_score: 7
+        - id: "G5-S2"
+          criterion: "Creative rotation e frequency caps configurados adequadamente"
+          weight: 1.0
+          min_score: 7
+      kill_criteria:
+        - id: "G5-K1"
+          criterion: "Tracking não funciona após 2 tentativas de correção"
+          action: "HOLD + escalar para tech support, não lançar sem tracking"
+        - id: "G5-K2"
+          criterion: "Conta de ads suspensa ou com restrições de política"
+          action: "HOLD + resolver com suporte da plataforma antes de continuar"
+      decision_options: ["GO", "KILL", "HOLD", "RECYCLE"]
+
+    G6:
+      name: "Email → Execution Gate"
+      between: ["phase-6-email", "phase-7-execution"]
+      gatekeeper: "hotel-email-maestro"
+      sla: "24h"
+      must_meet:
+        - id: "G6-M1"
+          criterion: "Todas automações de email testadas end-to-end com contatos de teste"
+          validation: "email_qa_report.pdf mostra 'All tests passed' para cada sequência"
+          on_fail: "BLOCK"
+        - id: "G6-M2"
+          criterion: "Deliverability rate >90% em testes (inbox placement)"
+          validation: "Campo 'deliverability_rate' em email_qa_report.pdf >0.90"
+          on_fail: "BLOCK"
+        - id: "G6-M3"
+          criterion: "Link de unsubscribe presente e funcional em todos emails"
+          validation: "Testar manualmente ou script automático, 100% success"
+          on_fail: "BLOCK"
+      should_meet:
+        - id: "G6-S1"
+          criterion: "Spam score baixo (<3/10) para todos emails"
+          weight: 1.0
+          min_score: 8
+        - id: "G6-S2"
+          criterion: "Personalização funciona corretamente (merge tags populam)"
+          weight: 1.0
+          min_score: 9
+      kill_criteria:
+        - id: "G6-K1"
+          criterion: "Deliverability <80% consistentemente (sender reputation ruim)"
+          action: "HOLD + warm up domain, limpar lista, resolver auth (SPF/DKIM)"
+        - id: "G6-K2"
+          criterion: "Automação envia para segmento errado em teste (erro crítico)"
+          action: "HOLD + corrigir segmentation rules, re-testar"
+      decision_options: ["GO", "KILL", "HOLD", "RECYCLE"]
+
+  # ──────────────────────────────────────────────────────────────
+  # AUTOMATED HANDOFFS
+  # ──────────────────────────────────────────────────────────────
+  handoffs:
+    - id: "H1"
+      from_phase: "phase-1-research"
+      to_phase: "phase-2-strategy"
+      from_agent: "@hotel-trend-hunter"
+      to_agent: "@hotel-guest-strategist + @hotel-mkt-chief"
+      trigger: "gate_G1_passed"
+      deliverables:
+        - name: "trend_report.pdf"
+          format: "pdf"
+          required: true
+        - name: "competitor_matrix.xlsx"
+          format: "excel"
+          required: true
+        - name: "social_listening_insights.md"
+          format: "markdown"
+          required: true
+        - name: "pricing_intelligence.json"
+          format: "json"
+          required: true
+      acceptance_criteria:
+        - "Todas métricas do Gate G1 must_meet validadas"
+        - "Documentos legíveis e bem formatados"
+        - "Dados atualizados (não mais de 7 dias)"
+      sla: "24h"
+      on_timeout:
+        action: "escalate"
+        notify: "@hotel-mkt-chief"
+        message: "Handoff H1 atrasado - Research não entregue no prazo"
+      on_reject:
+        action: "return_to_sender"
+        message: "Entregáveis não passaram em acceptance criteria. Itens faltantes: [lista]. Prazo para correção: 24h."
+
+    - id: "H2"
+      from_phase: "phase-2-strategy"
+      to_phase: "phase-3-offer"
+      from_agent: "@hotel-guest-strategist + @hotel-mkt-chief"
+      to_agent: "@hotel-offer-architect"
+      trigger: "gate_G2_passed"
+      deliverables:
+        - name: "segment_profiles.json"
+          format: "json"
+          required: true
+        - name: "messaging_framework.md"
+          format: "markdown"
+          required: true
+        - name: "channel_budget_plan.xlsx"
+          format: "excel"
+          required: true
+      acceptance_criteria:
+        - "Segmentos têm personas completos (demographics, psychographics, motivations)"
+        - "Budget allocation soma 100% e está aprovado"
+        - "Messaging pillars mapeados para cada segmento"
+      sla: "24h"
+      on_timeout:
+        action: "escalate"
+        notify: "@hotel-mkt-chief"
+      on_reject:
+        action: "return_to_sender"
+        message: "Strategy incompleta ou mal definida. Revisar: [itens]. Prazo: 24h."
+
+    - id: "H3"
+      from_phase: "phase-3-offer"
+      to_phase: "phase-4-content"
+      from_agent: "@hotel-offer-architect"
+      to_agent: "@hotel-copywriter + @hotel-social-creator"
+      trigger: "gate_G3_passed"
+      deliverables:
+        - name: "grand_slam_offer.json"
+          format: "json"
+          required: true
+        - name: "pricing_tiers.xlsx"
+          format: "excel"
+          required: true
+        - name: "scarcity_rules.json"
+          format: "json"
+          required: true
+      acceptance_criteria:
+        - "Oferta aprovada por chief e finance"
+        - "Pricing não viola OTA parity"
+        - "Bônus são operacionalmente viáveis (confirmado por operations)"
+      sla: "24h"
+      on_timeout:
+        action: "escalate"
+        notify: "@hotel-mkt-chief"
+      on_reject:
+        action: "return_to_sender"
+        message: "Oferta não passa nos critérios. Problemas: [lista]. Revisar e reenviar."
+
+    - id: "H4"
+      from_phase: "phase-4-content"
+      to_phase: "phase-5-ads"
+      from_agent: "@hotel-copywriter + @hotel-social-creator"
+      to_agent: "@hotel-ads-specialist"
+      trigger: "gate_G4_passed"
+      deliverables:
+        - name: "ad_copy_library.json"
+          format: "json"
+          required: true
+        - name: "landing_page_copy.md"
+          format: "markdown"
+          required: true
+        - name: "social_templates.figma"
+          format: "figma"
+          required: true
+      acceptance_criteria:
+        - "Mínimo 150 variações de ads prontas"
+        - "Cópia revisada e sem erros gramaticais"
+        - "Assets visuais em alta resolução"
+      sla: "24h"
+      on_timeout:
+        action: "escalate"
+        notify: "@hotel-mkt-chief"
+      on_reject:
+        action: "return_to_sender"
+        message: "Conteúdo não atende padrões. Revisar qualidade criativa. Prazo: 48h."
+
+    - id: "H5"
+      from_phase: "phase-5-ads"
+      to_phase: "phase-7-execution"
+      from_agent: "@hotel-ads-specialist"
+      to_agent: "@hotel-direct-booking + @hotel-mkt-chief"
+      trigger: "gate_G5_passed"
+      deliverables:
+        - name: "google_campaigns.json"
+          format: "json"
+          required: true
+        - name: "meta_campaigns.json"
+          format: "json"
+          required: true
+        - name: "tracking_config.json"
+          format: "json"
+          required: true
+      acceptance_criteria:
+        - "Todas campanhas live e tracking 100% funcional"
+        - "Budgets configurados e caps ativos"
+        - "Relatório de launch com primeiras 24h de dados"
+      sla: "12h"
+      on_timeout:
+        action: "escalate"
+        notify: "@hotel-mkt-chief"
+      on_reject:
+        action: "pause_campaigns"
+        message: "Erro crítico detectado. Pausar ads, corrigir: [problema]. Relançar após fix."
+
+    - id: "H6"
+      from_phase: "phase-6-email"
+      to_phase: "phase-7-execution"
+      from_agent: "@hotel-email-maestro"
+      to_agent: "@hotel-direct-booking + @hotel-mkt-chief"
+      trigger: "gate_G6_passed"
+      deliverables:
+        - name: "email_sequences.json"
+          format: "json"
+          required: true
+        - name: "automation_flows.json"
+          format: "json"
+          required: true
+        - name: "email_qa_report.pdf"
+          format: "pdf"
+          required: true
+      acceptance_criteria:
+        - "Todas sequências testadas e funcionais"
+        - "Deliverability >90%"
+        - "Automações não enviam para segmento errado"
+      sla: "12h"
+      on_timeout:
+        action: "escalate"
+        notify: "@hotel-mkt-chief"
+      on_reject:
+        action: "pause_automations"
+        message: "Problema em email setup. Pausar envios, corrigir: [issue]. Re-testar."
+
+  # ──────────────────────────────────────────────────────────────
+  # AUTO-ROLLBACK TRIGGERS
+  # ──────────────────────────────────────────────────────────────
+  auto_rollback:
+    triggers:
+      - id: "R1"
+        condition: "ROI <2x após 7 dias de execução"
+        action: "pause"
+        recovery: "1. Pausar canais com ROAS <200%. 2. Analisar bottleneck (oferta? targeting? creative?). 3. Ajustar e relançar gradualmente."
+        notify: "@hotel-mkt-chief"
+      - id: "R2"
+        condition: "CPA >R$800 (acima do target) por 3 dias consecutivos"
+        action: "pause_channel"
+        recovery: "1. Identificar canal problemático. 2. Revisar targeting (muito amplo?). 3. Testar novos criativos. 4. Considerar realocação de budget."
+        notify: "@hotel-ads-specialist"
+      - id: "R3"
+        condition: "Deliverability de email cai abaixo de 85%"
+        action: "pause"
+        recovery: "1. Pausar todos envios. 2. Investigar sender reputation (SPF/DKIM/DMARC). 3. Limpar lista (remover bounces). 4. Warm up se necessário. 5. Retomar gradualmente."
+        notify: "@hotel-email-maestro"
+      - id: "R4"
+        condition: "3+ reviews negativas em 48h relacionadas à campanha"
+        action: "pause"
+        recovery: "1. Investigar causa raiz (overselling? expectativa errada?). 2. Ajustar messaging para alinhar expectativas. 3. Corrigir problemas operacionais. 4. Retomar após fix."
+        notify: "@hotel-mkt-chief + @hotel-reputation-guardian"
+      - id: "R5"
+        condition: "Conversão de landing page <1% (muito abaixo do target 3%)"
+        action: "pause_traffic"
+        recovery: "1. Pausar ads temporariamente. 2. A/B testar nova LP (headline, CTA, layout). 3. Verificar tech issues (load time, mobile). 4. Relançar com LP otimizada."
+        notify: "@hotel-direct-booking"

@@ -1,0 +1,82 @@
+id: audit-process
+name: Audit Process
+squad: qa
+version: "1.0"
+description: Comprehensive audit of a workflow or process for compliance and efficiency.
+
+trigger:
+  type: manual
+  source: ops-lead
+  condition: Process audit requested
+
+participants:
+  - agent: process-auditor
+    role: Executes audit and documents findings
+  - agent: qa-lead
+    role: Reviews audit and prioritizes recommendations
+
+steps:
+  - id: step-01
+    name: Define audit scope
+    agent: process-auditor
+    task: audit-security
+    input: process_id, audit_scope
+    output: audit_plan
+    depends_on: []
+    on_fail: abort
+
+  - id: step-02
+    name: Collect evidence
+    agent: process-auditor
+    task: audit-performance
+    input: logs, metrics, artifacts
+    output: evidence_collection
+    depends_on: [step-01]
+    on_fail: retry
+
+  - id: step-03
+    name: Analyze against criteria
+    agent: process-auditor
+    task: validate-api-contract
+    input: evidence, criteria
+    output: analysis_results
+    depends_on: [step-02]
+    on_fail: retry
+
+  - id: step-04
+    name: Document findings
+    agent: process-auditor
+    task: review-documentation
+    input: analysis_results, audit-findings-tmpl
+    output: audit_findings
+    depends_on: [step-03]
+    on_fail: retry
+
+  - id: step-05
+    name: Generate recommendations
+    agent: qa-lead
+    task: validate-deliverable
+    input: audit_findings
+    output: recommendations
+    depends_on: [step-04]
+    on_fail: retry
+
+  - id: step-06
+    name: Finalize audit report
+    agent: process-auditor
+    task: review-documentation
+    input: findings, recommendations
+    output: final_audit_report
+    depends_on: [step-05]
+    on_fail: retry
+
+completion:
+  condition: Audit report complete with prioritized recommendations
+  output: Audit report (md)
+  notify: ops-lead, process-owner
+
+constraints:
+  max_steps: 8
+  timeout_minutes: 90
+  retry_policy: 2
+  cost_ceiling: none

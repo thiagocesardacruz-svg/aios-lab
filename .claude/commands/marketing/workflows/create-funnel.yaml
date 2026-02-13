@@ -1,0 +1,151 @@
+# /mkt/create-funnel Workflow
+# Criar funil completo
+
+workflow:
+  id: create-funnel
+  name: Create Funnel
+  description: "Cria funil completo com todas as páginas, emails e automações"
+  version: "1.0.0"
+  squad: marketing
+  responsible: "@funnel-architect"
+
+inputs:
+  - name: product
+    type: string
+    required: true
+  - name: funnel_type
+    type: string
+    required: true
+    options: [lead_magnet, webinar, tripwire, application, sales]
+  - name: price_point
+    type: string
+    required: false
+    options: [free, low, medium, high, premium]
+
+outputs:
+  - name: funnel-map
+    type: markdown
+    path: "docs/outputs/mkt/{product}-funnel.md"
+  - name: funnel-spec
+    type: yaml
+    path: "docs/outputs/mkt/{product}-funnel-spec.yaml"
+
+phases:
+  - phase_0: Strategy
+  - phase_1: Offer
+  - phase_2: Pages
+  - phase_3: Emails
+  - phase_4: Automation
+
+sequence:
+  - phase: 0
+    name: Define Strategy
+    agent: funnel-architect
+    action: plan_funnel
+    inputs:
+      - product
+      - funnel_type
+      - price_point
+    creates:
+      - funnel-strategy.md (memory)
+    notes: |
+      Definir:
+      - Objetivo do funil
+      - Etapas necessárias
+      - Métricas alvo
+      - Timeline
+
+  - phase: 1
+    name: Structure Offer
+    agent: offer-engine
+    action: create_offer
+    inputs:
+      - product
+      - funnel_type
+    creates:
+      - offer-details.md (memory)
+    notes: |
+      Criar:
+      - Oferta principal
+      - Upsells (se aplicável)
+      - Downsells (se aplicável)
+      - Order bumps
+
+  - phase: 2
+    name: Create Pages
+    agent: copy-specialist
+    action: write_pages
+    inputs:
+      - funnel-strategy
+      - offer-details
+    creates:
+      - pages/*.md
+    notes: |
+      Criar copy para cada página:
+      - Opt-in/Landing
+      - Thank you
+      - Sales page (se aplicável)
+      - Checkout (se aplicável)
+      - Upsell pages
+
+  - phase: 3
+    name: Create Emails
+    agent: copy-specialist
+    action: write_emails
+    inputs:
+      - funnel-strategy
+      - offer-details
+    creates:
+      - emails/*.md
+    notes: |
+      Criar sequência:
+      - Welcome/delivery
+      - Nurturing (3-5 emails)
+      - Pitch sequence
+      - Follow-up
+
+  - phase: 4
+    name: Specify Automation
+    agent: funnel-architect
+    action: define_automation
+    inputs:
+      - pages
+      - emails
+    creates:
+      - funnel-map.md
+      - funnel-spec.yaml
+    notes: |
+      Especificar:
+      - Triggers
+      - Tags
+      - Delays
+      - Conditions
+      - Integrations
+
+output_format: |
+  # Funnel: {product}
+
+  ## Overview
+  - Type: {funnel_type}
+  - Goal: {goal}
+  - Target: {target}
+
+  ## Flow
+  ```
+  {flow_diagram}
+  ```
+
+  ## Pages
+  {pages_list}
+
+  ## Email Sequence
+  {email_sequence}
+
+  ## Automation Rules
+  {automation_rules}
+
+  ## Metrics to Track
+  {metrics}
+
+  ## Implementation Checklist
+  {checklist}

@@ -1,0 +1,108 @@
+# Ad Creative Pack Workflow
+# /design/ad-creative-pack
+
+name: ad-creative-pack
+version: "1.0.0"
+description: "Create complete ad creative pack for paid campaigns"
+command: "/design/ad-creative-pack"
+
+trigger:
+  type: command
+  requires:
+    - offer_description
+    - icp_profile
+    - angle_or_hook
+    - platforms
+
+agents:
+  primary: performance-designer
+  qa: design-lead
+
+inputs:
+  required:
+    - name: offer
+      description: "What is being offered"
+    - name: icp
+      description: "Ideal customer profile"
+    - name: angle
+      description: "Creative angle or hook"
+  optional:
+    - name: platforms
+      default: ["meta", "google"]
+    - name: quantity
+      default: 6
+    - name: brand_assets
+      description: "Logos, colors, fonts"
+
+steps:
+  - id: receive_briefing
+    name: "Receive Briefing"
+    agent: performance-designer
+    action: "Review briefing for completeness"
+    validation:
+      - "Offer is clear"
+      - "ICP is defined"
+      - "Angle is specific"
+
+  - id: define_formats
+    name: "Define Formats"
+    agent: performance-designer
+    action: "Select sizes and formats per platform"
+    depends_on: [receive_briefing]
+    outputs:
+      - format_matrix
+
+  - id: create_variations
+    name: "Create Visual Variations"
+    agent: performance-designer
+    action: "Design creative variants"
+    depends_on: [define_formats]
+    outputs:
+      - hook_variants
+      - color_variants
+      - layout_variants
+
+  - id: apply_checklist
+    name: "Apply Conversion Checklist"
+    agent: performance-designer
+    action: "Validate against conversion criteria"
+    depends_on: [create_variations]
+    checklist: creative-conversion
+
+  - id: qa_review
+    name: "QA Review"
+    agent: design-lead
+    action: "Final quality approval"
+    depends_on: [apply_checklist]
+    decision:
+      approve: proceed_to_export
+      revise: create_variations
+
+  - id: export
+    name: "Export Assets"
+    agent: performance-designer
+    action: "Export all formats and sizes"
+    depends_on: [qa_review]
+
+outputs:
+  - name: creatives
+    description: "6-12 static creatives"
+    format: "PNG/JPG"
+  - name: variants
+    description: "Headline visual variants"
+    format: "PNG"
+  - name: guidelines
+    description: "Usage guidelines"
+    format: "MD"
+  - name: source_files
+    description: "Editable source"
+    format: "Figma"
+
+quality_gates:
+  - "Visual hierarchy is clear"
+  - "CTA is prominent"
+  - "Brand guidelines followed"
+  - "Platform specs met"
+  - "Mobile optimized"
+
+estimated_duration: "2-4 hours"

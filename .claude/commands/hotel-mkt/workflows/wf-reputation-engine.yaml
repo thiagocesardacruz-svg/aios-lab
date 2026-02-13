@@ -1,0 +1,1469 @@
+# ═══════════════════════════════════════════════════════════════════════════════
+# WORKFLOW: REPUTATION ENGINE - Complete Review Management & Social Proof System
+# ═══════════════════════════════════════════════════════════════════════════════
+#
+# Purpose: Systematically manage online reputation to increase ratings, generate
+#          reviews, and convert reviews into social proof content
+#
+# Target: +1 star rating = +5-9% revenue increase | MRR (Meaningful Response Rate) 95%+
+# Duration: Ongoing (daily monitoring, weekly optimization)
+# Squad: hotel-mkt
+# DNA: Hormozi (systematic process) + Conley (emotional connection) + Schrager (brand elevation)
+#
+# ═══════════════════════════════════════════════════════════════════════════════
+
+name: wf-reputation-engine
+version: 1.0.0
+squad: hotel-mkt
+category: reputation-management
+
+metadata:
+  description: "Complete review management system from monitoring to UGC amplification"
+  author: "hotel-mkt-squad"
+  created: "2026-02-10"
+  target_outcome: "+1 star rating, 95%+ response rate, continuous UGC pipeline"
+  platforms: ["TripAdvisor", "Google", "Booking.com", "Instagram", "Facebook"]
+  automation_level: "High (with human oversight)"
+
+objectives:
+  primary: "Achieve and maintain 4.5+ star rating across all platforms"
+  secondary:
+    - "Respond to 100% of reviews within 48 hours"
+    - "Generate 50+ new reviews monthly"
+    - "Convert 20% of reviews into social proof content"
+    - "Recover 60%+ of negative review scenarios"
+    - "Build systematic review request pipeline"
+
+kpis:
+  - name: "Overall Star Rating"
+    target: "4.5+"
+    measurement: "Weighted average across TripAdvisor, Google, Booking.com"
+
+  - name: "Review Response Rate"
+    target: "100%"
+    measurement: "Reviews responded to / Total reviews"
+
+  - name: "Review Response Time"
+    target: "<48 hours"
+    measurement: "Average time from review publish to response"
+
+  - name: "Monthly New Reviews"
+    target: "50+"
+    measurement: "Count of new reviews per month"
+
+  - name: "Review Request Conversion"
+    target: "15%"
+    measurement: "Reviews received / Review requests sent"
+
+  - name: "Negative Review Recovery"
+    target: "60%"
+    measurement: "Negative reviews resolved or updated"
+
+  - name: "UGC Conversion Rate"
+    target: "20%"
+    measurement: "Reviews converted to social proof / Total positive reviews"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# PHASE 1: MONITORING
+# ═══════════════════════════════════════════════════════════════════════════════
+
+phases:
+  - phase: 1
+    name: "Monitoring"
+    duration: "Daily (ongoing)"
+    description: "Systematic monitoring of all review platforms and social mentions"
+
+    agents:
+      - name: "hotel-reputation-guardian"
+        role: "lead"
+        responsibility: "Daily scan of all platforms, alert triage, sentiment analysis"
+
+    inputs:
+      - "Access credentials to all review platforms"
+      - "Social media monitoring tool (Cortex Social Listening module)"
+      - "Alert notification system (email, Slack, SMS)"
+
+    tasks:
+      - id: "1.1"
+        name: "Platform Monitoring Setup"
+        owner: "hotel-reputation-guardian"
+        description: "Configure monitoring for all relevant platforms"
+        platforms:
+          - name: "TripAdvisor"
+            check_frequency: "Every 4 hours"
+            alerts: "New review, rating change, ranking change"
+            monitoring_scope: "Hotel profile, competitor comparison, forum mentions"
+
+          - name: "Google Business Profile"
+            check_frequency: "Every 4 hours"
+            alerts: "New review, Q&A post, photo upload"
+            monitoring_scope: "Reviews, photos, questions, posts"
+
+          - name: "Booking.com"
+            check_frequency: "Every 6 hours"
+            alerts: "New review, rating change"
+            monitoring_scope: "Guest reviews, property score"
+
+          - name: "Instagram"
+            check_frequency: "Every 2 hours"
+            alerts: "Tag, mention, DM, comment"
+            monitoring_scope: "Tags, mentions, location tags, hashtags"
+
+          - name: "Facebook"
+            check_frequency: "Every 4 hours"
+            alerts: "Review, recommendation, mention, comment"
+            monitoring_scope: "Page reviews, post comments, mentions"
+
+          - name: "Twitter/X"
+            check_frequency: "Every 2 hours"
+            alerts: "Mention, hashtag"
+            monitoring_scope: "Brand mentions, location mentions"
+        outputs:
+          - "Monitoring dashboard configured"
+          - "Alert routing setup"
+
+      - id: "1.2"
+        name: "Daily Review Sweep"
+        owner: "hotel-reputation-guardian"
+        description: "Morning and evening review of all platforms"
+        sweep_checklist:
+          - "Check TripAdvisor for new reviews (morning: 9am, evening: 5pm)"
+          - "Check Google Business Profile for reviews/Q&A"
+          - "Check Booking.com for new guest reviews"
+          - "Scan Instagram tags and mentions"
+          - "Review Facebook page reviews and comments"
+          - "Search Twitter/X for brand mentions"
+          - "Log all new reviews in centralized spreadsheet"
+        outputs:
+          - "Daily review log (platform, rating, sentiment, urgency)"
+          - "Priority response queue"
+
+      - id: "1.3"
+        name: "Sentiment Analysis & Triage"
+        owner: "hotel-reputation-guardian"
+        description: "Categorize reviews by sentiment and urgency"
+        sentiment_categories:
+          - category: "Positive (4-5 stars)"
+            priority: "Low urgency"
+            response_needed: "Yes (thank + invite back)"
+
+          - category: "Neutral (3 stars)"
+            priority: "Medium urgency"
+            response_needed: "Yes (acknowledge + address concerns)"
+
+          - category: "Negative (1-2 stars)"
+            priority: "High urgency"
+            response_needed: "Yes (immediate response + recovery protocol)"
+
+          - category: "Critical (1 star with viral potential)"
+            priority: "Critical"
+            response_needed: "Immediate escalation to management"
+        triage_process:
+          - "Tag sentiment (positive/neutral/negative/critical)"
+          - "Flag urgent issues (health, safety, severe service failure)"
+          - "Identify recovery opportunities (legitimate complaints)"
+          - "Detect fake/spam reviews (refer to platform)"
+        outputs:
+          - "Triaged review queue with priority tags"
+          - "Escalation alerts for critical reviews"
+
+      - id: "1.4"
+        name: "Competitor Monitoring"
+        owner: "hotel-reputation-guardian"
+        description: "Weekly monitoring of competitor reviews for insights"
+        monitoring_scope:
+          - "Top 3 local competitors on TripAdvisor"
+          - "Competitor rating trends"
+          - "Common complaints (opportunity areas)"
+          - "Common praises (table stakes)"
+          - "Review volume comparison"
+        insights_to_extract:
+          - "What are guests praising competitors for?"
+          - "What are guests complaining about competitors?"
+          - "What are we doing better?"
+          - "Where can we differentiate?"
+        outputs:
+          - "Weekly competitor insights report"
+          - "Differentiation opportunities list"
+
+    outputs:
+      - "Daily review log with sentiment analysis"
+      - "Priority response queue"
+      - "Weekly competitor insights report"
+
+    checkpoints:
+      - name: "Daily Monitoring Complete"
+        criteria: "All platforms checked morning and evening"
+        approval_required: false
+        frequency: "Daily"
+
+      - name: "Zero Missed Reviews"
+        criteria: "All new reviews logged and triaged within 24 hours"
+        approval_required: true
+        approver: "hotel-reputation-guardian"
+        frequency: "Daily"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# PHASE 2: RESPONSE
+# ═══════════════════════════════════════════════════════════════════════════════
+
+  - phase: 2
+    name: "Response"
+    duration: "Within 48 hours of review"
+    description: "Respond to 100% of reviews with personalized, on-brand responses"
+
+    agents:
+      - name: "hotel-reputation-guardian"
+        role: "lead"
+        responsibility: "Craft and publish responses to all reviews"
+      - name: "hotel-copywriter"
+        role: "support"
+        responsibility: "Provide response templates and tone guidance"
+
+    inputs:
+      - "Triaged review queue from Phase 1"
+      - "Response templates by sentiment"
+      - "Hotel brand voice guidelines"
+
+    tasks:
+      - id: "2.1"
+        name: "Response Template Creation"
+        owner: "hotel-copywriter"
+        description: "Create response templates for common scenarios"
+        template_categories:
+          - category: "Positive Review (5 stars)"
+            structure: "Thank + Specific Detail + Invite Back"
+            example: |
+              Olá [Nome],
+              Ficamos encantados com suas palavras! É maravilhoso saber que [detalhe específico mencionado] tornou sua estadia memorável.
+              [Nome do staff mencionado] ficará muito feliz em saber que fez diferença na sua experiência.
+              Será um prazer recebê-lo novamente em breve!
+              Abraços da equipe [Hotel Name]
+            tone: "Warm, grateful, personal"
+
+          - category: "Positive Review (4 stars)"
+            structure: "Thank + Specific Detail + Subtle Acknowledgment of Minor Issue + Invite"
+            example: |
+              Olá [Nome],
+              Agradecemos imensamente por compartilhar sua experiência! Ficamos felizes que [detalhe positivo].
+              Tomamos nota sobre [pequena crítica mencionada] e já estamos trabalhando nisso.
+              Esperamos recebê-lo novamente para superar suas expectativas!
+              Abraços, [Nome do Gerente]
+            tone: "Grateful, attentive, improvement-focused"
+
+          - category: "Neutral Review (3 stars)"
+            structure: "Acknowledge + Address Specific Concerns + Action Taken + Invite for Second Chance"
+            example: |
+              Olá [Nome],
+              Agradecemos seu feedback sincero. Lamentamos que [problema específico] não tenha atendido suas expectativas.
+              Já implementamos [ação corretiva] para garantir que isso não se repita.
+              Gostaríamos muito de uma oportunidade de proporcionar a experiência que você merece. Entre em contato diretamente conosco em [contato].
+              Atenciosamente, [Nome do Gerente]
+            tone: "Empathetic, accountable, solution-oriented"
+
+          - category: "Negative Review (1-2 stars)"
+            structure: "Apologize + Acknowledge Specific Failure + Action Taken + Offline Resolution Offer"
+            example: |
+              Olá [Nome],
+              Pedimos sinceras desculpas por [problema específico]. Isso não reflete o padrão de serviço que buscamos oferecer.
+              [Ação específica tomada para corrigir].
+              Gostaríamos de conversar pessoalmente para resolver isso. Por favor, entre em contato em [email/telefone direto] para que possamos fazer isso certo.
+              Lamentamos profundamente,
+              [Nome do Gerente Geral]
+            tone: "Apologetic, accountable, urgent, solution-focused"
+
+          - category: "Fake/Spam Review"
+            structure: "Professional Statement + Request for Platform Review"
+            example: |
+              We take all feedback seriously, but we have no record of a guest matching this profile during the mentioned period. We've reported this review to [Platform] for verification.
+              If you were indeed a guest, please contact us directly at [contact] so we can assist you properly.
+            tone: "Professional, factual, firm"
+        outputs:
+          - "Response template library (20-30 templates)"
+          - "Tone of voice guide for responses"
+
+      - id: "2.2"
+        name: "Positive Review Response"
+        owner: "hotel-reputation-guardian"
+        description: "Respond to all 4-5 star reviews within 48 hours"
+        response_guidelines:
+          - "Personalize every response (use guest name, reference specific details)"
+          - "Keep response length 50-150 words"
+          - "Thank genuinely, not robotically"
+          - "Mention staff by name if they were praised"
+          - "Include subtle CTA (invite back, direct booking link)"
+          - "Use emojis sparingly (1-2 max, if brand-appropriate)"
+        process:
+          - "Read full review carefully"
+          - "Select appropriate template"
+          - "Personalize with specific details from review"
+          - "Add human touch (reference local event, season, etc.)"
+          - "Proofread for tone and grammar"
+          - "Publish within 24-48 hours"
+        outputs:
+          - "Published responses to all positive reviews"
+          - "Response time tracking"
+
+      - id: "2.3"
+        name: "Negative Review Response & Recovery"
+        owner: "hotel-reputation-guardian"
+        description: "Immediate response to negative reviews with offline recovery protocol"
+        response_protocol:
+          - step: 1
+            action: "Alert management immediately (within 1 hour of detection)"
+            responsible: "hotel-reputation-guardian"
+
+          - step: 2
+            action: "Investigate complaint (verify facts, speak to staff involved)"
+            responsible: "hotel-reputation-guardian + hotel-mkt-director"
+            timeline: "Within 4 hours"
+
+          - step: 3
+            action: "Craft public response (apologize, acknowledge, action taken, invite offline)"
+            responsible: "hotel-reputation-guardian"
+            timeline: "Within 12 hours"
+
+          - step: 4
+            action: "Publish response on platform"
+            responsible: "hotel-reputation-guardian"
+            timeline: "Within 24 hours"
+
+          - step: 5
+            action: "Reach out offline (email or phone) with resolution offer"
+            responsible: "hotel-mkt-director or GM"
+            offer_options:
+              - "Discount on future stay (30-50%)"
+              - "Complimentary upgrade"
+              - "Free amenity (spa, dinner, etc.)"
+              - "Full refund (extreme cases)"
+            timeline: "Within 24 hours"
+
+          - step: 6
+            action: "Follow up 1 week later to request review update"
+            responsible: "hotel-reputation-guardian"
+            timeline: "7 days post-resolution"
+        recovery_success_metrics:
+          - "Guest responds positively to outreach: 70% target"
+          - "Guest accepts resolution offer: 60% target"
+          - "Guest updates review or posts new positive review: 40% target"
+        outputs:
+          - "Public response published"
+          - "Offline recovery outreach sent"
+          - "Recovery tracking log"
+
+      - id: "2.4"
+        name: "Response Performance Tracking"
+        owner: "hotel-reputation-guardian"
+        description: "Track response rate and time to ensure 100% coverage"
+        tracking_metrics:
+          - "Response rate (% of reviews responded to)"
+          - "Average response time (hours from review to response)"
+          - "Response rate by platform"
+          - "Response rate by sentiment (positive/neutral/negative)"
+        reporting_frequency: "Weekly"
+        outputs:
+          - "Weekly response performance report"
+          - "Response rate dashboard"
+
+    outputs:
+      - "100% of reviews responded to within 48 hours"
+      - "Negative review recovery protocol activated"
+      - "Response performance tracking dashboard"
+
+    checkpoints:
+      - name: "48-Hour Response Commitment"
+        criteria: "All reviews responded to within 48 hours"
+        approval_required: true
+        approver: "hotel-reputation-guardian"
+        frequency: "Weekly"
+
+      - name: "Negative Review Escalation Check"
+        criteria: "All 1-2 star reviews escalated and recovery protocol initiated"
+        approval_required: true
+        approver: "hotel-mkt-director"
+        frequency: "Per incident"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# PHASE 3: GENERATION
+# ═══════════════════════════════════════════════════════════════════════════════
+
+  - phase: 3
+    name: "Generation"
+    duration: "Ongoing (automated + manual)"
+    description: "Systematically request reviews from guests to increase volume and rating"
+
+    agents:
+      - name: "hotel-reputation-guardian"
+        role: "lead"
+        responsibility: "Manage review request campaigns"
+      - name: "hotel-email-maestro"
+        role: "support"
+        responsibility: "Design and send automated review request emails"
+
+    inputs:
+      - "Guest email list from PMS"
+      - "Check-out dates and guest experience scores"
+      - "Review request templates"
+
+    tasks:
+      - id: "3.1"
+        name: "Automated Email Review Requests"
+        owner: "hotel-email-maestro"
+        description: "Send automated review requests 48 hours post-checkout"
+        email_sequence:
+          - email: 1
+            timing: "48 hours post-checkout"
+            subject: "Como foi sua estadia no [Hotel Name]?"
+            content_structure: |
+              - Personalized greeting
+              - Thank for visit
+              - Ask about experience (simple question)
+              - Direct links to review platforms (TripAdvisor, Google, Booking.com)
+              - QR code for mobile scanning
+              - Signature with photo
+            cta: "Deixe sua avaliação" (multiple platform buttons)
+            send_condition: "All guests (no filtering)"
+
+          - email: 2
+            timing: "7 days post-checkout (if no review)"
+            subject: "Rápido feedback sobre sua estadia?"
+            content_structure: |
+              - Brief reminder
+              - "Leva apenas 2 minutos"
+              - Emphasize importance of feedback
+              - Platform links + QR code
+            cta: "Compartilhe sua experiência"
+            send_condition: "Only if guest has not left review"
+        email_design:
+          - "Mobile-optimized (60%+ open on mobile)"
+          - "Single-column layout"
+          - "Large CTA buttons (platform logos)"
+          - "QR code for instant access"
+          - "Personal signature from GM or owner"
+        outputs:
+          - "Automated email sequence activated"
+          - "Email open and click tracking"
+
+      - id: "3.2"
+        name: "QR Code In-Room Review Requests"
+        owner: "hotel-reputation-guardian"
+        description: "Place QR code cards in rooms for instant review submission"
+        placement_strategy:
+          - "On bedside table (tent card)"
+          - "In guest welcome folder"
+          - "Bathroom mirror (small sticker)"
+          - "Receipt at checkout"
+        qr_code_design:
+          - "Link to microsite with platform choice (TripAdvisor, Google, Booking)"
+          - "Headline: 'Adorou sua estadia? Conta pra gente! 😊'"
+          - "Subheading: 'Leva 2 minutos e ajuda muito!'"
+          - "Hotel logo and branding"
+        outputs:
+          - "QR code cards designed and printed"
+          - "QR code deployment tracking"
+
+      - id: "3.3"
+        name: "WhatsApp Follow-Up Requests"
+        owner: "hotel-reputation-guardian"
+        description: "Personal WhatsApp message to high-satisfaction guests"
+        target_guests: "Guests with positive feedback during stay (frontdesk notes, no complaints)"
+        message_template: |
+          Olá [Nome]! Aqui é [Staff Name] do [Hotel Name].
+          Espero que tenha chegado bem! Foi um prazer recebê-lo(a).
+          Se puder deixar um feedback rápido no Google ou TripAdvisor, ajudaria muito nossa pequena equipe! 🙏
+          [Link]
+          Abraços!
+        send_timing: "3-4 days post-checkout"
+        send_volume: "10-20 guests/week (high-satisfaction only)"
+        outputs:
+          - "WhatsApp requests sent"
+          - "Response and review rate tracking"
+
+      - id: "3.4"
+        name: "Staff-Initiated In-Person Requests"
+        owner: "hotel-reputation-guardian"
+        description: "Train staff to request reviews during checkout for exceptional stays"
+        training_script: |
+          "Ficamos muito felizes em recebê-lo! Se tiver um minutinho, adoraríamos um feedback no Google ou TripAdvisor. Ajuda muito nossa equipe! Posso te enviar o link por email ou WhatsApp?"
+        target_moments:
+          - "During checkout for guests who expressed satisfaction"
+          - "After resolving a service issue positively"
+          - "When guest mentions they loved something specific"
+        incentive_structure:
+          - "Staff recognition for most reviews generated (non-monetary)"
+          - "Monthly 'Review Champion' award"
+        outputs:
+          - "Staff training completed"
+          - "In-person request tracking (via CRM notes)"
+
+      - id: "3.5"
+        name: "Review Request Performance Tracking"
+        owner: "hotel-reputation-guardian"
+        description: "Track conversion rates for each request channel"
+        metrics_to_track:
+          - "Email open rate (target: 40%)"
+          - "Email click rate (target: 15%)"
+          - "Email-to-review conversion (target: 10-15%)"
+          - "QR code scans (tracking via analytics)"
+          - "WhatsApp response rate (target: 50%)"
+          - "WhatsApp-to-review conversion (target: 30%)"
+          - "In-person request conversion (target: 40%)"
+        reporting_frequency: "Weekly"
+        outputs:
+          - "Weekly review generation report"
+          - "Channel performance comparison"
+
+    outputs:
+      - "Automated review request system operational"
+      - "Multiple touchpoints deployed (email, QR, WhatsApp, in-person)"
+      - "50+ new reviews generated monthly"
+
+    checkpoints:
+      - name: "Monthly Review Volume Check"
+        criteria: "50+ new reviews generated per month"
+        approval_required: true
+        approver: "hotel-reputation-guardian"
+        frequency: "Monthly"
+
+      - name: "Request Conversion Rate Check"
+        criteria: "Review request conversion >10% overall"
+        approval_required: true
+        approver: "hotel-reputation-guardian"
+        frequency: "Monthly"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# PHASE 4: RECOVERY
+# ═══════════════════════════════════════════════════════════════════════════════
+
+  - phase: 4
+    name: "Recovery"
+    duration: "7-14 days per negative review"
+    description: "Systematically recover negative reviews through offline resolution and review update requests"
+
+    agents:
+      - name: "hotel-reputation-guardian"
+        role: "lead"
+        responsibility: "Execute recovery protocol"
+      - name: "hotel-mkt-director"
+        role: "support"
+        responsibility: "Approve recovery offers and participate in key outreach"
+
+    inputs:
+      - "Negative review details (1-3 star reviews)"
+      - "Guest contact information"
+      - "Recovery offer options (discounts, refunds, upgrades)"
+
+    tasks:
+      - id: "4.1"
+        name: "Recovery Eligibility Assessment"
+        owner: "hotel-reputation-guardian"
+        description: "Determine which negative reviews are recoverable"
+        eligibility_criteria:
+          - eligible: "Legitimate service failure (room issue, staff error, cleanliness)"
+            recovery_potential: "High (70%+)"
+
+          - eligible: "Expectation mismatch (not clearly communicated)"
+            recovery_potential: "Medium (50%)"
+
+          - eligible: "Isolated incident (one-time issue)"
+            recovery_potential: "Medium (50%)"
+
+          - not_eligible: "Fake/spam review"
+            recovery_potential: "None (report to platform)"
+
+          - not_eligible: "Unreasonable complaint (price, weather, location)"
+            recovery_potential: "Low (20%)"
+
+          - not_eligible: "Severe reputation attack (defamation)"
+            recovery_potential: "None (legal consultation)"
+        outputs:
+          - "Recovery candidate list with priority scores"
+
+      - id: "4.2"
+        name: "Personalized Recovery Outreach"
+        owner: "hotel-reputation-guardian"
+        description: "Contact guest via email or phone with sincere apology and resolution offer"
+        outreach_template: |
+          Subject: Sobre sua recente estadia no [Hotel Name]
+
+          Olá [Nome],
+
+          Sou [Nome, Cargo] do [Hotel Name]. Li seu feedback no [Platform] e quero, antes de tudo, pedir sinceras desculpas por [problema específico].
+
+          Isso não reflete o padrão de hospitalidade que nos orgulhamos de oferecer. [Explicação breve do que aconteceu e ação corretiva tomada].
+
+          Gostaríamos muito de uma oportunidade de fazer isso certo. [Oferta específica: desconto, upgrade, reembolso parcial, etc.].
+
+          Ficaria muito grato se pudéssemos conversar rapidamente. Pode me ligar diretamente em [telefone] ou responder este email?
+
+          Mais uma vez, minhas sinceras desculpas.
+
+          Atenciosamente,
+          [Nome]
+          [Cargo]
+          [Hotel Name]
+          [Telefone direto]
+        outreach_timing: "Within 24 hours of negative review detection"
+        follow_up: "If no response in 3 days, send follow-up email"
+        outputs:
+          - "Recovery outreach emails sent"
+          - "Guest response tracking"
+
+      - id: "4.3"
+        name: "Resolution Offer Execution"
+        owner: "hotel-reputation-guardian"
+        description: "Deliver on recovery offer once guest responds positively"
+        offer_tiers:
+          - tier: "Tier 1 - Minor issue (3-star review)"
+            offer: "20-30% discount on next stay"
+            approval_needed: false
+
+          - tier: "Tier 2 - Moderate issue (2-star review)"
+            offer: "50% discount or free upgrade on next stay"
+            approval_needed: "hotel-mkt-director"
+
+          - tier: "Tier 3 - Severe issue (1-star review)"
+            offer: "Full refund or complimentary future stay"
+            approval_needed: "hotel-mkt-director or GM"
+        execution_process:
+          - "Confirm offer via email"
+          - "Issue discount code or refund within 48 hours"
+          - "Follow up to confirm receipt"
+          - "Schedule follow-up call 1 week later"
+        outputs:
+          - "Resolution offers executed"
+          - "Guest satisfaction confirmation"
+
+      - id: "4.4"
+        name: "Review Update Request"
+        owner: "hotel-reputation-guardian"
+        description: "Politely request guest to update review after resolution"
+        request_timing: "7-10 days after resolution execution"
+        request_template: |
+          Olá [Nome],
+
+          Espero que esteja bem! Queria agradecer novamente por ter nos dado a oportunidade de corrigir o ocorrido.
+
+          Se você sentir que fizemos jus ao nosso compromisso, ficaria muito grato se pudesse atualizar seu feedback no [Platform] ou considerar nos dar uma nova chance em uma próxima visita.
+
+          Sem pressão alguma! Apenas agradeço por ter nos ouvido.
+
+          Abraços,
+          [Nome]
+        request_approach: "Soft ask, no pressure, focus on relationship"
+        success_rate_target: "40% of contacted guests update review or post new positive review"
+        outputs:
+          - "Update requests sent"
+          - "Review update tracking"
+
+      - id: "4.5"
+        name: "Recovery Performance Tracking"
+        owner: "hotel-reputation-guardian"
+        description: "Track recovery success rates and ROI"
+        metrics_to_track:
+          - "Recovery outreach response rate (% who respond)"
+          - "Resolution acceptance rate (% who accept offer)"
+          - "Review update rate (% who update review)"
+          - "Recovery cost per review updated"
+          - "Overall negative review recovery rate"
+        reporting_frequency: "Monthly"
+        outputs:
+          - "Monthly recovery performance report"
+          - "ROI analysis (recovery cost vs. reputation value)"
+
+    outputs:
+      - "60%+ of negative reviews recovered or resolved"
+      - "Updated reviews or new positive reviews from recovered guests"
+      - "Recovery playbook refined based on success rates"
+
+    checkpoints:
+      - name: "Recovery Outreach Completion"
+        criteria: "All eligible negative reviews receive recovery outreach within 24 hours"
+        approval_required: true
+        approver: "hotel-reputation-guardian"
+        frequency: "Per incident"
+
+      - name: "Monthly Recovery Rate Check"
+        criteria: "60%+ of negative reviews show recovery progress (response, resolution, or update)"
+        approval_required: true
+        approver: "hotel-mkt-director"
+        frequency: "Monthly"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# PHASE 5: UGC AMPLIFICATION
+# ═══════════════════════════════════════════════════════════════════════════════
+
+  - phase: 5
+    name: "UGC Amplification"
+    duration: "Ongoing (weekly batches)"
+    description: "Convert best reviews into social proof content for marketing use"
+
+    agents:
+      - name: "hotel-ugc-curator"
+        role: "lead"
+        responsibility: "Source, clear, and repurpose UGC from reviews"
+      - name: "hotel-social-creator"
+        role: "support"
+        responsibility: "Design social proof graphics and videos"
+
+    inputs:
+      - "Top-rated reviews (5-star with detailed positive feedback)"
+      - "Guest photos from reviews"
+      - "Permission to use content"
+
+    tasks:
+      - id: "5.1"
+        name: "Top Review Identification"
+        owner: "hotel-ugc-curator"
+        description: "Weekly selection of 5-10 best reviews for content conversion"
+        selection_criteria:
+          - "5-star rating"
+          - "Detailed positive feedback (100+ words)"
+          - "Mentions specific features, staff, or experiences"
+          - "Authentic and emotional language"
+          - "Includes guest photo (bonus)"
+        review_categories_to_prioritize:
+          - "Testimonials about specific amenities (pool, spa, rooftop)"
+          - "Staff shoutouts (great for employer branding)"
+          - "Emotional stories (anniversaries, proposals, special moments)"
+          - "Before/after experience transformations"
+          - "Surprise and delight moments"
+        outputs:
+          - "Weekly top review list (5-10 reviews)"
+          - "Review snippets extracted for graphics"
+
+      - id: "5.2"
+        name: "Guest Permission & Rights Clearance"
+        owner: "hotel-ugc-curator"
+        description: "Request permission to use review content in marketing"
+        permission_request_template: |
+          Olá [Nome],
+
+          Ficamos encantados com seu feedback maravilhoso sobre sua estadia! Sua avaliação alegrou toda a equipe.
+
+          Gostaríamos de compartilhar suas palavras em nossas redes sociais e site para inspirar outros viajantes. Poderíamos ter sua permissão?
+
+          [Se houver foto] Poderíamos também compartilhar sua foto?
+
+          Abraços e obrigado novamente!
+          [Nome]
+          [Hotel Name]
+        permission_tracking: "Log permissions in spreadsheet (review_id, guest_name, permission_status, date)"
+        outputs:
+          - "Permission requests sent"
+          - "Permission clearance tracking"
+
+      - id: "5.3"
+        name: "Social Proof Content Creation"
+        owner: "hotel-social-creator"
+        description: "Design social media graphics and videos using review content"
+        content_formats:
+          - format: "Static Quote Cards (Instagram/Facebook)"
+            design: "Review quote + star rating + guest name/location + hotel branding"
+            dimensions: "1080x1080 or 1080x1350"
+            usage: "Instagram feed, Facebook posts"
+
+          - format: "Story Slides (Instagram/Facebook Stories)"
+            design: "Review snippet + swipe-up CTA + hotel footage background"
+            dimensions: "1080x1920"
+            usage: "Instagram Stories, Facebook Stories"
+
+          - format: "Testimonial Video Compilations (Reels/TikTok)"
+            design: "B-roll of hotel + review text overlay + guest photo + star rating animation"
+            duration: "15-30 seconds"
+            usage: "Instagram Reels, TikTok, YouTube Shorts"
+
+          - format: "Website Testimonial Section"
+            design: "Carousel of review cards with photos"
+            usage: "Homepage, booking page"
+
+          - format: "Email Marketing Proof"
+            design: "Review snippet in email campaigns"
+            usage: "Newsletter, promotional emails"
+        monthly_target: "20-30 social proof assets created"
+        outputs:
+          - "Social proof content library (weekly batch)"
+          - "Usage tracking (where each asset is deployed)"
+
+      - id: "5.4"
+        name: "Social Proof Deployment"
+        owner: "hotel-ugc-curator"
+        description: "Publish social proof content across channels"
+        deployment_schedule:
+          - channel: "Instagram Feed"
+            frequency: "2x per week (review quote cards)"
+            timing: "Best engagement times"
+
+          - channel: "Instagram Stories"
+            frequency: "3x per week (review snippets)"
+            timing: "Throughout the day"
+
+          - channel: "Facebook"
+            frequency: "2x per week (review graphics, share original review)"
+            timing: "Afternoon/evening"
+
+          - channel: "Website"
+            frequency: "Monthly update (rotate testimonials)"
+            placement: "Homepage, booking page"
+
+          - channel: "Email Marketing"
+            frequency: "Every campaign (include 1-2 review snippets)"
+            placement: "Below hero, above footer"
+        outputs:
+          - "Social proof content published across channels"
+          - "Engagement tracking on social proof posts"
+
+      - id: "5.5"
+        name: "Social Proof Performance Tracking"
+        owner: "hotel-ugc-curator"
+        description: "Measure impact of social proof content on engagement and bookings"
+        metrics_to_track:
+          - "Engagement rate on social proof posts vs. other content"
+          - "Click-through rate on social proof CTAs"
+          - "Conversion rate on pages with vs. without testimonials"
+          - "Booking attribution from social proof campaigns"
+        reporting_frequency: "Monthly"
+        outputs:
+          - "Monthly social proof performance report"
+          - "Insights on which review types drive most engagement"
+
+    outputs:
+      - "20-30 social proof assets created monthly"
+      - "Social proof content deployed across all marketing channels"
+      - "Measurable impact on engagement and bookings"
+
+    checkpoints:
+      - name: "Weekly UGC Curation Check"
+        criteria: "5-10 top reviews identified and permission requests sent"
+        approval_required: true
+        approver: "hotel-ugc-curator"
+        frequency: "Weekly"
+
+      - name: "Monthly Social Proof Target Check"
+        criteria: "20-30 social proof assets created and deployed"
+        approval_required: true
+        approver: "hotel-ugc-curator"
+        frequency: "Monthly"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# PHASE 6: REPORTING
+# ═══════════════════════════════════════════════════════════════════════════════
+
+  - phase: 6
+    name: "Reporting"
+    duration: "Monthly"
+    description: "Comprehensive monthly reputation dashboard with trends and competitor comparison"
+
+    agents:
+      - name: "hotel-reputation-guardian"
+        role: "lead"
+        responsibility: "Compile and present monthly reputation report"
+
+    inputs:
+      - "All monitoring data from Phase 1"
+      - "Response performance from Phase 2"
+      - "Review generation data from Phase 3"
+      - "Recovery outcomes from Phase 4"
+      - "UGC performance from Phase 5"
+
+    tasks:
+      - id: "6.1"
+        name: "Monthly Reputation Dashboard"
+        owner: "hotel-reputation-guardian"
+        description: "Compile comprehensive monthly report"
+        report_sections:
+          - section: "Overall Rating Summary"
+            metrics:
+              - "Overall star rating (weighted average across platforms)"
+              - "Month-over-month rating change"
+              - "Rating by platform (TripAdvisor, Google, Booking.com)"
+
+          - section: "Review Volume"
+            metrics:
+              - "Total new reviews (this month)"
+              - "Month-over-month volume change"
+              - "Reviews by platform"
+              - "Reviews by sentiment (positive/neutral/negative)"
+
+          - section: "Response Performance"
+            metrics:
+              - "Response rate (% of reviews responded to)"
+              - "Average response time"
+              - "Response rate by platform"
+
+          - section: "Review Generation"
+            metrics:
+              - "Review requests sent"
+              - "Review request conversion rate"
+              - "Conversion by channel (email, QR, WhatsApp, in-person)"
+
+          - section: "Negative Review Recovery"
+            metrics:
+              - "Negative reviews received"
+              - "Recovery outreach sent"
+              - "Recovery resolution rate"
+              - "Review updates obtained"
+
+          - section: "UGC Amplification"
+            metrics:
+              - "Social proof assets created"
+              - "UGC deployment (posts, stories, website)"
+              - "Engagement on social proof content"
+
+          - section: "Competitor Comparison"
+            metrics:
+              - "Our rating vs. top 3 competitors"
+              - "Review volume vs. competitors"
+              - "Ranking on TripAdvisor (local position)"
+
+          - section: "Key Insights & Recommendations"
+            content:
+              - "What guests loved most this month (common praises)"
+              - "What needs improvement (common complaints)"
+              - "Recommendations for next month"
+        report_format: "PDF + Interactive dashboard (Cortex Analytics module)"
+        outputs:
+          - "Monthly reputation report"
+          - "Executive summary (1-page)"
+
+      - id: "6.2"
+        name: "Stakeholder Presentation"
+        owner: "hotel-reputation-guardian"
+        description: "Present findings to hotel management"
+        presentation_format: "15-minute presentation with Q&A"
+        attendees:
+          - "Hotel General Manager"
+          - "Hotel Marketing Director"
+          - "Front Office Manager"
+          - "Housekeeping Manager"
+        discussion_topics:
+          - "Rating trend (up/down and why)"
+          - "Staff shoutouts (recognize team members praised in reviews)"
+          - "Service gaps (areas needing improvement)"
+          - "Recovery wins (negative reviews turned positive)"
+          - "Action items for next month"
+        outputs:
+          - "Presentation slides"
+          - "Action item list with owners"
+
+    outputs:
+      - "Monthly reputation dashboard"
+      - "Executive summary report"
+      - "Stakeholder presentation"
+
+    checkpoints:
+      - name: "Monthly Report Delivery"
+        criteria: "Report completed and delivered by 5th of each month"
+        approval_required: true
+        approver: "hotel-mkt-director"
+        frequency: "Monthly"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# WORKFLOW OUTPUTS & SUCCESS METRICS
+# ═══════════════════════════════════════════════════════════════════════════════
+
+final_outputs:
+  - "4.5+ star rating maintained across all platforms"
+  - "100% review response rate within 48 hours"
+  - "50+ new reviews generated monthly"
+  - "60%+ negative review recovery rate"
+  - "20-30 social proof assets deployed monthly"
+  - "Monthly reputation dashboard operational"
+
+success_metrics:
+  - metric: "Overall Star Rating"
+    target: "4.5+"
+    impact: "+1 star = +5-9% revenue"
+
+  - metric: "Review Response Rate"
+    target: "100%"
+    impact: "Increases review volume by 20%+"
+
+  - metric: "Monthly New Reviews"
+    target: "50+"
+    impact: "Increases visibility and conversion"
+
+  - metric: "Negative Review Recovery"
+    target: "60%+"
+    impact: "Prevents rating erosion"
+
+  - metric: "Social Proof Deployment"
+    target: "20-30 assets/month"
+    impact: "Increases booking conversion by 15%+"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# RISKS & MITIGATION
+# ═══════════════════════════════════════════════════════════════════════════════
+
+risks:
+  - risk: "Review bombing (coordinated negative reviews)"
+    impact: "High"
+    mitigation: "Report to platforms, document with evidence, public statement"
+
+  - risk: "Staff burnout (response workload)"
+    impact: "Medium"
+    mitigation: "Response templates, automation, rotate responsibility"
+
+  - risk: "Guest privacy concerns (UGC use)"
+    impact: "Medium"
+    mitigation: "Always get permission, anonymize if requested"
+
+  - risk: "Over-incentivizing reviews (platform violations)"
+    impact: "High"
+    mitigation: "Never offer incentives for reviews, focus on genuine requests"
+
+  - risk: "Negative review spiral (multiple negatives in short period)"
+    impact: "High"
+    mitigation: "Root cause analysis, immediate corrective action, stakeholder alignment"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# NOTES & BEST PRACTICES
+# ═══════════════════════════════════════════════════════════════════════════════
+
+notes:
+  - "Hormozi principle: Systems beat effort. Automate what you can, personalize what matters."
+  - "Conley principle: Emotional connection in responses. Show you care, not just corporate speak."
+  - "Schrager principle: Reputation is brand. Protect and elevate it relentlessly."
+  - "Research shows: +1 star = +5-9% revenue. Reputation management is revenue management."
+  - "MRR (Meaningful Response Rate) matters more than generic 'thank you' responses."
+  - "Negative reviews are recovery opportunities, not disasters. 60%+ can be turned around."
+  - "Review request timing matters: 48 hours is the sweet spot (fresh memory, not too pushy)."
+  - "Never incentivize reviews with discounts (violates platform policies). Request genuinely."
+  - "UGC from reviews is gold. Always ask permission, always give credit."
+  - "Competitor monitoring provides differentiation insights and service benchmarks."
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# END OF WORKFLOW
+# ═══════════════════════════════════════════════════════════════════════════════
+
+# ════════════════════════════════════════════════════════════════
+# 🔒 ENFORCEMENT ENGINE
+# Inspirado em: Cooper's Stage-Gate (P&G) + Salesforce Pipeline + Toyota Andon
+# ════════════════════════════════════════════════════════════════
+
+enforcement_engine:
+  version: "1.0.0"
+  protocol: "stage-gate"
+
+  state_machine:
+    initial_state: "phase-1-monitoring"
+    terminal_states: ["completed", "killed"]
+
+    transitions:
+      - from: "phase-1-monitoring"
+        to: "phase-2-response"
+        gate: "G1"
+        trigger: "auto_on_gate_pass"
+
+      - from: "phase-2-response"
+        to: "phase-3-generation"
+        gate: "G2"
+        trigger: "auto_on_gate_pass"
+
+      - from: "phase-3-generation"
+        to: "phase-4-recovery"
+        gate: "G3"
+        trigger: "auto_on_gate_pass"
+
+      - from: "phase-4-recovery"
+        to: "phase-5-ugc"
+        gate: "G4"
+        trigger: "auto_on_gate_pass"
+
+      - from: "phase-5-ugc"
+        to: "phase-6-reporting"
+        gate: "G5"
+        trigger: "auto_on_gate_pass"
+
+      - from: "phase-6-reporting"
+        to: "phase-2-response"
+        gate: null
+        trigger: "continuous_loop"
+        note: "Phases 2-6 rodam continuamente após setup inicial"
+
+    invalid_transitions:
+      - from: "phase-1-monitoring"
+        to: "phase-3-generation"
+        reason: "Não pode gerar reviews sem ter protocolo de resposta ativo (Phase 2) - reviews sem resposta são oportunidade perdida"
+
+      - from: "phase-3-generation"
+        to: "phase-5-ugc"
+        reason: "Não pode ativar UGC sem ter recovery program (Phase 4) - negative reviews não recuperadas vão virar UGC negativo"
+
+  gates:
+    G1:
+      name: "Gate 1: Monitoring Infrastructure Ready"
+      between: ["phase-1-monitoring", "phase-2-response"]
+      gatekeeper: "hotel-mkt-director"
+      sla: "48h"
+
+      must_meet:
+        - id: "G1-M1"
+          criterion: "Todas as plataformas de review conectadas (TripAdvisor, Google, Booking.com no mínimo)"
+          validation: "Testar login manual em cada plataforma - credenciais válidas + acesso a review management dashboard"
+          on_fail: "BLOCK - reputation-guardian deve obter credenciais ou criar contas faltantes"
+
+        - id: "G1-M2"
+          criterion: "Sistema de alertas configurado e testado (email ou Slack para new reviews)"
+          validation: "Criar review de teste e confirmar que alerta dispara em <15 minutos"
+          on_fail: "BLOCK - configurar alertas via plataforma nativa ou ferramenta de monitoring (Google Alerts, Mention, etc.)"
+
+        - id: "G1-M3"
+          criterion: "Daily monitoring schedule ativo por 2 semanas sem falhas (morning + evening sweeps)"
+          validation: "Revisar log de monitoring - deve ter 2 entries por dia nos últimos 14 dias"
+          on_fail: "BLOCK - estabelecer rotina com backup person se reputation-guardian ausente"
+
+      should_meet:
+        - id: "G1-S1"
+          criterion: "Monitoring dashboard centralizado configurado (Cortex ou spreadsheet)"
+          weight: 0.8
+          min_score: 7
+          scoring: "Se dashboard automático: 10 pontos; se spreadsheet manual: 6 pontos"
+
+      kill_criteria:
+        - id: "G1-K1"
+          criterion: "Se hotel não tem perfil ativo em NENHUMA plataforma de review (TripAdvisor, Google, Booking)"
+          action: "KILL workflow + criar perfis antes de continuar - sem presença = impossível gerenciar reputação"
+
+        - id: "G1-K2"
+          criterion: "Se hotel recusa dar acesso às contas de review para reputation-guardian"
+          action: "HOLD indefinidamente - sem acesso = workflow inoperável + escalar para ownership/GM"
+
+      decision_options: ["GO", "KILL", "HOLD", "RECYCLE"]
+
+    G2:
+      name: "Gate 2: Response Protocol Operational"
+      between: ["phase-2-response", "phase-3-generation"]
+      gatekeeper: "hotel-mkt-director"
+      sla: "48h"
+
+      must_meet:
+        - id: "G2-M1"
+          criterion: "Response templates criados para 5 categorias de sentiment (ecstatic, positive, neutral, negative, crisis)"
+          validation: "Verificar template library - deve ter 5+ templates em português com tom de voz aprovado"
+          on_fail: "BLOCK - copywriter deve criar templates faltantes baseado em brand voice guidelines"
+
+        - id: "G2-M2"
+          criterion: "Response SLA <48h verificado por 2 semanas consecutivas (100% das reviews respondidas em <48h)"
+          validation: "Revisar response time log - média deve ser <48h e 0 reviews sem resposta"
+          on_fail: "BLOCK - ajustar workflow ou adicionar backup responder antes de escalar volume com generation"
+
+        - id: "G2-M3"
+          criterion: "Zero respostas defensivas ou agressivas em período de teste (tone check pass)"
+          validation: "Audit das últimas 20 respostas - nenhuma deve ter blame language ou tom corporativo frio"
+          on_fail: "BLOCK - re-treinar reputation-guardian em tom empático + revisar templates"
+
+      should_meet:
+        - id: "G2-S1"
+          criterion: "MRR (Meaningful Response Rate) > 80% - respostas personalizadas, não robóticas"
+          weight: 1.0
+          min_score: 8
+          scoring: "Audit sample de 10 respostas - quantas mencionam detalhes específicos do review? Target 8+"
+
+      kill_criteria:
+        - id: "G2-K1"
+          criterion: "Se template de resposta usa linguagem de culpa ao hóspede ('lamentamos que você sentiu...', 'nosso padrão é X, então você está errado')"
+          action: "KILL template imediatamente + reescrever com foco em accountability ('lamentamos que [problema] aconteceu')"
+
+        - id: "G2-K2"
+          criterion: "Se response rate cai para <70% por 2 semanas consecutivas (staff burnout ou falta de processo)"
+          action: "HOLD generation + diagnosticar: sobrecarga de volume? Falta de templates? + resolver antes de prosseguir"
+
+      decision_options: ["GO", "KILL", "HOLD", "RECYCLE"]
+
+    G3:
+      name: "Gate 3: Review Generation System Active"
+      between: ["phase-3-generation", "phase-4-recovery"]
+      gatekeeper: "hotel-reputation-guardian"
+      sla: "72h"
+
+      must_meet:
+        - id: "G3-M1"
+          criterion: "Automated email review request configurado e testado (dispara 48h post-checkout)"
+          validation: "Criar booking de teste + verificar que email dispara 48h depois com links corretos para review platforms"
+          on_fail: "BLOCK - email-maestro deve configurar automation via PMS integration ou email platform"
+
+        - id: "G3-M2"
+          criterion: "Review request timing triggers definidos (checkout +24h ou +72h) e testados"
+          validation: "Testar ambos os triggers - email deve chegar no horário correto e não em horário noturno (9am-8pm ideal)"
+          on_fail: "BLOCK - ajustar timing ou timezone settings na automation"
+
+        - id: "G3-M3"
+          criterion: "Incentive program definido SEM violar ToS de plataformas (não pode pagar por reviews)"
+          validation: "Revisar review request copy - não deve prometer desconto/brinde em troca de review (viola Google, TA, Booking ToS)"
+          on_fail: "BLOCK - reescrever copy para request genuíno sem incentive explícito"
+
+      should_meet:
+        - id: "G3-S1"
+          criterion: "Email open rate > 40% e click rate > 15% (benchmark de review request emails)"
+          weight: 1.0
+          min_score: 7
+          scoring: "Medir após 50 emails enviados - se open <40% ou click <15%: revisar subject line e CTA"
+
+      kill_criteria:
+        - id: "G3-K1"
+          criterion: "Se review solicitation flagged por plataforma por violar ToS (incentive, coerção, etc.)"
+          action: "KILL automation imediatamente + pausar todos os requests + reescrever copy compliance + aguardar 30 dias antes de retomar"
+
+        - id: "G3-K2"
+          criterion: "Se conversão email → review < 5% após 100 emails enviados (broken funnel ou má timing)"
+          action: "HOLD + diagnosticar: timing errado? Copy fraco? Links quebrados? + corrigir e re-test antes de escalar"
+
+      decision_options: ["GO", "KILL", "HOLD", "RECYCLE"]
+
+    G4:
+      name: "Gate 4: Recovery Protocol Proven"
+      between: ["phase-4-recovery", "phase-5-ugc"]
+      gatekeeper: "hotel-mkt-director"
+      sla: "72h"
+
+      must_meet:
+        - id: "G4-M1"
+          criterion: "Recovery protocol documentado para 1-2-3 star reviews (steps, offers, escalation path)"
+          validation: "Verificar recovery playbook - deve ter process flow, offer tiers, e approval matrix"
+          on_fail: "BLOCK - reputation-guardian deve documentar protocol baseado em best practices (Phase 4 tasks)"
+
+        - id: "G4-M2"
+          criterion: "Service recovery budget aprovado por management (desconto, refund, upgrade authority)"
+          validation: "Documento de aprovação assinado com budget cap por tier (Tier 1: até R$X, Tier 2: até R$Y, Tier 3: GM approval)"
+          on_fail: "BLOCK - escalar para GM/ownership para aprovar budget - sem budget = recovery inoperável"
+
+        - id: "G4-M3"
+          criterion: "Management escalation path claro (quem aprovar refund total? Quem lidar com ameaça legal?)"
+          validation: "Testar escalation com caso hipotético - response time do GM/director deve ser <4h para casos críticos"
+          on_fail: "BLOCK - definir on-call ou backup decision maker antes de ativar recovery em escala"
+
+      should_meet:
+        - id: "G4-S1"
+          criterion: "Recovery success rate > 40% (% de guests que aceitam offer e consideram update review)"
+          weight: 1.0
+          min_score: 6
+          scoring: "Medir após 10 recovery attempts - se <40%: revisar offer attractiveness ou outreach tone"
+
+      kill_criteria:
+        - id: "G4-K1"
+          criterion: "Se management recusa aprovar qualquer budget para service recovery (R$0 disponível)"
+          action: "KILL Phase 4 + notificar que recovery será limitado a apology-only (sem offers) - reduzir target de 60% para 20%"
+
+        - id: "G4-K2"
+          criterion: "Se recovery outreach gera mais negative sentiment (guests posting screenshots de 'tentativa de comprar review')"
+          action: "KILL recovery program imediatamente + crisis management + reescrever approach para ser menos transacional"
+
+      decision_options: ["GO", "KILL", "HOLD", "RECYCLE"]
+
+    G5:
+      name: "Gate 5: UGC Pipeline & LGPD Compliance"
+      between: ["phase-5-ugc", "phase-6-reporting"]
+      gatekeeper: "hotel-reputation-guardian"
+      sla: "48h"
+
+      must_meet:
+        - id: "G5-M1"
+          criterion: "UGC collection integrado com review system (flag top reviews automaticamente)"
+          validation: "Testar: quando review 5-star entra, sistema deve flag como 'ugc_candidate' no dashboard"
+          on_fail: "BLOCK - configurar automation ou manual tagging process antes de solicitar permissions"
+
+        - id: "G5-M2"
+          criterion: "LGPD consent flow ativo e documentado (permission request email/WhatsApp com opt-in claro)"
+          validation: "Review consent request template - deve ter: (1) explicação de uso, (2) opt-in explícito, (3) direito de retirar consent"
+          on_fail: "BLOCK - legal/compliance deve aprovar consent flow - LGPD violation = multa pesada"
+
+        - id: "G5-M3"
+          criterion: "Positive review → social content pipeline configurado (design → approval → posting)"
+          validation: "Testar com 1 review: permission granted → social-creator notificado → asset criado em <48h → posted"
+          on_fail: "BLOCK - mapear workflow com social-creator e estabelecer SLA para asset turnaround"
+
+      should_meet:
+        - id: "G5-S1"
+          criterion: "UGC permission rate > 60% (% de guests que aprovam uso de review em marketing)"
+          weight: 0.8
+          min_score: 7
+          scoring: "Medir após 20 permission requests - se <60%: revisar request approach (muito formal? Não explica benefício?)"
+
+      kill_criteria:
+        - id: "G5-K1"
+          criterion: "Se consent flow NÃO é LGPD compliant (falta opt-in explícito, não permite revogação, uso vago)"
+          action: "KILL UGC program imediatamente + não usar reviews até consent flow aprovado por legal - risk de multa LGPD"
+
+        - id: "G5-K2"
+          criterion: "Se review usado em marketing sem permission (flagged por guest ou auditoria interna)"
+          action: "KILL UGC program + remover todo conteúdo não-permissionado + apology ao guest + revisar process para prevenir repeat"
+
+      decision_options: ["GO", "KILL", "HOLD", "RECYCLE"]
+
+  handoffs:
+    - id: "H1"
+      from_phase: "phase-2-response"
+      to_phase: "external"
+      from_agent: "@hotel-reputation-guardian"
+      to_agent: "@hotel-guest-strategist"
+      trigger: "weekly"
+
+      deliverables:
+        - name: "weekly_sentiment_report"
+          format: "csv"
+          required: true
+          location: "squads/hotel-mkt/reports/reputation/[YYYY-MM]/sentiment-week-[N].csv"
+
+      acceptance_criteria:
+        - "Report inclui: review_id, platform, rating, sentiment_category, themes (extracted keywords), staff_mentioned"
+        - "Themes agregados em seção summary (top 5 praises, top 5 complaints)"
+
+      sla: "24h"
+
+      on_timeout:
+        action: "escalate"
+        notify: "@hotel-mkt-director"
+        message: "Weekly sentiment report atrasado - guest-strategist sem insights para ajustar DNA profiling"
+
+      on_reject:
+        action: "return_to_sender"
+        message: "Themes não extraídos ou incompletos - processar NLP ou manual tagging e reenviar"
+
+    - id: "H2"
+      from_phase: "phase-3-generation"
+      to_phase: "external"
+      from_agent: "@hotel-reputation-guardian"
+      to_agent: "@hotel-email-maestro"
+      trigger: "on_integration_setup"
+
+      deliverables:
+        - name: "review_request_trigger_integration"
+          format: "API/webhook config"
+          required: true
+          location: "integration-docs/pms-to-email-platform.md"
+
+      acceptance_criteria:
+        - "PMS checkout event → dispara webhook para email platform em 48h"
+        - "Payload inclui: guest_name, email, checkout_date, stay_rating (se disponível)"
+
+      sla: "48h"
+
+      on_timeout:
+        action: "escalate"
+        notify: "@hotel-mkt-director"
+        message: "Review request integration não configurada - automation impossível sem integração PMS"
+
+      on_reject:
+        action: "return_to_sender"
+        message: "Webhook não dispara ou payload incompleto - testar integration e corrigir antes de ativar automation"
+
+    - id: "H3"
+      from_phase: "phase-4-recovery"
+      to_phase: "external"
+      from_agent: "@hotel-reputation-guardian"
+      to_agent: "@hotel-pr-advertorial"
+      trigger: "monthly"
+
+      deliverables:
+        - name: "positive_case_studies"
+          format: "markdown"
+          required: true
+          location: "squads/hotel-mkt/content/case-studies/[YYYY-MM]-recovery-wins.md"
+
+      acceptance_criteria:
+        - "Documento inclui 3-5 recovery success stories: problema inicial → ação tomada → resultado positivo (review updated ou nova review)"
+        - "Cada case study anonimizado (sem nome real de guest) mas com detalhes suficientes para editorial"
+
+      sla: "72h"
+
+      on_timeout:
+        action: "skip"
+        message: "Nenhum case study este mês - ok se sem recovery wins significativos"
+
+      on_reject:
+        action: "return_to_sender"
+        message: "Case studies muito genéricos ou identificam guests sem permission - anonimizar melhor ou obter consent"
+
+    - id: "H4"
+      from_phase: "phase-5-ugc"
+      to_phase: "external"
+      from_agent: "@hotel-ugc-curator"
+      to_agent: "@hotel-social-creator"
+      trigger: "weekly"
+
+      deliverables:
+        - name: "curated_ugc_batch"
+          format: "csv + image files"
+          required: true
+          location: "squads/hotel-mkt/content/ugc/[YYYY-MM]/week-[N]/"
+
+      acceptance_criteria:
+        - "CSV lista 5-10 reviews com: review_id, platform, review_text (snippet), guest_name, permission_status (granted), guest_photo_url (if available)"
+        - "Pasta inclui guest photos (se disponível) com consent documentado"
+
+      sla: "48h"
+
+      on_timeout:
+        action: "escalate"
+        notify: "@hotel-mkt-director"
+        message: "UGC batch não entregue - social-creator sem conteúdo para weekly posting schedule"
+
+      on_reject:
+        action: "return_to_sender"
+        message: "UGC sem consent documentado ou quality issues (baixa resolution, off-brand) - revisar e reenviar"
+
+    - id: "H5"
+      from_phase: "phase-6-reporting"
+      to_phase: "external"
+      from_agent: "@hotel-reputation-guardian"
+      to_agent: "@hotel-offer-architect"
+      trigger: "monthly"
+
+      deliverables:
+        - name: "strengths_weaknesses_analysis"
+          format: "markdown"
+          required: true
+          location: "squads/hotel-mkt/reports/reputation/[YYYY-MM]/swot-from-reviews.md"
+
+      acceptance_criteria:
+        - "Report identifica: top 3 strengths (most praised features), top 3 weaknesses (most complained about)"
+        - "Recommendations para offer positioning (lead com strengths, address weaknesses com offers/upgrades)"
+
+      sla: "48h"
+
+      on_timeout:
+        action: "skip"
+        message: "SWOT analysis atrasada - offer-architect usa dados do mês anterior"
+
+      on_reject:
+        action: "return_to_sender"
+        message: "Analysis muito superficial ou não actionable - incluir exemplos específicos de reviews e recommendations claras"
+
+  auto_rollback:
+    triggers:
+      - id: "R1"
+        condition: "Response rate cai abaixo de 90% em qualquer semana"
+        action: "alert"
+        recovery: "Alertar reputation-guardian + verificar: sobrecarga de volume? Staff ausente? + assign backup responder temporariamente"
+        notify: "@hotel-reputation-guardian + @hotel-mkt-director"
+
+      - id: "R2"
+        condition: "Average rating cai 0.3+ pontos em 30 dias (ex: 4.5 → 4.2)"
+        action: "trigger_crisis_review"
+        recovery: "Convocar emergency meeting com GM, Front Office Manager, Housekeeping + root cause analysis + action plan em 48h"
+        notify: "@hotel-mkt-director + @hotel-gm + @hotel-operations"
+
+      - id: "R3"
+        condition: "Negative review fica 24h sem acknowledgment (response ou outreach)"
+        action: "escalate"
+        recovery: "Escalar para mkt-director imediatamente + respond em <4h com apology + iniciar recovery protocol"
+        notify: "@hotel-mkt-director"
+
+      - id: "R4"
+        condition: "Review generation flagged por plataforma (ToS violation detectada)"
+        action: "pause_immediately"
+        recovery: "Pausar TODOS os review requests imediatamente + audit request copy com legal + aguardar 30 dias + resubmit para platform approval"
+        notify: "@hotel-mkt-director + @hotel-legal"
+
+      - id: "R5"
+        condition: "UGC usado sem consent (guest reclama ou auditoria detecta)"
+        action: "remove_immediately"
+        recovery: "Remover conteúdo em <2h + apology direta ao guest + revisar TODO UGC publicado para consent + process fix"
+        notify: "@hotel-mkt-director + @hotel-legal"
+
+      - id: "R6"
+        condition: "Competitor fake review attack detectado (5+ suspicious 1-star reviews em 48h com padrão similar)"
+        action: "document_and_report"
+        recovery: "Documentar evidências (IP, language patterns, timing) + reportar para plataforma + public statement se viral + considerar legal action"
+        notify: "@hotel-mkt-director + @hotel-gm"

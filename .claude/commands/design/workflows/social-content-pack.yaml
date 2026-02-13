@@ -1,0 +1,104 @@
+# Social Content Pack Workflow
+# /design/social-content-pack
+
+name: social-content-pack
+version: "1.0.0"
+description: "Create visual content pack for social media"
+command: "/design/social-content-pack"
+
+trigger:
+  type: command
+  requires:
+    - content_themes
+    - cta_list
+    - platforms
+
+agents:
+  primary: visual-systems-designer
+  qa: design-lead
+
+inputs:
+  required:
+    - name: themes
+      description: "Content themes and topics"
+    - name: ctas
+      description: "Call to action variations"
+  optional:
+    - name: platforms
+      default: ["instagram", "linkedin"]
+    - name: quantity
+      default: 20
+    - name: brand_assets
+      description: "Logos, colors, fonts"
+    - name: content_calendar
+      description: "Publishing schedule"
+
+steps:
+  - id: receive_themes
+    name: "Receive Themes"
+    agent: visual-systems-designer
+    action: "Review content themes and CTAs"
+    validation:
+      - "Themes are clear"
+      - "CTAs are actionable"
+
+  - id: define_structure
+    name: "Define Visual Structure"
+    agent: visual-systems-designer
+    action: "Create visual system for content"
+    depends_on: [receive_themes]
+    outputs:
+      - template_system
+      - component_library
+
+  - id: create_content
+    name: "Create Content Pieces"
+    agent: visual-systems-designer
+    action: "Design posts and carousels"
+    depends_on: [define_structure]
+    outputs:
+      - posts
+      - carousels
+      - stories
+
+  - id: validate_consistency
+    name: "Validate Consistency"
+    agent: visual-systems-designer
+    action: "Check brand and visual consistency"
+    depends_on: [create_content]
+    checklist: brand-consistency
+
+  - id: qa_review
+    name: "QA Review"
+    agent: design-lead
+    action: "Final quality approval"
+    depends_on: [validate_consistency]
+
+  - id: organize_delivery
+    name: "Organize Delivery"
+    agent: visual-systems-designer
+    action: "Package assets with publishing guide"
+    depends_on: [qa_review]
+
+outputs:
+  - name: posts
+    description: "10-30 social posts"
+    format: "PNG"
+  - name: templates
+    description: "Reusable templates"
+    format: "Figma/Canva"
+  - name: publishing_guide
+    description: "When and how to post"
+    format: "MD"
+  - name: asset_library
+    description: "Icons, elements, photos"
+    format: "Folder"
+
+quality_gates:
+  - "Brand consistency across all"
+  - "CTAs are clear"
+  - "Mobile optimized"
+  - "Platform specs met"
+  - "Organized for easy use"
+
+estimated_duration: "4-8 hours"

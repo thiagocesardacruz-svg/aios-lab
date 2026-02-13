@@ -1,0 +1,114 @@
+# Translation Review Workflow
+# Squad: translator
+# Version: 1.0.0
+
+name: review
+description: "Quality review for existing translations"
+version: "1.0.0"
+
+trigger:
+  command: "/translate/review"
+  inputs:
+    - name: original
+      type: string
+      required: true
+      description: "Original content"
+    - name: translation
+      type: string
+      required: true
+      description: "Translation to review"
+    - name: source_language
+      type: string
+      required: false
+      default: "EN"
+    - name: target_language
+      type: string
+      required: true
+    - name: review_type
+      type: string
+      required: false
+      default: "full"
+      options: ["full", "quick", "technical", "cultural"]
+
+steps:
+  - id: accuracy-check
+    name: "Accuracy Check"
+    agent: translators
+    action: check-accuracy
+    inputs:
+      original: "{{inputs.original}}"
+      translation: "{{inputs.translation}}"
+      source_language: "{{inputs.source_language}}"
+      target_language: "{{inputs.target_language}}"
+    outputs:
+      - accuracy_score
+      - meaning_issues
+      - terminology_issues
+
+  - id: quality-check
+    name: "Quality Check"
+    agent: translation-lead
+    action: check-quality
+    inputs:
+      translation: "{{inputs.translation}}"
+      target_language: "{{inputs.target_language}}"
+    outputs:
+      - grammar_score
+      - fluency_score
+      - style_issues
+
+  - id: cultural-check
+    name: "Cultural Check"
+    agent: localization-specialist
+    condition: "{{inputs.review_type}} in ['full', 'cultural']"
+    action: check-cultural
+    inputs:
+      translation: "{{inputs.translation}}"
+      target_language: "{{inputs.target_language}}"
+    outputs:
+      - cultural_score
+      - cultural_issues
+      - adaptation_suggestions
+
+  - id: compile-review
+    name: "Compile Review"
+    agent: translation-lead
+    action: compile-review
+    inputs:
+      accuracy: "{{steps.accuracy-check.outputs}}"
+      quality: "{{steps.quality-check.outputs}}"
+      cultural: "{{steps.cultural-check.outputs}}"
+    outputs:
+      - final_score
+      - all_issues
+      - recommendations
+      - verdict
+
+output:
+  format: markdown
+  template: |
+    # Translation Review Report
+
+    ## Scores
+    | Aspect | Score |
+    |--------|-------|
+    | Accuracy | {{accuracy_score}}/100 |
+    | Grammar | {{grammar_score}}/100 |
+    | Fluency | {{fluency_score}}/100 |
+    | Cultural Fit | {{cultural_score}}/100 |
+    | **Overall** | **{{final_score}}/100** |
+
+    ## Verdict: {{verdict}}
+
+    ## Issues Found
+    {{for issue in all_issues}}
+    - **{{issue.severity}}:** {{issue.description}}
+    {{endfor}}
+
+    ## Recommendations
+    {{recommendations}}
+
+success_criteria:
+  - "All checks completed"
+  - "Clear verdict provided"
+  - "Actionable recommendations"

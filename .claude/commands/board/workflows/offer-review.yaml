@@ -1,0 +1,136 @@
+# /board/offer-review Workflow
+# Multi-advisor offer review (Hormozi + Kennedy)
+
+workflow:
+  id: offer-review
+  name: Offer Review
+  description: "Multi-advisor offer review for pricing, positioning, and value optimization"
+  version: "1.0.0"
+  squad: board
+  type: advisory
+
+inputs:
+  - name: offer
+    type: string
+    required: true
+    description: "Current offer description"
+  - name: market
+    type: string
+    required: true
+    description: "Target market and avatar"
+  - name: current_price
+    type: number
+    required: false
+    description: "Current price point"
+  - name: competitors
+    type: string
+    required: false
+    description: "Competitor offers for context"
+
+outputs:
+  - name: decision-memo
+    type: markdown
+    path: "docs/board-memos/{date}-offer-review.md"
+
+advisors:
+  - alex-hormozi
+  - dan-kennedy
+
+sequence:
+  - phase: 0
+    name: Offer Analysis
+    description: "Each advisor analyzes the offer from their lens"
+    parallel: true
+    actions:
+      - advisor: alex-hormozi
+        focus: "Value equation score and improvement opportunities"
+      - advisor: dan-kennedy
+        focus: "Positioning and differentiation in market"
+
+  - phase: 1
+    name: Deep Dive
+    description: "Detailed recommendations from each advisor"
+    parallel: true
+    actions:
+      - advisor: alex-hormozi
+        output: |
+          - Value Equation Score (Dream Outcome x Likelihood / Time x Effort)
+          - Risk reversal opportunities
+          - Value stacking recommendations
+          - Unit economics validation
+      - advisor: dan-kennedy
+        output: |
+          - Positioning statement
+          - Message clarity score
+          - Differentiation opportunities
+          - Direct response elements
+
+  - phase: 2
+    name: Synthesis
+    description: "Combine perspectives into actionable recommendations"
+    action: synthesize
+    inputs:
+      - all position statements
+    creates:
+      - conflicts (memory)
+      - synthesis (memory)
+
+  - phase: 3
+    name: Decision Memo
+    description: "Generate final offer memo"
+    action: generate_memo
+    template: templates/decision-memo.md
+    creates:
+      - decision-memo.md
+
+output_format: |
+  # Offer Review Memo: {offer_name}
+
+  ## Current Offer
+  {offer_description}
+
+  ## Market Context
+  {market}
+
+  ## Advisors Consulted
+  - Alex Hormozi (Revenue & Offer Architect)
+  - Dan Kennedy (Direct Response & Positioning)
+
+  ## Value Equation Analysis (Hormozi)
+
+  ### Score
+  | Dimension | Score (1-10) | Notes |
+  |-----------|--------------|-------|
+  | Dream Outcome | {score} | {notes} |
+  | Perceived Likelihood | {score} | {notes} |
+  | Time to Result | {score} | {notes} |
+  | Effort Required | {score} | {notes} |
+  | **Total Value Score** | {total} | |
+
+  ### Recommendations
+  {hormozi_recommendations}
+
+  ## Positioning Analysis (Kennedy)
+
+  ### Current Position
+  {current_position}
+
+  ### Recommended Position
+  {recommended_position}
+
+  ### Message Clarity
+  {message_recommendations}
+
+  ## Conflicts of View
+  {conflicts}
+
+  ## Recommended Changes
+  1. {change_1}
+  2. {change_2}
+  3. {change_3}
+
+  ## Conditions for Implementation
+  {conditions}
+
+  ---
+  *This memo does not execute. To proceed, create OS via /ops/new-task*
