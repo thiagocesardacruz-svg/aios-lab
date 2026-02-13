@@ -1,0 +1,164 @@
+{
+  "name": "[AIOS] Content Repurposer",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "content-repurposer",
+        "options": {}
+      },
+      "id": "4e8a5c3b-1a2f-4d7e-9b8c-3f5e7a9d1c2e",
+      "name": "Receive Content",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        240,
+        300
+      ],
+      "webhookId": "content-repurposer-webhook"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Validate and prepare input data\nconst input = $input.item.json.body || $input.item.json;\n\n// Validate required fields\nif (!input.original_content || typeof input.original_content !== 'string') {\n  throw new Error('original_content is required and must be a string');\n}\n\nif (!input.target_platforms || !Array.isArray(input.target_platforms) || input.target_platforms.length === 0) {\n  throw new Error('target_platforms is required and must be a non-empty array');\n}\n\nconst validPlatforms = ['linkedin', 'instagram', 'twitter', 'email', 'youtube_script'];\nconst invalidPlatforms = input.target_platforms.filter(p => !validPlatforms.includes(p));\nif (invalidPlatforms.length > 0) {\n  throw new Error(`Invalid platforms: ${invalidPlatforms.join(', ')}. Valid options: ${validPlatforms.join(', ')}`);\n}\n\n// Prepare data\nconst prepared = {\n  original_content: input.original_content,\n  content_type: input.content_type || 'article',\n  brand: input.brand || 'Travel Tech Digital',\n  target_platforms: input.target_platforms,\n  tone: input.tone || 'professional',\n  language: input.language || 'pt-BR',\n  content_length: input.original_content.length,\n  word_count: input.original_content.split(/\\s+/).length\n};\n\nreturn prepared;"
+      },
+      "id": "7c2d4f8e-5a9b-4e1c-8d3f-6b7a9c1e2f4d",
+      "name": "Validate & Prepare",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        460,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ `You are an expert content strategist specializing in multi-platform content repurposing.\n\n**BRAND:** ${$json.brand}\n**TONE:** ${$json.tone}\n**LANGUAGE:** ${$json.language}\n**CONTENT TYPE:** ${$json.content_type}\n**TARGET PLATFORMS:** ${$json.target_platforms.join(', ')}\n\n**ORIGINAL CONTENT:**\n${$json.original_content}\n\n---\n\n**TASK:** Transform this content into optimized versions for each requested platform. Follow these platform-specific best practices:\n\n**LinkedIn:**\n- Professional tone, storytelling approach\n- Max 1300 characters\n- Hook in first line (curiosity or bold statement)\n- 3-5 relevant hashtags at the end\n- Clear CTA (Call-to-Action)\n- Format: Short paragraphs, line breaks for readability\n\n**Instagram:**\n- Carousel-style content (5-10 slides/points)\n- Caption under 2200 characters\n- 20-30 hashtags (mix of popular and niche)\n- Emoji-friendly, visual language\n- Hook in first 125 characters (before \"...more\")\n- CTA to engagement (save, share, comment)\n\n**Twitter/X:**\n- Thread format (5-10 tweets)\n- Each tweet under 280 characters\n- Hook tweet first (1/X format)\n- Numbered structure\n- One key idea per tweet\n- Final tweet: CTA + link\n\n**Email (Newsletter):**\n- Subject line: 40-50 chars, curiosity-driven\n- Preview text: 90-100 chars\n- Body: Personal tone, conversational\n- Clear sections with headings\n- CTA button text\n- P.S. for secondary CTA\n\n**YouTube Script:**\n- Title: 60 chars max, SEO-optimized\n- Hook: First 15 seconds (pattern interrupt)\n- Intro: Who you are, what they'll learn (30s)\n- Main Points: 3-5 key sections with timestamps\n- CTA: Subscribe + next video mention\n- Outro: Summary + final CTA\n- Total length: 8-12 minutes of spoken content\n\n---\n\n**OUTPUT FORMAT (REQUIRED JSON):**\n\\`\\`\\`json\n{\n  \"repurposed\": {\n    \"linkedin\": {\n      \"post\": \"Full LinkedIn post text here...\",\n      \"hashtags\": [\"#hashtag1\", \"#hashtag2\", \"#hashtag3\"]\n    },\n    \"instagram\": {\n      \"caption\": \"Full Instagram caption here...\",\n      \"slides\": [\n        \"Slide 1: Title/Hook\",\n        \"Slide 2: Point 1\",\n        \"Slide 3: Point 2\",\n        \"Slide 4: Point 3\",\n        \"Slide 5: CTA\"\n      ],\n      \"hashtags\": [\"#hashtag1\", \"#hashtag2\", ...]\n    },\n    \"twitter\": {\n      \"thread\": [\n        \"Tweet 1/X: Hook\",\n        \"Tweet 2/X: Point 1\",\n        \"Tweet 3/X: Point 2\",\n        \"Tweet X/X: CTA\"\n      ]\n    },\n    \"email\": {\n      \"subject\": \"Email subject line\",\n      \"preview\": \"Preview text\",\n      \"body\": \"Full email body with HTML formatting\"\n    },\n    \"youtube_script\": {\n      \"title\": \"Video title\",\n      \"hook\": \"First 15 seconds script\",\n      \"script\": \"Full video script with [VISUAL CUE] markers\",\n      \"timestamps\": [\n        \"0:00 - Intro\",\n        \"0:45 - Point 1\",\n        \"3:20 - Point 2\",\n        \"6:15 - CTA\"\n      ]\n    }\n  },\n  \"summary\": \"Brief summary of the repurposing strategy used\",\n  \"key_angles\": [\n    \"Main angle 1 used across platforms\",\n    \"Main angle 2 used across platforms\",\n    \"Main angle 3 used across platforms\"\n  ]\n}\n\\`\\`\\`\n\n**IMPORTANT:**\n- Only create content for requested platforms (${$json.target_platforms.join(', ')})\n- Adapt tone to ${$json.tone}\n- Write in ${$json.language}\n- Maintain brand voice for ${$json.brand}\n- Return ONLY valid JSON, no markdown code blocks\n- Ensure all character limits are respected` }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "You are a professional content strategist. Always respond with valid JSON only."
+        },
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4o-mini"
+        },
+        "options": {
+          "temperature": 0.7,
+          "maxTokens": 4000
+        }
+      },
+      "id": "9e1f3a5b-7c4d-4e8a-9b2c-5d6e8f1a3b7c",
+      "name": "Repurpose Content",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        680,
+        300
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "S8kSldVybecFwhaw",
+          "name": "AIOS - OpenAI"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Format outputs and prepare final response\nconst agentOutput = $input.item.json.output || $input.item.json.text || $input.item.json;\nconst inputData = $('Validate & Prepare').item.json;\n\nlet repurposedContent;\n\n// Try to parse AI response as JSON\ntry {\n  // Clean potential markdown code blocks\n  let cleanOutput = agentOutput;\n  if (typeof cleanOutput === 'string') {\n    cleanOutput = cleanOutput.replace(/```json\\n?/g, '').replace(/```\\n?/g, '').trim();\n  }\n  \n  repurposedContent = typeof cleanOutput === 'string' ? JSON.parse(cleanOutput) : cleanOutput;\n} catch (error) {\n  // Fallback: treat as plain text response\n  repurposedContent = {\n    repurposed: {},\n    summary: agentOutput,\n    key_angles: [],\n    error: 'Failed to parse AI response as JSON',\n    raw_output: agentOutput\n  };\n}\n\n// Build final response\nconst response = {\n  success: true,\n  metadata: {\n    brand: inputData.brand,\n    content_type: inputData.content_type,\n    tone: inputData.tone,\n    language: inputData.language,\n    target_platforms: inputData.target_platforms,\n    original_content_stats: {\n      characters: inputData.content_length,\n      words: inputData.word_count\n    },\n    processed_at: new Date().toISOString(),\n    workflow: 'content-repurposer'\n  },\n  repurposed: repurposedContent.repurposed || {},\n  summary: repurposedContent.summary || 'Content repurposed successfully',\n  key_angles: repurposedContent.key_angles || [],\n  platform_stats: {}\n};\n\n// Calculate stats for each platform\nif (repurposedContent.repurposed) {\n  for (const platform of inputData.target_platforms) {\n    const content = repurposedContent.repurposed[platform];\n    if (content) {\n      response.platform_stats[platform] = {};\n      \n      // Platform-specific stats\n      if (platform === 'linkedin' && content.post) {\n        response.platform_stats[platform].characters = content.post.length;\n        response.platform_stats[platform].hashtags_count = content.hashtags?.length || 0;\n      } else if (platform === 'instagram') {\n        response.platform_stats[platform].caption_length = content.caption?.length || 0;\n        response.platform_stats[platform].slides_count = content.slides?.length || 0;\n        response.platform_stats[platform].hashtags_count = content.hashtags?.length || 0;\n      } else if (platform === 'twitter') {\n        response.platform_stats[platform].tweets_count = content.thread?.length || 0;\n        response.platform_stats[platform].avg_tweet_length = content.thread ? \n          Math.round(content.thread.reduce((sum, t) => sum + t.length, 0) / content.thread.length) : 0;\n      } else if (platform === 'email') {\n        response.platform_stats[platform].subject_length = content.subject?.length || 0;\n        response.platform_stats[platform].body_length = content.body?.length || 0;\n      } else if (platform === 'youtube_script') {\n        response.platform_stats[platform].script_length = content.script?.length || 0;\n        response.platform_stats[platform].estimated_duration = content.timestamps?.length > 0 ? \n          content.timestamps[content.timestamps.length - 1].split(' - ')[0] : 'N/A';\n      }\n    }\n  }\n}\n\nreturn response;"
+      },
+      "id": "2a7b9c4e-6d5f-4a8b-9e1c-3b4d6f8a1e7c",
+      "name": "Format Outputs",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        900,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ $json }}",
+        "options": {}
+      },
+      "id": "5b3c8d2a-4e9f-4b1c-8d7a-9e2f5c6a8b3d",
+      "name": "Respond to Webhook",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        1120,
+        300
+      ]
+    }
+  ],
+  "connections": {
+    "Receive Content": {
+      "main": [
+        [
+          {
+            "node": "Validate & Prepare",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validate & Prepare": {
+      "main": [
+        [
+          {
+            "node": "Repurpose Content",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Repurpose Content": {
+      "main": [
+        [
+          {
+            "node": "Format Outputs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Format Outputs": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [
+    {
+      "createdAt": "2026-02-13T00:00:00.000Z",
+      "updatedAt": "2026-02-13T00:00:00.000Z",
+      "id": "aios-automation",
+      "name": "AIOS Automation"
+    },
+    {
+      "createdAt": "2026-02-13T00:00:00.000Z",
+      "updatedAt": "2026-02-13T00:00:00.000Z",
+      "id": "content",
+      "name": "Content"
+    }
+  ],
+  "triggerCount": 1,
+  "updatedAt": "2026-02-13T00:00:00.000Z",
+  "versionId": "1"
+}

@@ -1,0 +1,175 @@
+{
+  "name": "[AIOS] Email Sequence Builder",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "email-sequence",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "c8a1e5f0-1234-4567-89ab-001111111111",
+      "name": "Receive Brief",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [240, 300],
+      "webhookId": "email-sequence-builder"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Prepare context and framework templates\nconst brief = $input.all()[0].json.body;\n\nconst frameworks = {\n  \"soap-opera\": {\n    \"description\": \"Andre Chaperon's Soap Opera Sequence - story-driven with open loops\",\n    \"instructions\": `Create a soap opera sequence with these characteristics:\n- Email 1: THE HOOK - Start with a compelling story or mystery that creates curiosity\n- Email 2: DEEPEN THE STORY - Reveal more context, build emotional investment, end with another cliffhanger\n- Email 3: THE REVELATION - Share key insights or turning points, but leave questions unanswered\n- Email 4: THE TRANSFORMATION - Show what's possible, bridge to the offer naturally\n- Email 5: THE OFFER - Present the demo call as the logical next step in the story\n\nEach email MUST:\n- End with an open loop that creates anticipation for the next email\n- Use conversational, story-based language\n- Build on the previous email's narrative\n- Create emotional connection before logical persuasion`\n  },\n  \"hormozi\": {\n    \"description\": \"Alex Hormozi's value-first approach - lead with massive value\",\n    \"instructions\": `Create a Hormozi-style sequence with these characteristics:\n- Email 1: GIVE AWAY THE FARM - Share your best, most valuable insight completely free\n- Email 2: PROOF IT WORKS - Case studies, data, results from implementing Email 1's advice\n- Email 3: UNSTACK THE VALUE - Break down all the components they'd get, show the math\n- Email 4: REVERSE THE RISK - Explain what makes the offer a no-brainer (no typical \"risk reversal\" but logical inevitability)\n- Email 5: SCARCITY & URGENCY - Real constraints (calendar spots, bandwidth) that create urgency\n\nEach email MUST:\n- Lead with massive, actionable value\n- Use data and specificity (numbers, percentages, concrete examples)\n- Make the offer feel like an obvious \"yes\"\n- Focus on logic and value stacking, not emotion`\n  },\n  \"settle\": {\n    \"description\": \"Ben Settle's infotainment style - personality-driven, contrarian\",\n    \"instructions\": `Create a Ben Settle-style sequence with these characteristics:\n- Email 1: STRONG OPINION - Take a contrarian or provocative stance related to their pain point\n- Email 2: ENTERTAINMENT + INSIGHT - Tell a story or use an analogy that illustrates your point\n- Email 3: THE VILLAIN - Identify the real enemy (not them, but the broken system/bad advice)\n- Email 4: THE SIMPLE SOLUTION - Show how your approach is different and simpler\n- Email 5: THE INVITATION - Make the demo call offer with personality and confidence\n\nEach email MUST:\n- Have strong personality and point of view\n- Be entertaining and slightly provocative\n- Use analogies, stories, or pop culture references\n- Feel like it's from a real person, not a company`\n  },\n  \"classic\": {\n    \"description\": \"Classic nurture sequence - educate, prove, overcome objections\",\n    \"instructions\": `Create a classic nurture sequence with these characteristics:\n- Email 1: EDUCATE - Teach them something valuable about their problem\n- Email 2: CASE STUDY - Show proof with a customer success story\n- Email 3: OBJECTION HANDLING - Address their biggest concerns or doubts\n- Email 4: THE OFFER - Present the demo call with clear benefits\n- Email 5: URGENCY - Create a reason to act now (limited spots, deadline, etc.)\n\nEach email MUST:\n- Follow a logical progression\n- Build trust through education and proof\n- Address objections before making the ask\n- Use clear, professional language`\n  }\n};\n\nconst framework = brief.framework || \"classic\";\nconst frameworkData = frameworks[framework] || frameworks[\"classic\"];\n\nreturn {\n  json: {\n    brief: brief,\n    framework_instructions: frameworkData.instructions,\n    framework_description: frameworkData.description,\n    num_emails: brief.num_emails || 5,\n    topic: brief.topic,\n    audience: brief.audience,\n    goal: brief.goal,\n    tone: brief.tone || \"professional but friendly\"\n  }\n};"
+      },
+      "id": "c8a1e5f0-1234-4567-89ab-002222222222",
+      "name": "Prepare Context",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [460, 300]
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "=You are an expert email copywriter trained in multiple frameworks. You specialize in creating high-converting email sequences for B2B audiences.\n\nYour task is to generate a complete email sequence based on the brief provided.\n\nFramework being used: {{ $json.framework_description }}\n\nFramework-specific instructions:\n{{ $json.framework_instructions }}\n\nGeneral requirements:\n- Write for this audience: {{ $json.audience }}\n- Topic/focus: {{ $json.topic }}\n- Goal: {{ $json.goal }}\n- Tone: {{ $json.tone }}\n- Number of emails: {{ $json.num_emails }}\n\nFor each email, return JSON in this exact format:\n{\n  \"emails\": [\n    {\n      \"number\": 1,\n      \"subject_line\": \"Compelling subject that gets opens\",\n      \"preview_text\": \"Preview text that appears after subject\",\n      \"body_html\": \"<p>Full HTML email body with proper formatting</p>\",\n      \"body_text\": \"Plain text version of the email\",\n      \"send_delay_hours\": 0,\n      \"purpose\": \"hook/story/value/offer/urgency\",\n      \"open_loop\": \"What question or curiosity gap this email creates (if applicable)\",\n      \"key_points\": [\"Main point 1\", \"Main point 2\"]\n    }\n  ],\n  \"sequence_name\": \"A descriptive name for this sequence\",\n  \"estimated_open_rate\": \"Expected open rate range (e.g., 35-45%)\",\n  \"key_angles\": [\"Main angle 1\", \"Main angle 2\", \"Main angle 3\"],\n  \"notes\": \"Any implementation notes or recommendations\"\n}\n\nIMPORTANT:\n- Return ONLY valid JSON, no markdown code blocks\n- Ensure body_html is properly escaped\n- Each email should build on the previous one\n- Include clear CTAs in emails 4-5\n- Make subject lines specific and curiosity-driven"
+        },
+        "text": "={{ $json.brief }}"
+      },
+      "id": "c8a1e5f0-1234-4567-89ab-003333333333",
+      "name": "Generate Sequence",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [680, 300]
+    },
+    {
+      "parameters": {
+        "model": "gpt-4o-mini",
+        "options": {
+          "temperature": 0.8,
+          "maxTokens": 4000
+        }
+      },
+      "id": "c8a1e5f0-1234-4567-89ab-004444444444",
+      "name": "OpenAI GPT-4o-mini",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [680, 480],
+      "credentials": {
+        "openAiApi": {
+          "id": "S8kSldVybecFwhaw",
+          "name": "AIOS - OpenAI"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Format output and add metadata\nconst input = $input.all()[0].json;\n\n// Extract the AI response (it might be in different fields depending on agent output)\nlet aiResponse;\nif (input.output) {\n  aiResponse = typeof input.output === 'string' ? input.output : JSON.stringify(input.output);\n} else if (input.text) {\n  aiResponse = input.text;\n} else {\n  aiResponse = JSON.stringify(input);\n}\n\n// Clean up the response (remove markdown code blocks if present)\nlet cleanResponse = aiResponse\n  .replace(/```json\\n?/g, '')\n  .replace(/```\\n?/g, '')\n  .trim();\n\n// Parse the JSON\nlet sequenceData;\ntry {\n  sequenceData = JSON.parse(cleanResponse);\n} catch (e) {\n  // If parsing fails, try to find JSON in the text\n  const jsonMatch = cleanResponse.match(/\\{[\\s\\S]*\\}/);\n  if (jsonMatch) {\n    sequenceData = JSON.parse(jsonMatch[0]);\n  } else {\n    throw new Error('Could not parse AI response as JSON');\n  }\n}\n\n// Add metadata\nconst output = {\n  ...sequenceData,\n  metadata: {\n    generated_at: new Date().toISOString(),\n    workflow_version: \"1.0\",\n    framework_used: $('Prepare Context').item.json.brief.framework || \"classic\",\n    brief: $('Prepare Context').item.json.brief,\n    model: \"gpt-4o-mini\"\n  },\n  status: \"success\"\n};\n\n// Validate that we have emails\nif (!output.emails || !Array.isArray(output.emails) || output.emails.length === 0) {\n  throw new Error('No emails generated in the sequence');\n}\n\n// Add sequence statistics\noutput.statistics = {\n  total_emails: output.emails.length,\n  total_words: output.emails.reduce((sum, email) => {\n    const textContent = email.body_text || '';\n    return sum + textContent.split(/\\s+/).length;\n  }, 0),\n  average_words_per_email: Math.round(\n    output.emails.reduce((sum, email) => {\n      const textContent = email.body_text || '';\n      return sum + textContent.split(/\\s+/).length;\n    }, 0) / output.emails.length\n  ),\n  sequence_duration_days: Math.max(...output.emails.map(e => e.send_delay_hours)) / 24\n};\n\nreturn { json: output };"
+      },
+      "id": "c8a1e5f0-1234-4567-89ab-005555555555",
+      "name": "Format Output",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [900, 300]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify($json, null, 2) }}",
+        "options": {
+          "responseCode": 200,
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ]
+          }
+        }
+      },
+      "id": "c8a1e5f0-1234-4567-89ab-006666666666",
+      "name": "Respond to Webhook",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [1120, 300]
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Receive Brief": {
+      "main": [
+        [
+          {
+            "node": "Prepare Context",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Context": {
+      "main": [
+        [
+          {
+            "node": "Generate Sequence",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Sequence": {
+      "main": [
+        [
+          {
+            "node": "Format Output",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI GPT-4o-mini": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Generate Sequence",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Format Output": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "f8b1e5f0-1234-4567-89ab-000000000001",
+  "meta": {
+    "instanceId": "aios-lab-n8n"
+  },
+  "id": "email-sequence-builder",
+  "tags": [
+    {
+      "name": "AIOS",
+      "id": "aios-workflows"
+    },
+    {
+      "name": "Marketing",
+      "id": "marketing"
+    },
+    {
+      "name": "AI",
+      "id": "ai-workflows"
+    }
+  ]
+}

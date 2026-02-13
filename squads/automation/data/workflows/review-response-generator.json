@@ -1,0 +1,154 @@
+{
+  "name": "[AIOS] Hotel Review Response Generator",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "hotel-review-response",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "webhook-receive-review",
+      "name": "Receive Review",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [240, 300],
+      "webhookId": "aios-hotel-review-response"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Classify review and set response strategy\nconst input = $input.first().json;\nconst rating = input.rating || 3;\nconst reviewText = input.review_text || '';\nconst hotelName = input.hotel_name || 'our hotel';\nconst hotelStyle = input.hotel_style || 'hospitality establishment';\nconst reviewerName = input.reviewer_name || 'Guest';\nconst language = input.language || 'en';\nconst platform = input.platform || 'google';\n\n// Determine strategy based on rating\nlet strategy, tone, systemInstructions;\n\nif (rating <= 2) {\n  strategy = 'crisis_recovery';\n  tone = 'empathetic, apologetic, solution-focused';\n  systemInstructions = `This is a negative review requiring crisis management. \nPriority: Apologize sincerely, validate their concerns, offer concrete solution, \ninvite them to contact management directly. Show accountability.`;\n} else if (rating === 3) {\n  strategy = 'improvement';\n  tone = 'grateful, acknowledging, improvement-committed';\n  systemInstructions = `This is a mixed review with both positives and concerns. \nPriority: Thank for positives, acknowledge specific concerns mentioned, \nexplain improvements being made, invite to experience the changes.`;\n} else {\n  strategy = 'amplify_positive';\n  tone = 'warm, grateful, subtle upsell';\n  systemInstructions = `This is a positive review to amplify. \nPriority: Thank warmly, highlight what they loved, suggest other experiences \n(spa, restaurant, activities), build emotional connection, invite to return.`;\n}\n\n// Analyze key topics\nconst topics = [];\nif (reviewText.toLowerCase().includes('clean')) topics.push('cleanliness');\nif (reviewText.toLowerCase().includes('staff') || reviewText.toLowerCase().includes('service')) topics.push('service');\nif (reviewText.toLowerCase().includes('breakfast') || reviewText.toLowerCase().includes('food')) topics.push('food');\nif (reviewText.toLowerCase().includes('room')) topics.push('room_quality');\nif (reviewText.toLowerCase().includes('location')) topics.push('location');\nif (reviewText.toLowerCase().includes('pool') || reviewText.toLowerCase().includes('spa')) topics.push('amenities');\n\n// Build AI prompt\nconst aiPrompt = `You are a hospitality reputation manager for ${hotelName}, a ${hotelStyle} hotel.\n\nStrategy: ${strategy}\nTone: ${tone}\n\n${systemInstructions}\n\nReview to respond to:\nRating: ${rating}/5 stars\nReviewer: ${reviewerName}\nPlatform: ${platform}\nLanguage: ${language}\nReview text: \"${reviewText}\"\n\nRules:\n- Address the reviewer by name (${reviewerName})\n- Acknowledge specific points mentioned in the review\n- For negative reviews: apologize sincerely, offer solution, invite to return\n- For mixed reviews: thank positives, address concerns with specific improvements planned\n- For positive reviews: thank warmly, highlight what they loved, suggest other experiences\n- Keep response 80-150 words\n- Never be defensive or dismissive\n- Include invitation to return or contact directly\n- Sound human, not templated\n- Write in ${language}\n\nReturn ONLY valid JSON (no markdown, no code blocks):\n{\n  \"response_text\": \"...\",\n  \"sentiment\": \"positive/mixed/negative\",\n  \"strategy_used\": \"...\",\n  \"key_topics_addressed\": [...],\n  \"suggested_internal_action\": \"...\",\n  \"confidence\": 0-100,\n  \"platform_optimized\": true\n}`;\n\nreturn [{\n  json: {\n    ...input,\n    strategy,\n    tone,\n    system_instructions: systemInstructions,\n    key_topics: topics,\n    ai_prompt: aiPrompt\n  }\n}];"
+      },
+      "id": "code-classify-strategy",
+      "name": "Classify & Set Strategy",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [460, 300]
+    },
+    {
+      "parameters": {
+        "model": "gpt-4o-mini",
+        "options": {
+          "temperature": 0.7,
+          "maxTokens": 500
+        }
+      },
+      "id": "openai-model",
+      "name": "OpenAI GPT-4o-mini",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [680, 480],
+      "credentials": {
+        "openAiApi": {
+          "id": "S8kSldVybecFwhaw",
+          "name": "AIOS - OpenAI"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "text": "={{ $json.ai_prompt }}",
+        "options": {
+          "systemMessage": "You are an expert hospitality reputation manager. Generate professional, empathetic review responses that build guest relationships and protect hotel reputation. Always return valid JSON."
+        }
+      },
+      "id": "agent-generate-response",
+      "name": "Generate Response",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [680, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Format and validate AI output\nconst input = $input.first().json;\nlet aiOutput = input.output || input.text || '';\n\n// Extract JSON from AI response\nlet responseData;\ntry {\n  // Remove markdown code blocks if present\n  aiOutput = aiOutput.replace(/```json\\n?/g, '').replace(/```\\n?/g, '');\n  responseData = JSON.parse(aiOutput);\n} catch (e) {\n  // Fallback if AI didn't return valid JSON\n  responseData = {\n    response_text: aiOutput,\n    sentiment: input.rating <= 2 ? 'negative' : (input.rating === 3 ? 'mixed' : 'positive'),\n    strategy_used: input.strategy,\n    key_topics_addressed: input.key_topics || [],\n    suggested_internal_action: 'Manual review recommended',\n    confidence: 50,\n    platform_optimized: false\n  };\n}\n\n// Build final output\nconst output = {\n  success: true,\n  hotel_name: input.hotel_name,\n  reviewer_name: input.reviewer_name,\n  original_rating: input.rating,\n  original_review: input.review_text,\n  platform: input.platform,\n  language: input.language,\n  \n  // AI-generated response\n  generated_response: responseData.response_text,\n  sentiment: responseData.sentiment,\n  strategy_used: responseData.strategy_used || input.strategy,\n  key_topics_addressed: responseData.key_topics_addressed || input.key_topics || [],\n  \n  // Metadata\n  confidence: responseData.confidence || 85,\n  platform_optimized: responseData.platform_optimized || true,\n  suggested_internal_action: responseData.suggested_internal_action || 'None',\n  \n  // Stats\n  response_word_count: responseData.response_text ? responseData.response_text.split(' ').length : 0,\n  generated_at: new Date().toISOString(),\n  \n  // For automation\n  ready_to_post: responseData.confidence >= 70,\n  requires_human_review: responseData.confidence < 70 || input.rating <= 2\n};\n\nreturn [{ json: output }];"
+      },
+      "id": "code-format-output",
+      "name": "Format Output",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [900, 300]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ $json }}"
+      },
+      "id": "respond-webhook",
+      "name": "Respond to Webhook",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [1120, 300]
+    }
+  ],
+  "connections": {
+    "Receive Review": {
+      "main": [
+        [
+          {
+            "node": "Classify & Set Strategy",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Classify & Set Strategy": {
+      "main": [
+        [
+          {
+            "node": "Generate Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI GPT-4o-mini": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Generate Response",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Response": {
+      "main": [
+        [
+          {
+            "node": "Format Output",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Format Output": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [
+    {
+      "id": "aios-hotel-product",
+      "name": "AIOS Hotel Product"
+    }
+  ],
+  "triggerCount": 1,
+  "updatedAt": "2026-02-13T00:00:00.000Z",
+  "versionId": "1"
+}
