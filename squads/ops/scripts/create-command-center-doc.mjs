@@ -2,7 +2,7 @@
 /**
  * Create/Update Command Center Doc in ClickUp
  *
- * Creates a ClickUp Doc with 8 pages of formatted tables
+ * Creates a ClickUp Doc with 9 pages of formatted tables
  * serving as the visual Command Center for AIOS.
  *
  * Usage:
@@ -205,7 +205,8 @@ node squads/ops/scripts/create-command-center-doc.mjs --update
 5. **Tools** — ${STACK.length} ferramentas com tipo e funcionalidade
 6. **Skills Library** — ${skills.length} skills com triggers e auto-invoke
 7. **Command Library** — 55+ comandos por agente e tipo
-8. **Workflow Library** — ${workflows.length} workflows por squad`;
+8. **Workflow Library** — ${workflows.length} workflows por squad
+9. **Session Log** — Briefing, atividades recentes e ultimo digest`;
 }
 
 function pageOrganogram(squads) {
@@ -486,6 +487,91 @@ ${Object.entries(bySquad).sort().map(([sq, ws]) => {
   return content;
 }
 
+function pageSessionLog() {
+  const today = new Date().toISOString().split('T')[0];
+  const now = new Date().toISOString().replace('T', ' ').substring(0, 16);
+
+  // Read latest briefing
+  let briefingContent = '_Nenhum briefing disponível._';
+  const briefingPath = join(ROOT, '.aios/briefings/latest.md');
+  if (existsSync(briefingPath)) {
+    const raw = readFileSync(briefingPath, 'utf-8');
+    // Truncate to first 40 lines to keep page manageable
+    const lines = raw.split('\n').slice(0, 40);
+    briefingContent = lines.join('\n');
+    if (raw.split('\n').length > 40) {
+      briefingContent += '\n\n_(truncado - ver arquivo completo em .aios/briefings/latest.md)_';
+    }
+  }
+
+  // Read today's activity log (last 15 entries)
+  let activityTable = '| Hora | Tipo | Acao | Arquivos |\n| --- | --- | --- | --- |\n';
+  let activityCount = 0;
+  const activityPath = join(ROOT, `.aios/logs/activity/${today}.jsonl`);
+  if (existsSync(activityPath)) {
+    const lines = readFileSync(activityPath, 'utf-8').trim().split('\n').filter(l => l.trim());
+    const entries = [];
+    for (const line of lines) {
+      try { entries.push(JSON.parse(line)); } catch {}
+    }
+    const recent = entries.slice(-15);
+    activityCount = entries.length;
+    for (const e of recent) {
+      const time = e.timestamp ? new Date(e.timestamp).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }) : '-';
+      const files = (e.files || []).slice(0, 3).join(', ') || '-';
+      activityTable += `| ${time} | ${esc(e.type || 'action')} | ${esc((e.action || '').substring(0, 60))} | ${esc(files)} |\n`;
+    }
+  } else {
+    activityTable += `| - | - | _Nenhuma atividade registrada hoje_ | - |\n`;
+  }
+
+  // Read latest digest
+  let digestContent = '_Nenhum digest disponível._';
+  const digestDir = join(ROOT, '.aios/logs/digests');
+  if (existsSync(digestDir)) {
+    const digestFiles = readdirSync(digestDir).filter(f => f.endsWith('.md')).sort().reverse();
+    if (digestFiles.length > 0) {
+      const raw = readFileSync(join(digestDir, digestFiles[0]), 'utf-8');
+      // Take first 30 lines
+      const lines = raw.split('\n').slice(0, 30);
+      digestContent = lines.join('\n');
+      if (raw.split('\n').length > 30) {
+        digestContent += '\n\n_(truncado)_';
+      }
+    }
+  }
+
+  return `# Session Log
+
+> Ultima atualizacao: **${now}**
+
+---
+
+## Ultimo Briefing
+
+${briefingContent}
+
+---
+
+## Atividades Recentes (${activityCount} total hoje)
+
+${activityTable}
+
+---
+
+## Ultimo Digest
+
+${digestContent}
+
+---
+
+## Como Atualizar
+
+\`\`\`bash
+node squads/ops/scripts/create-command-center-doc.mjs --update
+\`\`\``;
+}
+
 // ============================================================
 // MAIN
 // ============================================================
@@ -516,6 +602,7 @@ async function main() {
     { name: 'Skills Library', content: pageSkills(skills) },
     { name: 'Command Library', content: pageCommands(commands) },
     { name: 'Workflow Library', content: pageWorkflows(workflows) },
+    { name: 'Session Log', content: pageSessionLog() },
   ];
 
   // Old page names that were renamed (to archive duplicates)
@@ -526,18 +613,21 @@ async function main() {
     const raw = await api3(`/workspaces/${TEAM_ID}/docs/${docId}/pages`);
     const existing = Array.isArray(raw) ? raw : (raw.pages || []);
 
-    // Archive deprecated/duplicate pages
+    // Mark deprecated/duplicate pages (ClickUp API doesn't support DELETE on doc pages)
     const pageNames = pages.map(p => p.name);
     for (const ex of existing) {
-      if (ex.archived) continue;
-      if (DEPRECATED_PAGES.includes(ex.name) && !pageNames.includes(ex.name)) {
+      if (ex.name.includes('DEPRECATED')) continue;
+      const baseName = ex.name.replace(/^\[DEPRECATED\]\s*/, '');
+      if (DEPRECATED_PAGES.includes(baseName) && !pageNames.includes(baseName)) {
         try {
           await api3(`/workspaces/${TEAM_ID}/docs/${docId}/pages/${ex.id}`, 'PUT', {
-            name: ex.name, archived: true
+            name: `[DEPRECATED] ${baseName}`,
+            content: '> **DEPRECATED** - Esta pagina foi substituida. Favor deletar manualmente via ClickUp UI.',
+            content_format: 'text/md'
           });
-          console.log(`  Archived old page: ${ex.name}`);
+          console.log(`  Marked deprecated: ${baseName}`);
           await wait(500);
-        } catch (e) { console.log(`  Could not archive ${ex.name}: ${e.message}`); }
+        } catch (e) { console.log(`  Could not deprecate ${baseName}: ${e.message}`); }
       }
     }
 

@@ -7,7 +7,8 @@ Exit code 0 = success, stdout is added to Claude's context.
 import json
 import sys
 import os
-from datetime import datetime
+import subprocess
+from datetime import datetime, timedelta
 from pathlib import Path
 
 def get_budget_status():
@@ -45,6 +46,84 @@ def get_budget_status():
         pass
     return None
 
+def get_last_session_summary():
+    """Build a concise summary of last session: git commits, activity, pending items."""
+    root = Path(__file__).parent.parent.parent
+    lines = []
+
+    # Recent git commits (last 3)
+    try:
+        result = subprocess.run(
+            ["git", "log", "--oneline", "-3"],
+            capture_output=True, text=True, cwd=str(root), timeout=5
+        )
+        if result.returncode == 0 and result.stdout.strip():
+            lines.append("Recent commits:")
+            for commit in result.stdout.strip().split('\n'):
+                lines.append(f"  {commit}")
+    except Exception:
+        pass
+
+    # Last activity log entry
+    today = datetime.now().strftime('%Y-%m-%d')
+    yesterday = (datetime.now() - timedelta(days=1)).strftime('%Y-%m-%d')
+
+    activity_count = 0
+    last_activity_time = None
+    for date_str in [today, yesterday]:
+        log_file = root / ".aios" / "logs" / "activity" / f"{date_str}.jsonl"
+        if log_file.exists():
+            try:
+                log_lines = log_file.read_text(encoding='utf-8').strip().split('\n')
+                log_lines = [l for l in log_lines if l.strip()]
+                activity_count = len(log_lines)
+                if log_lines:
+                    last = json.loads(log_lines[-1])
+                    ts = last.get('timestamp', '')
+                    last_activity_time = f"{date_str} {ts[11:16]}" if len(ts) > 16 else date_str
+                break
+            except Exception:
+                pass
+
+    if last_activity_time:
+        lines.append(f"Last activity: {last_activity_time} - {activity_count} actions logged")
+
+    return lines
+
+
+def get_briefing_summary():
+    """Check briefing status and return compact info."""
+    root = Path(__file__).parent.parent.parent
+    briefing_path = root / ".aios" / "briefings" / "latest.md"
+    lines = []
+
+    if briefing_path.exists():
+        try:
+            content = briefing_path.read_text(encoding='utf-8')
+            # Check if briefing is from today
+            today = datetime.now().strftime('%Y-%m-%d')
+            if today in content[:200]:
+                lines.append(f"Briefing: available (today)")
+            else:
+                lines.append(f"Briefing: OUTDATED (not from today)")
+                lines.append("  Run: node squads/ops/scripts/briefing.mjs")
+
+            # Extract key numbers from briefing (compact)
+            for line in content.split('\n'):
+                if 'commit(s)' in line.lower():
+                    clean = line.strip().lstrip('- ').replace('**', '')
+                    lines.append(f"  {clean}")
+                    break
+        except Exception:
+            pass
+    else:
+        lines.append("Briefing: not available")
+        lines.append("  Run: node squads/ops/scripts/briefing.mjs")
+
+    lines.append("Full briefing: node squads/ops/scripts/briefing.mjs --stdout")
+    return lines
+
+
 def main():
     # Read hook input from stdin
     try:
@@ -80,6 +159,20 @@ def main():
             context_parts.append("WARNING: Approaching daily budget limit!")
         if monthly_pct >= 90:
             context_parts.append("ALERT: Near monthly budget limit!")
+
+    # Last session summary
+    session_summary = get_last_session_summary()
+    if session_summary:
+        context_parts.append("")
+        context_parts.append("[LAST SESSION SUMMARY]")
+        context_parts.extend(session_summary)
+
+    # Briefing availability
+    briefing_info = get_briefing_summary()
+    if briefing_info:
+        context_parts.append("")
+        context_parts.append("[BRIEFING]")
+        context_parts.extend(briefing_info)
 
     # Session info
     session_id = hook_input.get('session_id', 'unknown')
