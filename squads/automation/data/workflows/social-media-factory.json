@@ -1,0 +1,166 @@
+{
+  "name": "[AIOS] Social Media Factory",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "social-media-factory",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "8b5e1a2c-3d4f-5a6b-7c8d-9e0f1a2b3c4d",
+      "name": "Receive Brief",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [240, 300],
+      "webhookId": "social-media-factory"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Extract input data\nconst input = $input.item.json.body;\n\nconst topic = input.topic || '';\nconst brand = input.brand || 'Travel Tech Digital';\nconst platforms = input.platforms || ['linkedin', 'instagram', 'facebook', 'twitter'];\nconst contentPillars = input.content_pillars || ['education'];\nconst numVariations = input.num_variations || 3;\nconst language = input.language || 'pt-BR';\nconst includeHashtags = input.include_hashtags !== false;\nconst includeCta = input.include_cta !== false;\n\n// Build platform specifications\nconst platformSpecs = {\n  linkedin: {\n    tone: 'Professional, authoritative',\n    maxChars: 1300,\n    format: ['text', 'document', 'carousel'],\n    hooks: 'Data-driven opening, question, or bold statement',\n    structure: 'Hook → Context → Value → CTA',\n    bestTimes: 'Tue-Thu 8-10am, 12-1pm',\n    hashtags: '3-5 relevant industry hashtags',\n    cta: 'Visit website, download resource, DM for details'\n  },\n  instagram: {\n    tone: 'Visual-first, inspirational, authentic',\n    maxChars: 2200,\n    format: ['carousel', 'reel', 'static'],\n    hooks: 'Emoji-rich opening, relatable scenario',\n    structure: 'Hook → Story/Value → Call-to-action → Hashtags',\n    bestTimes: 'Mon-Fri 11am-1pm, 7-9pm',\n    hashtags: '20-30 mix of broad and niche',\n    cta: 'Link in bio, save this post, share with friend'\n  },\n  facebook: {\n    tone: 'Conversational, community-focused',\n    maxChars: 500,\n    format: ['link_post', 'image', 'video'],\n    hooks: 'Question, personal story, surprising fact',\n    structure: 'Hook → Short value → Link → Emoji CTA',\n    bestTimes: 'Wed-Fri 1-3pm',\n    hashtags: '2-3 branded or campaign hashtags',\n    cta: 'Click link, comment below, tag a friend'\n  },\n  twitter: {\n    tone: 'Punchy, timely, conversational',\n    maxChars: 280,\n    format: ['single', 'thread'],\n    hooks: 'Bold take, stat, or question',\n    structure: 'Hook → Value (concise) → CTA/Hashtags',\n    bestTimes: 'Mon-Fri 8-10am, 6-9pm',\n    hashtags: '1-2 trending or branded',\n    cta: 'Retweet, reply, click link'\n  }\n};\n\n// Build content pillar descriptions\nconst pillarDescriptions = {\n  education: 'Teach something valuable. Establish authority. How-to, tips, frameworks.',\n  case_study: 'Real results with numbers. Before/after. Client success stories.',\n  behind_scenes: 'Human side of business. Team, process, day-in-life.',\n  industry_news: 'Commentary on trends. Hot takes. Industry insights.',\n  social_proof: 'Testimonials, reviews, ratings. UGC. Client quotes.'\n};\n\n// Filter specs for requested platforms\nconst selectedSpecs = {};\nfor (const platform of platforms) {\n  if (platformSpecs[platform]) {\n    selectedSpecs[platform] = platformSpecs[platform];\n  }\n}\n\n// Build pillar context\nconst selectedPillars = {};\nfor (const pillar of contentPillars) {\n  if (pillarDescriptions[pillar]) {\n    selectedPillars[pillar] = pillarDescriptions[pillar];\n  }\n}\n\nreturn {\n  topic,\n  brand,\n  platforms,\n  platformSpecs: selectedSpecs,\n  contentPillars,\n  pillarDescriptions: selectedPillars,\n  numVariations,\n  language,\n  includeHashtags,\n  includeCta\n};"
+      },
+      "id": "1a2b3c4d-5e6f-7a8b-9c0d-1e2f3a4b5c6d",
+      "name": "Build Platform Specs",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [460, 300]
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "=You are a social media expert specialized in the tourism and hotel industry. You create high-performing content for Travel Tech Digital and similar brands.\n\nYour expertise:\n- Understanding platform algorithms and best practices\n- Writing compelling hooks that stop the scroll\n- Incorporating data and insights naturally\n- Creating CTAs that drive engagement and conversions\n- Using hashtags strategically for reach\n- Adapting tone and format per platform\n\nAlways return valid JSON in the specified format."
+        },
+        "promptType": "define",
+        "text": "=Generate {{ $json.numVariations }} post variations for each platform based on this brief:\n\n**Topic:** {{ $json.topic }}\n**Brand:** {{ $json.brand }}\n**Language:** {{ $json.language }}\n**Content Pillars:** {{ $json.contentPillars.join(', ') }}\n\n**Platform Specifications:**\n{{ JSON.stringify($json.platformSpecs, null, 2) }}\n\n**Content Pillar Guidance:**\n{{ JSON.stringify($json.pillarDescriptions, null, 2) }}\n\n**Requirements:**\n- Include hashtags: {{ $json.includeHashtags }}\n- Include CTA: {{ $json.includeCta }}\n- Return {{ $json.numVariations }} variations per platform\n- Each variation should follow platform best practices\n- Mix content pillars across variations\n- Suggest visual formats where applicable\n\n**Return Format (strict JSON):**\n```json\n{\n  \"posts\": {\n    \"linkedin\": [\n      {\n        \"variation\": 1,\n        \"text\": \"Full post text here (max 1300 chars)\",\n        \"hashtags\": [\"#HotelMarketing\", \"#DirectBookings\", \"#TravelTech\"],\n        \"cta\": \"Visit our blog for the complete guide\",\n        \"best_time\": \"Tuesday 8-10am\",\n        \"format\": \"text\",\n        \"content_pillar\": \"education\",\n        \"hook_type\": \"question\"\n      }\n    ],\n    \"instagram\": [\n      {\n        \"variation\": 1,\n        \"caption\": \"Full caption here (max 2200 chars)\",\n        \"hashtags\": [\"#HotelMarketing\", \"#DirectBookings\", ...],\n        \"cta\": \"Link in bio for full article\",\n        \"suggested_visual\": \"Carousel: 5 slides with tips\",\n        \"format\": \"carousel\",\n        \"content_pillar\": \"education\",\n        \"best_time\": \"Monday 11am-1pm\"\n      }\n    ],\n    \"facebook\": [\n      {\n        \"variation\": 1,\n        \"text\": \"Post text here (500 chars ideal)\",\n        \"hashtags\": [\"#HotelMarketing\", \"#TravelTech\"],\n        \"cta\": \"Click to learn more 👇\",\n        \"link_preview\": \"https://traveltechdigital.com/blog/...\",\n        \"format\": \"link_post\",\n        \"content_pillar\": \"education\",\n        \"best_time\": \"Wednesday 1-3pm\"\n      }\n    ],\n    \"twitter\": [\n      {\n        \"variation\": 1,\n        \"text\": \"Tweet text (280 chars max)\",\n        \"hashtags\": [\"#HotelMarketing\", \"#DirectBookings\"],\n        \"cta\": \"Thread below 👇\",\n        \"format\": \"single\",\n        \"content_pillar\": \"education\",\n        \"best_time\": \"Monday 8-10am\",\n        \"thread_suggestion\": \"Expand into 5-tweet thread\"\n      }\n    ]\n  },\n  \"content_calendar_suggestion\": \"Week 1: Mon (LinkedIn), Wed (Instagram), Fri (Facebook). Week 2: Tue (Twitter thread), Thu (Instagram Reel).\",\n  \"engagement_hooks\": [\n    \"Are you losing direct bookings to OTAs?\",\n    \"5 strategies that increased our client's bookings by 47%\",\n    \"What if I told you that 68% of travelers prefer booking direct?\"\n  ],\n  \"performance_tips\": [\n    \"Post LinkedIn content on Tuesday mornings for best engagement\",\n    \"Use Instagram carousels for educational content (higher saves)\",\n    \"Facebook link posts perform better with native video thumbnails\"\n  ]\n}\n```\n\nGenerate the content now. Return ONLY the JSON object, no markdown formatting."
+      },
+      "id": "2b3c4d5e-6f7a-8b9c-0d1e-2f3a4b5c6d7e",
+      "name": "Generate Posts",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [680, 300],
+      "credentials": {
+        "openAiApi": {
+          "id": "S8kSldVybecFwhaw",
+          "name": "AIOS - OpenAI"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": "gpt-4o-mini",
+        "options": {
+          "temperature": 0.8,
+          "maxTokens": 4000
+        }
+      },
+      "id": "3c4d5e6f-7a8b-9c0d-1e2f-3a4b5c6d7e8f",
+      "name": "OpenAI Chat Model",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [680, 480],
+      "credentials": {
+        "openAiApi": {
+          "id": "S8kSldVybecFwhaw",
+          "name": "AIOS - OpenAI"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Extract AI response\nlet aiResponse = $input.item.json.output;\n\n// Parse JSON if it's a string\nif (typeof aiResponse === 'string') {\n  // Remove markdown code blocks if present\n  aiResponse = aiResponse.replace(/```json\\n?/g, '').replace(/```\\n?/g, '').trim();\n  try {\n    aiResponse = JSON.parse(aiResponse);\n  } catch (e) {\n    return { error: 'Failed to parse AI response as JSON', raw: aiResponse };\n  }\n}\n\n// Get original request data\nconst originalInput = $('Receive Brief').item.json.body;\n\n// Add metadata to each post\nconst now = new Date().toISOString();\nconst posts = aiResponse.posts || {};\n\nfor (const platform in posts) {\n  if (Array.isArray(posts[platform])) {\n    posts[platform] = posts[platform].map((post, idx) => ({\n      ...post,\n      id: `${platform}_${Date.now()}_${idx}`,\n      platform: platform,\n      generated_at: now,\n      brand: originalInput.brand || 'Travel Tech Digital',\n      topic: originalInput.topic,\n      status: 'draft',\n      language: originalInput.language || 'pt-BR'\n    }));\n  }\n}\n\n// Build response object\nconst response = {\n  success: true,\n  generated_at: now,\n  request: {\n    topic: originalInput.topic,\n    brand: originalInput.brand,\n    platforms: originalInput.platforms,\n    num_variations: originalInput.num_variations\n  },\n  posts: posts,\n  content_calendar_suggestion: aiResponse.content_calendar_suggestion || '',\n  engagement_hooks: aiResponse.engagement_hooks || [],\n  performance_tips: aiResponse.performance_tips || [],\n  total_posts: Object.values(posts).reduce((sum, arr) => sum + arr.length, 0),\n  platforms_covered: Object.keys(posts),\n  next_steps: [\n    'Review posts for brand voice alignment',\n    'Add final visual assets',\n    'Schedule posts using content calendar suggestion',\n    'Monitor performance and iterate'\n  ]\n};\n\nreturn response;"
+      },
+      "id": "4d5e6f7a-8b9c-0d1e-2f3a-4b5c6d7e8f9a",
+      "name": "Format & Add Metadata",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [900, 300]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify($json, null, 2) }}",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ]
+          }
+        }
+      },
+      "id": "5e6f7a8b-9c0d-1e2f-3a4b-5c6d7e8f9a0b",
+      "name": "Respond to Webhook",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [1120, 300]
+    }
+  ],
+  "connections": {
+    "Receive Brief": {
+      "main": [
+        [
+          {
+            "node": "Build Platform Specs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Platform Specs": {
+      "main": [
+        [
+          {
+            "node": "Generate Posts",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Posts": {
+      "main": [
+        [
+          {
+            "node": "Format & Add Metadata",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Generate Posts",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Format & Add Metadata": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2026-02-13T00:00:00.000Z",
+  "versionId": "1"
+}

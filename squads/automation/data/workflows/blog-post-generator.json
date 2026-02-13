@@ -1,0 +1,226 @@
+{
+  "name": "[AIOS] Blog Post Generator",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "blog-post-generator",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "d8e5f6a7-b8c9-4d5e-6f7a-8b9c0d1e2f3a",
+      "name": "Receive Brief",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [240, 300],
+      "webhookId": "blog-post-generator"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Prepare SEO context from webhook input\nconst input = $input.first().json;\n\nconst seoContext = {\n  topic: input.topic,\n  keywords: input.keywords || [],\n  target_audience: input.target_audience || 'Hotel owners and managers',\n  word_count: input.word_count || 1500,\n  language: input.language || 'pt-BR',\n  seo_focus: input.seo_focus !== false,\n  include_meta: input.include_meta !== false,\n  timestamp: new Date().toISOString()\n};\n\n// Create the prompt context for the outline agent\nconst promptContext = {\n  request: seoContext,\n  instructions: {\n    keyword_usage: 'Natural integration, 2-3% density',\n    structure: 'H1 > H2 > H3 with clear hierarchy',\n    seo_optimization: 'Optimize for featured snippets and search intent',\n    target_length: `${seoContext.word_count} words total`\n  }\n};\n\nreturn { \n  json: {\n    seoContext,\n    promptContext\n  }\n};"
+      },
+      "id": "a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d",
+      "name": "Prepare SEO Context",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [460, 300]
+    },
+    {
+      "parameters": {
+        "model": "gpt-4o-mini",
+        "options": {
+          "temperature": 0.7,
+          "maxTokens": 2000
+        }
+      },
+      "id": "b2c3d4e5-f6a7-4b8c-9d0e-1f2a3b4c5d6e",
+      "name": "OpenAI Outline",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [680, 120],
+      "credentials": {
+        "openAiApi": {
+          "id": "S8kSldVybecFwhaw",
+          "name": "AIOS - OpenAI"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You are an SEO content strategist for the tourism/hotel industry. Create a detailed article outline:\n\n1. Analyze the topic and keywords for search intent\n2. Create H1, H2, H3 structure optimized for featured snippets\n3. Include key points for each section\n4. Suggest internal linking opportunities\n5. Define meta title (60 chars) and meta description (155 chars)\n\n**Input:**\nTopic: {{ $json.seoContext.topic }}\nKeywords: {{ $json.seoContext.keywords.join(', ') }}\nTarget Audience: {{ $json.seoContext.target_audience }}\nWord Count Target: {{ $json.seoContext.word_count }}\nLanguage: {{ $json.seoContext.language }}\n\n**Return JSON format:**\n```json\n{\n  \"outline\": {\n    \"h1\": \"Main title\",\n    \"meta_title\": \"SEO title (60 chars)\",\n    \"meta_description\": \"SEO description (155 chars)\",\n    \"sections\": [\n      {\n        \"h2\": \"Section title\",\n        \"h3s\": [\"Subsection 1\", \"Subsection 2\"],\n        \"key_points\": [\"Point 1\", \"Point 2\"],\n        \"word_target\": 300\n      }\n    ]\n  },\n  \"keyword_density_targets\": {\n    \"primary\": \"2.5%\",\n    \"secondary\": \"1.5%\"\n  },\n  \"suggested_slug\": \"url-friendly-slug\"\n}\n```",
+        "options": {
+          "systemMessage": "You are an expert SEO strategist specializing in hotel and tourism content. Always respond with valid JSON only."
+        }
+      },
+      "id": "c3d4e5f6-a7b8-4c9d-0e1f-2a3b4c5d6e7f",
+      "name": "Research & Outline",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [680, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Parse the outline from AI response\nconst aiResponse = $input.first().json;\n\nlet outline;\ntry {\n  // Try to parse the AI response as JSON\n  const text = aiResponse.output || aiResponse.text || JSON.stringify(aiResponse);\n  \n  // Extract JSON if wrapped in markdown code blocks\n  const jsonMatch = text.match(/```json\\s*([\\s\\S]*?)\\s*```/) || text.match(/```\\s*([\\s\\S]*?)\\s*```/);\n  const jsonText = jsonMatch ? jsonMatch[1] : text;\n  \n  outline = JSON.parse(jsonText);\n} catch (error) {\n  // Fallback: create a basic outline structure\n  outline = {\n    outline: {\n      h1: $('Prepare SEO Context').item.json.seoContext.topic,\n      meta_title: $('Prepare SEO Context').item.json.seoContext.topic.substring(0, 60),\n      meta_description: `Learn about ${$('Prepare SEO Context').item.json.seoContext.topic}`,\n      sections: [\n        {\n          h2: \"Introduction\",\n          h3s: [],\n          key_points: [\"Overview of the topic\"],\n          word_target: 200\n        },\n        {\n          h2: \"Main Content\",\n          h3s: [\"Key aspect 1\", \"Key aspect 2\"],\n          key_points: [\"Detail 1\", \"Detail 2\"],\n          word_target: 800\n        },\n        {\n          h2: \"Conclusion\",\n          h3s: [],\n          key_points: [\"Summary and next steps\"],\n          word_target: 200\n        }\n      ]\n    },\n    keyword_density_targets: { primary: \"2.5%\", secondary: \"1.5%\" },\n    suggested_slug: $('Prepare SEO Context').item.json.seoContext.topic.toLowerCase().replace(/[^a-z0-9]+/g, '-')\n  };\n}\n\n// Combine with original context\nconst result = {\n  originalRequest: $('Prepare SEO Context').item.json.seoContext,\n  outline: outline,\n  readyForWriting: true\n};\n\nreturn { json: result };"
+      },
+      "id": "d4e5f6a7-b8c9-4d0e-1f2a-3b4c5d6e7f8a",
+      "name": "Parse Outline",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [900, 300]
+    },
+    {
+      "parameters": {
+        "model": "gpt-4o-mini",
+        "options": {
+          "temperature": 0.8,
+          "maxTokens": 4000
+        }
+      },
+      "id": "e5f6a7b8-c9d0-4e1f-2a3b-4c5d6e7f8a9b",
+      "name": "OpenAI Writer",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [1120, 120],
+      "credentials": {
+        "openAiApi": {
+          "id": "S8kSldVybecFwhaw",
+          "name": "AIOS - OpenAI"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You are an expert content writer for the tourism industry. Write the full article based on the outline provided.\n\n**Writing Rules:**\n- Write in {{ $json.originalRequest.language }}\n- Follow the H2/H3 structure exactly\n- Include keywords naturally (2-3% density)\n- Use short paragraphs (2-3 sentences)\n- Include bullet points and numbered lists\n- Add a compelling introduction and conclusion\n- Write for both readers and search engines\n- Include a FAQ section at the end (3-5 questions)\n\n**Outline to follow:**\n{{ JSON.stringify($json.outline, null, 2) }}\n\n**Keywords to include:**\n{{ $json.originalRequest.keywords.join(', ') }}\n\n**Target audience:**\n{{ $json.originalRequest.target_audience }}\n\n**Return JSON format:**\n```json\n{\n  \"article\": {\n    \"title\": \"Article title (H1)\",\n    \"slug\": \"url-friendly-slug\",\n    \"meta_title\": \"SEO title\",\n    \"meta_description\": \"SEO description\",\n    \"content_html\": \"<article>Full HTML content with proper heading tags</article>\",\n    \"content_markdown\": \"# Title\\n\\n## Section\\n\\nContent...\",\n    \"word_count\": 1500,\n    \"reading_time_minutes\": 7,\n    \"faq\": [\n      {\n        \"question\": \"Question text?\",\n        \"answer\": \"Answer text\"\n      }\n    ]\n  }\n}\n```",
+        "options": {
+          "systemMessage": "You are an expert writer specializing in hotel and tourism content. Write engaging, informative articles optimized for SEO. Always respond with valid JSON only."
+        }
+      },
+      "id": "f6a7b8c9-d0e1-4f2a-3b4c-5d6e7f8a9b0c",
+      "name": "Write Article",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [1120, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Format final output with article content\nconst aiResponse = $input.first().json;\n\nlet article;\ntry {\n  // Try to parse the AI response as JSON\n  const text = aiResponse.output || aiResponse.text || JSON.stringify(aiResponse);\n  \n  // Extract JSON if wrapped in markdown code blocks\n  const jsonMatch = text.match(/```json\\s*([\\s\\S]*?)\\s*```/) || text.match(/```\\s*([\\s\\S]*?)\\s*```/);\n  const jsonText = jsonMatch ? jsonMatch[1] : text;\n  \n  const parsed = JSON.parse(jsonText);\n  article = parsed.article || parsed;\n} catch (error) {\n  // Fallback: create basic article structure\n  const outline = $('Parse Outline').item.json.outline.outline;\n  article = {\n    title: outline.h1,\n    slug: $('Parse Outline').item.json.outline.suggested_slug,\n    meta_title: outline.meta_title,\n    meta_description: outline.meta_description,\n    content_html: `<article><h1>${outline.h1}</h1><p>Article content would be generated here.</p></article>`,\n    content_markdown: `# ${outline.h1}\\n\\nArticle content would be generated here.`,\n    word_count: 0,\n    reading_time_minutes: 0,\n    faq: []\n  };\n}\n\n// Calculate reading time if not provided\nif (!article.reading_time_minutes && article.word_count) {\n  article.reading_time_minutes = Math.ceil(article.word_count / 200);\n}\n\n// Prepare final response\nconst response = {\n  success: true,\n  generated_at: new Date().toISOString(),\n  article: article,\n  metadata: {\n    topic: $('Parse Outline').item.json.originalRequest.topic,\n    keywords: $('Parse Outline').item.json.originalRequest.keywords,\n    language: $('Parse Outline').item.json.originalRequest.language,\n    word_count_target: $('Parse Outline').item.json.originalRequest.word_count,\n    word_count_actual: article.word_count\n  },\n  outline_used: $('Parse Outline').item.json.outline.outline\n};\n\nreturn { json: response };"
+      },
+      "id": "a7b8c9d0-e1f2-4a3b-4c5d-6e7f8a9b0c1d",
+      "name": "Format Final Output",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1340, 300]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "b8c9d0e1-f2a3-4b4c-5d6e-7f8a9b0c1d2e",
+      "name": "Respond to Webhook",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [1560, 300]
+    }
+  ],
+  "connections": {
+    "Receive Brief": {
+      "main": [
+        [
+          {
+            "node": "Prepare SEO Context",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare SEO Context": {
+      "main": [
+        [
+          {
+            "node": "Research & Outline",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Outline": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Research & Outline",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Research & Outline": {
+      "main": [
+        [
+          {
+            "node": "Parse Outline",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse Outline": {
+      "main": [
+        [
+          {
+            "node": "Write Article",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Writer": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Write Article",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Write Article": {
+      "main": [
+        [
+          {
+            "node": "Format Final Output",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Format Final Output": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2026-02-13T00:00:00.000Z",
+  "versionId": "1"
+}

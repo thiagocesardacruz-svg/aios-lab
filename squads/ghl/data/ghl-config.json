@@ -1,0 +1,28 @@
+{
+  "location_id": "2JmvP37DT3WsG5ncSANP",
+  "api_base": "https://services.leadconnectorhq.com",
+  "api_version": "2021-07-28",
+  "user": {
+    "id": "eiUyN2pTZ66wqyFhKs9e",
+    "name": "Thiago Cruz",
+    "email": "traveltech.digital@gmail.com"
+  },
+  "pipeline": {
+    "id": "VNpWH4BkiJzJPAguAPzB",
+    "name": "Pipeline de Vendas",
+    "stages": {
+      "novo_lead": "a2f8ae63-4e90-4a14-9dae-5f55f175c176",
+      "respondeu": "0ceb54c5-bc97-4aee-9e64-4bdc4cb69453",
+      "reuniao_agendada": "9ae6eddb-a9e1-4e7e-83c3-94c76064b15f",
+      "nao_compareceu": "91251719-0ac0-4b49-8c06-9d8ec0e4c295",
+      "follow_up": "a3aab643-a4d3-4858-b644-9040a23b4aad",
+      "vendido": "1291dee2-3575-4055-84fe-f3c4037caf52"
+    }
+  },
+  "calendar": {
+    "id": "EwEK54kyPnSvXZDAUzGN",
+    "name": "Thiago Cruz's Personal Calendar"
+  },
+  "n8n_credential_id": "IRB8AlwbxduOFkvO",
+  "updated_at": "2026-02-13"
+}

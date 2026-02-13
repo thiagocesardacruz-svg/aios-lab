@@ -1,0 +1,361 @@
+{
+  "name": "[AIOS] Inbound Lead Qualifier v2",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "lead-qualifier",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "2f3e8d7c-1a5b-4c9d-8e7f-0123456789ab",
+      "name": "Receive Lead",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [240, 300],
+      "webhookId": "lead-qualifier-v2"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": false,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "cond1",
+              "leftValue": "={{ $json.body.email }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists"
+              }
+            },
+            {
+              "id": "cond2",
+              "leftValue": "={{ $json.body.name }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "3a4b5c6d-2b6c-4d8e-9f8g-1234567890bc",
+      "name": "Validate Data",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [460, 300]
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You are an expert lead qualifier for a tourism/hotel marketing agency.\n\nAnalyze this lead data and return a JSON with:\n- score: \"HOT\" | \"WARM\" | \"COLD\"\n- confidence: 0-100 (number)\n- reasoning: brief explanation\n- next_action: recommended action\n- priority: 1-5 (number)\n\nConsider:\n- Company type (hotel/tourism = higher score)\n- Message urgency and intent\n- Contact completeness (phone + email = better)\n- Source quality\n\nLead Data:\nName: {{ $json.body.name }}\nEmail: {{ $json.body.email }}\nCompany: {{ $json.body.company }}\nPhone: {{ $json.body.phone }}\nSource: {{ $json.body.source }}\nMessage: {{ $json.body.message }}\n\nReturn ONLY valid JSON, no markdown or explanations.",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "You are a lead qualification assistant. Always return valid JSON only."
+        }
+      },
+      "id": "4b5c6d7e-3c7d-4e9f-0g9h-2345678901cd",
+      "name": "Qualify Lead",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [680, 200]
+    },
+    {
+      "parameters": {
+        "model": "gpt-4o-mini",
+        "options": {
+          "temperature": 0.3,
+          "maxTokens": 500
+        }
+      },
+      "id": "5c6d7e8f-4d8e-4f0g-1h0i-3456789012de",
+      "name": "OpenAI GPT-4o Mini",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [680, 380],
+      "credentials": {
+        "openAiApi": {
+          "id": "S8kSldVybecFwhaw",
+          "name": "AIOS - OpenAI"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Parse AI response and extract JSON\nconst aiOutput = $input.item.json.output;\nlet result;\n\ntry {\n  // Try to extract JSON from markdown code blocks or plain text\n  const jsonMatch = aiOutput.match(/```(?:json)?\\n?([\\s\\S]*?)```/) || \n                    aiOutput.match(/\\{[\\s\\S]*\\}/);\n  \n  if (jsonMatch) {\n    const jsonStr = jsonMatch[1] || jsonMatch[0];\n    result = JSON.parse(jsonStr);\n  } else {\n    // Fallback: try to parse the whole output\n    result = JSON.parse(aiOutput);\n  }\n  \n  // Validate required fields\n  if (!result.score || !result.confidence || !result.reasoning) {\n    throw new Error('Missing required fields');\n  }\n  \n  // Ensure score is uppercase\n  result.score = result.score.toUpperCase();\n  \n  // Add original lead data\n  result.lead = $input.item.json.body || {};\n  result.timestamp = new Date().toISOString();\n  result.workflow = 'lead-qualifier-v2';\n  \n  return result;\n  \n} catch (error) {\n  // Fallback to COLD if parsing fails\n  return {\n    score: 'COLD',\n    confidence: 0,\n    reasoning: `Failed to parse AI response: ${error.message}`,\n    next_action: 'Manual review required',\n    priority: 5,\n    lead: $input.item.json.body || {},\n    timestamp: new Date().toISOString(),\n    workflow: 'lead-qualifier-v2',\n    error: aiOutput\n  };\n}"
+              },
+      "id": "6d7e8f9g-5e9f-4g1h-2i1j-4567890123ef",
+      "name": "Parse Result",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [900, 200]
+    },
+    {
+      "parameters": {
+        "mode": "expression",
+        "output": "input",
+        "options": {},
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": false,
+                  "leftValue": "",
+                  "typeValidation": "strict"
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.score }}",
+                    "rightValue": "HOT",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "HOT"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": false,
+                  "leftValue": "",
+                  "typeValidation": "strict"
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.score }}",
+                    "rightValue": "WARM",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "WARM"
+            }
+          ]
+        }
+      },
+      "id": "7e8f9g0h-6f0g-4h2i-3j2k-5678901234fg",
+      "name": "Route by Score",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [1120, 200]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ $json }}",
+        "options": {
+          "responseCode": 200,
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ]
+          }
+        }
+      },
+      "id": "8f9g0h1i-7g1h-4i3j-4k3l-6789012345gh",
+      "name": "Respond HOT",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [1340, 100]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ $json }}",
+        "options": {
+          "responseCode": 200,
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ]
+          }
+        }
+      },
+      "id": "9g0h1i2j-8h2i-4j4k-5l4m-7890123456hi",
+      "name": "Respond WARM",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [1340, 200]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ $json }}",
+        "options": {
+          "responseCode": 200,
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ]
+          }
+        }
+      },
+      "id": "0h1i2j3k-9i3j-4k5l-6m5n-8901234567ij",
+      "name": "Respond COLD",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [1340, 300]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ { \"error\": \"Invalid lead data\", \"message\": \"Name and email are required fields\", \"received\": $json.body } }}",
+        "options": {
+          "responseCode": 400,
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ]
+          }
+        }
+      },
+      "id": "1i2j3k4l-0j4k-4l6m-7n6o-9012345678jk",
+      "name": "Respond Error",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [680, 400]
+    }
+  ],
+  "connections": {
+    "Receive Lead": {
+      "main": [
+        [
+          {
+            "node": "Validate Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validate Data": {
+      "main": [
+        [
+          {
+            "node": "Qualify Lead",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Respond Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Qualify Lead": {
+      "main": [
+        [
+          {
+            "node": "Parse Result",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI GPT-4o Mini": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Qualify Lead",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse Result": {
+      "main": [
+        [
+          {
+            "node": "Route by Score",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Route by Score": {
+      "main": [
+        [
+          {
+            "node": "Respond HOT",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Respond WARM",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Respond COLD",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [
+    {
+      "createdAt": "2026-02-13T00:00:00.000Z",
+      "updatedAt": "2026-02-13T00:00:00.000Z",
+      "id": "aios-automation",
+      "name": "AIOS Automation"
+    },
+    {
+      "createdAt": "2026-02-13T00:00:00.000Z",
+      "updatedAt": "2026-02-13T00:00:00.000Z",
+      "id": "lead-qualifier",
+      "name": "Lead Qualifier"
+    }
+  ],
+  "triggerCount": 1,
+  "updatedAt": "2026-02-13T00:00:00.000Z",
+  "versionId": "v2.0"
+}
