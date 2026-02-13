@@ -30,3 +30,11 @@ Thumbs.db
 .claude/settings.local.json
 .aios/install-log.txt
 squads/automation/config/.env
+
+# Binary artifacts & databases
+*.duckdb
+*.duckdb.wal
+nul
+
+# Accidental extractions
+C*toolswhisper*
