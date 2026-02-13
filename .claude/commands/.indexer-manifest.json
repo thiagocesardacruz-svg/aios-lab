@@ -1,0 +1,31 @@
+{
+  "indexed": [
+    "automation",
+    "board",
+    "copywriting-masters",
+    "customer",
+    "deep-research",
+    "design",
+    "design-system",
+    "finance",
+    "ghl",
+    "growth",
+    "hormozi",
+    "hotel-mkt",
+    "marketing",
+    "ops",
+    "project-management-clickup",
+    "qa",
+    "sales",
+    "sales-pages",
+    "squad-creator",
+    "tech",
+    "translator",
+    "_shared"
+  ],
+  "totalFiles": 702,
+  "method": "copy",
+  "squads": 22,
+  "skills": 22,
+  "lastRun": "2026-02-13T14:48:50.310Z"
+}

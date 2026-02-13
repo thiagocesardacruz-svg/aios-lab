@@ -1,0 +1,91 @@
+# GHL Setup Workflow
+# /tech/ghl-setup
+
+name: ghl-setup
+version: "1.0.0"
+description: "Setup GoHighLevel funnel/CRM"
+command: "/tech/ghl-setup"
+
+trigger:
+  type: command
+  requires:
+    - setup_type
+    - requirements
+
+agents:
+  primary: ghl-specialist
+
+inputs:
+  required:
+    - name: type
+      description: "crm, pipeline, funnel, or full"
+    - name: requirements
+      description: "Specific requirements"
+  optional:
+    - name: snapshot
+      description: "Use existing snapshot"
+    - name: integrations
+      description: "Required integrations"
+
+steps:
+  - id: analyze_requirements
+    name: "Analyze Requirements"
+    agent: ghl-specialist
+    action: "Understand what's needed"
+    outputs:
+      - setup_plan
+      - fields_needed
+      - automations_needed
+
+  - id: setup_crm
+    name: "Setup CRM Structure"
+    agent: ghl-specialist
+    action: "Configure contacts, fields, tags"
+    depends_on: [analyze_requirements]
+    when: "type includes crm"
+
+  - id: setup_pipeline
+    name: "Setup Pipeline"
+    agent: ghl-specialist
+    action: "Configure stages and automations"
+    depends_on: [setup_crm]
+    when: "type includes pipeline"
+
+  - id: setup_funnel
+    name: "Setup Funnel"
+    agent: ghl-specialist
+    action: "Configure pages and forms"
+    depends_on: [setup_pipeline]
+    when: "type includes funnel"
+
+  - id: setup_automations
+    name: "Setup Automations"
+    agent: ghl-specialist
+    action: "Configure triggers and actions"
+    depends_on: [setup_funnel]
+
+  - id: test
+    name: "Test Setup"
+    agent: ghl-specialist
+    action: "Test all flows"
+    depends_on: [setup_automations]
+
+  - id: create_snapshot
+    name: "Create Snapshot"
+    agent: ghl-specialist
+    action: "Save as snapshot for reuse"
+    depends_on: [test]
+
+outputs:
+  - name: ghl_setup
+    description: "Configured GHL account"
+  - name: snapshot
+    description: "Reusable snapshot"
+  - name: documentation
+    description: "Setup documentation"
+
+quality_gates:
+  - "All flows tested"
+  - "Tags organized"
+  - "Automations work"
+  - "Snapshot created"

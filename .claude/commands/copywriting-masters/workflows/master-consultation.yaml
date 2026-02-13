@@ -1,0 +1,112 @@
+# Master Consultation Workflow
+# Squad: copywriting-masters
+# Version: 1.0.0
+
+name: master-consultation
+description: "Consulta estruturada com 1-3 mestres do copywriting para copy específico"
+version: "1.0.0"
+
+trigger:
+  command: "/copy/consult"
+  inputs:
+    - name: copy_type
+      type: string
+      required: true
+      description: "Tipo de copy (sales-letter, email, vsl, headline, etc)"
+    - name: context
+      type: string
+      required: true
+      description: "Contexto do projeto"
+    - name: specific_master
+      type: string
+      required: false
+      description: "Mestre específico a consultar (opcional)"
+    - name: style_preference
+      type: string
+      required: false
+      description: "Preferência de estilo"
+
+steps:
+  - id: analyze-request
+    name: "Analyze Request"
+    agent: copy-chief
+    task: chief-routing
+    inputs:
+      copy_type: "{{inputs.copy_type}}"
+      context: "{{inputs.context}}"
+      specific_master: "{{inputs.specific_master}}"
+    outputs:
+      - recommended_masters
+      - routing_rationale
+      - approach_strategy
+
+  - id: select-masters
+    name: "Select Masters"
+    agent: copy-chief
+    action: select-team
+    inputs:
+      recommendations: "{{steps.analyze-request.outputs.recommended_masters}}"
+      max_masters: 3
+    outputs:
+      - selected_masters
+      - assignment_brief
+
+  - id: master-1-consultation
+    name: "Primary Master Consultation"
+    agent: "{{steps.select-masters.outputs.selected_masters[0]}}"
+    action: write-copy
+    inputs:
+      brief: "{{steps.select-masters.outputs.assignment_brief}}"
+      context: "{{inputs.context}}"
+    outputs:
+      - copy_draft_1
+      - framework_used
+      - rationale
+
+  - id: master-2-consultation
+    name: "Secondary Master Consultation"
+    agent: "{{steps.select-masters.outputs.selected_masters[1]}}"
+    condition: "length(selected_masters) >= 2"
+    action: review-and-enhance
+    inputs:
+      draft: "{{steps.master-1-consultation.outputs.copy_draft_1}}"
+      brief: "{{steps.select-masters.outputs.assignment_brief}}"
+    outputs:
+      - copy_draft_2
+      - enhancements
+      - perspective
+
+  - id: synthesize
+    name: "Synthesize Final Copy"
+    agent: copy-chief
+    action: synthesize
+    inputs:
+      drafts:
+        - "{{steps.master-1-consultation.outputs}}"
+        - "{{steps.master-2-consultation.outputs}}"
+    outputs:
+      - final_copy
+      - combined_frameworks
+      - implementation_notes
+
+  - id: quality-check
+    name: "Quality Check"
+    agent: copy-chief
+    checklist: "checklists/copy-quality-masters.md"
+    inputs:
+      copy: "{{steps.synthesize.outputs.final_copy}}"
+
+output:
+  format: markdown
+  sections:
+    - routing_analysis
+    - masters_consulted
+    - final_copy
+    - frameworks_applied
+    - implementation_notes
+
+success_criteria:
+  - "Copy alinhado com estilo do(s) mestre(s)"
+  - "Frameworks claramente aplicados"
+  - "Qualidade aprovada pelo Copy Chief"
+  - "Notas de implementação incluídas"

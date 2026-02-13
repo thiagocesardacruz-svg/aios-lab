@@ -1,0 +1,1174 @@
+# ═══════════════════════════════════════════════════════════════════════════════
+# WORKFLOW: PAID ADS SCALE - GOATed Ads Assembly for Hotel Marketing
+# ═══════════════════════════════════════════════════════════════════════════════
+#
+# Purpose: Scale hotel paid advertising from 5 variations to 150+ using systematic
+#          hook/meat/CTA combination methodology inspired by Hormozi's volume approach
+#
+# Target: AB class travelers in Brazil (premium independent hotels)
+# Duration: 1-2 weeks per campaign cycle
+# Squad: hotel-mkt
+# DNA: Hormozi (volume + speed) + Conley (emotional resonance) + Schrager (category design)
+#
+# ═══════════════════════════════════════════════════════════════════════════════
+
+name: wf-paid-ads-scale
+version: 1.0.0
+squad: hotel-mkt
+category: marketing-campaigns
+
+metadata:
+  description: "Scale hotel ads from 5 to 150+ variations using GOATed Ads Assembly methodology"
+  author: "hotel-mkt-squad"
+  created: "2026-02-10"
+  target_audience: "AB class travelers, Brazil, 25-55 years"
+  channels: ["Meta", "Google", "Bing", "TikTok"]
+  expected_duration: "1-2 weeks per cycle"
+
+objectives:
+  primary: "Generate 150-750 ad variations per campaign cycle"
+  secondary:
+    - "Achieve ROAS > 3:1 on winning ad sets"
+    - "Test 50+ unique hooks per cycle"
+    - "Maintain 70-20-10 budget distribution (scale-test-experiment)"
+    - "Weekly kill/scale optimization cycles"
+
+kpis:
+  - name: "Total Ad Variations"
+    target: "150+"
+    measurement: "Count of unique hook+meat+CTA combinations"
+  - name: "ROAS"
+    target: "3:1 or higher"
+    measurement: "Revenue / Ad Spend"
+  - name: "CTR"
+    target: ">1.5%"
+    measurement: "Clicks / Impressions"
+  - name: "CPA"
+    target: "<R$800"
+    measurement: "Ad Spend / Conversions"
+  - name: "Weekly Hook Test Volume"
+    target: "10+ new hooks"
+    measurement: "New hooks deployed per week"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# PHASE 1: HOOK GENERATION
+# ═══════════════════════════════════════════════════════════════════════════════
+
+phases:
+  - phase: 1
+    name: "Hook Generation"
+    duration: "2-3 days"
+    description: "Create 50+ hook variations targeting different pain points, desires, and awareness levels"
+
+    agents:
+      - name: "hotel-copywriter"
+        role: "lead"
+        responsibility: "Generate 50+ hook variations across all awareness levels"
+      - name: "hotel-trend-hunter"
+        role: "support"
+        responsibility: "Provide trending topics and cultural moments for timely hooks"
+
+    inputs:
+      - "Target audience research (demographics, psychographics)"
+      - "Hotel unique value propositions"
+      - "Competitor ad analysis"
+      - "Previous campaign performance data"
+      - "Current travel trends and cultural moments"
+
+    tasks:
+      - id: "1.1"
+        name: "Awareness Level Segmentation"
+        owner: "hotel-copywriter"
+        description: "Segment target audience by awareness level (Unaware, Problem Aware, Solution Aware, Product Aware, Most Aware)"
+        outputs:
+          - "Audience awareness map"
+          - "Pain points and desires per level"
+
+      - id: "1.2"
+        name: "Hook Categories Definition"
+        owner: "hotel-copywriter"
+        description: "Define 8-10 hook categories based on emotional triggers and value propositions"
+        categories:
+          - "Problem/Pain hooks (expose problem)"
+          - "Desire/Dream hooks (paint the dream)"
+          - "Curiosity hooks (pattern interrupt)"
+          - "Social proof hooks (testimonial snippets)"
+          - "Urgency/Scarcity hooks (FOMO triggers)"
+          - "Authority/Credibility hooks (awards, recognition)"
+          - "Contrarian hooks (challenge beliefs)"
+          - "Story hooks (narrative opening)"
+          - "Question hooks (engage curiosity)"
+          - "Trend jacking hooks (cultural moments)"
+        outputs:
+          - "Hook category framework"
+
+      - id: "1.3"
+        name: "Mass Hook Generation"
+        owner: "hotel-copywriter"
+        description: "Generate 50+ hooks (5-7 per category, multiple formats per category)"
+        guidelines:
+          - "First 3 seconds must stop the scroll"
+          - "Brazilian Portuguese with cultural nuance"
+          - "Test both formal and informal tone"
+          - "Include emoji variations and plain text versions"
+          - "Character limit: 125 characters for Meta, 90 for TikTok"
+        outputs:
+          - "Hook bank (50+ variations in spreadsheet)"
+          - "Hook performance hypothesis (predicted best performers)"
+
+      - id: "1.4"
+        name: "Hook Validation"
+        owner: "hotel-copywriter"
+        description: "Internal review and A/B test prediction"
+        criteria:
+          - "Clarity score (1-10)"
+          - "Emotional impact score (1-10)"
+          - "Relevance to target audience (1-10)"
+          - "Differentiation from competitors (1-10)"
+        outputs:
+          - "Validated hook bank with scores"
+          - "Top 20 priority hooks for Phase 3"
+
+    outputs:
+      - "Hook bank: 50+ validated variations"
+      - "Hook performance tracking sheet"
+      - "Awareness level mapping"
+
+    checkpoints:
+      - name: "Hook Volume Check"
+        criteria: "Minimum 50 unique hooks generated"
+        approval_required: true
+        approver: "hotel-mkt-director"
+
+      - name: "Hook Quality Check"
+        criteria: "All hooks score 7+ on clarity and emotional impact"
+        approval_required: true
+        approver: "hotel-copywriter"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# PHASE 2: MEAT CREATION
+# ═══════════════════════════════════════════════════════════════════════════════
+
+  - phase: 2
+    name: "Meat Creation"
+    duration: "3-5 days"
+    description: "Create 3-5 meat formats (body content) that can combine with all hooks"
+
+    agents:
+      - name: "hotel-social-creator"
+        role: "lead"
+        responsibility: "Create video/image assets for meat content"
+      - name: "hotel-copywriter"
+        role: "lead"
+        responsibility: "Write body copy for each meat format"
+      - name: "hotel-ugc-curator"
+        role: "support"
+        responsibility: "Source UGC content for testimonial meat"
+
+    inputs:
+      - "Hook bank from Phase 1"
+      - "Hotel visual assets (photos, videos)"
+      - "Guest testimonials and reviews"
+      - "Property features and amenities list"
+      - "Brand guidelines and tone of voice"
+
+    tasks:
+      - id: "2.1"
+        name: "Meat Format Selection"
+        owner: "hotel-social-creator"
+        description: "Select 3-5 meat formats based on hotel strengths and available assets"
+        format_options:
+          - name: "Testimonial/Social Proof"
+            description: "Guest reviews, before/after experience, UGC compilation"
+            duration: "15-30 seconds"
+            assets_needed: "Guest photos, review text, rating graphics"
+
+          - name: "Demo/Property Tour"
+            description: "Room walk-through, amenity showcase, virtual tour"
+            duration: "20-40 seconds"
+            assets_needed: "High-quality property footage, transitions"
+
+          - name: "Educational/Value"
+            description: "Travel tips, local guides, hidden gems, packing hacks"
+            duration: "30-45 seconds"
+            assets_needed: "B-roll of location, infographic overlays"
+
+          - name: "Story/Narrative"
+            description: "Guest journey, staff story, hotel history, founder story"
+            duration: "30-60 seconds"
+            assets_needed: "Narrative footage, person-focused shots"
+
+          - name: "Faceless/Ambient"
+            description: "B-roll aesthetic, ASMR-style, ambient experience"
+            duration: "15-30 seconds"
+            assets_needed: "Cinematic B-roll, ambient audio"
+        outputs:
+          - "Selected 3-5 meat formats with rationale"
+
+      - id: "2.2"
+        name: "Video/Image Asset Production"
+        owner: "hotel-social-creator"
+        description: "Create or compile visual assets for each meat format"
+        specifications:
+          aspect_ratios: ["9:16 (Stories/Reels)", "1:1 (Feed)", "16:9 (YouTube)"]
+          formats: ["MP4 (video)", "JPG/PNG (static)"]
+          duration_limits:
+            - "Meta: 15-60 seconds"
+            - "TikTok: 15-45 seconds"
+            - "Google Display: Static images"
+          quality: "1080p minimum, 4K preferred"
+        outputs:
+          - "3-5 meat format video/image sets"
+          - "Raw footage library for future variations"
+
+      - id: "2.3"
+        name: "Body Copy Creation"
+        owner: "hotel-copywriter"
+        description: "Write body copy for each meat format that works with any hook"
+        guidelines:
+          - "Body copy must be modular (works with any hook)"
+          - "150-300 characters per meat"
+          - "Focus on value proposition and emotional benefit"
+          - "Include subtle pain/desire reinforcement"
+          - "Transition smoothly to CTA"
+        outputs:
+          - "Body copy for each meat format (3-5 versions)"
+          - "Copy performance hypothesis"
+
+      - id: "2.4"
+        name: "UGC Integration"
+        owner: "hotel-ugc-curator"
+        description: "Source and clear rights for user-generated content"
+        sources:
+          - "Instagram mentions and tags"
+          - "Google reviews with photos"
+          - "Direct guest submissions"
+          - "TripAdvisor photos"
+        outputs:
+          - "UGC asset library (cleared for use)"
+          - "Guest permission documentation"
+
+    outputs:
+      - "3-5 complete meat formats (video + copy)"
+      - "Asset library for future iterations"
+      - "UGC clearance documentation"
+
+    checkpoints:
+      - name: "Meat Format Approval"
+        criteria: "3-5 meat formats produced at high quality"
+        approval_required: true
+        approver: "hotel-mkt-director"
+
+      - name: "Asset Quality Check"
+        criteria: "All assets meet technical specifications (resolution, duration, format)"
+        approval_required: true
+        approver: "hotel-social-creator"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# PHASE 3: ADS ASSEMBLY
+# ═══════════════════════════════════════════════════════════════════════════════
+
+  - phase: 3
+    name: "Ads Assembly"
+    duration: "2-3 days"
+    description: "Systematically combine hooks + meats + CTAs to create 150-750 ad variations"
+
+    agents:
+      - name: "hotel-ads-specialist"
+        role: "lead"
+        responsibility: "Assemble and organize all ad variations"
+      - name: "hotel-copywriter"
+        role: "support"
+        responsibility: "Create CTA variations"
+
+    inputs:
+      - "Hook bank (50+ from Phase 1)"
+      - "Meat formats (3-5 from Phase 2)"
+      - "Brand CTAs and conversion goals"
+
+    tasks:
+      - id: "3.1"
+        name: "CTA Creation"
+        owner: "hotel-copywriter"
+        description: "Create 1-3 CTA variations optimized for different conversion goals"
+        cta_types:
+          - name: "Direct Booking CTA"
+            examples: ["Reserve agora", "Garanta sua estadia", "Veja disponibilidade"]
+            goal: "Direct website booking"
+
+          - name: "Soft Engagement CTA"
+            examples: ["Saiba mais", "Conheça o hotel", "Descubra mais"]
+            goal: "Website visit, engagement"
+
+          - name: "Lead Magnet CTA"
+            examples: ["Baixe o guia", "Receba ofertas exclusivas"]
+            goal: "Email capture, remarketing"
+        outputs:
+          - "1-3 CTA variations with rationale"
+
+      - id: "3.2"
+        name: "Combinatorial Assembly"
+        owner: "hotel-ads-specialist"
+        description: "Systematically combine hooks × meats × CTAs"
+        formula: "Total Variations = (# Hooks) × (# Meats) × (# CTAs)"
+        examples:
+          - "50 hooks × 3 meats × 1 CTA = 150 variations"
+          - "50 hooks × 5 meats × 3 CTAs = 750 variations"
+        process:
+          - "Create master tracking spreadsheet"
+          - "Generate all possible combinations"
+          - "Tag each ad with: hook_id, meat_id, cta_id, awareness_level, platform"
+          - "Assign unique ad_id to each variation"
+        outputs:
+          - "Master ad variation spreadsheet (150-750 rows)"
+          - "Ad naming convention guide"
+
+      - id: "3.3"
+        name: "Platform Optimization"
+        owner: "hotel-ads-specialist"
+        description: "Adapt variations for each platform's specifications"
+        platforms:
+          - name: "Meta (Facebook/Instagram)"
+            formats: ["Feed", "Stories", "Reels"]
+            specs:
+              video: "9:16 or 1:1, 15-60s, MP4"
+              text: "125 characters primary, 30 characters headline"
+              cta_button: "Book Now, Learn More, Sign Up"
+
+          - name: "Google (Display/YouTube)"
+            formats: ["Responsive Display", "YouTube In-Stream", "Discovery"]
+            specs:
+              video: "16:9 or 9:16, 15-30s, MP4"
+              text: "90 characters headline, 90 characters description"
+              cta_button: "Book Now, Get Offer"
+
+          - name: "TikTok"
+            formats: ["In-Feed Ads", "TopView"]
+            specs:
+              video: "9:16, 9-15s optimal, MP4"
+              text: "100 characters"
+              cta_button: "Book Now, Learn More"
+
+          - name: "Bing"
+            formats: ["Responsive Ads", "Image Extensions"]
+            specs:
+              text: "30 characters headline, 90 characters description"
+              images: "1200x628 recommended"
+        outputs:
+          - "Platform-optimized ad sets"
+          - "Asset resizing and reformatting"
+
+      - id: "3.4"
+        name: "Awareness Level Tagging"
+        owner: "hotel-ads-specialist"
+        description: "Tag each ad variation with target awareness level for proper audience targeting"
+        awareness_mapping:
+          - level: "Unaware"
+            hooks: "Curiosity, story, trend jacking"
+            targeting: "Broad interest targeting, lookalike audiences"
+
+          - level: "Problem Aware"
+            hooks: "Problem/pain, contrarian"
+            targeting: "Interest + behavior targeting"
+
+          - level: "Solution Aware"
+            hooks: "Desire/dream, authority"
+            targeting: "Travel intent, competitor audiences"
+
+          - level: "Product Aware"
+            hooks: "Social proof, comparison"
+            targeting: "Website visitors, engaged audiences"
+
+          - level: "Most Aware"
+            hooks: "Urgency/scarcity, direct offer"
+            targeting: "Cart abandoners, past guests, email list"
+        outputs:
+          - "Awareness level tags in master spreadsheet"
+          - "Targeting strategy per awareness level"
+
+    outputs:
+      - "150-750 ad variations ready for deployment"
+      - "Master ad tracking spreadsheet with IDs and tags"
+      - "Platform-specific asset packages"
+
+    checkpoints:
+      - name: "Assembly Volume Check"
+        criteria: "Minimum 150 unique ad variations assembled"
+        approval_required: true
+        approver: "hotel-ads-specialist"
+
+      - name: "Platform Compliance Check"
+        criteria: "All ads meet platform technical specifications"
+        approval_required: true
+        approver: "hotel-ads-specialist"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# PHASE 4: PLATFORM DEPLOYMENT
+# ═══════════════════════════════════════════════════════════════════════════════
+
+  - phase: 4
+    name: "Platform Deployment"
+    duration: "2-3 days"
+    description: "Deploy ad variations across platforms with proper campaign structure and targeting"
+
+    agents:
+      - name: "hotel-ads-specialist"
+        role: "lead"
+        responsibility: "Set up campaigns across all platforms"
+      - name: "hotel-direct-booking"
+        role: "support"
+        responsibility: "Configure conversion tracking and attribution"
+
+    inputs:
+      - "150-750 ad variations from Phase 3"
+      - "Campaign budget allocation"
+      - "Target ROAS and CPA goals"
+      - "Audience segments and targeting parameters"
+
+    tasks:
+      - id: "4.1"
+        name: "Campaign Structure Setup"
+        owner: "hotel-ads-specialist"
+        description: "Create campaign hierarchy based on awareness levels"
+        structure:
+          campaign_level: "Awareness Stage (5 campaigns: Unaware, Problem Aware, Solution Aware, Product Aware, Most Aware)"
+          ad_set_level: "Hook Category + Meat Format"
+          ad_level: "Individual hook+meat+CTA combinations"
+        budget_strategy:
+          - "70% to proven winners (Product Aware, Most Aware)"
+          - "20% to testing (Solution Aware, Problem Aware)"
+          - "10% to experiments (Unaware, new formats)"
+        outputs:
+          - "Campaign structure document"
+          - "Budget allocation plan"
+
+      - id: "4.2"
+        name: "Meta Ads Deployment"
+        owner: "hotel-ads-specialist"
+        description: "Deploy ads on Facebook and Instagram"
+        setup:
+          campaigns: "5 (one per awareness level)"
+          ad_sets: "15-25 (hook categories × meat formats)"
+          ads: "150-750 (all variations)"
+          objective: "Conversions (website bookings)"
+          optimization: "Conversion value (ROAS)"
+          targeting:
+            - "Core Audiences: Demographics, interests, behaviors"
+            - "Custom Audiences: Website visitors, email list, past guests"
+            - "Lookalike Audiences: 1%-3% of past bookers"
+          budget: "Campaign Budget Optimization (CBO)"
+          bidding: "Lowest cost with bid cap"
+        outputs:
+          - "Meta campaigns live"
+          - "Campaign IDs and URLs"
+
+      - id: "4.3"
+        name: "Google Ads Deployment"
+        owner: "hotel-ads-specialist"
+        description: "Deploy ads on Google Display, YouTube, Discovery"
+        setup:
+          campaigns: "3 (Display, YouTube, Discovery)"
+          ad_groups: "10-15 (by awareness level and format)"
+          ads: "50-200 (subset of variations optimized for Google)"
+          objective: "Conversions"
+          optimization: "Target ROAS"
+          targeting:
+            - "In-Market Audiences: Travel planning, hotel bookers"
+            - "Affinity Audiences: Frequent travelers, luxury travelers"
+            - "Custom Intent: Keywords, URLs of travel research"
+            - "Remarketing: Website visitors, video viewers"
+          budget: "Daily budget per campaign"
+          bidding: "Target ROAS or Maximize conversions"
+        outputs:
+          - "Google campaigns live"
+          - "Campaign IDs and URLs"
+
+      - id: "4.4"
+        name: "TikTok Ads Deployment"
+        owner: "hotel-ads-specialist"
+        description: "Deploy ads on TikTok (if applicable)"
+        setup:
+          campaigns: "2 (Awareness, Conversions)"
+          ad_groups: "5-10 (by audience and creative type)"
+          ads: "30-50 (TikTok-optimized variations)"
+          objective: "Website Conversions"
+          targeting:
+            - "Interest Targeting: Travel, hotels, tourism"
+            - "Custom Audiences: Website visitors, video engagement"
+            - "Lookalike Audiences: Past converters"
+          budget: "Campaign budget optimization"
+          bidding: "Lowest cost"
+        outputs:
+          - "TikTok campaigns live (if applicable)"
+          - "Campaign IDs and URLs"
+
+      - id: "4.5"
+        name: "Conversion Tracking Setup"
+        owner: "hotel-direct-booking"
+        description: "Ensure proper conversion tracking and attribution"
+        tracking_setup:
+          - "Meta Pixel events: ViewContent, InitiateCheckout, Purchase"
+          - "Google Analytics 4: Conversions, revenue tracking"
+          - "Google Ads conversion tracking"
+          - "TikTok Pixel: ViewContent, CompletePayment"
+          - "UTM parameters for all ads (source, medium, campaign, content)"
+        validation:
+          - "Test conversions firing correctly"
+          - "Verify revenue attribution"
+          - "Check cross-platform attribution"
+        outputs:
+          - "Conversion tracking validation report"
+          - "Attribution dashboard setup"
+
+    outputs:
+      - "Live campaigns across all platforms"
+      - "Campaign dashboard with IDs and tracking links"
+      - "Conversion tracking validated and operational"
+
+    checkpoints:
+      - name: "Deployment Completion Check"
+        criteria: "All campaigns live and spending within 24 hours"
+        approval_required: true
+        approver: "hotel-ads-specialist"
+
+      - name: "Tracking Validation Check"
+        criteria: "Conversions tracking correctly across all platforms"
+        approval_required: true
+        approver: "hotel-direct-booking"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# PHASE 5: KILL/SCALE OPTIMIZATION
+# ═══════════════════════════════════════════════════════════════════════════════
+
+  - phase: 5
+    name: "Kill/Scale Optimization"
+    duration: "Ongoing (weekly cycles)"
+    description: "Monitor performance, kill underperformers, scale winners by 20% weekly"
+
+    agents:
+      - name: "hotel-ads-specialist"
+        role: "lead"
+        responsibility: "Execute kill/scale decisions based on data"
+      - name: "hotel-direct-booking"
+        role: "support"
+        responsibility: "Provide booking and revenue data"
+      - name: "hotel-copywriter"
+        role: "support"
+        responsibility: "Generate new hook variations for weekly testing"
+
+    inputs:
+      - "Live campaign performance data"
+      - "ROAS, CPA, CTR, conversion metrics"
+      - "Budget utilization reports"
+
+    tasks:
+      - id: "5.1"
+        name: "Daily Performance Monitoring"
+        owner: "hotel-ads-specialist"
+        description: "Monitor key metrics across all campaigns daily"
+        metrics_to_track:
+          - "Spend vs. budget"
+          - "Impressions and reach"
+          - "CTR (Click-Through Rate)"
+          - "CPC (Cost Per Click)"
+          - "CPA (Cost Per Acquisition)"
+          - "ROAS (Return on Ad Spend)"
+          - "Conversion rate"
+          - "Revenue attributed"
+        tools:
+          - "Meta Ads Manager"
+          - "Google Ads dashboard"
+          - "TikTok Ads Manager"
+          - "Cortex Dashboard (centralized view)"
+        outputs:
+          - "Daily performance snapshot"
+          - "Alert list for underperformers"
+
+      - id: "5.2"
+        name: "Kill Decision Execution"
+        owner: "hotel-ads-specialist"
+        description: "Pause or kill underperforming ads/ad sets based on decision matrix"
+        decision_matrix:
+          kill_criteria:
+            - condition: "CPA > target CPA (R$800) after 3x daily budget spent"
+              action: "Pause ad immediately"
+
+            - condition: "CTR < 1% after 48 hours"
+              action: "Pause ad, analyze hook"
+
+            - condition: "No conversions after 48 hours AND spend > R$500"
+              action: "Pause ad immediately"
+
+            - condition: "ROAS < 1:1 after spending 2x daily budget"
+              action: "Pause ad set, review targeting"
+
+            - condition: "Frequency > 3 with declining CTR"
+              action: "Pause ad, creative fatigue"
+        process:
+          - "Run automated kill checks twice daily (morning, evening)"
+          - "Document kill reasons in master spreadsheet"
+          - "Redistribute killed ad budget to winners"
+        outputs:
+          - "Kill log (ad_id, reason, date, budget redistributed)"
+          - "Updated master ad spreadsheet"
+
+      - id: "5.3"
+        name: "Scale Decision Execution"
+        owner: "hotel-ads-specialist"
+        description: "Scale winning ads by 20% increments weekly"
+        decision_matrix:
+          scale_criteria:
+            - condition: "ROAS > 3:1 sustained for 72+ hours"
+              action: "Increase budget by 20%"
+
+            - condition: "CPA < target CPA (R$800) AND conversion volume stable"
+              action: "Increase budget by 20%"
+
+            - condition: "CTR > 2% with strong conversion rate"
+              action: "Increase budget by 20%, consider duplicating with new audiences"
+
+            - condition: "Ad set spending <50% of daily budget but performing well"
+              action: "Increase budget by 30-50%"
+        process:
+          - "Review scale candidates every Monday"
+          - "Scale in 20% increments (never double overnight)"
+          - "Monitor for 48 hours post-scale to ensure performance maintains"
+          - "Max scale: 100% increase per week per ad set"
+        outputs:
+          - "Scale log (ad_id, previous budget, new budget, date, performance)"
+          - "Updated budget allocation"
+
+      - id: "5.4"
+        name: "Weekly Hook Rotation"
+        owner: "hotel-copywriter"
+        description: "Inject 10+ new hooks weekly to maintain freshness and test new angles"
+        process:
+          - "Generate 10-15 new hooks based on weekly trends/performance insights"
+          - "Select 2-3 top-performing meat formats"
+          - "Create 20-45 new ad variations (new hooks × proven meats)"
+          - "Deploy in 'Test' budget tier (10% of total)"
+          - "Retire fatigued hooks (frequency >3, declining performance)"
+        outputs:
+          - "Weekly new hook batch"
+          - "30-45 new ad variations deployed"
+          - "Hook retirement list"
+
+      - id: "5.5"
+        name: "70-20-10 Budget Rebalancing"
+        owner: "hotel-ads-specialist"
+        description: "Maintain budget distribution across scale-test-experiment tiers"
+        distribution:
+          - tier: "Scale (70%)"
+            description: "Proven winners with ROAS >3:1"
+            ad_sets: "Product Aware, Most Aware campaigns"
+            goal: "Maximize revenue with known performers"
+
+          - tier: "Test (20%)"
+            description: "Promising candidates being validated"
+            ad_sets: "Solution Aware, new hook variations"
+            goal: "Find new winners to promote to Scale tier"
+
+          - tier: "Experiment (10%)"
+            description: "High-risk, high-reward tests"
+            ad_sets: "Unaware, new formats, contrarian angles"
+            goal: "Discover breakthrough creative or audiences"
+        rebalancing_frequency: "Weekly"
+        outputs:
+          - "Weekly budget reallocation report"
+          - "Tier movement log (ads promoted/demoted)"
+
+      - id: "5.6"
+        name: "Weekly Performance Report"
+        owner: "hotel-ads-specialist"
+        description: "Comprehensive weekly report for stakeholders"
+        report_sections:
+          - "Campaign performance summary (spend, revenue, ROAS)"
+          - "Top 10 winning ads (by ROAS and revenue)"
+          - "Kill log (ads paused and why)"
+          - "Scale log (ads scaled and results)"
+          - "New variations tested"
+          - "Insights and recommendations"
+          - "Next week's focus areas"
+        outputs:
+          - "Weekly performance report (PDF/dashboard)"
+          - "Stakeholder presentation"
+
+    outputs:
+      - "Optimized campaign performance (weekly improvement)"
+      - "Kill and scale logs"
+      - "Weekly performance reports"
+      - "Continuous new variation pipeline"
+
+    checkpoints:
+      - name: "Weekly Optimization Review"
+        criteria: "Kill/scale decisions executed, 70-20-10 distribution maintained"
+        approval_required: true
+        approver: "hotel-mkt-director"
+        frequency: "Weekly"
+
+      - name: "Monthly ROAS Target Check"
+        criteria: "Overall campaign ROAS meets or exceeds 3:1 target"
+        approval_required: true
+        approver: "hotel-mkt-director"
+        frequency: "Monthly"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# WORKFLOW OUTPUTS & SUCCESS METRICS
+# ═══════════════════════════════════════════════════════════════════════════════
+
+final_outputs:
+  - "150-750 ad variations deployed and optimized"
+  - "Sustained ROAS >3:1 on winning ad sets"
+  - "Weekly optimization cycles (kill/scale) operational"
+  - "Continuous testing pipeline (10+ new hooks weekly)"
+  - "Performance dashboard with real-time insights"
+
+success_metrics:
+  - metric: "Ad Variation Volume"
+    target: "150+ variations per cycle"
+    actual: "[To be measured]"
+
+  - metric: "Campaign ROAS"
+    target: "3:1 or higher"
+    actual: "[To be measured]"
+
+  - metric: "Top Performer Identification"
+    target: "10+ ads with ROAS >4:1"
+    actual: "[To be measured]"
+
+  - metric: "Weekly Hook Test Volume"
+    target: "10+ new hooks tested weekly"
+    actual: "[To be measured]"
+
+  - metric: "Budget Efficiency"
+    target: "70% of budget on proven winners"
+    actual: "[To be measured]"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# RISKS & MITIGATION
+# ═══════════════════════════════════════════════════════════════════════════════
+
+risks:
+  - risk: "Creative fatigue on winning ads"
+    impact: "High"
+    mitigation: "Weekly hook rotation, retire ads with frequency >3"
+
+  - risk: "Budget overspend on underperformers"
+    impact: "Medium"
+    mitigation: "Automated kill checks twice daily, strict decision matrix"
+
+  - risk: "Platform policy violations (ads rejected)"
+    impact: "Medium"
+    mitigation: "Pre-review all ads for compliance, avoid restricted claims"
+
+  - risk: "Attribution challenges (multi-touch)"
+    impact: "Medium"
+    mitigation: "Use platform-specific tracking + GA4 for cross-platform view"
+
+  - risk: "Scaling too fast degrades performance"
+    impact: "Medium"
+    mitigation: "20% increment rule, 48-hour monitoring post-scale"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# NOTES & BEST PRACTICES
+# ═══════════════════════════════════════════════════════════════════════════════
+
+notes:
+  - "Hormozi principle: Volume beats perfection. Test fast, iterate faster."
+  - "Conley principle: Emotional resonance in hooks. Speak to dreams and fears."
+  - "Schrager principle: Category design. Position hotel as unique category, not commodity."
+  - "Never let winning ads run until death. Retire at frequency >3 or declining CTR."
+  - "Always have 10+ new hook variations in testing pipeline."
+  - "70-20-10 is sacred. Don't over-allocate to experiments or under-invest in winners."
+  - "Platform-specific optimization matters. TikTok ≠ Meta ≠ Google."
+  - "Attribution is imperfect. Use directional data, not absolute truth."
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# END OF WORKFLOW
+# ═══════════════════════════════════════════════════════════════════════════════
+
+# ════════════════════════════════════════════════════════════════
+# 🔒 ENFORCEMENT ENGINE
+# Inspirado em: Cooper's Stage-Gate (P&G) + Salesforce Pipeline + Toyota Andon
+# ════════════════════════════════════════════════════════════════
+
+enforcement_engine:
+  version: "1.0.0"
+  protocol: "stage-gate"
+
+  state_machine:
+    initial_state: "phase-1-hooks"
+    terminal_states: ["completed", "killed"]
+
+    transitions:
+      - from: "phase-1-hooks"
+        to: "phase-2-meat"
+        gate: "G1"
+        trigger: "auto_on_gate_pass"
+
+      - from: "phase-2-meat"
+        to: "phase-3-assembly"
+        gate: "G2"
+        trigger: "auto_on_gate_pass"
+
+      - from: "phase-3-assembly"
+        to: "phase-4-deploy"
+        gate: "G3"
+        trigger: "auto_on_gate_pass"
+
+      - from: "phase-4-deploy"
+        to: "phase-5-optimize"
+        gate: "G4"
+        trigger: "auto_on_gate_pass"
+
+      - from: "phase-5-optimize"
+        to: "completed"
+        gate: null
+        trigger: "manual"
+
+    invalid_transitions:
+      - from: "phase-1-hooks"
+        to: "phase-3-assembly"
+        reason: "Não pode pular para Assembly sem completar Meat Creation (necessita meats para combinar com hooks)"
+
+      - from: "phase-2-meat"
+        to: "phase-4-deploy"
+        reason: "Não pode deployar sem Assembly (150+ variações precisam ser criadas primeiro)"
+
+      - from: "phase-3-assembly"
+        to: "phase-5-optimize"
+        reason: "Não pode otimizar sem Deploy (ads precisam estar rodando para gerar dados)"
+
+  gates:
+    G1:
+      name: "Gate 1: Hook Volume & Quality"
+      between: ["phase-1-hooks", "phase-2-meat"]
+      gatekeeper: "hotel-mkt-director"
+      sla: "48h"
+
+      must_meet:
+        - id: "G1-M1"
+          criterion: "Mínimo de 50 variações de hooks escritas e documentadas em spreadsheet"
+          validation: "Contar linhas no hook bank spreadsheet (excluindo header)"
+          on_fail: "BLOCK - retornar para Phase 1 com prazo de 2 dias para completar volume"
+
+        - id: "G1-M2"
+          criterion: "Hooks cobrem os 5 níveis de awareness (Unaware, Problem Aware, Solution Aware, Product Aware, Most Aware)"
+          validation: "Cada nível tem no mínimo 8 hooks (40 total mínimo); revisar coluna 'awareness_level' no spreadsheet"
+          on_fail: "BLOCK - identificar níveis faltantes e criar 8+ hooks para cada"
+
+        - id: "G1-M3"
+          criterion: "Pares A/B testáveis identificados (mínimo 10 pares para teste head-to-head)"
+          validation: "Coluna 'ab_pair_id' preenchida para no mínimo 20 hooks (10 pares)"
+          on_fail: "BLOCK - copywriter deve marcar pares de hooks similares para teste A/B"
+
+      should_meet:
+        - id: "G1-S1"
+          criterion: "Todos os hooks pontuam 7+ em Clarity Score (1-10)"
+          weight: 1.0
+          min_score: 7
+          scoring: "Média de clarity_score no hook bank >= 7.0"
+
+        - id: "G1-S2"
+          criterion: "Todos os hooks pontuam 7+ em Emotional Impact Score (1-10)"
+          weight: 1.0
+          min_score: 7
+          scoring: "Média de emotional_impact_score no hook bank >= 7.0"
+
+      kill_criteria:
+        - id: "G1-K1"
+          criterion: "Se menos de 20 hooks produzidos após 5 dias de trabalho"
+          action: "KILL workflow + notificar hotel-mkt-chief - volume insuficiente para GOATed framework (150+ variações impossível)"
+
+        - id: "G1-K2"
+          criterion: "Se mais de 30% dos hooks são genéricos/copiados de concorrentes (flagged como 'low_differentiation')"
+          action: "KILL + RECYCLE - hooks não diferenciam hotel, refazer com foco em USPs únicos"
+
+      decision_options: ["GO", "KILL", "HOLD", "RECYCLE"]
+
+    G2:
+      name: "Gate 2: Meat Formats & Asset Quality"
+      between: ["phase-2-meat", "phase-3-assembly"]
+      gatekeeper: "hotel-mkt-director"
+      sla: "48h"
+
+      must_meet:
+        - id: "G2-M1"
+          criterion: "Mínimo de 3 formatos de meat criados (vídeo ou imagem + copy)"
+          validation: "Verificar pasta de assets - 3+ subpastas (testimonial, demo, story, etc.) com assets finalizados"
+          on_fail: "BLOCK - social-creator deve produzir formatos faltantes"
+
+        - id: "G2-M2"
+          criterion: "Cada meat pareado com no mínimo 5 hooks diferentes no spreadsheet de planejamento"
+          validation: "Planilha 'hook-meat-matrix' deve ter 15+ linhas (3 meats × 5 hooks mínimo)"
+          on_fail: "BLOCK - copywriter e ads-specialist devem revisar combinações e garantir modularidade"
+
+        - id: "G2-M3"
+          criterion: "Assets atendem specs técnicos (1080p+, 15-60s para vídeo, formatos Meta/Google/TikTok)"
+          validation: "Checar metadados de arquivos: resolution >= 1080p, duration 15-60s, formato MP4 ou JPG/PNG"
+          on_fail: "BLOCK - re-render ou redimensionar assets fora de spec"
+
+      should_meet:
+        - id: "G2-S1"
+          criterion: "UGC content integrado em pelo menos 1 meat format (aumenta autenticidade)"
+          weight: 0.8
+          min_score: 7
+          scoring: "Se UGC usado: 10 pontos; se não: 5 pontos (desejável mas não obrigatório)"
+
+      kill_criteria:
+        - id: "G2-K1"
+          criterion: "Se meat copy não endereça objeções identificadas na pesquisa de audiência"
+          action: "KILL + RECYCLE - meat não conecta com pain points, refazer copy com foco em objeções reais"
+
+        - id: "G2-K2"
+          criterion: "Se assets visuais são stock genérico sem identidade do hotel (>70% stock photos)"
+          action: "HOLD - exigir reshoot com assets reais do hotel ou UGC antes de prosseguir"
+
+      decision_options: ["GO", "KILL", "HOLD", "RECYCLE"]
+
+    G3:
+      name: "Gate 3: Assembly Volume & Tracking Setup"
+      between: ["phase-3-assembly", "phase-4-deploy"]
+      gatekeeper: "hotel-ads-specialist"
+      sla: "24h"
+
+      must_meet:
+        - id: "G3-M1"
+          criterion: "Mínimo de 150 variações de ads montadas (50 hooks × 3 meats × 1 CTA)"
+          validation: "Contar linhas no master ad variation spreadsheet (excluindo header) >= 150"
+          on_fail: "BLOCK - ads-specialist deve completar combinações faltantes"
+
+        - id: "G3-M2"
+          criterion: "Landing pages prontas com tracking pixel instalado e testado"
+          validation: "Testar conversão de teste em cada landing page - pixel deve disparar evento 'ViewContent' no Meta Events Manager"
+          on_fail: "BLOCK - direct-booking deve instalar/corrigir pixel antes de gastar budget"
+
+        - id: "G3-M3"
+          criterion: "Budget split 70-20-10 definido em planilha (Scale-Test-Experiment)"
+          validation: "Planilha 'budget-allocation' deve somar 100% com tiers: 70% Scale, 20% Test, 10% Experiment"
+          on_fail: "BLOCK - ads-specialist deve rebalancear budget segundo framework Hormozi"
+
+      should_meet:
+        - id: "G3-S1"
+          criterion: "Cada ad tem ID único e tags estruturados (hook_id, meat_id, cta_id, awareness_level, platform)"
+          weight: 1.0
+          min_score: 8
+          scoring: "Verificar % de ads com todos os 5 campos preenchidos; target >= 95%"
+
+      kill_criteria:
+        - id: "G3-K1"
+          criterion: "Se tracking pixel não dispara em nenhuma landing page após 3 tentativas de correção"
+          action: "KILL deployment + escalar para tech lead - sem tracking = budget queimado sem dados"
+
+        - id: "G3-K2"
+          criterion: "Se menos de 100 variações montadas (insuficiente para volume Hormozi)"
+          action: "RECYCLE para Phase 1 - gerar mais 20 hooks OU Phase 2 - criar mais 1 meat format"
+
+      decision_options: ["GO", "KILL", "HOLD", "RECYCLE"]
+
+    G4:
+      name: "Gate 4: Deployment Verification & Data Flow"
+      between: ["phase-4-deploy", "phase-5-optimize"]
+      gatekeeper: "hotel-ads-specialist"
+      sla: "72h"
+
+      must_meet:
+        - id: "G4-M1"
+          criterion: "Todos os ads live por no mínimo 48 horas (tempo mínimo para algoritmo estabilizar)"
+          validation: "Verificar timestamp 'date_published' no Ads Manager - deve ser >= 48h atrás"
+          on_fail: "HOLD - aguardar 48h completas antes de tomar decisões de kill/scale"
+
+        - id: "G4-M2"
+          criterion: "Cada ad gastou no mínimo 3x daily budget antes de ser julgado"
+          validation: "Campo 'amount_spent' >= daily_budget × 3 para ads elegíveis a kill/scale"
+          on_fail: "HOLD - aguardar budget threshold antes de avaliar performance"
+
+        - id: "G4-M3"
+          criterion: "Conversões tracking com dados reais (não zero em todos os ads)"
+          validation: "Verificar coluna 'conversions' no dashboard - pelo menos 10% dos ads devem ter conversions > 0"
+          on_fail: "BLOCK - investigar problema de tracking ou targeting antes de otimizar"
+
+      should_meet:
+        - id: "G4-S1"
+          criterion: "CTR médio da campanha >= 1% (benchmark mínimo para ads de performance)"
+          weight: 1.0
+          min_score: 6
+          scoring: "Se CTR >= 1.5%: 10 pontos; 1-1.5%: 7 pontos; <1%: 4 pontos"
+
+      kill_criteria:
+        - id: "G4-K1"
+          criterion: "Se ZERO conversões após 5x daily budget gasto em TODOS os ads (falha sistêmica)"
+          action: "KILL campanha imediatamente + emergency review: problema de produto, targeting, ou creative fundamentalmente quebrado"
+
+        - id: "G4-K2"
+          criterion: "Se >80% dos ads rejeitados por policy violation (Meta/Google)"
+          action: "KILL + RECYCLE - revisar creative guidelines e reescrever hooks/meats conforme policy"
+
+      decision_options: ["GO", "KILL", "HOLD", "RECYCLE"]
+
+  handoffs:
+    - id: "H1"
+      from_phase: "phase-1-hooks"
+      to_phase: "phase-2-meat"
+      from_agent: "@hotel-copywriter"
+      to_agent: "@hotel-ads-specialist"
+      trigger: "gate_G1_passed"
+
+      deliverables:
+        - name: "hook_bank_spreadsheet"
+          format: "csv"
+          required: true
+          location: "squads/hotel-mkt/campaigns/[campaign-name]/hooks-v1.csv"
+
+        - name: "awareness_level_map"
+          format: "markdown"
+          required: true
+          location: "squads/hotel-mkt/campaigns/[campaign-name]/awareness-map.md"
+
+      acceptance_criteria:
+        - "Spreadsheet tem mínimo 50 linhas (hooks) com campos: hook_id, hook_text, awareness_level, category, clarity_score, emotional_score"
+        - "Awareness map documenta 5 níveis com pain points e desires por nível"
+
+      sla: "24h"
+
+      on_timeout:
+        action: "escalate"
+        notify: "@hotel-mkt-director"
+        message: "Hook bank não entregue no prazo - Phase 2 bloqueada"
+
+      on_reject:
+        action: "return_to_sender"
+        message: "Spreadsheet incompleto ou fora de formato - revisar campos obrigatórios e reenviar"
+
+    - id: "H2"
+      from_phase: "phase-2-meat"
+      to_phase: "phase-3-assembly"
+      from_agent: "@hotel-social-creator"
+      to_agent: "@hotel-ads-specialist"
+      trigger: "gate_G2_passed"
+
+      deliverables:
+        - name: "meat_format_assets"
+          format: "video/images"
+          required: true
+          location: "squads/hotel-mkt/campaigns/[campaign-name]/assets/meats/"
+
+        - name: "meat_copy_scripts"
+          format: "markdown"
+          required: true
+          location: "squads/hotel-mkt/campaigns/[campaign-name]/meat-scripts.md"
+
+      acceptance_criteria:
+        - "Pasta 'meats' contém 3+ subpastas (1 por meat format) com assets finalizados"
+        - "Cada asset atende specs: 1080p+, 15-60s, formatos Meta/Google/TikTok"
+        - "Meat scripts document tem body copy para cada meat (150-300 characters)"
+
+      sla: "24h"
+
+      on_timeout:
+        action: "escalate"
+        notify: "@hotel-mkt-director"
+        message: "Meat assets não entregues - Assembly bloqueada"
+
+      on_reject:
+        action: "return_to_sender"
+        message: "Assets fora de spec técnico ou meat copy genérico - revisar e reenviar"
+
+    - id: "H3"
+      from_phase: "phase-5-optimize"
+      to_phase: "external"
+      from_agent: "@hotel-ads-specialist"
+      to_agent: "@hotel-direct-booking"
+      trigger: "weekly"
+
+      deliverables:
+        - name: "traffic_quality_report"
+          format: "csv"
+          required: true
+          location: "squads/hotel-mkt/reports/[YYYY-MM]/traffic-quality-week-[N].csv"
+
+        - name: "lead_handoff_list"
+          format: "csv"
+          required: false
+          location: "squads/hotel-mkt/reports/[YYYY-MM]/leads-week-[N].csv"
+
+      acceptance_criteria:
+        - "Report inclui: ad_id, clicks, conversions, CPA, ROAS, booking_revenue por ad"
+        - "Se lead gen ativo: Lead list com campos name, email, phone, source_ad_id, date_captured"
+
+      sla: "48h"
+
+      on_timeout:
+        action: "escalate"
+        notify: "@hotel-mkt-director"
+        message: "Weekly traffic report atrasado - direct-booking sem dados para otimizar booking funnel"
+
+      on_reject:
+        action: "return_to_sender"
+        message: "Dados de conversão inconsistentes com GA4 - reconciliar e reenviar"
+
+    - id: "H4"
+      from_phase: "phase-4-deploy"
+      to_phase: "external"
+      from_agent: "@hotel-ads-specialist"
+      to_agent: "@hotel-email-maestro"
+      trigger: "daily"
+
+      deliverables:
+        - name: "captured_leads_daily"
+          format: "csv"
+          required: true
+          location: "squads/hotel-mkt/leads/[YYYY-MM-DD]-leads.csv"
+
+      acceptance_criteria:
+        - "CSV com campos: name, email, phone, lead_source (ad_id), capture_timestamp, consent_lgpd"
+        - "Todos os leads têm consent_lgpd = true (obrigatório LGPD)"
+
+      sla: "12h"
+
+      on_timeout:
+        action: "escalate"
+        notify: "@hotel-mkt-director"
+        message: "Leads não transferidos para nurture - perda de janela de engajamento"
+
+      on_reject:
+        action: "return_to_sender"
+        message: "Leads sem consent LGPD ou campos obrigatórios faltando - corrigir e reenviar"
+
+  auto_rollback:
+    triggers:
+      - id: "R1"
+        condition: "CPA > R$800 (target) após gastar 3x daily budget em um ad"
+        action: "pause"
+        recovery: "Pausar ad imediatamente + marcar como 'high_cpa' no spreadsheet + redistribuir budget para winners"
+        notify: "@hotel-ads-specialist"
+
+      - id: "R2"
+        condition: "CTR < 1% após 48 horas de um ad rodando"
+        action: "pause"
+        recovery: "Pausar ad + flag como 'low_ctr' + analisar hook (problema de scroll-stopping) + considerar recycle com novo hook"
+        notify: "@hotel-ads-specialist"
+
+      - id: "R3"
+        condition: "ROAS < 2:1 após 7 dias corridos de um ad set"
+        action: "kill"
+        recovery: "Matar ad set completo + recycle creative (testar novo meat ou hook angle) + documentar learnings"
+        notify: "@hotel-mkt-director"
+
+      - id: "R4"
+        condition: "Budget spend > 110% do daily cap em qualquer dia"
+        action: "emergency_pause"
+        recovery: "Pausar TODA campanha imediatamente + investigar overspend bug (CBO descontrolado?) + ajustar caps antes de retomar"
+        notify: "@hotel-mkt-director + @hotel-finance"
+
+      - id: "R5"
+        condition: "Frequency > 3 com CTR declinando 20%+ em 48h (creative fatigue)"
+        action: "pause"
+        recovery: "Pausar ad + substituir por novo hook da weekly rotation batch + manter meat (problema é hook fatigado)"
+        notify: "@hotel-ads-specialist"
+
+      - id: "R6"
+        condition: "Zero impressions após 24h de ad aprovado (delivery issue)"
+        action: "diagnose"
+        recovery: "Verificar: (1) budget suficiente? (2) targeting muito narrow? (3) bid muito baixo? + ajustar ou matar ad"
+        notify: "@hotel-ads-specialist"

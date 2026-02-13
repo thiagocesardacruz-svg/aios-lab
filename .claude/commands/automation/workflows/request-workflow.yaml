@@ -1,0 +1,120 @@
+# Request Workflow - Entry Point
+# Recebe e processa pedidos de automação de outros squads
+
+name: "Request Automation"
+version: "1.0.0"
+description: "Entry point para solicitar nova automação"
+
+trigger:
+  type: "manual"
+  command: "/auto request"
+
+inputs:
+  - name: "description"
+    type: "string"
+    required: true
+    description: "Descrição do que precisa ser automatizado"
+
+  - name: "use_case"
+    type: "string"
+    required: false
+    description: "Caso de uso específico"
+
+  - name: "triggers"
+    type: "array"
+    required: false
+    description: "Quando o workflow deve executar"
+
+  - name: "outputs"
+    type: "array"
+    required: false
+    description: "O que deve acontecer"
+
+  - name: "integrations"
+    type: "array"
+    required: false
+    description: "Sistemas envolvidos"
+
+  - name: "urgency"
+    type: "enum"
+    values: ["low", "medium", "high", "critical"]
+    default: "medium"
+
+  - name: "requesting_squad"
+    type: "string"
+    required: true
+    description: "Squad que está solicitando"
+
+steps:
+  - id: "receive"
+    agent: "automation-lead"
+    action: "Receber e analisar request"
+    output: "request_analysis"
+
+  - id: "triage"
+    agent: "automation-lead"
+    action: "Classificar complexidade e prioridade"
+    depends_on: ["receive"]
+    output:
+      complexity: "simple | medium | complex"
+      priority: "RICE score"
+      estimated_effort: "hours"
+
+  - id: "check_existing"
+    agent: "automation-lead"
+    action: "Verificar se existe workflow similar"
+    depends_on: ["triage"]
+    output:
+      existing_workflow: "workflow_id or null"
+      reuse_potential: "percentage"
+
+  - id: "route"
+    agent: "automation-lead"
+    action: "Rotear para agente apropriado"
+    depends_on: ["check_existing"]
+    conditions:
+      - if: "complexity == 'simple' AND existing_workflow"
+        then: "Adaptar workflow existente"
+        assign: "n8n-builder"
+      - if: "complexity == 'simple' AND !existing_workflow"
+        then: "Build direto"
+        assign: "n8n-builder"
+      - if: "complexity == 'medium' OR complexity == 'complex'"
+        then: "Design primeiro"
+        assign: "n8n-architect"
+
+outputs:
+  - name: "request_id"
+    type: "string"
+    description: "ID único do request"
+
+  - name: "status"
+    type: "string"
+    description: "Status do request"
+
+  - name: "assigned_to"
+    type: "string"
+    description: "Agente responsável"
+
+  - name: "estimated_delivery"
+    type: "string"
+    description: "Data estimada de entrega"
+
+# Handover contract quando request é atribuído
+handover:
+  from_agent: "automation-lead"
+  to_agent: "n8n-architect | n8n-builder"
+  required_fields:
+    - request_analysis
+    - complexity
+    - priority
+    - existing_workflow
+  min_confidence: "medium"
+
+# Métricas
+metrics:
+  track:
+    - requests_received
+    - requests_completed
+    - avg_time_to_triage
+    - reuse_rate

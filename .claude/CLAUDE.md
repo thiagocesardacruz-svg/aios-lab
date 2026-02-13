@@ -211,8 +211,7 @@ ClickUp is the **central project management hub** for AIOS. All tasks, costs, an
 |-------|---------|
 | **PERSONAL** | Personal life (Finance, Goals, Health, Leisure, Courses, Love) |
 | **WORK** | Professional projects (Travel Tech Digital, Tripwix) |
-| **AI OPS** | AI agent operations (Inbox, In Progress, Awaiting Human, Completed) |
-| **RESOURCES** | Knowledge Base, Templates, Documentation, Archived |
+| **AI OPS** | AI agent operations (To Do, In Progress, Awaiting Human, Completed) |
 
 ### Command Center Scripts
 

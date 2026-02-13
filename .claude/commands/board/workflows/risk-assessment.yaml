@@ -1,0 +1,142 @@
+# /board/risk-assessment Workflow
+# Multi-advisor risk assessment (Munger + Musk)
+
+workflow:
+  id: risk-assessment
+  name: Risk Assessment
+  description: "Multi-advisor risk assessment for irreversible decisions"
+  version: "1.0.0"
+  squad: board
+  type: advisory
+
+inputs:
+  - name: decision
+    type: string
+    required: true
+    description: "Decision being evaluated"
+  - name: context
+    type: string
+    required: true
+    description: "Context and stakes"
+  - name: reversibility
+    type: string
+    required: false
+    description: "How reversible is this decision?"
+  - name: timeline
+    type: string
+    required: false
+    description: "Timeline for decision"
+
+outputs:
+  - name: decision-memo
+    type: markdown
+    path: "docs/board-memos/{date}-risk-assessment.md"
+
+advisors:
+  - charlie-munger
+  - elon-musk
+
+sequence:
+  - phase: 0
+    name: Risk Identification
+    description: "Each advisor identifies risks from their perspective"
+    parallel: true
+    actions:
+      - advisor: charlie-munger
+        focus: "Cognitive biases, inversion, and failure modes"
+      - advisor: elon-musk
+        focus: "First principles analysis and system risks"
+
+  - phase: 1
+    name: Deep Analysis
+    description: "Detailed risk analysis from each advisor"
+    parallel: true
+    actions:
+      - advisor: charlie-munger
+        output: |
+          - Inversion analysis (what would make this fail?)
+          - Cognitive biases at play
+          - Historical analogies
+          - Checklist violations
+      - advisor: elon-musk
+        output: |
+          - First principles breakdown
+          - System dependencies and failure points
+          - Cost/benefit physics
+          - Simplification opportunities
+
+  - phase: 2
+    name: Risk Matrix
+    description: "Synthesize into risk matrix"
+    action: synthesize
+    inputs:
+      - all risk analyses
+    creates:
+      - risk_matrix (memory)
+      - mitigations (memory)
+
+  - phase: 3
+    name: Decision Memo
+    description: "Generate final risk memo"
+    action: generate_memo
+    template: templates/decision-memo.md
+    creates:
+      - decision-memo.md
+
+output_format: |
+  # Risk Assessment Memo: {decision}
+
+  ## Decision Under Review
+  {decision_description}
+
+  ## Context & Stakes
+  {context}
+
+  ## Advisors Consulted
+  - Charlie Munger (Risk & Bias Advisor)
+  - Elon Musk (Systems & First Principles Advisor)
+
+  ## Inversion Analysis (Munger)
+
+  ### "What would make this fail?"
+  {inversion_analysis}
+
+  ### Cognitive Biases Detected
+  | Bias | Evidence | Mitigation |
+  |------|----------|------------|
+  {bias_table}
+
+  ### Checklist
+  - [ ] Have we inverted the problem?
+  - [ ] Are we avoiding confirmation bias?
+  - [ ] Do we have skin in the game?
+  - [ ] Is this within our circle of competence?
+
+  ## First Principles Analysis (Musk)
+
+  ### Core Assumptions
+  {assumptions}
+
+  ### System Dependencies
+  {dependencies}
+
+  ### Simplification Opportunities
+  {simplifications}
+
+  ## Risk Matrix
+
+  | Risk | Probability | Impact | Mitigation |
+  |------|-------------|--------|------------|
+  {risk_matrix}
+
+  ## Overall Risk Score
+  **{risk_level}** (Low / Medium / High / Critical)
+
+  ## Recommendation
+  {recommendation}
+
+  ## Conditions to Proceed
+  {conditions}
+
+  ---
+  *This memo does not execute. To proceed, create OS via /ops/new-task*

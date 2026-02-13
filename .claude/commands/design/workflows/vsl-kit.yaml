@@ -1,0 +1,116 @@
+# VSL Kit Workflow
+# /design/vsl-kit
+
+name: vsl-kit
+version: "1.0.0"
+description: "Create complete visual structure for VSL"
+command: "/design/vsl-kit"
+
+trigger:
+  type: command
+  requires:
+    - approved_script
+    - offer_details
+    - brand_assets
+
+agents:
+  primary: motion-video-specialist
+  qa: design-lead
+
+inputs:
+  required:
+    - name: script
+      description: "Approved VSL script"
+    - name: offer
+      description: "Offer details and pricing"
+  optional:
+    - name: duration_target
+      default: "20-30 min"
+    - name: style
+      default: "professional"
+    - name: brand_assets
+      description: "Logos, colors, fonts"
+    - name: testimonials
+      description: "Proof and testimonials"
+
+steps:
+  - id: receive_script
+    name: "Receive Script"
+    agent: motion-video-specialist
+    action: "Review approved script"
+    validation:
+      - "Script is complete"
+      - "Sections are marked"
+      - "CTAs are defined"
+
+  - id: define_structure
+    name: "Define Visual Structure"
+    agent: motion-video-specialist
+    action: "Map script to visual sections"
+    depends_on: [receive_script]
+    outputs:
+      - section_breakdown
+      - visual_rhythm
+
+  - id: create_slides
+    name: "Create Slides"
+    agent: motion-video-specialist
+    action: "Design all visual slides"
+    depends_on: [define_structure]
+    outputs:
+      - headline_slides
+      - bullet_slides
+      - proof_slides
+      - offer_slides
+      - cta_slides
+
+  - id: define_motion
+    name: "Define Motion Base"
+    agent: motion-video-specialist
+    action: "Specify transitions and timing"
+    depends_on: [create_slides]
+    outputs:
+      - motion_specs
+      - timing_guide
+
+  - id: apply_checklist
+    name: "Apply Retention Checklist"
+    agent: motion-video-specialist
+    action: "Validate for retention"
+    depends_on: [define_motion]
+    checklist: visual-hierarchy
+
+  - id: qa_review
+    name: "QA Review"
+    agent: design-lead
+    action: "Final quality approval"
+    depends_on: [apply_checklist]
+
+  - id: package_kit
+    name: "Package Kit"
+    agent: motion-video-specialist
+    action: "Prepare complete VSL kit"
+    depends_on: [qa_review]
+
+outputs:
+  - name: slides
+    description: "Complete VSL slide deck"
+    format: "Figma/Keynote"
+  - name: motion_specs
+    description: "Transition and timing specs"
+    format: "MD"
+  - name: recording_guide
+    description: "Camera, lighting, setup guide"
+    format: "MD"
+  - name: asset_library
+    description: "Icons, badges, overlays"
+    format: "Folder"
+
+quality_gates:
+  - "Slides match script sections"
+  - "Visual rhythm varies"
+  - "CTAs are prominent"
+  - "Proof elements included"
+  - "Recording guide is clear"
+
+estimated_duration: "6-12 hours"

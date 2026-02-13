@@ -1,0 +1,147 @@
+# Build Simple Workflow
+# Constrói workflows simples (1-3 nodes) rapidamente
+
+name: "Build Simple Workflow"
+version: "1.0.0"
+description: "Pipeline rápido para construir workflows simples sem design formal"
+
+trigger:
+  type: "manual"
+  command: "/auto build --simple"
+
+inputs:
+  - name: "request_id"
+    type: "string"
+    required: true
+
+  - name: "use_case"
+    type: "string"
+    required: true
+
+  - name: "trigger_type"
+    type: "enum"
+    values: ["webhook", "schedule", "manual"]
+    required: true
+
+  - name: "integrations"
+    type: "array"
+    required: false
+
+preconditions:
+  - "Request triado com complexity == 'simple'"
+  - "Nodes estimados <= 3"
+
+steps:
+  - id: "select_template"
+    agent: "n8n-builder"
+    action: "Selecionar template base"
+    templates:
+      webhook_simple: "tmpl-webhook-receiver.json"
+      schedule_simple: "tmpl-scheduled-report.json"
+      manual_simple: "tmpl-manual-trigger.json"
+    output:
+      template: "json"
+
+  - id: "customize_trigger"
+    agent: "n8n-builder"
+    action: "Configurar trigger"
+    depends_on: ["select_template"]
+    config:
+      webhook:
+        path: "{use_case_slug}"
+        method: "POST"
+        responseMode: "lastNode"
+      schedule:
+        rule: "{cron_expression}"
+        timezone: "Europe/Lisbon"
+      manual:
+        # No config needed
+    output:
+      trigger_node: "json"
+
+  - id: "add_main_logic"
+    agent: "n8n-builder"
+    action: "Adicionar lógica principal"
+    depends_on: ["customize_trigger"]
+    patterns:
+      api_call: "HTTP Request node"
+      transform: "Set node"
+      notify: "Slack/Email node"
+    output:
+      logic_nodes: "array"
+
+  - id: "connect_nodes"
+    agent: "n8n-builder"
+    action: "Conectar nodes"
+    depends_on: ["add_main_logic"]
+    output:
+      connections: "object"
+
+  - id: "add_error_handling"
+    agent: "n8n-builder"
+    action: "Adicionar error handling básico"
+    depends_on: ["connect_nodes"]
+    pattern: |
+      Se qualquer node falhar:
+      1. Capturar erro
+      2. Notificar (Slack ou log)
+    output:
+      error_nodes: "array"
+
+  - id: "validate"
+    agent: "n8n-builder"
+    action: "Validar workflow"
+    depends_on: ["add_error_handling"]
+    tool: "mcp__n8n-mcp__validate_workflow"
+    profile: "runtime"
+    output:
+      validation_result: "object"
+      passed: "boolean"
+
+  - id: "auto_fix"
+    agent: "n8n-builder"
+    action: "Corrigir erros automaticamente"
+    depends_on: ["validate"]
+    condition: "validation_result.errors.length > 0"
+    tool: "mcp__n8n-mcp__n8n_autofix_workflow"
+    output:
+      fixed_workflow: "json"
+
+  - id: "save_workflow"
+    agent: "n8n-builder"
+    action: "Salvar workflow"
+    depends_on: ["validate", "auto_fix"]
+    output:
+      workflow_file: "workflows/{use_case_slug}.json"
+      workflow_id: "string"
+
+  - id: "register"
+    agent: "n8n-builder"
+    action: "Registrar no registry"
+    depends_on: ["save_workflow"]
+    target: "data/workflow-registry.yaml"
+    entry:
+      id: "{workflow_id}"
+      name: "{use_case}"
+      complexity: "simple"
+      status: "draft"
+      created_at: "{timestamp}"
+
+outputs:
+  - name: "build_result"
+    type: "object"
+    schema:
+      workflow_id: "string"
+      workflow_file: "string"
+      nodes_count: "number"
+      validated: "boolean"
+      ready_for_deploy: "boolean"
+
+estimated_time: "30-60min"
+
+quality_gate:
+  - "Workflow JSON válido"
+  - "Validação passou"
+  - "Nodes <= 5"
+  - "Error handling presente"
+  - "Registrado no registry"

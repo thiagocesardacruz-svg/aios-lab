@@ -1,0 +1,122 @@
+# /ops/sync-notion Workflow
+# Sincroniza YAML local com Notion
+
+workflow:
+  id: sync-notion
+  name: Sync to Notion
+  description: "Sincroniza arquivos YAML locais com databases do Notion"
+  version: "1.0.0"
+  squad: ops
+  responsible: "@clawdbot"
+
+inputs:
+  - name: target
+    type: string
+    default: "all"
+    options: [all, os, costs, agents]
+  - name: mode
+    type: string
+    default: "upsert"
+    options: [upsert, full_sync]
+
+outputs:
+  - name: sync-log
+    type: json
+    path: "logs/sync/sync-{timestamp}.json"
+
+phases:
+  - phase_0: Read Local
+  - phase_1: Compare
+  - phase_2: Sync
+  - phase_3: Verify
+
+sequence:
+  - phase: 0
+    name: Read Local Files
+    agent: clawdbot
+    action: read_yaml
+    inputs:
+      - path: "logs/service-orders/*.yaml"
+      - path: "logs/costs/*.yaml"
+    creates:
+      - local_data (memory)
+
+  - phase: 1
+    name: Fetch Notion State
+    agent: clawdbot
+    action: notion_query
+    inputs:
+      - database_id: "{SERVICE_ORDERS_DB}"
+      - database_id: "{COST_LOG_DB}"
+    creates:
+      - notion_data (memory)
+
+  - phase: 1
+    name: Compare States
+    agent: clawdbot
+    action: diff
+    inputs:
+      - local_data
+      - notion_data
+    creates:
+      - changes (memory)
+    notes: |
+      Identificar:
+      - Novos (local only)
+      - Atualizados (local newer)
+      - Deletados (notion only, se full_sync)
+
+  - phase: 2
+    name: Apply Changes
+    agent: clawdbot
+    action: notion_update
+    inputs:
+      - changes
+      - mode
+    creates:
+      - results (memory)
+    notes: |
+      Para cada mudança:
+      - create: notion.pages.create()
+      - update: notion.pages.update()
+      - delete: notion.pages.update(archived: true)
+
+  - phase: 3
+    name: Verify Sync
+    agent: clawdbot
+    action: verify
+    inputs:
+      - results
+    creates:
+      - sync-log.json
+    notes: |
+      Verificar:
+      - Todos os creates sucederam
+      - Todos os updates sucederam
+      - Contagem final correta
+
+output_format: |
+  {
+    "timestamp": "{timestamp}",
+    "target": "{target}",
+    "mode": "{mode}",
+    "changes": {
+      "created": {count},
+      "updated": {count},
+      "deleted": {count},
+      "failed": {count}
+    },
+    "duration_ms": {duration},
+    "status": "success|partial|failure"
+  }
+
+error_handling:
+  on_failure:
+    - Log full error
+    - Retry up to 3 times
+    - If still failing, mark as partial
+    - Alert OPS Lead
+  recovery:
+    - Exponential backoff
+    - Skip failed items, continue others
+    - Generate error report

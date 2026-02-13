@@ -1,0 +1,134 @@
+# /mkt/article Workflow
+# Criar artigo SEO
+
+workflow:
+  id: article
+  name: Create Article
+  description: "Cria artigo otimizado para SEO"
+  version: "1.0.0"
+  squad: marketing
+  responsible: "@copy-specialist"
+
+inputs:
+  - name: keyword
+    type: string
+    required: true
+    description: "Keyword principal"
+  - name: brief
+    type: string
+    required: false
+    description: "Brief adicional ou link para brief"
+  - name: word_count
+    type: integer
+    default: 1500
+
+outputs:
+  - name: article
+    type: markdown
+    path: "docs/outputs/mkt/articles/{slug}.md"
+
+phases:
+  - phase_0: Brief
+  - phase_1: Outline
+  - phase_2: Write
+  - phase_3: Optimize
+  - phase_4: Review
+
+sequence:
+  - phase: 0
+    name: Create Brief
+    agent: seo-specialist
+    action: create_brief
+    inputs:
+      - keyword
+    creates:
+      - seo-brief.md (memory)
+    notes: |
+      Incluir:
+      - Keyword principal e secundárias
+      - Search intent
+      - Top 3 concorrentes
+      - Gaps a cobrir
+      - Word count target
+      - Headers sugeridos
+
+  - phase: 1
+    name: Create Outline
+    agent: content-strategist
+    action: outline
+    inputs:
+      - seo-brief
+    creates:
+      - outline.md (memory)
+    notes: |
+      Criar:
+      - H1 (título)
+      - H2s principais
+      - H3s de suporte
+      - Key points por seção
+      - CTA placement
+
+  - phase: 2
+    name: Write Content
+    agent: copy-specialist
+    action: write
+    inputs:
+      - outline
+      - seo-brief
+      - word_count
+    creates:
+      - draft.md (memory)
+    notes: |
+      Escrever:
+      - Intro com hook
+      - Cada seção conforme outline
+      - Conclusão com CTA
+      - Meta description
+
+  - phase: 3
+    name: SEO Optimize
+    agent: seo-specialist
+    action: optimize
+    inputs:
+      - draft
+      - seo-brief
+    creates:
+      - optimized.md (memory)
+    checklist: checklists/seo-onpage.md
+    notes: |
+      Otimizar:
+      - Keyword density
+      - Internal links
+      - Alt texts (se imagens)
+      - Schema suggestions
+      - Meta tags
+
+  - phase: 4
+    name: Final Review
+    agent: marketing-lead
+    action: review
+    inputs:
+      - optimized
+    checklist: checklists/copy-quality.md
+    creates:
+      - article.md
+
+output_format: |
+  ---
+  title: "{title}"
+  keyword: "{keyword}"
+  word_count: {word_count}
+  meta_description: "{meta}"
+  created: "{date}"
+  ---
+
+  # {title}
+
+  {content}
+
+  ---
+  ## SEO Metadata
+  - Primary keyword: {keyword}
+  - Secondary keywords: {secondary}
+  - Internal links: {links}
+  - Schema type: {schema}

@@ -1,0 +1,220 @@
+# Deploy to n8n Workflow
+# Deploy workflow validado para instância n8n
+
+name: "Deploy to n8n"
+version: "1.0.0"
+description: "Pipeline de deploy seguro para instância n8n"
+
+trigger:
+  type: "manual"
+  command: "/auto deploy"
+
+inputs:
+  - name: "workflow_file"
+    type: "string"
+    required: true
+    description: "Path para workflow JSON"
+
+  - name: "target_instance"
+    type: "enum"
+    values: ["development", "staging", "production"]
+    default: "development"
+
+  - name: "activate"
+    type: "boolean"
+    default: false
+    description: "Ativar workflow após deploy"
+
+  - name: "replace_existing"
+    type: "boolean"
+    default: false
+    description: "Substituir workflow existente com mesmo nome"
+
+preconditions:
+  - "Workflow passou em validate-and-fix com profile strict"
+  - "Checklist pre-deploy-validation.md completo"
+  - "n8n API credentials configurados"
+
+steps:
+  - id: "load_workflow"
+    agent: "n8n-builder"
+    action: "Carregar workflow"
+    output:
+      workflow_json: "object"
+      workflow_name: "string"
+
+  - id: "verify_validation"
+    agent: "n8n-builder"
+    action: "Verificar que passou validação"
+    depends_on: ["load_workflow"]
+    checks:
+      - "Validation report exists"
+      - "Result == PASSED or PASSED_WITH_WARNINGS"
+      - "Profile was strict"
+    output:
+      validation_verified: "boolean"
+
+  - id: "check_existing"
+    agent: "n8n-builder"
+    action: "Verificar se existe workflow com mesmo nome"
+    depends_on: ["load_workflow"]
+    tool: "mcp__n8n-mcp__n8n_list_workflows"
+    filter: "name == workflow_name"
+    output:
+      existing_workflow_id: "string | null"
+      exists: "boolean"
+
+  - id: "handle_existing"
+    agent: "n8n-builder"
+    action: "Decidir ação para workflow existente"
+    depends_on: ["check_existing"]
+    condition: "exists"
+    rules:
+      - condition: "replace_existing"
+        action: "Update existing workflow"
+      - condition: "!replace_existing"
+        action: "Abort with error"
+    output:
+      action: "create | update | abort"
+
+  - id: "prepare_for_deploy"
+    agent: "n8n-builder"
+    action: "Preparar workflow para deploy"
+    depends_on: ["handle_existing"]
+    modifications:
+      - "Remove staticData (test data)"
+      - "Remove pinData"
+      - "Set active: false (initially)"
+      - "Add deployment metadata"
+    output:
+      deploy_ready_workflow: "object"
+
+  - id: "verify_credentials"
+    agent: "n8n-builder"
+    action: "Verificar credentials na instância"
+    depends_on: ["prepare_for_deploy"]
+    extracts: "credentials_used_in_workflow"
+    checks: "credentials_exist_in_target"
+    output:
+      credentials_ok: "boolean"
+      missing_credentials: "array"
+
+  - id: "deploy"
+    agent: "n8n-builder"
+    action: "Executar deploy"
+    depends_on: ["verify_credentials"]
+    condition: "credentials_ok"
+    actions:
+      create:
+        tool: "mcp__n8n-mcp__n8n_create_workflow"
+        params:
+          name: "{workflow_name}"
+          nodes: "{nodes}"
+          connections: "{connections}"
+          settings: "{settings}"
+      update:
+        tool: "mcp__n8n-mcp__n8n_update_full_workflow"
+        params:
+          id: "{existing_workflow_id}"
+          workflow: "{deploy_ready_workflow}"
+    output:
+      deployed_workflow_id: "string"
+      deploy_status: "success | failed"
+
+  - id: "verify_deploy"
+    agent: "n8n-builder"
+    action: "Verificar deploy"
+    depends_on: ["deploy"]
+    tool: "mcp__n8n-mcp__n8n_get_workflow"
+    params:
+      id: "{deployed_workflow_id}"
+      mode: "summary"
+    checks:
+      - "Workflow exists"
+      - "Nodes count matches"
+      - "Connections intact"
+    output:
+      deploy_verified: "boolean"
+
+  - id: "test_in_production"
+    agent: "n8n-builder"
+    action: "Testar em produção"
+    depends_on: ["verify_deploy"]
+    condition: "workflow_has_testable_trigger"
+    tool: "mcp__n8n-mcp__n8n_test_workflow"
+    params:
+      id: "{deployed_workflow_id}"
+    output:
+      test_passed: "boolean"
+      execution_id: "string"
+
+  - id: "activate_if_requested"
+    agent: "n8n-builder"
+    action: "Ativar workflow"
+    depends_on: ["test_in_production"]
+    condition: "activate && test_passed"
+    tool: "mcp__n8n-mcp__n8n_update_partial_workflow"
+    params:
+      id: "{deployed_workflow_id}"
+      operations: '[{"type": "activateWorkflow"}]'
+    output:
+      activated: "boolean"
+
+  - id: "update_registry"
+    agent: "n8n-builder"
+    action: "Atualizar registry"
+    depends_on: ["activate_if_requested"]
+    target: "data/workflow-registry.yaml"
+    update:
+      deployed_to: "{target_instance}"
+      deployed_at: "{timestamp}"
+      deployed_workflow_id: "{deployed_workflow_id}"
+      status: "active | inactive"
+    output:
+      registry_updated: "boolean"
+
+  - id: "notify_stakeholders"
+    agent: "n8n-builder"
+    action: "Notificar stakeholders"
+    depends_on: ["update_registry"]
+    notification:
+      channel: "slack"
+      message: |
+        ✅ Workflow deployed: {workflow_name}
+        Instance: {target_instance}
+        ID: {deployed_workflow_id}
+        Status: {activated ? 'Active' : 'Inactive'}
+        Deployed by: @n8n-builder
+    output:
+      notified: "boolean"
+
+outputs:
+  - name: "deploy_result"
+    type: "object"
+    schema:
+      workflow_id: "string"
+      workflow_name: "string"
+      instance: "string"
+      action: "created | updated"
+      activated: "boolean"
+      test_passed: "boolean"
+      url: "string"
+
+rollback:
+  trigger: "deploy_failed OR test_failed"
+  actions:
+    - "Deactivate workflow if was activated"
+    - "Restore previous version if was update"
+    - "Delete workflow if was new create"
+    - "Notify about rollback"
+
+estimated_time: "10-30min"
+
+quality_gate:
+  - "Validação prévia confirmada"
+  - "Credentials verificadas"
+  - "Deploy executado com sucesso"
+  - "Verificação pós-deploy passou"
+  - "Testes em produção passaram (se aplicável)"
+  - "Registry atualizado"
+  - "Stakeholders notificados"

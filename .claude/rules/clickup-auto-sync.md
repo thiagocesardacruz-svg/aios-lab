@@ -75,7 +75,7 @@ Squad leads coordinate their sub-agents; individual agents don't appear in the d
 ### Status Flow
 
 ```
-inbox → to do → in progress → waiting (if needed) → review → done
+to do → in progress → waiting (if needed) → review → done
 ```
 
 ### Example Workflow

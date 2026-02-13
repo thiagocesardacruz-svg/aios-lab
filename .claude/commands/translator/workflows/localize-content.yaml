@@ -1,0 +1,147 @@
+# Localize Content Workflow
+# Squad: translator
+# Version: 1.0.0
+
+name: localize-content
+description: "Complete content localization pipeline from source to market-ready content"
+version: "1.0.0"
+
+trigger:
+  command: "/translate/localize-content"
+  inputs:
+    - name: content
+      type: string
+      required: true
+      description: "Content to localize (text or file path)"
+    - name: source_language
+      type: string
+      required: false
+      default: "EN"
+      description: "Source language code"
+    - name: target_languages
+      type: list
+      required: true
+      description: "Target language codes (e.g., PT-BR, ES)"
+    - name: content_type
+      type: string
+      required: false
+      default: "marketing"
+      options: ["marketing", "technical", "legal", "ui", "support"]
+      description: "Type of content"
+    - name: priority
+      type: string
+      required: false
+      default: "normal"
+      options: ["urgent", "normal", "low"]
+
+steps:
+  - id: analyze-content
+    name: "Analyze Content"
+    agent: translation-lead
+    action: analyze
+    inputs:
+      content: "{{inputs.content}}"
+      source_language: "{{inputs.source_language}}"
+      content_type: "{{inputs.content_type}}"
+    outputs:
+      - content_analysis
+      - glossary_terms
+      - cultural_flags
+      - complexity_score
+
+  - id: prepare-glossary
+    name: "Prepare Glossary"
+    agent: translation-lead
+    action: prepare-glossary
+    inputs:
+      terms: "{{steps.analyze-content.outputs.glossary_terms}}"
+      target_languages: "{{inputs.target_languages}}"
+    outputs:
+      - active_glossary
+      - missing_terms
+
+  - id: translate
+    name: "Translate Content"
+    agent: translators
+    action: translate
+    parallel_by: target_languages
+    inputs:
+      content: "{{inputs.content}}"
+      source_language: "{{inputs.source_language}}"
+      target_language: "{{parallel.current}}"
+      glossary: "{{steps.prepare-glossary.outputs.active_glossary}}"
+      content_type: "{{inputs.content_type}}"
+    outputs:
+      - translation
+      - translation_notes
+      - new_terms
+
+  - id: localize
+    name: "Cultural Localization"
+    agent: localization-specialist
+    action: localize
+    parallel_by: target_languages
+    inputs:
+      translation: "{{steps.translate.outputs.translation}}"
+      target_language: "{{parallel.current}}"
+      cultural_flags: "{{steps.analyze-content.outputs.cultural_flags}}"
+    outputs:
+      - localized_content
+      - adaptations_made
+      - market_notes
+
+  - id: quality-review
+    name: "Quality Review"
+    agent: translation-lead
+    action: review
+    inputs:
+      original: "{{inputs.content}}"
+      localizations: "{{steps.localize.outputs}}"
+      checklist: "checklists/translation-quality-checklist.md"
+    outputs:
+      - review_results
+      - issues_found
+      - approved_content
+
+  - id: finalize
+    name: "Finalize & Package"
+    agent: translation-lead
+    action: finalize
+    inputs:
+      approved_content: "{{steps.quality-review.outputs.approved_content}}"
+      new_terms: "{{steps.translate.outputs.new_terms}}"
+    outputs:
+      - final_deliverables
+      - glossary_updates
+      - localization_report
+
+output:
+  format: markdown
+  template: |
+    # Localization Complete
+
+    ## Source
+    - **Language:** {{inputs.source_language}}
+    - **Content Type:** {{inputs.content_type}}
+
+    ## Deliverables
+
+    {{for lang in inputs.target_languages}}
+    ### {{lang}}
+    {{final_deliverables[lang]}}
+
+    **Adaptations:** {{adaptations_made[lang]}}
+    {{endfor}}
+
+    ## Quality Report
+    - **Issues Found:** {{issues_found}}
+    - **Glossary Updates:** {{glossary_updates}}
+
+    ## Notes
+    {{localization_report}}
+
+success_criteria:
+  - "All target languages completed"
+  - "Quality review passed"
+  - "No critical issues"
+  - "Glossary updated with new terms"

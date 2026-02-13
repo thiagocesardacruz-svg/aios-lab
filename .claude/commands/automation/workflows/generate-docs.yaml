@@ -1,0 +1,259 @@
+# Generate Docs Workflow
+# Gera documentação automática para workflows
+
+name: "Generate Documentation"
+version: "1.0.0"
+description: "Gera documentação técnica e de usuário automaticamente"
+
+trigger:
+  type: "manual"
+  command: "/auto docs"
+
+inputs:
+  - name: "workflow_file"
+    type: "string"
+    required: true
+
+  - name: "doc_type"
+    type: "enum"
+    values: ["technical", "user", "both"]
+    default: "both"
+
+  - name: "output_format"
+    type: "enum"
+    values: ["markdown", "html", "pdf"]
+    default: "markdown"
+
+steps:
+  - id: "load_workflow"
+    agent: "product-engineer"
+    action: "Carregar e analisar workflow"
+    output:
+      workflow_json: "object"
+      workflow_name: "string"
+      nodes: "array"
+      connections: "object"
+
+  - id: "extract_metadata"
+    agent: "product-engineer"
+    action: "Extrair metadados do workflow"
+    depends_on: ["load_workflow"]
+    extracts:
+      - "Trigger type and config"
+      - "Nodes and their purposes"
+      - "Data flow"
+      - "Integrations used"
+      - "Credentials needed"
+      - "Error handling"
+    output:
+      metadata: "object"
+
+  - id: "generate_technical_doc"
+    agent: "product-engineer"
+    action: "Gerar documentação técnica"
+    depends_on: ["extract_metadata"]
+    condition: "doc_type in ['technical', 'both']"
+    template: |
+      # {workflow_name} - Technical Documentation
+
+      ## Overview
+
+      **Version:** {version}
+      **Complexity:** {complexity}
+      **Nodes:** {nodes_count}
+      **Has AI:** {has_ai}
+
+      ## Architecture
+
+      ```
+      {flow_diagram_ascii}
+      ```
+
+      ## Trigger
+
+      - **Type:** {trigger_type}
+      - **Configuration:** {trigger_config}
+
+      ## Nodes
+
+      | # | Node | Type | Purpose |
+      |---|------|------|---------|
+      {nodes_table}
+
+      ## Data Flow
+
+      {data_flow_description}
+
+      ## Integrations
+
+      | Integration | Type | Required |
+      |-------------|------|----------|
+      {integrations_table}
+
+      ## Credentials Required
+
+      | Credential | Type | Purpose |
+      |------------|------|---------|
+      {credentials_table}
+
+      ## Error Handling
+
+      {error_handling_description}
+
+      ## Configuration Options
+
+      | Option | Type | Default | Description |
+      |--------|------|---------|-------------|
+      {config_options_table}
+
+      ## Performance
+
+      - **Estimated execution time:** {est_time}
+      - **Tokens per run (if AI):** {tokens}
+      - **API calls per run:** {api_calls}
+
+      ## Changelog
+
+      | Version | Date | Changes |
+      |---------|------|---------|
+      | 1.0.0 | {date} | Initial version |
+    output:
+      technical_doc: "markdown"
+
+  - id: "generate_user_doc"
+    agent: "product-engineer"
+    action: "Gerar documentação de usuário"
+    depends_on: ["extract_metadata"]
+    condition: "doc_type in ['user', 'both']"
+    template: |
+      # {workflow_name} - User Guide
+
+      ## What This Does
+
+      {plain_language_description}
+
+      ## Quick Start
+
+      1. {step_1}
+      2. {step_2}
+      3. {step_3}
+
+      ## Requirements
+
+      Before using this workflow, you need:
+
+      - [ ] {requirement_1}
+      - [ ] {requirement_2}
+
+      ## How to Use
+
+      ### {use_case_1}
+
+      {instructions_1}
+
+      ### {use_case_2}
+
+      {instructions_2}
+
+      ## Expected Results
+
+      When everything works correctly, you will see:
+
+      {expected_output}
+
+      ## Troubleshooting
+
+      ### Problem: {common_problem_1}
+
+      **Solution:** {solution_1}
+
+      ### Problem: {common_problem_2}
+
+      **Solution:** {solution_2}
+
+      ## FAQ
+
+      **Q: {question_1}**
+      A: {answer_1}
+
+      **Q: {question_2}**
+      A: {answer_2}
+
+      ## Getting Help
+
+      If you need assistance:
+      - Check the troubleshooting section above
+      - Review the technical documentation
+      - Contact support at {support_contact}
+    output:
+      user_doc: "markdown"
+
+  - id: "generate_flow_diagram"
+    agent: "product-engineer"
+    action: "Gerar diagrama de fluxo"
+    depends_on: ["extract_metadata"]
+    format: "mermaid"
+    template: |
+      ```mermaid
+      flowchart TD
+        {mermaid_nodes}
+        {mermaid_connections}
+      ```
+    output:
+      flow_diagram: "string"
+
+  - id: "convert_format"
+    agent: "product-engineer"
+    action: "Converter para formato solicitado"
+    depends_on: ["generate_technical_doc", "generate_user_doc"]
+    condition: "output_format != 'markdown'"
+    converters:
+      html: "Use pandoc or marked"
+      pdf: "Use pandoc with latex"
+    output:
+      converted_docs: "array"
+
+  - id: "save_documentation"
+    agent: "product-engineer"
+    action: "Salvar documentação"
+    depends_on: ["generate_technical_doc", "generate_user_doc", "convert_format"]
+    saves_to:
+      technical: "docs/{workflow_name}-technical.{format}"
+      user: "docs/{workflow_name}-user-guide.{format}"
+    output:
+      doc_paths: "object"
+
+  - id: "update_index"
+    agent: "product-engineer"
+    action: "Atualizar índice de documentação"
+    depends_on: ["save_documentation"]
+    target: "docs/index.md"
+    add_entry:
+      name: "{workflow_name}"
+      technical: "{technical_doc_path}"
+      user: "{user_doc_path}"
+      updated: "{timestamp}"
+    output:
+      index_updated: "boolean"
+
+outputs:
+  - name: "docs_result"
+    type: "object"
+    schema:
+      workflow_name: "string"
+      technical_doc: "string"
+      user_doc: "string"
+      flow_diagram: "string"
+      paths:
+        technical: "string"
+        user: "string"
+      format: "string"
+
+estimated_time: "30-60min"
+
+quality_gate:
+  - "Documentação técnica completa"
+  - "Documentação de usuário clara"
+  - "Diagrama de fluxo gerado"
+  - "Formato correto"
+  - "Índice atualizado"

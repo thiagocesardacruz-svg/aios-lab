@@ -1,0 +1,105 @@
+# Vibe Coding Integration Workflow
+# /tech/vibe-coding-integration
+
+name: vibe-coding-integration
+version: "1.0.0"
+description: "Transform Vibe Coding output into production-ready code"
+command: "/tech/vibe-coding-integration"
+
+trigger:
+  type: command
+  requires:
+    - vibe_output
+    - design_system_available
+
+agents:
+  primary: application-developer
+  design: design-system
+  qa: tech-lead
+
+inputs:
+  required:
+    - name: vibe_output
+      description: "Code generated from Vibe Coding"
+    - name: target_app
+      description: "Target application"
+  optional:
+    - name: priority
+      description: "Which parts to integrate first"
+
+steps:
+  - id: analyze_output
+    name: "Analyze Vibe Coding Output"
+    agent: tech-lead
+    action: "Assess code quality and patterns"
+    outputs:
+      - analysis_report
+      - component_map
+      - debt_identified
+
+  - id: map_components
+    name: "Map to Design System"
+    agent: application-developer
+    action: "Identify which Design System components to use"
+    depends_on: [analyze_output]
+    outputs:
+      - component_mapping
+      - missing_components
+
+  - id: replace_with_ds
+    name: "Replace with Design System"
+    agent: application-developer
+    action: "Substitute custom code with DS components"
+    depends_on: [map_components]
+    rules:
+      - "Use existing DS components"
+      - "Request new components if needed"
+      - "No inline styles"
+
+  - id: adjust_ux
+    name: "Adjust UX"
+    agent: application-developer
+    action: "Fix UX inconsistencies"
+    depends_on: [replace_with_ds]
+
+  - id: refactor_code
+    name: "Refactor Code"
+    agent: application-developer
+    action: "Clean up and standardize"
+    depends_on: [adjust_ux]
+    standards:
+      - "TypeScript strict"
+      - "No any types"
+      - "Proper error handling"
+
+  - id: tech_review
+    name: "Tech Lead Review"
+    agent: tech-lead
+    action: "Final code review"
+    depends_on: [refactor_code]
+
+outputs:
+  - name: production_code
+    description: "Clean, production-ready code"
+  - name: component_reuse_report
+    description: "DS components used"
+  - name: debt_reduction_report
+    description: "Technical debt eliminated"
+
+quality_gates:
+  - "All custom UI replaced with DS"
+  - "No inline styles"
+  - "TypeScript strict passes"
+  - "Tests written"
+  - "Tech Lead approved"
+
+value_proposition: |
+  Without this workflow:
+  - Vibe Coding becomes technical debt
+  - UI becomes patchwork
+  - Maintenance cost grows
+
+  With this workflow:
+  - Vibe Coding becomes rapid prototyping
+  - Production code is clean
+  - DS components are reused

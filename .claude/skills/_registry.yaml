@@ -385,6 +385,38 @@ skills:
         escalation: complexity > standard
 
   # ---------------------------------------------------------------------------
+  # VISUALIZATION & REPORTING
+  # ---------------------------------------------------------------------------
+
+  progress-visualizer:
+    path: .claude/skills/progress-visualizer/
+    auto_invoke: true
+    description: Rich ASCII art visualizations of TaskList progress (dashboard, roadmap, kanban, quest map)
+    triggers:
+      keywords:
+        - "show progress"
+        - "ver progresso"
+        - "where are we"
+        - "onde estamos"
+        - "roadmap"
+        - "status visual"
+        - "how is it going"
+        - "como esta o progresso"
+        - "kanban"
+        - "quest map"
+        - "burndown"
+        - "mostrar tasks"
+        - "visualizar progresso"
+      patterns:
+        - "(?i)show.*progress"
+        - "(?i)ver.*roadmap"
+        - "(?i)como.*est(a|ao).*tasks"
+        - "(?i)visuali.*progress"
+    agents_allowed: all
+    priority: medium
+    confirm_before_invoke: false
+
+  # ---------------------------------------------------------------------------
   # CODE QUALITY
   # ---------------------------------------------------------------------------
 
