@@ -352,6 +352,85 @@ async function markDone(taskId, summary, options = {}) {
   await updateStatus(taskId, 'done');
 }
 
+// LIST RECENT tasks from AI OPS space
+const AI_OPS_SPACE_ID = '901510017091';
+
+async function listRecent(options = {}) {
+  const { limit = 10, json = false, status = null } = options;
+
+  // Fetch tasks from AI OPS space via team endpoint (supports ordering)
+  const params = new URLSearchParams({
+    'space_ids[]': AI_OPS_SPACE_ID,
+    include_closed: 'false',
+    order_by: 'updated',
+    reverse: 'true',
+    page: '0'
+  });
+
+  if (status) {
+    params.append('statuses[]', status);
+  }
+
+  const result = await api(`/team/${TEAM_ID}/task?${params.toString()}`);
+
+  if (result.err) {
+    console.error('Error fetching tasks:', result.err);
+    return;
+  }
+
+  const tasks = (result.tasks || []).slice(0, limit);
+
+  if (json) {
+    const output = tasks.map(t => {
+      const af = t.custom_fields?.find(f => f.id === IDS.fields.AGENT);
+      let agentName = '-';
+      if (af?.value != null) {
+        const opts = af.type_config?.options || [];
+        const val = String(af.value);
+        const opt = opts.find(o => o.id === val) || opts.find(o => String(o.orderindex) === val);
+        agentName = opt?.label || opt?.name || val;
+      }
+      return {
+        id: t.id,
+        name: t.name,
+        status: t.status?.status || '-',
+        agent: agentName,
+        created: new Date(parseInt(t.date_created)).toISOString().split('T')[0],
+        updated: new Date(parseInt(t.date_updated)).toISOString().split('T')[0],
+        url: t.url
+      };
+    });
+    console.log(JSON.stringify(output, null, 2));
+    return;
+  }
+
+  // Console table output
+  console.log(`\nRecent Tasks (AI OPS) - Top ${limit}\n`);
+  console.log('  ID         | Status       | Agent            | Updated    | Name');
+  console.log('  -----------|--------------|------------------|------------|-----');
+
+  for (const t of tasks) {
+    const id = t.id.padEnd(9);
+    const st = (t.status?.status || '-').padEnd(12);
+    const agentField = t.custom_fields?.find(f => f.id === IDS.fields.AGENT);
+    // Extract agent label: value can be UUID or orderindex depending on field type
+    let agentLabel = '-';
+    if (agentField?.value != null) {
+      const opts = agentField.type_config?.options || [];
+      const val = String(agentField.value);
+      // Try match by id first, then by orderindex
+      const opt = opts.find(o => o.id === val) || opts.find(o => String(o.orderindex) === val);
+      agentLabel = opt?.label || opt?.name || val.substring(0, 16);
+    }
+    const agent = String(agentLabel).padEnd(16);
+    const updated = new Date(parseInt(t.date_updated)).toISOString().split('T')[0];
+    const name = t.name.length > 50 ? t.name.substring(0, 47) + '...' : t.name;
+    console.log(`  ${id} | ${st} | ${agent} | ${updated} | ${name}`);
+  }
+
+  console.log(`\n  Total: ${tasks.length} task(s)\n`);
+}
+
 // START
 async function startTask(taskId) {
   await updateStatus(taskId, 'in progress');
@@ -406,6 +485,14 @@ async function main() {
       });
       break;
 
+    case 'list-recent':
+      await listRecent({
+        limit: parseInt(getArg('limit') || '10', 10),
+        json: args.includes('--json'),
+        status: getArg('status')
+      });
+      break;
+
     default:
       console.log(`
 ClickUp Sync - AIOS Command Center
@@ -418,6 +505,10 @@ Commands:
   await-human <task_id> "what I need"
   done <task_id> "summary" [--handover='{"from_agent":"@pm",...}']
   done <task_id> "summary" --skip-handover --reason="Emergency hotfix"
+  list-recent                                    # Last 10 tasks from AI OPS
+  list-recent --limit=5                          # Last 5 tasks
+  list-recent --json                             # JSON output
+  list-recent --status=waiting                   # Filter by status
 
 Priority: 1=urgent, 2=high, 3=normal, 4=low
 Impact: revenue, efficiency, infra, strategic
