@@ -1,23 +1,17 @@
 /**
- * @deprecated Use agent-config-loader.js instead
- * This file will be removed in a future version.
- *
- * Migration guide:
- * - Old: const { loadAgentConfig } = require('./config-loader');
- * - New: const { AgentConfigLoader } = require('./agent-config-loader');
- *        const loader = new AgentConfigLoader(agentId);
- *        const config = await loader.load(coreConfig);
- *
  * AIOS Config Loader with Lazy Loading
  *
  * Intelligent configuration loader that only loads what each agent needs,
  * significantly reducing memory footprint and load times.
  *
+ * Note: agent-config-loader.js (class-based API) exists for agent-specific
+ * config loading with definition parsing. This module provides the simpler
+ * function-based API used by core/index.js exports.
+ *
  * @module core/config/config-loader
  * @version 1.0.0
  * @created 2025-01-16 (Story 6.1.2.6)
  * @migrated Story 2.2 - Core Module Creation
- * @deprecated Since Story 6.1.4 - Use agent-config-loader.js instead
  */
 
 const fs = require('fs').promises;

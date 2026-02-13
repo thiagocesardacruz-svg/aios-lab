@@ -1,27 +1,11 @@
 # ═══════════════════════════════════════════════════════════════════════════════
-# ⚠️  DEPRECATED - Use /mind-research instead
-# ═══════════════════════════════════════════════════════════════════════════════
-#
-# This workflow has been migrated to a modern SKILL.md format with:
-# - Teams Architecture (TeamCreate, TaskCreate, TaskUpdate)
-# - Parallel execution in Phase 3 (4 agents)
-# - Real specialist integration (@oalanicolas, @pedro-valerio)
-# - Enforced veto conditions
-# - Full Context Preamble
-#
-# NEW INVOCATION:
-#   /mind-research {domain} [--context "..."] [--must-include-local]
-#
-# NEW OUTPUT PATH:
-#   outputs/mind_research/{domain}/05-final-report.md
-#
-# Deprecated: 2026-02-06
-# Replacement: ~/.claude/skills/mind-research/SKILL.md
-#
-# ═══════════════════════════════════════════════════════════════════════════════
-# WORKFLOW: Mind Research Loop (LEGACY)
+# WORKFLOW: Mind Research Loop
 # Version: 2.1.0
 # Purpose: Research and validate the world's best minds for any domain
+#
+# Status: ACTIVE - Used by squad-chief.md and wf-create-squad.yaml
+# Note: A planned migration to /mind-research skill was never completed.
+#       This workflow remains the canonical implementation.
 # ═══════════════════════════════════════════════════════════════════════════════
 
 workflow-id: wf-mind-research-loop

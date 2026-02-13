@@ -35,7 +35,7 @@ const yaml = require('js-yaml');
 // Framework dependencies (from .aios-core/)
 const { SquadLoader } = require('../../../.aios-core/development/scripts/squad/squad-loader');
 const GreetingBuilder = require('../../../.aios-core/development/scripts/greeting-builder');
-const SessionContextLoader = require('../../../.aios-core/scripts/session-context-loader');
+const SessionContextLoader = require('../../../.aios-core/core/session/context-loader');
 const { loadProjectStatus } = require('../../../.aios-core/infrastructure/scripts/project-status-loader');
 
 const SQUADS_PATH = './squads';

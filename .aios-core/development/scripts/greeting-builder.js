@@ -422,7 +422,7 @@ class GreetingBuilder {
       { regex: /greeting-builder\.js/, priority: 1, desc: 'do **`.aios-core/scripts/greeting-builder.js`**', category: 'script' },
       { regex: /agent-config-loader\.js/, priority: 1, desc: 'do **`agent-config-loader.js`**', category: 'script' },
       { regex: /generate-greeting\.js/, priority: 1, desc: 'do **`generate-greeting.js`**', category: 'script' },
-      { regex: /session-context-loader\.js/, priority: 1, desc: 'do **`session-context-loader.js`**', category: 'script' },
+      { regex: /context-loader\.js/, priority: 1, desc: 'do **`context-loader.js`**', category: 'script' },
       { regex: /agents\/.*\.md/, priority: 1, desc: 'das definições de agentes', category: 'agent' },
       { regex: /\.md$/, priority: 2, desc: 'dos arquivos de documentação', category: 'doc' },
     ];
