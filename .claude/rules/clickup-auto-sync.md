@@ -22,7 +22,7 @@ Use the sync script at `squads/ops/scripts/clickup-sync.mjs`:
 
 ```bash
 # Create task when starting work
-node squads/ops/scripts/clickup-sync.mjs create "Task name" --agent=@<agent> --description="..."
+node squads/ops/scripts/clickup-sync.mjs create "Task name" --agent=@<agent> --squad=<squad> --impact=efficiency --objective="Short why"
 
 # Mark as in progress
 node squads/ops/scripts/clickup-sync.mjs start <task_id>
@@ -37,6 +37,8 @@ node squads/ops/scripts/clickup-sync.mjs done <task_id> "Summary of what was don
 node squads/ops/scripts/clickup-sync.mjs comment <task_id> "Progress update"
 ```
 
+**Note:** Tool/LLM is auto-filled based on the current model (default: Claude Opus). Override with `--tool=sonnet`.
+
 ### Task Naming Convention
 
 Format: `[AREA] Brief description`
@@ -49,14 +51,26 @@ Examples:
 
 ### Automatic Agent Mapping
 
-| Agent | ClickUp Agent Field |
-|-------|---------------------|
-| @dev | @dev |
-| @architect | @architect |
-| @devops | @devops |
-| @pm | @pm |
-| @qa | @qa |
-| @analyst | @analyst |
+Only Core Agents + Squad Leads are tracked in ClickUp (30 options total).
+Squad leads coordinate their sub-agents; individual agents don't appear in the dropdown.
+
+**Core Agents:** @aios-master, @architect, @dev, @devops, @pm, @po, @sm, @qa,
+@analyst, @data-engineer, @ux-design-expert, @squad-creator, @clawdbot
+
+**Squad Leads:** @tech-lead, @automation-lead, @clickup-lead, @design-lead,
+@design-system-lead, @marketing-lead, @ghl-lead, @sales-pages-lead,
+@copywriting-lead, @hotel-mkt-lead, @hormozi-lead, @research-lead,
+@finance-lead, @growth-lead, @customer-lead, @sales-lead, @translation-lead
+
+### Custom Fields (auto-set)
+
+| Field | Type | Values |
+|-------|------|--------|
+| Agent | Dropdown | Core agents + squad leads |
+| Squad | Dropdown | 20 squads |
+| Task Objective | Text | Short "why" for the task |
+| Impact | Dropdown | Revenue, Efficiency, Infra, Strategic |
+| Tool / LLM | Dropdown | Claude Opus (default), Sonnet, Haiku, GPT-4, Ollama, whisper.cpp, n8n, Manual |
 
 ### Status Flow
 
@@ -67,7 +81,10 @@ inbox → to do → in progress → waiting (if needed) → review → done
 ### Example Workflow
 
 1. User: "Create a new login page"
-2. Agent creates ClickUp task: `[Feature] Create login page`
+2. Agent creates ClickUp task:
+   ```bash
+   node clickup-sync.mjs create "[Feature] Create login page" --agent=@dev --squad=tech --impact=revenue --objective="Enable user authentication"
+   ```
 3. Agent starts work, updates status to "in progress"
 4. Agent adds comment with progress
 5. If blocked, moves to "waiting" with explanation

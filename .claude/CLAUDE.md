@@ -220,7 +220,7 @@ Located in `squads/ops/scripts/`:
 
 | Script | Purpose | Usage |
 |--------|---------|-------|
-| `clickup-sync.mjs` | Task CRUD | `node clickup-sync.mjs create "Task" --agent=@dev` |
+| `clickup-sync.mjs` | Task CRUD | `node clickup-sync.mjs create "Task" --agent=@dev --squad=tech --impact=efficiency` |
 | `command-center.mjs` | Cost/token tracking | `node command-center.mjs track <task_id> <tokens>` |
 | `dashboard.mjs` | Dashboard & Goals sync | `node dashboard.mjs sync` |
 
@@ -229,8 +229,8 @@ Located in `squads/ops/scripts/`:
 Agents MUST sync tasks to ClickUp (see `.claude/rules/clickup-auto-sync.md`):
 
 ```bash
-# Create task
-node squads/ops/scripts/clickup-sync.mjs create "[Feature] Task name" --agent=@dev --priority=2
+# Create task (Tool/LLM auto-filled from current model)
+node squads/ops/scripts/clickup-sync.mjs create "[Feature] Task name" --agent=@dev --squad=tech --priority=2 --impact=efficiency
 
 # Start work
 node squads/ops/scripts/clickup-sync.mjs start <task_id>

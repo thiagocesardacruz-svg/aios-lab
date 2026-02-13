@@ -17,13 +17,13 @@ config:
   default_language: "pt-BR"
 
 lead:
-  agent: "copy-chief"
-  role: "Copy Chief"
+  agent: "copywriting-lead"
+  role: "Copywriting Lead"
   name: "Maverick"
 
 agents:
-  # Chief / Orchestrator
-  - id: "copy-chief"
+  # Lead / Orchestrator
+  - id: "copywriting-lead"
     file: "agents/copy-chief.md"
     role: "Orchestrator, routing, quality control"
     name: "Maverick"
@@ -134,7 +134,7 @@ agents:
 
 components:
   agents:
-    - "copy-chief.md"
+    - "copywriting-lead.md"
     - "gary-halbert.md"
     - "dan-kennedy.md"
     - "john-carlton.md"
@@ -234,8 +234,8 @@ commands:
     visibility: "full"
 
 routing:
-  entrypoint: "copy-chief"
-  description: "O Copy Chief (Maverick) é o ponto de entrada. Ele analisa a missão e roteia para o especialista correto."
+  entrypoint: "copywriting-lead"
+  description: "O Copywriting Lead (Maverick) é o ponto de entrada. Ele analisa a missão e roteia para o especialista correto."
 
 specialist-map:
   sales-letter: ["dan-kennedy", "gary-halbert", "clayton-makepeace", "robert-collier"]

@@ -57,17 +57,20 @@
     ]
   },
   "custom_fields": {
-    "Executor Type": "8eaa8398-8740-49d4-9bea-7164e76eb7ba",
     "Agent": "743649c2-7132-4e65-9370-a161e7719949",
     "Squad": "fee999cb-cfbe-4c06-a806-77b71da75f40",
-    "Cost (EUR)": "488870a0-7d5e-4973-a067-07df43896382",
-    "Tokens": "4f1b9e06-d0c8-4a93-9b68-1826f0d4441c"
+    "Task Objective": "83a9af52-3330-498b-95ed-a33f21e2634e",
+    "Impact": "cad1ac7b-2d62-4baa-9b93-856b116f6a60",
+    "Tool / LLM": "1af96c15-77f7-473f-b15b-390ffcc47ea8"
   },
   "deprecated_fields": {
     "OS ID": "12f6a07f-153d-46ec-9ef3-321c83fa8023",
     "Priority GTD": "eeec444f-6172-422f-9815-0ba4a9271d66",
     "Executor (old)": "4bea3216-a068-47cc-bf20-8e33b43f98f9",
-    "Agent (old 9 options)": "936e8499-160f-4028-a85a-26234954bd1b"
+    "Agent (old 9 options)": "936e8499-160f-4028-a85a-26234954bd1b",
+    "Executor Type": "8eaa8398-8740-49d4-9bea-7164e76eb7ba",
+    "Cost (EUR)": "488870a0-7d5e-4973-a067-07df43896382",
+    "Tokens": "4f1b9e06-d0c8-4a93-9b68-1826f0d4441c"
   },
   "dashboard": {
     "task_id": "86c86bz0w",
@@ -91,9 +94,10 @@
     }
   },
   "created_at": "2026-02-11",
-  "updated_at": "2026-02-12",
+  "updated_at": "2026-02-13",
   "created_by": "@devops",
   "agent_options": {
+    "_comment": "Core Agents + Squad Leads only. Leads coordinate their squad agents.",
     "@aios-master": "42e8fb26-5632-4163-ae19-6bc4b2eeabb6",
     "@architect": "f915813c-5080-4a07-b8b0-fcdeb434490c",
     "@dev": "a6cf735b-cbc3-44f5-895c-bbe28436cb7c",
@@ -106,42 +110,30 @@
     "@data-engineer": "3ad53a46-c5be-4819-b09b-0203980db05c",
     "@ux-design-expert": "2b7e9034-0bbf-4d4e-91ec-3841948ae289",
     "@squad-creator": "d4ee70f3-4b5e-462b-abb8-df8676dd4600",
-    "@tech-lead": "80fabbfb-995b-4816-ae40-f5a45d0549c8",
-    "@automation-engineer": "3218ffa2-85e5-4968-b4a2-46a06a510076",
-    "@ghl-specialist": "7e08b0f2-0617-4c6a-99c4-755a083a5d92",
-    "@ai-ops": "08224e92-a975-4c29-ab57-5817f358289d",
-    "@application-developer": "008a2212-00e3-48a0-93d8-67180facbd29",
-    "@ops-manager": "c626d06a-d7ff-43cb-a485-b7caedebdb2a",
     "@clawdbot": "34e38aaf-5774-4678-bcbd-240b03146b1a",
-    "@content-reviewer": "c1e7dcf2-8073-42f5-a320-d8715b599bfc",
-    "@process-auditor": "60487db1-ef2f-4136-8f15-4607a3931504",
+    "@tech-lead": "80fabbfb-995b-4816-ae40-f5a45d0549c8",
+    "@automation-lead": "3218ffa2-85e5-4968-b4a2-46a06a510076",
+    "@clickup-lead": "d5ed0b41-1d65-4998-8f0a-eb2b6aeb4e6f",
     "@design-lead": "3a60fdf9-920f-4e5b-8038-9a34f968b88f",
-    "@performance-designer": "4a9b3530-18e9-49d5-939a-6422cd0296b4",
-    "@motion-video-specialist": "c59bba32-0c0b-4dc2-be1a-74c3c31535a8",
-    "@visual-systems-designer": "f283f7e1-4f33-40af-ba16-7b5372d86eae",
+    "@design-system-lead": "120231bd-e418-43f5-817b-760707842956",
     "@marketing-lead": "ddeb068e-06b7-4789-a5c6-76366bc37e3c",
-    "@offer-engine": "5725a4be-8385-48aa-a3dc-b0f55fae58a1",
-    "@content-strategist": "ff87747a-5bbc-4b30-b24a-8cd59bfa7419",
-    "@copy-specialist": "9e1d9601-80be-4953-b09a-bec3b7e0cc89",
-    "@seo-specialist": "2ea6d7f9-4b82-47d5-8506-3dd42d47791c",
-    "@funnel-architect": "24e78457-f0b5-474e-aab5-ab96ddd1c95b",
-    "@ghl-automation-specialist": "94124751-fd6a-45fb-baa2-8b8928f9afa0",
-    "@ghl-snapshot-architect": "94f8dca9-f13e-438e-a300-9bb5a1ffc5fa",
-    "@ghl-funnel-engineer": "98f50433-036c-4b72-90ea-772800633f2c",
-    "@ghl-crm-structuralist": "c723a85f-6479-45ed-829c-6f906b169274",
-    "@ghl-email-strategist": "585de7c6-f43e-4d44-bae9-075f48d1ca37",
-    "@pm-orchestrator": "d5ed0b41-1d65-4998-8f0a-eb2b6aeb4e6f",
-    "@process-diagnostician": "fe82a783-8aae-4364-8c13-ffa457095a84",
-    "@clickup-architect": "a21107e0-a823-489e-a935-f345d6176e59",
-    "@launch-operations-manager": "f8898091-26bc-47f8-a9b4-d1ce1b52d688",
-    "@content-operations-manager": "2db54ba8-063e-4e60-8bf1-5093b98e64f4",
-    "@crm-builder": "38785c1f-5211-4654-8a10-ffc816940b4c",
-    "@saas-operations-specialist": "5e4245e3-aad6-4b69-bff5-34b2fe2deb89",
-    "@support-operations-specialist": "d268995b-10a6-4220-92cb-e3ab1cdbc116"
+    "@ghl-lead": "94124751-fd6a-45fb-baa2-8b8928f9afa0",
+    "@sales-pages-lead": "a063f663-487d-48ad-884d-dc6ab03357ee",
+    "@copywriting-lead": "0b80c71a-2aec-461b-a7c4-e268eb14caea",
+    "@hotel-mkt-lead": "1f48b39f-ae97-4c45-961a-080978c1cc64",
+    "@hormozi-lead": "1f538697-3289-4f1f-8389-09d444553194",
+    "@research-lead": "1f1e4328-0b9a-4d8c-b8b5-3cd4aeefa574",
+    "@finance-lead": "8a21d44a-57d6-493b-9d8c-025134efa1a0",
+    "@growth-lead": "53aa96a3-6ac1-403f-a0d5-a97e34c45af5",
+    "@customer-lead": "e09638ca-62e6-459a-98bf-e1ab3324abf8",
+    "@sales-lead": "5794f43c-4f9d-4753-961b-5a6e3d17d145",
+    "@translation-lead": "8633c3ce-6d14-405b-8b4c-90ce90fa7025"
   },
   "squad_options": {
+    "_comment": "Keys = internal squad folder name, Values = ClickUp option UUID",
     "ops": "6f818eed-aa97-445c-8bb0-54167868868e",
     "tech": "6f6286b6-812a-4f43-97ff-107bfdc6011e",
+    "automation": "199f3585-ff2a-4baa-9542-47e864d080e0",
     "qa": "222c69f6-247c-4ab8-8f11-042da3de8d7b",
     "design": "a5cb688b-6761-4cd8-88be-7c270ee81a7d",
     "design-system": "2ffbcfb4-87db-4568-9095-21caf1030aee",
@@ -159,5 +151,13 @@
     "hotel-mkt": "ce1834cf-09bc-44d2-ab01-9b6e69e91539",
     "hormozi": "f0b4d4f8-5b8e-4f66-b055-010cb48e6bfc",
     "translator": "9cabee47-0172-48f5-9ff4-ea7d81aa1f89"
+  },
+  "command_center": {
+    "type": "doc",
+    "doc_id": "2kyqzwqd-1415",
+    "doc_url": "https://app.clickup.com/90152366829/docs/2kyqzwqd-1415",
+    "created_at": "2026-02-13",
+    "created_by": "@aios-master",
+    "update_command": "node squads/ops/scripts/create-command-center-doc.mjs --update"
   }
 }
