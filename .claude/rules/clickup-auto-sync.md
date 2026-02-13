@@ -98,6 +98,51 @@ to do → in progress → waiting (if needed) → review → done
 
 ---
 
+## Task Lifecycle Enforcement (MANDATORY)
+
+**Every task MUST follow the full lifecycle. No exceptions.**
+
+### The 3 Mandatory Status Updates
+
+| When | Action | Command |
+|------|--------|---------|
+| **Starting work** | Set to "in progress" | `node clickup-sync.mjs start <task_id>` |
+| **Work completed** | Set to "done" + summary | `node clickup-sync.mjs done <task_id> "Summary"` |
+| **Blocked/waiting** | Set to "waiting" + reason | `node clickup-sync.mjs await-human <task_id> "Reason"` |
+
+### Rules
+
+1. **NEVER leave a task in "to do" after starting work.** The moment you begin executing, run `start`.
+2. **NEVER end a session with tasks in "in progress" that are actually done.** Always close with `done`.
+3. **NEVER skip the completion summary.** The `done` command requires a description of what was accomplished.
+4. **Date tracking**: The `done` command automatically sets the completion date. Do NOT manually set dates.
+5. **Session end check**: Before ending any session, agents MUST verify all their tasks have correct status.
+
+### Anti-Patterns (NEVER do these)
+
+| Anti-Pattern | Correct Behavior |
+|--------------|------------------|
+| Create task, do work, forget to close | Create → start → done (always close) |
+| Leave "in progress" across sessions | Either `done` or `await-human` before session ends |
+| Close without summary | Always include what was accomplished |
+| Multiple tasks "in progress" simultaneously | Max 1 task in progress per agent at a time |
+| Task stays "to do" for >48h without action | Review and either start, reassign, or delete |
+
+### Session End Checklist
+
+Before ending a session, every agent MUST:
+
+```
+1. List my active tasks: node clickup-sync.mjs list-recent
+2. For each "in progress" task:
+   - If done → run `done <id> "summary"`
+   - If blocked → run `await-human <id> "reason"`
+   - If continuing later → add comment with progress
+3. Confirm no orphaned tasks remain
+```
+
+---
+
 ## Handover Validation (GOV-001.3)
 
 When marking tasks as `done`, the system validates handover contracts to ensure complete context transfer between agents.
