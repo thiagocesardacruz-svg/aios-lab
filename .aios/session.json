@@ -1,0 +1,22 @@
+{
+  "project": {
+    "name": "aios-lab",
+    "emoji": "🧠",
+    "type": "framework",
+    "displayTitle": "AIOS Lab",
+    "titleEmoji": "🧠"
+  },
+  "status": {
+    "progress": "",
+    "emoji": "",
+    "phase": "sprint-0"
+  },
+  "agent": {
+    "active": "",
+    "squad": ""
+  },
+  "metadata": {
+    "createdAt": "2026-02-13T00:00:00.000Z",
+    "lastUpdatedAt": "2026-02-13T00:00:00.000Z"
+  }
+}

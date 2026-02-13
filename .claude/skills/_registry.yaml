@@ -417,6 +417,36 @@ skills:
     confirm_before_invoke: false
 
   # ---------------------------------------------------------------------------
+  # PERSONA & CLONING
+  # ---------------------------------------------------------------------------
+
+  icp-clone:
+    path: .claude/skills/icp-clone/
+    auto_invoke: false  # User-invocable only - expensive operation (EUR 30-40)
+    description: Cognitive persona cloning (SYNAPSE v6.0 + Decision Intelligence) - 6 phases, 16 dimensions
+    triggers:
+      keywords:
+        - "clonar persona"
+        - "clone persona"
+        - "criar ICP"
+        - "create ICP"
+        - "avatar do cliente"
+        - "customer avatar"
+        - "clone cognitivo"
+        - "mind clone"
+      patterns:
+        - "(?i)clon.*persona"
+        - "(?i)create.*icp"
+        - "(?i)build.*avatar"
+    agents_allowed:
+      - analyst
+      - research-lead
+      - copywriting-lead
+      - aios-master
+    priority: high
+    confirm_before_invoke: true  # Always ask - expensive operation
+
+  # ---------------------------------------------------------------------------
   # CODE QUALITY
   # ---------------------------------------------------------------------------
 
