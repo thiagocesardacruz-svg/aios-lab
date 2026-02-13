@@ -152,6 +152,10 @@
     "doc_url": "https://app.clickup.com/90152366829/docs/2kyqzwqd-1415",
     "created_at": "2026-02-13",
     "created_by": "@aios-master",
-    "update_command": "node squads/ops/scripts/create-command-center-doc.mjs --update"
+    "update_command": "node squads/ops/scripts/create-command-center-doc.mjs --update",
+    "pages": {
+      "n8n_machines": "2kyqzwqd-1175",
+      "clawdbot": "2kyqzwqd-1215"
+    }
   }
 }
