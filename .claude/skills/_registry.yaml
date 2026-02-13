@@ -385,6 +385,31 @@ skills:
         escalation: complexity > standard
 
   # ---------------------------------------------------------------------------
+  # CODE QUALITY
+  # ---------------------------------------------------------------------------
+
+  doc-rot:
+    path: .claude/skills/doc-rot/
+    auto_invoke: false  # User-invocable only - run explicitly on targets
+    description: Finds stale, lying, or redundant documentation for deletion
+    triggers:
+      keywords:
+        - "doc rot"
+        - "stale todo"
+        - "lying comment"
+        - "clean documentation"
+        - "dead comments"
+      patterns:
+        - "(?i)find.*stale.*doc"
+        - "(?i)clean.*comments"
+    agents_allowed:
+      - dev
+      - qa
+      - architect
+    priority: medium
+    confirm_before_invoke: false
+
+  # ---------------------------------------------------------------------------
   # META-SKILLS (User-Invocable Only)
   # ---------------------------------------------------------------------------
 

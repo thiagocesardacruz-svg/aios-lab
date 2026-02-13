@@ -407,7 +407,7 @@ files:
   - infrastructure\component-metadata.js
   - infrastructure\component-search.js
   - infrastructure\config-cache.js
-  - infrastructure\config-loader.js
+
   - infrastructure\conflict-resolver.js
   - infrastructure\coverage-analyzer.js
   - infrastructure\dependency-analyzer.js
@@ -534,7 +534,6 @@ files:
   - scripts\command-execution-hook.js
   - scripts\migrate-framework-docs.sh
   - scripts\README.md
-  - scripts\session-context-loader.js
   - scripts\test-template-system.js
   - scripts\validate-phase1.ps1
   - scripts\workflow-management.md

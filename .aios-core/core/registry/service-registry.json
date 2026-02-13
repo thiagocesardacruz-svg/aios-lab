@@ -782,37 +782,6 @@
       }
     },
     {
-      "id": "config-loader",
-      "name": "Config Loader",
-      "description": "@deprecated Use agent-config-loader.js instead\r This file will be removed in a future version.",
-      "category": "script",
-      "subcategory": "configuration",
-      "inputs": [],
-      "outputs": [],
-      "tags": [
-        "script",
-        "configuration",
-        "config",
-        "loader"
-      ],
-      "path": ".aios-core/infrastructure/scripts/config-loader.js",
-      "taskFormat": "SCRIPT",
-      "executorTypes": [
-        "CLI",
-        "Script"
-      ],
-      "performance": {
-        "avgDuration": "500ms",
-        "cacheable": true,
-        "parallelizable": true
-      },
-      "agents": [],
-      "metadata": {
-        "source": "infrastructure",
-        "addedVersion": "1.0.0"
-      }
-    },
-    {
       "id": "conflict-resolver",
       "name": "Conflict Resolver",
       "description": "Handles conflict detection and resolution for meta-agent modifications",
