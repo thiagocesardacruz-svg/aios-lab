@@ -26,12 +26,12 @@ independence_details: |
   - All operations are filesystem-based
 
 lead:
-  agent: "design-system"
+  agent: "design-system-lead"
   name: "Atlas"
   role: "Design System Lead"
 
 agents:
-  - id: "design-system"
+  - id: "design-system-lead"
     file: "agents/design-system.md"
     name: "Atlas"
     role: "UI audit, tokens, components, accessibility (Brad Frost methodology)"

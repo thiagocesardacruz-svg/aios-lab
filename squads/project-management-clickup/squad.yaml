@@ -17,12 +17,12 @@ config:
   squad_type: "hybrid"
 
 lead:
-  agent: "pm-orchestrator"
-  role: "PM Orchestrator"
+  agent: "clickup-lead"
+  role: "ClickUp Lead"
 
 agents:
-  # Orchestrator
-  - id: "pm-orchestrator"
+  # Lead
+  - id: "clickup-lead"
     file: "agents/pm-orchestrator.md"
     role: "Ponto de entrada, roteia demandas para especialistas"
     tier: 0
@@ -69,7 +69,7 @@ agents:
 
 components:
   agents:
-    - "pm-orchestrator.md"
+    - "clickup-lead.md"
     - "clickup-architect.md"
     - "automation-engineer.md"
     - "process-diagnostician.md"

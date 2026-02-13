@@ -13,19 +13,19 @@ aios:
 
 config:
   slashPrefix: "hormozi"
-  entry_point: "agents/hormozi-chief.md"
+  entry_point: "agents/hormozi-lead.md"
   squad_type: "specialist"
   default_language: "pt-BR"
   fidelity_target: 0.95
 
 lead:
-  agent: "hormozi-chief"
-  role: "Hormozi Chief"
+  agent: "hormozi-lead"
+  role: "Hormozi Lead"
   name: "The $100M Mind"
 
 agents:
-  # Tier 0 - Orchestrator
-  - id: "hormozi-chief"
+  # Tier 0 - Lead
+  - id: "hormozi-lead"
     file: "agents/hormozi-chief.md"
     role: "Master orchestrator - routing, strategy, coordination"
     tier: 0
@@ -98,7 +98,7 @@ agents:
 
 components:
   agents:
-    - "hormozi-chief.md"
+    - "hormozi-lead.md"
     - "hormozi-offers.md"
     - "hormozi-leads.md"
     - "hormozi-models.md"
@@ -308,15 +308,15 @@ commands:
   # Orchestration
   - name: "diagnose"
     description: "Value Equation diagnostic"
-    agent: "hormozi-chief"
+    agent: "hormozi-lead"
     visibility: "full"
   - name: "health-check"
     description: "Quick LTV:CAC health check"
-    agent: "hormozi-chief"
+    agent: "hormozi-lead"
     visibility: "full"
   - name: "route"
     description: "Route to correct specialist"
-    agent: "hormozi-chief"
+    agent: "hormozi-lead"
     visibility: "full"
 
   # Offers

@@ -18,11 +18,11 @@ config:
   output_format: "markdown"
 
 lead:
-  agent: "copy-chief"
-  role: "Copy Chief"
+  agent: "sales-pages-lead"
+  role: "Sales Pages Lead"
 
 agents:
-  - id: "copy-chief"
+  - id: "sales-pages-lead"
     file: "agents/copy-chief.md"
     role: "Copywriting, headlines, storytelling"
     name: "Marcus"
@@ -37,7 +37,7 @@ agents:
 
 components:
   agents:
-    - "copy-chief.md"
+    - "sales-pages-lead.md"
     - "offer-architect.md"
     - "conversion-optimizer.md"
   workflows:

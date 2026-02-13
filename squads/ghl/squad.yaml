@@ -19,8 +19,8 @@ config:
 
 # Squad Lead
 lead:
-  agent: "ghl-automation-specialist"
-  role: "Squad Lead - Orquestra workflows e integrações"
+  agent: "ghl-lead"
+  role: "GHL Lead - Orquestra workflows e integrações"
 
 # Agentes do squad (5 especializados conforme arquitetura)
 agents:
@@ -44,9 +44,9 @@ agents:
     role: "Estrategista de Email Marketing"
     description: "Templates, campanhas, deliverability, conformidade LGPD"
 
-  - id: "ghl-automation-specialist"
+  - id: "ghl-lead"
     file: "agents/ghl-automation-specialist.md"
-    role: "Especialista em Automação"
+    role: "Squad Lead & Especialista em Automação"
     description: "Workflows, webhooks, lógica de gatilhos, integração n8n"
 
 # Componentes

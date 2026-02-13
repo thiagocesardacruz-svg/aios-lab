@@ -13,17 +13,17 @@ aios:
 
 config:
   slashPrefix: "hotel"
-  entry_point: "agents/hotel-mkt-chief.md"
+  entry_point: "agents/hotel-mkt-lead.md"
   squad_type: "vertical"
   default_language: "pt-BR"
 
 lead:
-  agent: "hotel-mkt-chief"
-  role: "Hotel Marketing Chief"
+  agent: "hotel-mkt-lead"
+  role: "Hotel Marketing Lead"
 
 agents:
-  # Tier 0 - Orchestrator
-  - id: "hotel-mkt-chief"
+  # Tier 0 - Lead
+  - id: "hotel-mkt-lead"
     file: "agents/hotel-mkt-chief.md"
     role: "Orquestra todo o squad, diagnostica, roteia demandas"
     tier: 0
@@ -88,7 +88,7 @@ agents:
 
 components:
   agents:
-    - "hotel-mkt-chief.md"
+    - "hotel-mkt-lead.md"
     - "hotel-trend-hunter.md"
     - "hotel-offer-architect.md"
     - "hotel-guest-strategist.md"

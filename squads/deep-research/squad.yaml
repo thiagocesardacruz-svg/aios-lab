@@ -1,14 +1,31 @@
 name: deep-research
-version: 1.0.0
-description: Framework de pesquisa profunda para novos projetos
+version: "1.1.0"
+description: "Framework de pesquisa profunda para novos projetos"
+
+aios:
+  minVersion: "2.1.0"
+  type: squad
+  domain: research
+
+config:
+  slashPrefix: "research"
+  entry_point: null
 
 metadata:
   author: TravelTech Digital
   category: research
   tags: [research, strategy, discovery, analysis]
 
+lead:
+  agent: "research-lead"
+  name: "Sage"
+  role: "Research Lead"
+
 agents:
-  - researcher
+  - id: "research-lead"
+    file: "agents/researcher.md"
+    name: "Sage"
+    role: "Deep research, market analysis, competitor mapping, strategic briefs"
 
 phases:
   discovery:
