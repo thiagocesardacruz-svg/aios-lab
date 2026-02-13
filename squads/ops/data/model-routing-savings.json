@@ -1,0 +1,22 @@
+{
+  "totalSaved": 0,
+  "routings": [
+    {
+      "timestamp": "2026-02-12T05:38:20.511Z",
+      "task": "Extract all email addresses from this JSON file",
+      "model": "haiku",
+      "tokens": null
+    },
+    {
+      "timestamp": "2026-02-12T05:38:22.125Z",
+      "task": "Design a new authentication architecture with OAut",
+      "model": "opus",
+      "tokens": null
+    }
+  ],
+  "byModel": {
+    "haiku": 1,
+    "sonnet": 0,
+    "opus": 1
+  }
+}

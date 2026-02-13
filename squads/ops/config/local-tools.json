@@ -54,6 +54,38 @@
       "description": "ETL de ebooks (EPUB, MOBI, AZW → MD/TXT/PDF)",
       "formats": ["epub", "mobi", "azw", "azw3", "fb2", "lit", "pdb", "pdf", "rtf", "txt", "docx", "html", "cbz", "cbr"],
       "cost_per_use": 0
+    },
+    "markitdown": {
+      "name": "MarkItDown",
+      "version": "0.1.2",
+      "type": "python_package",
+      "description": "Conversor universal → Markdown (Microsoft OSS). Melhor que Pandoc para preservar estrutura.",
+      "formats": ["pdf", "docx", "xlsx", "pptx", "html", "csv", "json", "xml", "zip", "png", "jpg", "wav", "mp3"],
+      "script": "squads/ops/scripts/markitdown-convert.mjs",
+      "cost_per_use": 0
+    },
+    "duckdb": {
+      "name": "DuckDB",
+      "version": "1.4.4",
+      "type": "python_package",
+      "description": "OLAP database embarcado. Analytics local sem servidor.",
+      "database": "squads/ops/data/analytics.duckdb",
+      "cost_per_use": 0
+    },
+    "fastmcp": {
+      "name": "FastMCP",
+      "version": "2.14.5",
+      "type": "python_package",
+      "description": "Framework para criar MCP servers em Python.",
+      "servers_dir": "squads/ops/mcp-servers/",
+      "cost_per_use": 0
+    },
+    "uv": {
+      "name": "uv",
+      "version": "0.10.2",
+      "binary": "C:\\Users\\thiag\\.local\\bin\\uv.exe",
+      "description": "Package manager Python ultrarrápido (Rust). 10-100x mais rápido que pip.",
+      "cost_per_use": 0
     }
   },
   "cost_savings": {
