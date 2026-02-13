@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
  * Create "n8n Machines" page in ClickUp Command Center
- * Lists all 16 active machines with descriptions, webhook URLs, and demo payloads
+ * Lists all 26 active machines with descriptions, webhook URLs, and demo payloads
  */
 
 const API_V3 = 'https://api.clickup.com/api/v3';
@@ -13,7 +13,7 @@ const today = new Date().toISOString().split('T')[0];
 
 const content = `# n8n Machines - Catalogo de Automacoes
 
-> **16 maquinas ativas** prontas para uso. Cada uma tem um webhook que pode ser acionado via POST.
+> **26 maquinas ativas** prontas para uso. Cada uma tem um webhook que pode ser acionado via POST.
 > Instancia: ${BASE}
 > Ultima atualizacao: **${today}**
 
@@ -428,6 +428,255 @@ Gera comunicacoes personalizadas para cada fase da jornada do hospede (pre-arriv
 
 ---
 
+### ESTRATEGIA & OFERTAS (3) — Squad Hormozi
+
+#### 17. Grand Slam Offer Builder
+
+Constroi oferta irresistivel usando Value Equation do Hormozi ($100M Offers): Dream Outcome, Likelihood, Time, Effort. Inclui bonuses, garantia, naming e pricing.
+
+| | |
+| --- | --- |
+| **Webhook** | \`${BASE}/webhook/aios-offer-builder\` |
+| **Metodo** | POST |
+| **Uso** | Criacao de ofertas, pricing, lancamentos |
+
+**Payload de demo:**
+\`\`\`json
+{
+  "product": "Pacote de Marketing Digital para Hoteis - SEO + Social Media + Reputacao Online",
+  "market": "Hoteis independentes em Portugal, 20-80 quartos",
+  "current_price": "1500 EUR/mes",
+  "pain_points": ["baixa ocupacao fora de temporada", "dependencia de OTAs", "reviews negativos sem resposta"],
+  "language": "pt-BR"
+}
+\`\`\`
+
+---
+
+#### 18. Lead Magnet Generator
+
+Gera conceitos de lead magnet usando Core Four (Hormozi $100M Leads): warm outreach, cold outreach, content, paid ads. Inclui titulo, formato, CTA e plano de distribuicao.
+
+| | |
+| --- | --- |
+| **Webhook** | \`${BASE}/webhook/aios-lead-magnet\` |
+| **Metodo** | POST |
+| **Uso** | Topo de funil, captacao de leads |
+
+**Payload de demo:**
+\`\`\`json
+{
+  "business": "Agencia de marketing digital para hoteis",
+  "audience": "Donos de hoteis independentes em Portugal",
+  "problem": "Nao sabem como reduzir dependencia de OTAs e aumentar reservas diretas",
+  "language": "pt-BR"
+}
+\`\`\`
+
+---
+
+#### 19. 4-Day Cash Machine
+
+Campanha de 4 emails com urgencia escalante (Frank Kern/Hormozi). Gera sequencia completa com SMS companions e landing page.
+
+| | |
+| --- | --- |
+| **Webhook** | \`${BASE}/webhook/aios-cash-machine\` |
+| **Metodo** | POST |
+| **Uso** | Campanhas de cash rapido, reativacao de base |
+
+**Payload de demo:**
+\`\`\`json
+{
+  "offer": "Pacote Verao Antecipado - 3 noites com meia pensao",
+  "audience": "Hospedes anteriores do hotel",
+  "regular_price": "450 EUR",
+  "special_price": "299 EUR",
+  "brand": "Hotel Cascais Beach",
+  "language": "pt-BR"
+}
+\`\`\`
+
+---
+
+### COPYWRITING (2) — Squad Copywriting Masters
+
+#### 20. Copy Brief Generator
+
+Gera brief estruturado com nivel de awareness (Schwartz), tom, angulo, e recomendacao do copywriter ideal dos 22 mestres do squad.
+
+| | |
+| --- | --- |
+| **Webhook** | \`${BASE}/webhook/aios-copy-brief\` |
+| **Metodo** | POST |
+| **Uso** | Intake de projetos de copy, briefs para equipa |
+
+**Payload de demo:**
+\`\`\`json
+{
+  "product": "Curso online de Revenue Management para Hoteleiros",
+  "audience": "Gestores de hoteis independentes, 35-55 anos",
+  "objective": "Vender curso de 497 EUR via landing page",
+  "channel": "landing_page",
+  "language": "pt-BR"
+}
+\`\`\`
+
+---
+
+#### 21. Headline Variant Factory
+
+Gera 10+ variantes de headlines usando formulas de Caples, Schwartz e Sugarman. Inclui pares A/B e subheadlines.
+
+| | |
+| --- | --- |
+| **Webhook** | \`${BASE}/webhook/aios-headline-factory\` |
+| **Metodo** | POST |
+| **Uso** | Testes A/B, landing pages, emails, ads |
+
+**Payload de demo:**
+\`\`\`json
+{
+  "product": "Software de Gestao Hoteleira com IA",
+  "angle": "economia de tempo",
+  "audience": "Gestores de hoteis sobrecarregados",
+  "benefit": "Automatiza 80% das tarefas repetitivas",
+  "num_variants": 10,
+  "language": "pt-BR"
+}
+\`\`\`
+
+---
+
+### HOTEL MARKETING (2) — Squad Hotel Mkt
+
+#### 22. Seasonal Campaign Generator
+
+Campanha completa por temporada: oferta, sequencia de emails, posts social media, Google Ads, landing page e calendario de execucao.
+
+| | |
+| --- | --- |
+| **Webhook** | \`${BASE}/webhook/aios-seasonal-campaign\` |
+| **Metodo** | POST |
+| **Uso** | Planeamento sazonal, campanhas de temporada |
+
+**Payload de demo:**
+\`\`\`json
+{
+  "hotel_type": "boutique hotel beira-mar",
+  "business_name": "Hotel Cascais Beach",
+  "season": "verao",
+  "month": "Junho",
+  "location": "Cascais, Portugal",
+  "target_audience": "Casais e familias classe AB",
+  "unique_features": ["piscina infinity", "restaurante com estrela Michelin", "spa com vista mar"],
+  "language": "pt-BR"
+}
+\`\`\`
+
+---
+
+#### 23. OTA Review Aggregator
+
+Agrega reviews de multiplas plataformas (Booking, TripAdvisor, Google, Expedia) num unico digest com analise cross-platform.
+
+| | |
+| --- | --- |
+| **Webhook** | \`${BASE}/webhook/aios-review-aggregator\` |
+| **Metodo** | POST |
+| **Uso** | Relatorios de reputacao multi-plataforma |
+
+**Payload de demo:**
+\`\`\`json
+{
+  "hotel_name": "Hotel Cascais Beach",
+  "reviews": [
+    { "text": "Fantastic location, friendly staff.", "source": "Booking.com", "rating": 9 },
+    { "text": "Excelente relacao qualidade-preco.", "source": "Google", "rating": 4 },
+    { "text": "Wi-Fi muito lento no quarto.", "source": "Booking.com", "rating": 5 }
+  ],
+  "period": "Fevereiro 2026",
+  "language": "pt-BR"
+}
+\`\`\`
+
+---
+
+### MARKETING PERFORMANCE (1) — Squad Marketing
+
+#### 24. Campaign Performance Reporter
+
+Analisa metricas de campanha e gera report executivo com KPIs (CTR, CPC, CPA, ROAS), diagnostico SWOT e recomendacoes.
+
+| | |
+| --- | --- |
+| **Webhook** | \`${BASE}/webhook/aios-campaign-report\` |
+| **Metodo** | POST |
+| **Uso** | Reports de performance, otimizacao de campanhas |
+
+**Payload de demo:**
+\`\`\`json
+{
+  "campaign_name": "Verao 2026 - Google Ads",
+  "platform": "google_ads",
+  "period": "Junho 2026",
+  "metrics": { "spend": 1500, "impressions": 45000, "clicks": 2100, "conversions": 63, "revenue": 12600 },
+  "goals": { "target_roas": 5, "target_cpa": 30 },
+  "language": "pt-BR"
+}
+\`\`\`
+
+---
+
+### CUSTOMER SUCCESS (2) — Squad Customer
+
+#### 25. NPS Survey Automator
+
+Gera survey NPS e processa respostas: promoters → pedir depoimento, passives → nutrir, detractors → escalar.
+
+| | |
+| --- | --- |
+| **Webhook** | \`${BASE}/webhook/aios-nps-survey\` |
+| **Metodo** | POST |
+| **Uso** | Pesquisas de satisfacao, retencao proativa |
+
+**Payload de demo:**
+\`\`\`json
+{
+  "customer_name": "Maria Santos",
+  "customer_email": "maria@hotel-algarve.pt",
+  "touchpoint": "30_day",
+  "product": "Pacote Marketing Digital Premium",
+  "business_name": "Travel Tech Digital",
+  "language": "pt-BR"
+}
+\`\`\`
+
+---
+
+#### 26. Churn Risk Detector
+
+Calcula health score do cliente (usage, engagement, satisfaction, growth) e gera playbook de intervencao com acoes priorizadas.
+
+| | |
+| --- | --- |
+| **Webhook** | \`${BASE}/webhook/aios-churn-detector\` |
+| **Metodo** | POST |
+| **Uso** | Prevencao de churn, retencao proativa |
+
+**Payload de demo:**
+\`\`\`json
+{
+  "customer_name": "Hotel Algarve Premium",
+  "usage_data": { "logins_last_30_days": 3, "features_used": ["seo_keywords", "blog_generator"], "features_not_used": ["social_factory", "ad_copy", "reputation"] },
+  "contract_info": { "plan": "Premium", "monthly_value": 1500, "months_active": 4 },
+  "nps_score": 6,
+  "language": "pt-BR"
+}
+\`\`\`
+
+---
+
 ## Resumo Rapido
 
 | # | Maquina | Categoria | Webhook Path |
@@ -448,6 +697,16 @@ Gera comunicacoes personalizadas para cada fase da jornada do hospede (pre-arriv
 | 14 | Feedback Digest | Operacoes | /webhook/aios-feedback-digest |
 | 15 | Meeting Notes | Operacoes | /webhook/aios-meeting-processor |
 | 16 | Guest Lifecycle | Operacoes | /webhook/aios-guest-lifecycle |
+| 17 | Grand Slam Offer Builder | Estrategia | /webhook/aios-offer-builder |
+| 18 | Lead Magnet Generator | Estrategia | /webhook/aios-lead-magnet |
+| 19 | 4-Day Cash Machine | Estrategia | /webhook/aios-cash-machine |
+| 20 | Copy Brief Generator | Copywriting | /webhook/aios-copy-brief |
+| 21 | Headline Variant Factory | Copywriting | /webhook/aios-headline-factory |
+| 22 | Seasonal Campaign | Hotel Mkt | /webhook/aios-seasonal-campaign |
+| 23 | OTA Review Aggregator | Hotel Mkt | /webhook/aios-review-aggregator |
+| 24 | Campaign Reporter | Marketing | /webhook/aios-campaign-report |
+| 25 | NPS Survey | Customer | /webhook/aios-nps-survey |
+| 26 | Churn Risk Detector | Customer | /webhook/aios-churn-detector |
 
 ---
 
