@@ -162,7 +162,7 @@ async function createTask(name, agent, options = {}) {
   const taskData = {
     name,
     description: description || `Created by ${agent} via AIOS`,
-    status: 'inbox',
+    status: 'to do',
     priority: priorityNum,
     assignees: [USER_ID]  // Always assign to Thiago
   };

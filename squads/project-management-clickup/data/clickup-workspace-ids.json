@@ -35,26 +35,20 @@
       }
     },
     "RESOURCES": {
-      "id": "901510017092",
-      "lists": {
-        "Knowledge Base": "901521080787",
-        "Templates": "901521080789",
-        "Documentation": "901521080790",
-        "Archived": "901521081542"
-      }
+      "_deleted": "2026-02-13",
+      "_reason": "Empty space, resources moved to Command Center Doc"
     }
   },
   "statuses": {
     "pattern": "universal",
     "values": [
-      "inbox",
       "to do",
       "in progress",
       "review",
       "waiting",
-      "done",
-      "complete"
-    ]
+      "done"
+    ],
+    "_removed": ["inbox (merged with to do)", "complete (duplicate of done)"]
   },
   "custom_fields": {
     "Agent": "743649c2-7132-4e65-9370-a161e7719949",
