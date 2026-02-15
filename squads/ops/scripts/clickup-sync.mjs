@@ -435,20 +435,10 @@ async function listRecent(options = {}) {
 
   let tasks = (result.tasks || []);
 
-  // Filter by project if specified
+  // Filter by project if specified (uses shared helper)
   if (project) {
-    // Map friendly key to ClickUp option UUID(s)
-    const keyMap = {
-      'traveltech': [IDS.projects['AI OS V3.1 MVP']],
-      'framework': [IDS.projects['AIOS Framework'], IDS.projects['Clawdbot Operations'], IDS.projects['Infrastructure'], IDS.projects['Research & Planning']]
-    };
-    const uuids = keyMap[project] || [IDS.projects[project]].filter(Boolean);
-    if (uuids.length > 0) {
-      tasks = tasks.filter(t => {
-        const pf = t.custom_fields?.find(f => f.id === IDS.fields.PROJECT_GOAL);
-        return pf?.value && uuids.includes(pf.value);
-      });
-    }
+    const { filterByProject } = await import('./lib/project-filter.mjs');
+    tasks = filterByProject(tasks, project);
   }
 
   tasks = tasks.slice(0, limit);

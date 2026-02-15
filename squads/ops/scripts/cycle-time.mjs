@@ -298,7 +298,7 @@ async function main() {
   // Filter by days
   if (options.days) {
     const cutoff = Date.now() - (parseInt(options.days) * 24 * 60 * 60 * 1000);
-    tasks = allTasks.filter(t => parseInt(t.date_created) >= cutoff || parseInt(t.date_updated) >= cutoff);
+    tasks = tasks.filter(t => parseInt(t.date_created) >= cutoff || parseInt(t.date_updated) >= cutoff);
   }
 
   // Overall analysis
