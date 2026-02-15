@@ -74,9 +74,24 @@ function parseSimpleYaml(content) {
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '../../..');
 
+// Project-aware: searches framework + project scopes
+function getMemoryScopes(options = {}) {
+  const scope = options.project || 'all';
+  const scopes = [];
+  if (scope === 'all' || scope === 'framework') {
+    scopes.push({ label: 'framework', decisions: path.join(ROOT, '.aios/memory/framework/decisions'), patterns: path.join(ROOT, '.aios/learning/framework/patterns') });
+  }
+  if (scope === 'all' || (scope !== 'framework')) {
+    const proj = scope === 'all' ? 'traveltech' : scope;
+    scopes.push({ label: proj, decisions: path.join(ROOT, `.aios/memory/projects/${proj}/decisions`), patterns: path.join(ROOT, `.aios/learning/projects/${proj}/patterns`) });
+  }
+  return scopes;
+}
+
+// Default paths (framework — backward compat)
 const PATHS = {
-  decisions: path.join(ROOT, '.aios/memory/decisions'),
-  patterns: path.join(ROOT, '.aios/learning/patterns'),
+  decisions: path.join(ROOT, '.aios/memory/framework/decisions'),
+  patterns: path.join(ROOT, '.aios/learning/framework/patterns'),
   searchIndex: path.join(ROOT, '.aios/memory/search-index.yaml')
 };
 
@@ -90,15 +105,22 @@ function loadYaml(filePath) {
 }
 
 function listDecisions(options = {}) {
-  const indexPath = path.join(PATHS.decisions, 'index.yaml');
-  const index = loadYaml(indexPath);
+  // Search all scopes (framework + project)
+  const scopes = getMemoryScopes(options);
+  let entries = [];
 
-  if (!index) {
-    console.log('No decisions index found.');
-    return [];
+  for (const scope of scopes) {
+    const indexPath = path.join(scope.decisions, 'index.yaml');
+    const index = loadYaml(indexPath);
+    if (index && index.entries) {
+      entries = entries.concat(index.entries.map(e => ({ ...e, _scope: scope.label })));
+    }
   }
 
-  let entries = index.entries || [];
+  if (entries.length === 0) {
+    console.log('No decisions found.');
+    return [];
+  }
 
   // Filter by date
   if (options.date) {
@@ -132,8 +154,9 @@ function listDecisions(options = {}) {
 
   entries.forEach(e => {
     const outcome = { positive: '✅', negative: '❌', neutral: '⚪', pending: '⏳' }[e.outcome] || '?';
-    console.log(`${outcome} [${e.date}] ${e.id}: ${e.title}`);
-    console.log(`   Category: ${e.category} | Participants: ${e.participants.join(', ')}`);
+    const scope = e._scope ? ` (${e._scope})` : '';
+    console.log(`${outcome} [${e.date}] ${e.id}: ${e.title}${scope}`);
+    console.log(`   Category: ${e.category} | Participants: ${(e.participants || []).join(', ')}`);
     if (e.keywords) console.log(`   Keywords: ${e.keywords.slice(0, 5).join(', ')}${e.keywords.length > 5 ? '...' : ''}`);
     console.log('');
   });
@@ -335,15 +358,20 @@ switch (command) {
 Memory Query - Search institutional memory
 
 Commands:
-  decisions    List decisions [--date=YYYY-MM-DD] [--month=YYYY-MM] [--keyword=X] [--category=X]
+  decisions    List decisions [--date=YYYY-MM-DD] [--month=YYYY-MM] [--keyword=X] [--project=X]
   patterns     List learning patterns [--type=success|failure|efficiency]
   timeline     Show decision timeline [--month=YYYY-MM]
   search "X"   Full-text search across all memory
   stats        Show memory statistics
 
+Scoping:
+  --project=all          Search framework + all projects (default)
+  --project=framework    Framework only
+  --project=traveltech   TravelTech only
+
 Examples:
   node memory-query.mjs decisions --date=2025-02-12
-  node memory-query.mjs decisions --month=2025-02
+  node memory-query.mjs decisions --project=framework
   node memory-query.mjs decisions --keyword=logging
   node memory-query.mjs patterns --type=success
   node memory-query.mjs timeline

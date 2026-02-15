@@ -1,0 +1,48 @@
+# AIOS Project Registry - Holding Model
+# AIOS = holding/framework, projects = niches (SaaS verticals)
+#
+# Usage:
+#   - Scripts read `current_project` for auto-scoping
+#   - Memory captured per project scope
+#   - ClickUp PROJECT_GOAL field maps to project key
+
+version: "1.0.0"
+created: "2026-02-15"
+last_updated: "2026-02-15"
+
+holding:
+  name: "Synkra AIOS"
+  type: "framework"
+  description: "AI-Orchestrated System meta-framework"
+  memory_scope: "framework"
+
+current_project: "traveltech"
+
+projects:
+  traveltech:
+    name: "Travel Tech Digital"
+    type: "niche"
+    niche: "Hotels & Travel"
+    product: "AI OS V3.1 MVP"
+    path: "projects/ai-os-v3-1-mvp"
+    memory_scope: "projects/traveltech"
+    clickup_folder_id: "901514324064"
+    squad_focus:
+      - tech
+      - design
+      - marketing
+      - sales
+      - hotel-mkt
+      - automation
+    status: "active"
+    created: "2026-01-10"
+
+# ClickUp PROJECT_GOAL field mapping
+clickup_mapping:
+  field_name: "Project/Goal"
+  options:
+    "AI OS V3.1 MVP": "traveltech"
+    "AIOS Framework": "framework"
+    "Clawdbot Operations": "framework"
+    "Infrastructure": "framework"
+    "Research & Planning": "framework"
