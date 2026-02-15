@@ -47,6 +47,11 @@ function ensureDir(dir, dryRun) {
   if (!dryRun) fs.mkdirSync(dir, { recursive: true });
 }
 
+function escapeYaml(str) {
+  if (!str) return str;
+  return str.replace(/\\/g, '\\\\').replace(/"/g, '\\"');
+}
+
 async function onboard(config) {
   const { projectKey, niche, product, 'dry-run': dryRun } = config;
 
@@ -71,6 +76,12 @@ Examples:
 
   if (!niche) {
     console.error('Error: --niche is required');
+    process.exit(1);
+  }
+
+  // Validate projectKey: only lowercase letters, numbers, hyphens, underscores
+  if (!/^[a-z0-9_-]+$/.test(projectKey)) {
+    console.error('Error: projectKey must contain only lowercase letters, numbers, hyphens, and underscores');
     process.exit(1);
   }
 
@@ -138,12 +149,15 @@ ${projectKey}/
 
   // 5. Append to projects.yaml
   console.log('\n--- Step 4: Register in projects.yaml ---');
+  const safeName = escapeYaml(product || projectKey);
+  const safeNiche = escapeYaml(niche);
+  const safeProduct = escapeYaml(product || 'TBD');
   const yamlEntry = `
   ${projectKey}:
-    name: "${product || projectKey}"
+    name: "${safeName}"
     type: "niche"
-    niche: "${niche}"
-    product: "${product || 'TBD'}"
+    niche: "${safeNiche}"
+    product: "${safeProduct}"
     path: "projects/${projectKey}"
     memory_scope: "projects/${projectKey}"
     squad_focus: []
@@ -152,16 +166,23 @@ ${projectKey}/
 `;
 
   log('append', `.aios/projects.yaml → ${projectKey}`, dryRun);
-  if (!dryRun && fs.existsSync(projectsFile)) {
-    const content = fs.readFileSync(projectsFile, 'utf-8');
-    // Insert before clickup_mapping section
-    const insertPoint = content.indexOf('\n# ClickUp');
-    if (insertPoint > -1) {
-      const updated = content.slice(0, insertPoint) + yamlEntry + content.slice(insertPoint);
-      fs.writeFileSync(projectsFile, updated);
+  if (!dryRun) {
+    if (!fs.existsSync(projectsFile)) {
+      // Create projects.yaml with header if it doesn't exist
+      const header = `# AIOS Holding — Project Registry\ncurrent_project: "${projectKey}"\n\nprojects:\n`;
+      fs.mkdirSync(path.dirname(projectsFile), { recursive: true });
+      fs.writeFileSync(projectsFile, header + yamlEntry);
     } else {
-      // Fallback: append at end of projects section
-      fs.appendFileSync(projectsFile, yamlEntry);
+      const content = fs.readFileSync(projectsFile, 'utf-8');
+      // Insert before clickup_mapping section
+      const insertPoint = content.indexOf('\n# ClickUp');
+      if (insertPoint > -1) {
+        const updated = content.slice(0, insertPoint) + yamlEntry + content.slice(insertPoint);
+        fs.writeFileSync(projectsFile, updated);
+      } else {
+        // Fallback: append at end of projects section
+        fs.appendFileSync(projectsFile, yamlEntry);
+      }
     }
   }
 

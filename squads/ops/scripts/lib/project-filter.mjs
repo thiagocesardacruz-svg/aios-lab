@@ -61,8 +61,7 @@ export function filterByProject(tasks, projectKey) {
     if (!uuid) return tasks;
     return tasks.filter(t => {
       const pf = t.custom_fields?.find(f => f.id === PROJECT_FIELD_ID);
-      const val = pf?.type_config?.options?.find(o => o.id === pf?.value);
-      return val?.id === uuid;
+      return pf?.value === uuid;
     });
   }
 
