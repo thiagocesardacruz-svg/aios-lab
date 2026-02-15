@@ -22,7 +22,14 @@ const TEAM_ID = '90152366829';
 // Custom field IDs
 const FIELD_IDS = {
   AGENT: '743649c2-7132-4e65-9370-a161e7719949',
-  SQUAD: 'fee999cb-cfbe-4c06-a806-77b71da75f40'
+  SQUAD: 'fee999cb-cfbe-4c06-a806-77b71da75f40',
+  PROJECT_GOAL: '66da50fb-4e96-4f2b-bdb2-4180e807699b'
+};
+
+// Project key → ClickUp option UUID(s)
+const PROJECT_MAP = {
+  'traveltech': ['c9002fea-faca-485c-a10d-fe38431c1d72'],
+  'framework': ['457e8721-7ebb-4e7a-86ef-6dedd4a9478f', '27ce6720-2e51-4d6d-b268-c5a42a780778', 'dc12ad34-2546-460f-b418-f461d7f2d15b', 'f678e62b-1e9f-4831-be10-7a47400d5bca']
 };
 
 // Targets
@@ -276,11 +283,22 @@ async function main() {
     process.exit(0);
   }
 
-  // Filter by days
+  // Filter by project
   let tasks = allTasks;
+  if (options.project && options.project !== 'all') {
+    const uuids = PROJECT_MAP[options.project];
+    if (uuids) {
+      tasks = tasks.filter(t => {
+        const pf = t.custom_fields?.find(f => f.id === FIELD_IDS.PROJECT_GOAL);
+        return pf?.value && uuids.includes(pf.value);
+      });
+    }
+  }
+
+  // Filter by days
   if (options.days) {
     const cutoff = Date.now() - (parseInt(options.days) * 24 * 60 * 60 * 1000);
-    tasks = allTasks.filter(t => parseInt(t.date_created) >= cutoff || parseInt(t.date_updated) >= cutoff);
+    tasks = tasks.filter(t => parseInt(t.date_created) >= cutoff || parseInt(t.date_updated) >= cutoff);
   }
 
   // Overall analysis

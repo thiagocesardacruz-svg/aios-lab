@@ -25,7 +25,15 @@ const AI_OPS_SPACE_ID = '901510017091';
 
 const FIELD_IDS = {
   AGENT: '743649c2-7132-4e65-9370-a161e7719949',
+  PROJECT_GOAL: '66da50fb-4e96-4f2b-bdb2-4180e807699b',
 };
+
+const PROJECT_MAP = {
+  'traveltech': ['c9002fea-faca-485c-a10d-fe38431c1d72'],
+  'framework': ['457e8721-7ebb-4e7a-86ef-6dedd4a9478f', '27ce6720-2e51-4d6d-b268-c5a42a780778', 'dc12ad34-2546-460f-b418-f461d7f2d15b', 'f678e62b-1e9f-4831-be10-7a47400d5bca']
+};
+
+const PROJECT_LABELS = { 'traveltech': 'TravelTech', 'framework': 'AIOS Framework' };
 
 const TARGETS = {
   cycle_time: 24,     // hours
@@ -47,10 +55,21 @@ async function api(endpoint) {
 
 // ── Data Collection ─────────────────────────────────────────────────────────
 
-async function collectMetrics() {
+async function collectMetrics(projectFilter = null) {
   // 1. Fetch tasks
   const data = await api(`/team/${TEAM_ID}/task?include_closed=true&subtasks=true&order_by=updated&reverse=true`);
-  const tasks = data.tasks || [];
+  let tasks = data.tasks || [];
+
+  // Filter by project
+  if (projectFilter && projectFilter !== 'all') {
+    const uuids = PROJECT_MAP[projectFilter];
+    if (uuids) {
+      tasks = tasks.filter(t => {
+        const pf = t.custom_fields?.find(f => f.id === FIELD_IDS.PROJECT_GOAL);
+        return pf?.value && uuids.includes(pf.value);
+      });
+    }
+  }
 
   // 2. Cycle Time
   const completed = tasks.filter(t => {
@@ -143,11 +162,11 @@ function formatH(h) {
   return `${Math.round(h / 24 * 10) / 10}d`;
 }
 
-function formatDashboard(m) {
+function formatDashboard(m, projectLabel = 'All Projects') {
   let out = `\n`;
   out += `┌─────────────────────────────────────────────┐\n`;
   out += `│         📊 AIOS UNIFIED DASHBOARD           │\n`;
-  out += `│         ${new Date().toISOString().split('T')[0]}                      │\n`;
+  out += `│         ${new Date().toISOString().split('T')[0]}  [${projectLabel.padEnd(16)}] │\n`;
   out += `├─────────────────────────────────────────────┤\n`;
   out += `│                                             │\n`;
   out += `│  ${icon(m.cycle_time, TARGETS.cycle_time)} Cycle Time    ${formatH(m.cycle_time).padEnd(8)} target: <${TARGETS.cycle_time}h  │\n`;
@@ -183,13 +202,15 @@ function formatDashboard(m) {
 async function main() {
   const args = process.argv.slice(2);
   const format = args.find(a => a.startsWith('--format='))?.split('=')[1];
+  const project = args.find(a => a.startsWith('--project='))?.split('=')[1] || null;
+  const projectLabel = project ? (PROJECT_LABELS[project] || project) : 'All Projects';
 
-  const metrics = await collectMetrics();
+  const metrics = await collectMetrics(project);
 
   if (format === 'json') {
-    console.log(JSON.stringify({ generated: new Date().toISOString(), ...metrics }, null, 2));
+    console.log(JSON.stringify({ generated: new Date().toISOString(), project: project || 'all', ...metrics }, null, 2));
   } else {
-    console.log(formatDashboard(metrics));
+    console.log(formatDashboard(metrics, projectLabel));
   }
 }
 

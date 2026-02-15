@@ -411,7 +411,7 @@ async function markDone(taskId, summary, options = {}) {
 const AI_OPS_SPACE_ID = '901510017091';
 
 async function listRecent(options = {}) {
-  const { limit = 10, json = false, status = null } = options;
+  const { limit = 10, json = false, status = null, project = null } = options;
 
   // Fetch tasks from AI OPS space via team endpoint (supports ordering)
   const params = new URLSearchParams({
@@ -433,7 +433,15 @@ async function listRecent(options = {}) {
     return;
   }
 
-  const tasks = (result.tasks || []).slice(0, limit);
+  let tasks = (result.tasks || []);
+
+  // Filter by project if specified (uses shared helper)
+  if (project) {
+    const { filterByProject } = await import('./lib/project-filter.mjs');
+    tasks = filterByProject(tasks, project);
+  }
+
+  tasks = tasks.slice(0, limit);
 
   if (json) {
     const output = tasks.map(t => {
@@ -634,7 +642,8 @@ async function main() {
       await listRecent({
         limit: parseInt(getArg('limit') || '10', 10),
         json: args.includes('--json'),
-        status: getArg('status')
+        status: getArg('status'),
+        project: getArg('project')
       });
       break;
 
