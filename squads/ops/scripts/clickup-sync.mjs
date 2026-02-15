@@ -411,7 +411,7 @@ async function markDone(taskId, summary, options = {}) {
 const AI_OPS_SPACE_ID = '901510017091';
 
 async function listRecent(options = {}) {
-  const { limit = 10, json = false, status = null } = options;
+  const { limit = 10, json = false, status = null, project = null } = options;
 
   // Fetch tasks from AI OPS space via team endpoint (supports ordering)
   const params = new URLSearchParams({
@@ -433,7 +433,25 @@ async function listRecent(options = {}) {
     return;
   }
 
-  const tasks = (result.tasks || []).slice(0, limit);
+  let tasks = (result.tasks || []);
+
+  // Filter by project if specified
+  if (project) {
+    // Map friendly key to ClickUp option UUID(s)
+    const keyMap = {
+      'traveltech': [IDS.projects['AI OS V3.1 MVP']],
+      'framework': [IDS.projects['AIOS Framework'], IDS.projects['Clawdbot Operations'], IDS.projects['Infrastructure'], IDS.projects['Research & Planning']]
+    };
+    const uuids = keyMap[project] || [IDS.projects[project]].filter(Boolean);
+    if (uuids.length > 0) {
+      tasks = tasks.filter(t => {
+        const pf = t.custom_fields?.find(f => f.id === IDS.fields.PROJECT_GOAL);
+        return pf?.value && uuids.includes(pf.value);
+      });
+    }
+  }
+
+  tasks = tasks.slice(0, limit);
 
   if (json) {
     const output = tasks.map(t => {
@@ -634,7 +652,8 @@ async function main() {
       await listRecent({
         limit: parseInt(getArg('limit') || '10', 10),
         json: args.includes('--json'),
-        status: getArg('status')
+        status: getArg('status'),
+        project: getArg('project')
       });
       break;
 

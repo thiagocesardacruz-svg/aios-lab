@@ -26,8 +26,16 @@ const API_KEY = 'pk_278673009_AQK7LDDPQ9PKSWKXI7ILF2XWY4YG8Y3O';
 const TEAM_ID = '90152366829';
 const AI_OPS_SPACE_ID = '901510017091';
 
+const PROJECT_MAP = {
+  'traveltech': ['c9002fea-faca-485c-a10d-fe38431c1d72'],
+  'framework': ['457e8721-7ebb-4e7a-86ef-6dedd4a9478f', '27ce6720-2e51-4d6d-b268-c5a42a780778', 'dc12ad34-2546-460f-b418-f461d7f2d15b', 'f678e62b-1e9f-4831-be10-7a47400d5bca']
+};
+
+const PROJECT_LABELS = { 'traveltech': 'TravelTech', 'framework': 'AIOS Framework' };
+
 const FIELD_IDS = {
   AGENT: '743649c2-7132-4e65-9370-a161e7719949',
+  PROJECT_GOAL: '66da50fb-4e96-4f2b-bdb2-4180e807699b',
   SQUAD: 'fee999cb-cfbe-4c06-a806-77b71da75f40',
 };
 
@@ -281,7 +289,21 @@ async function main() {
   const format = args.find(a => a.startsWith('--format='))?.split('=')[1] || 'markdown';
   const isSlack = args.includes('--slack');
 
-  const tasks = await fetchAllTasks();
+  const project = args.find(a => a.startsWith('--project='))?.split('=')[1] || null;
+  const projectLabel = project ? (PROJECT_LABELS[project] || project) : 'All Projects';
+
+  let tasks = await fetchAllTasks();
+
+  // Filter by project
+  if (project && project !== 'all') {
+    const uuids = PROJECT_MAP[project];
+    if (uuids) {
+      tasks = tasks.filter(t => {
+        const pf = t.custom_fields?.find(f => f.id === FIELD_IDS.PROJECT_GOAL);
+        return pf?.value && uuids.includes(pf.value);
+      });
+    }
+  }
 
   const thisWeekBounds = getWeekBounds(0);
   const lastWeekBounds = getWeekBounds(1);
