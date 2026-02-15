@@ -55,7 +55,18 @@
     "Squad": "fee999cb-cfbe-4c06-a806-77b71da75f40",
     "Task Objective": "83a9af52-3330-498b-95ed-a33f21e2634e",
     "Impact": "cad1ac7b-2d62-4baa-9b93-856b116f6a60",
-    "Tool / LLM": "1af96c15-77f7-473f-b15b-390ffcc47ea8"
+    "Tool / LLM": "1af96c15-77f7-473f-b15b-390ffcc47ea8",
+    "Project/Goal": "66da50fb-4e96-4f2b-bdb2-4180e807699b",
+    "Dependencies": "9a704a37-97bd-4187-9547-e82a48044c56",
+    "Context Packet": "5b015b4f-42c9-4292-8e48-5666595bedea"
+  },
+  "project_options": {
+    "_comment": "Project/Goal dropdown values (friendly key => UUID)",
+    "AI OS V3.1 MVP": "c9002fea-faca-485c-a10d-fe38431c1d72",
+    "AIOS Framework": "457e8721-7ebb-4e7a-86ef-6dedd4a9478f",
+    "Clawdbot Operations": "27ce6720-2e51-4d6d-b268-c5a42a780778",
+    "Infrastructure": "dc12ad34-2546-460f-b418-f461d7f2d15b",
+    "Research & Planning": "f678e62b-1e9f-4831-be10-7a47400d5bca"
   },
   "deprecated_fields": {
     "OS ID": "12f6a07f-153d-46ec-9ef3-321c83fa8023",
@@ -88,7 +99,8 @@
     }
   },
   "created_at": "2026-02-11",
-  "updated_at": "2026-02-13",
+  "updated_at": "2026-02-15",
+  "updated_by": "@dev",
   "created_by": "@devops",
   "agent_options": {
     "_comment": "Core Agents + Squad Leads only. Leads coordinate their squad agents.",

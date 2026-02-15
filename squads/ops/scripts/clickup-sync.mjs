@@ -12,6 +12,9 @@
  * OPTIONAL FIELDS:
  * - Task Objective (short why)
  * - Impact (revenue/efficiency/infra/strategic)
+ * - Project/Goal (AI OS V3.1 MVP, AIOS Framework, etc.)
+ * - Dependencies (text describing task dependencies)
+ * - Context Packet (structured context: Why/What/How)
  *
  * HANDOVER VALIDATION (GOV-001.3):
  * - The `done` command validates handover contracts before marking complete
@@ -20,6 +23,7 @@
  *
  * Usage:
  *   node clickup-sync.mjs create "Task name" --agent=@dev --squad=tech --priority=2 --impact=efficiency
+ *   node clickup-sync.mjs create "Task" --agent=@dev --project="AIOS Framework" --context="Why: ... | What: ..."
  *   node clickup-sync.mjs start <task_id>
  *   node clickup-sync.mjs done <task_id> "Summary"
  *   node clickup-sync.mjs done <task_id> "Summary" --handover='{"from_agent":"@pm",...}'
@@ -46,7 +50,10 @@ const IDS = {
     SQUAD: 'fee999cb-cfbe-4c06-a806-77b71da75f40',
     OBJECTIVE: '83a9af52-3330-498b-95ed-a33f21e2634e',
     IMPACT: 'cad1ac7b-2d62-4baa-9b93-856b116f6a60',
-    TOOL_LLM: '1af96c15-77f7-473f-b15b-390ffcc47ea8'
+    TOOL_LLM: '1af96c15-77f7-473f-b15b-390ffcc47ea8',
+    PROJECT_GOAL: '66da50fb-4e96-4f2b-bdb2-4180e807699b',
+    DEPENDENCIES: '9a704a37-97bd-4187-9547-e82a48044c56',
+    CONTEXT_PACKET: '5b015b4f-42c9-4292-8e48-5666595bedea'
   },
   // Core Agents + Squad Leads only (30 options)
   agents: {
@@ -106,7 +113,15 @@ const IDS = {
   // Impact dropdown orderindex values
   impact: { 'revenue': 0, 'efficiency': 1, 'infra': 2, 'strategic': 3 },
   // Tool/LLM dropdown orderindex values
-  toolLlm: { 'opus': 0, 'sonnet': 1, 'haiku': 2, 'gpt4': 3, 'ollama': 4, 'whisper': 5, 'n8n': 6, 'manual': 7 }
+  toolLlm: { 'opus': 0, 'sonnet': 1, 'haiku': 2, 'gpt4': 3, 'ollama': 4, 'whisper': 5, 'n8n': 6, 'manual': 7 },
+  // Project/Goal dropdown option IDs (friendly key => UUID)
+  projects: {
+    'AI OS V3.1 MVP': 'c9002fea-faca-485c-a10d-fe38431c1d72',
+    'AIOS Framework': '457e8721-7ebb-4e7a-86ef-6dedd4a9478f',
+    'Clawdbot Operations': '27ce6720-2e51-4d6d-b268-c5a42a780778',
+    'Infrastructure': 'dc12ad34-2546-460f-b418-f461d7f2d15b',
+    'Research & Planning': 'f678e62b-1e9f-4831-be10-7a47400d5bca'
+  }
 };
 
 // Priority mapping: 1=urgent, 2=high, 3=normal, 4=low
@@ -152,7 +167,10 @@ async function createTask(name, agent, options = {}) {
     squad = null,
     objective = null,
     impact = null,
-    tool = null
+    tool = null,
+    project = null,
+    dependencies = null,
+    context = null
   } = options;
 
   // Validate priority
@@ -216,6 +234,27 @@ async function createTask(name, agent, options = {}) {
     });
   }
 
+  // Set Project/Goal
+  if (project && IDS.projects[project]) {
+    await api(`/task/${taskId}/field/${IDS.fields.PROJECT_GOAL}`, 'POST', {
+      value: IDS.projects[project]
+    });
+  }
+
+  // Set Dependencies (text field)
+  if (dependencies) {
+    await api(`/task/${taskId}/field/${IDS.fields.DEPENDENCIES}`, 'POST', {
+      value: dependencies
+    });
+  }
+
+  // Set Context Packet (text field)
+  if (context) {
+    await api(`/task/${taskId}/field/${IDS.fields.CONTEXT_PACKET}`, 'POST', {
+      value: context
+    });
+  }
+
   const result = {
     success: true,
     task_id: taskId,
@@ -226,7 +265,10 @@ async function createTask(name, agent, options = {}) {
     squad,
     objective: objective || null,
     impact: impact || null,
-    tool_llm: toolKey
+    tool_llm: toolKey,
+    project: project || null,
+    dependencies: dependencies || null,
+    context: context || null
   };
 
   console.log(JSON.stringify(result));
@@ -390,11 +432,22 @@ async function listRecent(options = {}) {
         const opt = opts.find(o => o.id === val) || opts.find(o => String(o.orderindex) === val);
         agentName = opt?.label || opt?.name || val;
       }
+
+      const pf = t.custom_fields?.find(f => f.id === IDS.fields.PROJECT_GOAL);
+      let projectName = null;
+      if (pf?.value != null) {
+        const opts = pf.type_config?.options || [];
+        const val = String(pf.value);
+        const opt = opts.find(o => o.id === val);
+        projectName = opt?.name || null;
+      }
+
       return {
         id: t.id,
         name: t.name,
         status: t.status?.status || '-',
         agent: agentName,
+        project: projectName,
         created: new Date(parseInt(t.date_created)).toISOString().split('T')[0],
         updated: new Date(parseInt(t.date_updated)).toISOString().split('T')[0],
         url: t.url
@@ -406,8 +459,8 @@ async function listRecent(options = {}) {
 
   // Console table output
   console.log(`\nRecent Tasks (AI OPS) - Top ${limit}\n`);
-  console.log('  ID         | Status       | Agent            | Updated    | Name');
-  console.log('  -----------|--------------|------------------|------------|-----');
+  console.log('  ID         | Status       | Agent            | Project              | Updated    | Name');
+  console.log('  -----------|--------------|------------------|----------------------|------------|-----');
 
   for (const t of tasks) {
     const id = t.id.padEnd(9);
@@ -423,18 +476,94 @@ async function listRecent(options = {}) {
       agentLabel = opt?.label || opt?.name || val.substring(0, 16);
     }
     const agent = String(agentLabel).padEnd(16);
+
+    const projectField = t.custom_fields?.find(f => f.id === IDS.fields.PROJECT_GOAL);
+    let projectLabel = '-';
+    if (projectField?.value != null) {
+      const opts = projectField.type_config?.options || [];
+      const val = String(projectField.value);
+      const opt = opts.find(o => o.id === val);
+      projectLabel = opt?.name || val.substring(0, 20);
+    }
+    const project = String(projectLabel).padEnd(20);
+
     const updated = new Date(parseInt(t.date_updated)).toISOString().split('T')[0];
-    const name = t.name.length > 50 ? t.name.substring(0, 47) + '...' : t.name;
-    console.log(`  ${id} | ${st} | ${agent} | ${updated} | ${name}`);
+    const name = t.name.length > 40 ? t.name.substring(0, 37) + '...' : t.name;
+    console.log(`  ${id} | ${st} | ${agent} | ${project} | ${updated} | ${name}`);
   }
 
   console.log(`\n  Total: ${tasks.length} task(s)\n`);
 }
 
+// PRE-FLIGHT CHECKS (Poka-Yoke — Board recommendation 2026-02-15)
+async function preFlightCheck(taskId) {
+  const task = await api(`/task/${taskId}`);
+  if (task.err) return { pass: false, errors: [`Task ${taskId} not found`] };
+
+  const errors = [];
+  const warnings = [];
+
+  // 1. Agent assigned?
+  const agentField = task.custom_fields?.find(f => f.id === IDS.fields.AGENT);
+  if (!agentField?.value) errors.push('No agent assigned (--agent required)');
+
+  // 2. Squad assigned?
+  const squadField = task.custom_fields?.find(f => f.id === IDS.fields.SQUAD);
+  if (!squadField?.value) warnings.push('No squad assigned');
+
+  // 3. WIP limit check (<5 in progress)
+  const params = new URLSearchParams({
+    'space_ids[]': AI_OPS_SPACE_ID,
+    'statuses[]': 'in progress',
+    include_closed: 'false',
+    page: '0'
+  });
+  const wipResult = await api(`/team/${TEAM_ID}/task?${params.toString()}`);
+  const wipCount = wipResult.tasks?.length || 0;
+  if (wipCount >= 5) errors.push(`WIP limit exceeded: ${wipCount}/5 tasks already in progress`);
+  else if (wipCount >= 4) warnings.push(`WIP near limit: ${wipCount}/5`);
+
+  // 4. Duplicate check — same agent already has task in progress?
+  if (agentField?.value && wipResult.tasks) {
+    const agentVal = String(agentField.value);
+    const duplicateWip = wipResult.tasks.find(t => {
+      const af = t.custom_fields?.find(f => f.id === IDS.fields.AGENT);
+      return af && String(af.value) === agentVal && t.id !== taskId;
+    });
+    if (duplicateWip) {
+      warnings.push(`Agent already has WIP: "${duplicateWip.name}" (${duplicateWip.id})`);
+    }
+  }
+
+  return {
+    pass: errors.length === 0,
+    errors,
+    warnings,
+    wip_count: wipCount
+  };
+}
+
 // START
 async function startTask(taskId) {
+  // Pre-flight validation
+  const check = await preFlightCheck(taskId);
+
+  if (check.warnings.length > 0) {
+    check.warnings.forEach(w => console.warn(`⚠️ ${w}`));
+  }
+
+  if (!check.pass) {
+    console.error('❌ Pre-flight check FAILED:');
+    check.errors.forEach(e => console.error(`   ${e}`));
+    console.error('\nFix issues before starting. Use --force to override.');
+    if (!args.includes('--force')) {
+      process.exit(1);
+    }
+    console.warn('⚠️ --force used, proceeding despite errors');
+  }
+
   await updateStatus(taskId, 'in progress');
-  await addComment(taskId, `🚀 **Started**`);
+  await addComment(taskId, `🚀 **Started**\n\nPre-flight: ${check.pass ? '✅ PASS' : '⚠️ FORCED'} | WIP: ${check.wip_count}/5`);
 }
 
 // Parse CLI arguments
@@ -457,7 +586,10 @@ async function main() {
         squad: getArg('squad'),
         objective: getArg('objective'),
         impact: getArg('impact'),
-        tool: getArg('tool')
+        tool: getArg('tool'),
+        project: getArg('project'),
+        dependencies: getArg('depends-on'),
+        context: getArg('context')
       });
       break;
 
@@ -499,6 +631,7 @@ ClickUp Sync - AIOS Command Center
 
 Commands:
   create "Task" --agent=@dev --squad=tech --priority=2 --objective="Why" --impact=efficiency --tool=opus
+  create "Task" --agent=@dev --project="AIOS Framework" --context="Why: ... | What: ..." --depends-on="Task A, Task B"
   start <task_id>
   update <task_id> --status="in progress"
   comment <task_id> "text"
@@ -513,6 +646,9 @@ Commands:
 Priority: 1=urgent, 2=high, 3=normal, 4=low
 Impact: revenue, efficiency, infra, strategic
 Tool/LLM: opus (default), sonnet, haiku, gpt4, ollama, whisper, n8n, manual
+Project/Goal: "AI OS V3.1 MVP", "AIOS Framework", "Clawdbot Operations", "Infrastructure", "Research & Planning"
+Dependencies: Text describing task dependencies (--depends-on="...")
+Context Packet: Structured context (--context="Why: ... | What: ... | How: ...")
 
 Squads: ops, tech, automation, qa, design, design-system, marketing, ghl, finance,
         growth, customer, sales, sales-pages, copywriting-masters, deep-research,
