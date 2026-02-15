@@ -392,6 +392,19 @@ async function markDone(taskId, summary, options = {}) {
   // Mark as done
   await addComment(taskId, `✅ **Completed**\n\n${summary}`);
   await updateStatus(taskId, 'done');
+
+  // Auto-capture memory entry (€0, non-blocking)
+  try {
+    const { execSync } = await import('child_process');
+    const capturePath = path.join(__dirname, 'memory-capture.mjs');
+    const safeSummary = summary.replace(/"/g, '\\"').slice(0, 500);
+    execSync(
+      `node "${capturePath}" clickup --task-id="${taskId}" --summary="${safeSummary}"`,
+      { stdio: 'pipe', timeout: 5000 }
+    );
+  } catch (err) {
+    // Graceful degradation — never block task completion
+  }
 }
 
 // LIST RECENT tasks from AI OPS space
