@@ -495,10 +495,75 @@ async function listRecent(options = {}) {
   console.log(`\n  Total: ${tasks.length} task(s)\n`);
 }
 
+// PRE-FLIGHT CHECKS (Poka-Yoke — Board recommendation 2026-02-15)
+async function preFlightCheck(taskId) {
+  const task = await api(`/task/${taskId}`);
+  if (task.err) return { pass: false, errors: [`Task ${taskId} not found`] };
+
+  const errors = [];
+  const warnings = [];
+
+  // 1. Agent assigned?
+  const agentField = task.custom_fields?.find(f => f.id === IDS.fields.AGENT);
+  if (!agentField?.value) errors.push('No agent assigned (--agent required)');
+
+  // 2. Squad assigned?
+  const squadField = task.custom_fields?.find(f => f.id === IDS.fields.SQUAD);
+  if (!squadField?.value) warnings.push('No squad assigned');
+
+  // 3. WIP limit check (<5 in progress)
+  const params = new URLSearchParams({
+    'space_ids[]': AI_OPS_SPACE_ID,
+    'statuses[]': 'in progress',
+    include_closed: 'false',
+    page: '0'
+  });
+  const wipResult = await api(`/team/${TEAM_ID}/task?${params.toString()}`);
+  const wipCount = wipResult.tasks?.length || 0;
+  if (wipCount >= 5) errors.push(`WIP limit exceeded: ${wipCount}/5 tasks already in progress`);
+  else if (wipCount >= 4) warnings.push(`WIP near limit: ${wipCount}/5`);
+
+  // 4. Duplicate check — same agent already has task in progress?
+  if (agentField?.value && wipResult.tasks) {
+    const agentVal = String(agentField.value);
+    const duplicateWip = wipResult.tasks.find(t => {
+      const af = t.custom_fields?.find(f => f.id === IDS.fields.AGENT);
+      return af && String(af.value) === agentVal && t.id !== taskId;
+    });
+    if (duplicateWip) {
+      warnings.push(`Agent already has WIP: "${duplicateWip.name}" (${duplicateWip.id})`);
+    }
+  }
+
+  return {
+    pass: errors.length === 0,
+    errors,
+    warnings,
+    wip_count: wipCount
+  };
+}
+
 // START
 async function startTask(taskId) {
+  // Pre-flight validation
+  const check = await preFlightCheck(taskId);
+
+  if (check.warnings.length > 0) {
+    check.warnings.forEach(w => console.warn(`⚠️ ${w}`));
+  }
+
+  if (!check.pass) {
+    console.error('❌ Pre-flight check FAILED:');
+    check.errors.forEach(e => console.error(`   ${e}`));
+    console.error('\nFix issues before starting. Use --force to override.');
+    if (!args.includes('--force')) {
+      process.exit(1);
+    }
+    console.warn('⚠️ --force used, proceeding despite errors');
+  }
+
   await updateStatus(taskId, 'in progress');
-  await addComment(taskId, `🚀 **Started**`);
+  await addComment(taskId, `🚀 **Started**\n\nPre-flight: ${check.pass ? '✅ PASS' : '⚠️ FORCED'} | WIP: ${check.wip_count}/5`);
 }
 
 // Parse CLI arguments
