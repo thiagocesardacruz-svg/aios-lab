@@ -1,445 +1,124 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
-
-## Project Overview
-
-Synkra AIOS Lab is an AI-Orchestrated System (AIOS) meta-framework that coordinates AI agents through a hierarchical squad system for full-stack product development. Currently deployed for Travel Tech Digital's AI OS V3.1 MVP (single-segment SaaS for Hotels).
+Synkra AIOS Lab — AI-Orchestrated System meta-framework. Coordinates agents via hierarchical squad system. Deployed for Travel Tech Digital's AI OS V3.1 MVP (SaaS for Hotels).
 
 ## Core Principle
 
-**All execution happens via Squad.** No task, analysis, or output exists outside a squad context. Every formal execution is a Service Order (OS-YYYY-NNNN) tracked in Kanban.
+**All execution happens via Squad.** Every formal execution is a Service Order tracked in ClickUp.
 
 ## Agent System
 
-### Activation
-- Agents: `@dev`, `@qa`, `@architect`, `@pm`, `@po`, `@sm`, `@analyst`
-- Master: `@aios-master`
-- Commands: `*help`, `*create-story`, `*task {name}`, `*workflow {name}`, `*exit`
+Agents: `@dev`, `@qa`, `@architect`, `@pm`, `@po`, `@sm`, `@analyst`, `@devops`, `@data-engineer`, `@ux-design-expert`, `@squad-creator`
+Master: `@aios-master` | Commands: `*help`, `*task {name}`, `*workflow {name}`, `*exit`
 
-### Agent Hierarchy
-```
-Director (Thiago)
-    ↓
-Board Advisor (Consultivo - NÃO executa)
-    ↓
-AIOS Master (Orquestração - Orion)
-    ↓
-Squad Leads (Execução por domínio)
-    ↓
-Agents (Execução de tasks)
-```
+Hierarchy: Director → Board Advisor (consultivo) → AIOS Master → Squad Leads → Agents
 
-### Available Agents
+## Skills (Auto-Routing)
 
-| Agent | Expertise |
-|-------|-----------|
-| `/aios-master` | Orquestrador principal, coordena squads e workflows |
-| `/architect` | Arquitetura de sistemas, design patterns, decisões técnicas |
-| `/dev` | Implementação de código, debugging, refactoring |
-| `/pm` | Project management, timelines, stakeholder communication |
-| `/po` | Product ownership, backlog, priorização de features |
-| `/sm` | Scrum master, facilitação, remoção de impedimentos |
-| `/qa` | Quality assurance, testes, validação |
-| `/analyst` | Análise de dados, requisitos, especificações |
-| `/devops` | Infraestrutura, CI/CD, MCP management |
-| `/data-engineer` | Data pipelines, ETL, modelagem de dados |
-| `/ux-design-expert` | UX/UI design, wireframes, protótipos |
-| `/squad-creator` | Criação e configuração de novos squads |
+Skills with `auto_invoke: true` are triggered by keyword match. See `.claude/skills/_registry.yaml`.
 
-## Skills
-
-Skills extend agent capabilities with specialized workflows. Some skills support **auto-routing** (agents invoke automatically when needed).
-
-### Core Skills
-
-| Skill | Descrição | Auto-Invoke | Priority |
-|-------|-----------|-------------|----------|
-| `/architect-first` | Desenvolvimento architecture-first: design completo antes de código | Yes | Critical |
-| `/enhance-workflow` | Pipeline multi-agente: Discovery → Research → Roundtable → Epic | Yes | High |
-| `/tech-search` | Deep research técnico com WebSearch + WebFetch | Yes | Medium |
-| `/mcp-builder` | Guia para criar MCP servers (FastMCP/Python ou MCP SDK/Node) | Yes | High |
-| `/skill-creator` | Criar ou atualizar skills do Claude Code | No | - |
-
-### Performance & Optimization (Tier 1)
-
-| Skill | Descrição | Auto-Invoke | Priority |
-|-------|-----------|-------------|----------|
-| `/context-optimizer` | Reduz tokens via compressão inteligente e lazy loading (-50% tokens) | Yes | High |
-| `/circuit-breaker` | Previne loops infinitos, custo descontrolado e falhas em cascata | Yes | Critical |
-| `/learning-loop` | Agentes que melhoram a cada execução (compound intelligence) | Yes | High |
-
-### Competitive Advantage (Tier 2)
-
-| Skill | Descrição | Auto-Invoke | Priority |
-|-------|-----------|-------------|----------|
-| `/institutional-memory` | Memória organizacional acumulada que persiste entre sessões | Yes | High |
-| `/cost-guardian` | Controle rigoroso de budget com enforcement automático | Yes | Critical |
-| `/skill-composer` | Combina múltiplas skills em workflows complexos orquestrados | Yes | Medium |
-| `/tool-discovery` | Descoberta inteligente de ferramentas com RICE/WSJF e registry global | Yes | Medium |
-| `/data-insight` | Pesquisa rápida para decisões data-driven (integra com squad deep-research) | Yes | Medium |
-
-### Skill Auto-Routing
-
-Agents automatically invoke skills when task patterns match. See `.claude/rules/skill-auto-routing.md` for rules and `.claude/skills/_registry.yaml` for registered skills.
-
-**Governance:** Opt-in - skills must declare `auto_invoke: true` in frontmatter to be auto-routed.
+| Skill | Purpose | Priority |
+|-------|---------|----------|
+| `/architect-first` | Architecture-first dev | Critical |
+| `/circuit-breaker` | Prevent loops/cost overflow | Critical |
+| `/cost-guardian` | Budget enforcement | Critical |
+| `/enhance-workflow` | Multi-agent pipeline | High |
+| `/context-optimizer` | Token reduction | High |
+| `/tech-search` | Deep technical research | Medium |
+| `/mcp-builder` | Create MCP servers | High |
 
 ## Repository Structure
 
 ```
 aios-lab/
-├── .aios/                  # Framework config (AIOS 2.1.0)
-├── .claude/                # Claude Code integration
-│   ├── commands/AIOS/      # Agent activation profiles
-│   ├── rules/              # MCP governance, usage rules
-│   └── skills/             # Claude Code skills
-├── governance/             # RED-classified rules (constitution, boundaries, costs)
-├── docs/                   # Stories, PRDs, architecture, guides
-├── squads/                 # Operational units (17 squads)
-│   ├── _template/          # Blueprint for new squads
-│   ├── board/              # Strategic advisors (8 mind clones)
-│   ├── ops/                # AIOS Master orchestration
-│   ├── tech/               # Infrastructure & development
-│   ├── design-system/      # UI tokens, components (100% independent)
-│   └── ...                 # finance, marketing, growth, qa, etc.
-└── projects/               # Active development
-    ├── ai-os-v3-1-mvp/     # Main product (Next.js + Supabase)
-    └── traveltech-aios/    # Reference implementation
+├── .claude/commands/AIOS/   # Agent profiles
+├── .claude/rules/           # Governance (compressed summaries)
+├── .claude/skills/          # Claude Code skills
+├── docs/rules/              # Full rule documentation
+├── governance/              # RED rules (constitution, costs)
+├── squads/                  # 18 operational squads
+│   └── ops/scripts/         # ClickUp sync, budget, tools
+└── projects/ai-os-v3-1-mvp/ # Main product (Next.js + Supabase)
 ```
 
-### Squad Structure Pattern
-Each squad follows: `squad.yaml` + `README.md` + `agents/` + `workflows/` + `tasks/` + `templates/` + `checklists/` + `data/`
+Squad pattern: `squad.yaml` + `README.md` + `agents/` + `workflows/` + `tasks/` + `templates/` + `checklists/`
 
-### Active Squads (18)
+## Development
 
-| Squad | Propósito |
-|-------|-----------|
-| **ops** | Orquestração AIOS, standups, reports |
-| **tech** | Infraestrutura, CI/CD, desenvolvimento |
-| **finance** | Controle financeiro, budgets |
-| **qa** | Testes, auditorias, quality gates |
-| **design** | UI/UX, wireframes, protótipos |
-| **design-system** | Tokens, componentes, padrões visuais |
-| **marketing** | Marketing operations, campanhas |
-| **growth** | Growth hacking, métricas |
-| **customer** | Customer success, suporte |
-| **sales-pages** | Landing pages, conversão |
-| **copywriting-masters** | Estratégia de conteúdo, copy |
-| **deep-research** | Research operations |
-| **board** | Strategic advisors (8 mind clones) |
-| **hormozi** | Frameworks de negócio ($100M methodology) |
-| **hotel-mkt** | Marketing vertical para hotéis |
-| **translator** | Serviços de tradução |
-| **squad-creator** | Meta-squad: cria outros squads |
-| **project-management-clickup** | Gestão de projetos com ClickUp (GTD, PARA, Agile) |
+**Story-Driven:** Work from `docs/stories/`, update checkboxes, follow acceptance criteria.
+**Git:** Conventional commits (`feat:`, `fix:`, `docs:`, `chore:`). Reference: `feat: add login [Story 2.1]`
 
-## Development Methodology
-
-### Story-Driven Development
-1. Work from stories in `docs/stories/`
-2. Update checkboxes: `[ ]` → `[x]`
-3. Maintain File List section
-4. Follow acceptance criteria exactly
-
-### Git Conventions
-- Conventional commits: `feat:`, `fix:`, `docs:`, `chore:`
-- Reference story: `feat: implement IDE detection [Story 2.1]`
-
-## Commands
-
-### MVP Project (projects/ai-os-v3-1-mvp)
+### MVP Commands
 ```bash
-# Start Supabase locally
-npx supabase start
-
-# Run migrations
-npx supabase db reset
-
-# Start Next.js dev
-cd projects/ai-os-v3-1-mvp/app && npm run dev
-```
-
-### Validation (when package.json exists)
-```bash
-npm run lint
-npm run typecheck
-npm test
+npx supabase start          # Local Supabase
+npx supabase db reset       # Run migrations
+cd projects/ai-os-v3-1-mvp/app && npm run dev  # Next.js
+npm run lint && npm run typecheck && npm test   # Validation
 ```
 
 ## Tech Stack
 
-| Layer | Technologies |
-|-------|-------------|
-| Frontend | Next.js 16, React 19, TypeScript 5, Tailwind 4, shadcn/ui |
-| Backend | Supabase (PostgreSQL 15, Auth, Edge Functions) |
-| Infrastructure | Vercel, GitHub, Docker |
-| Automation | n8n, GoHighLevel |
-| AI | Claude, GPT (routed by AI Ops) |
+Frontend: Next.js 16, React 19, TypeScript 5, Tailwind 4, shadcn/ui
+Backend: Supabase (PostgreSQL 15, Auth, Edge Functions)
+Infra: Vercel, GitHub, Docker | Automation: n8n, GoHighLevel | AI: Claude, GPT
 
-## Governance Rules
+## Governance
 
-### Budget Limits
+### Budget
 | Limit | Value | Action |
 |-------|-------|--------|
-| Monthly | £400 (~€470) | Hard limit |
+| Monthly | €468 | Hard limit |
 | Daily Alert | €15 | Notification |
 | Daily Hard | €20 | SAFE MODE |
 | Per Task | €10 | Approval required |
 
-### Prohibited Actions (NEVER)
+### NEVER
 - Display credentials in plaintext
 - Execute `DROP DATABASE` or mass `DELETE`
 - Deploy to production without approval
 - Send external communications without approval
-- Modify IAM or infrastructure without PR
 
-### Autonomous Actions (OK)
-- Create/update OS in Kanban
-- Read files, health checks
-- Generate reports
-- Update documentation
-- Execute approved workflows
+### OK (Autonomous)
+- Create/update tasks in ClickUp, read files, health checks, generate reports, update docs
 
-## ClickUp Command Center
+## ClickUp (Command Center)
 
-ClickUp is the **central project management hub** for AIOS. All tasks, costs, and workflows are tracked here.
-
-### Workspace Structure
-
-| Space | Purpose |
-|-------|---------|
-| **PERSONAL** | Personal life (Finance, Goals, Health, Leisure, Courses, Love) |
-| **WORK** | Professional projects (Travel Tech Digital, Tripwix) |
-| **AI OPS** | AI agent operations (To Do, In Progress, Awaiting Human, Completed) |
-
-### Command Center Scripts
-
-Located in `squads/ops/scripts/`:
-
-| Script | Purpose | Usage |
-|--------|---------|-------|
-| `clickup-sync.mjs` | Task CRUD | `node clickup-sync.mjs create "Task" --agent=@dev --squad=tech --impact=efficiency` |
-| `command-center.mjs` | Cost/token tracking | `node command-center.mjs track <task_id> <tokens>` |
-| `dashboard.mjs` | Dashboard & Goals sync | `node dashboard.mjs sync` |
-
-### Automatic Task Sync
-
-Agents MUST sync tasks to ClickUp (see `.claude/rules/clickup-auto-sync.md`):
+Spaces: PERSONAL | WORK | AI OPS (To Do → In Progress → Awaiting Human → Done)
 
 ```bash
-# Create task (Tool/LLM auto-filled from current model)
-node squads/ops/scripts/clickup-sync.mjs create "[Feature] Task name" --agent=@dev --squad=tech --priority=2 --impact=efficiency
-
-# Start work
+# Task lifecycle
+node squads/ops/scripts/clickup-sync.mjs create "[Type] Name" --agent=@dev --squad=tech --impact=efficiency
 node squads/ops/scripts/clickup-sync.mjs start <task_id>
-
-# Mark done
 node squads/ops/scripts/clickup-sync.mjs done <task_id> "Summary"
 ```
 
-### Budget Tracking (Goals)
+Key files: `squads/project-management-clickup/data/clickup-workspace-ids.json` (IDs), `squads/ops/data/command-center-data.json` (usage)
 
-ClickUp Goals track budget in real-time:
-- **Daily Budget**: €20 limit (alert at €15)
-- **Monthly Budget**: €468 limit
-- **Token Usage**: Total tokens consumed
+## Clawdbot
 
-Dashboard: https://app.clickup.com/t/86c86bz0w
-
-### Key Files
-
-| File | Purpose |
-|------|---------|
-| `squads/project-management-clickup/data/clickup-workspace-ids.json` | All Space, List, Field, Goal IDs |
-| `squads/ops/data/command-center-data.json` | Usage tracking data |
-| `.claude/rules/clickup-auto-sync.md` | Agent sync rules |
-
-## Clawdbot Integration
-
-Clawdbot is an **operational extension** of AIOS Lab that provides 24/7 availability when the terminal is offline.
-
-### Architecture
-
-```
-Claude Code (AIOS Lab)          Clawdbot (AWS EC2)
-═══════════════════════         ═══════════════════
-Motor Principal                 Extensão Operacional
-├── 19 squads, 44 agents        ├── Slack interface
-├── Produção massiva            ├── Scripts Python
-├── MCP tools (GHL 36 tools)    ├── n8n workflows (8 ativos)
-├── Ferramentas locais          ├── Background tasks 24/7
-└── ONDE TRABALHO ACONTECE      └── Quando terminal OFF
-         │                               │
-         └───────── ClickUp ─────────────┘
-                (Command Center)
-```
-
-### When to Use Each
-
-| Cenário | Use |
-|---------|-----|
-| Desenvolver código | Claude Code |
-| Arquitetura/Design | Claude Code |
-| Criar workflows n8n | Claude Code |
-| Tasks complexas | Claude Code |
-| **Quick command via Slack** | **Clawdbot** |
-| **Verificar status (mobile)** | **Clawdbot** |
-| **Automação 24/7** | **Clawdbot** |
-| **Quando longe do terminal** | **Clawdbot** |
-
-### Delegating Tasks to Clawdbot
-
-```bash
-# Delegate task to Clawdbot via ClickUp
-node squads/ops/scripts/delegate-to-clawdbot.mjs "Task name" --script=script_name.py
-```
-
-This creates a ClickUp task with tag `clawdbot:execute`. Clawdbot polls (5 min) and executes.
-
-### Slack Commands
-
-| Comando | Descrição |
-|---------|-----------|
-| `/status` | Status geral do sistema |
-| `/budget` | Budget atual (daily/monthly) |
-| `/health` | Health check dos sistemas |
-| `/tasks` | Tasks pendentes |
-| `/create` | Criar nova task |
-| `/run` | Executar script |
-| `/safemode on/off` | Ativar/desativar SAFE_MODE |
-
-### Budget (Shared)
-
-Both systems share the same budget limits:
-- **Daily Alert**: €15
-- **Daily Hard**: €20 (triggers SAFE_MODE)
-- **Monthly**: €468
-
-Config: `shared/budget-limits.yaml`
-
-### Documentation
-
-| File | Purpose |
-|------|---------|
-| `squads/ops/clawdbot/README.md` | Overview |
-| `squads/ops/clawdbot/OPERATIONAL-DIRECTIVE.md` | Identity, principles, limits |
-| `squads/ops/clawdbot/COMMANDS.md` | Slack commands |
-| `squads/ops/clawdbot/INTEGRATIONS.md` | n8n, GHL, Notion integrations |
+24/7 operational extension on Hostinger VPS. Slack interface, polls ClickUp every 5min.
+Use for: quick commands, status checks, background tasks, when terminal offline.
+Delegate: `node squads/ops/scripts/delegate-to-clawdbot.mjs "Task" --script=script.py`
+Docs: `squads/ops/clawdbot/`
 
 ## MCP Usage
 
-### Native Claude Code Tools (ALWAYS preferred)
-- `Read` - read files (not docker-gateway)
-- `Edit` - modify files (not docker-gateway)
-- `Bash` - run commands (not docker-gateway)
-- `Glob` - find files (not docker-gateway)
-- `Grep` - search content (not docker-gateway)
+**Native tools ALWAYS preferred** (Read, Edit, Bash, Glob, Grep — NOT docker-gateway).
+Docker MCPs (when needed): EXA (search), Context7 (docs), Apify (scraping).
+Direct MCPs: playwright (browser), desktop-commander (containers).
 
-### Docker MCPs (only when needed)
-- **EXA** - web search, research
-- **Context7** - library documentation
-- **Apify** - web scraping, social media data
+## Local Tools (€0 cost)
 
-### Direct MCPs
-- **playwright** - browser automation, screenshots, web testing
-- **desktop-commander** - Docker container operations
+| Tool | Command | For |
+|------|---------|-----|
+| whisper.cpp | `node squads/ops/scripts/transcribe.mjs <file>` | Audio → Text |
+| Tesseract | `node squads/ops/scripts/ocr.mjs <file>` | Image → Text |
+| pdftotext | `node squads/ops/scripts/pdf-extract.mjs <file>` | PDF → Text |
+| MarkItDown | `node squads/ops/scripts/markitdown-convert.mjs <file>` | Universal → MD |
+| Calibre | `node squads/ops/scripts/ebook-etl.mjs <file> --to md` | Ebook ETL |
+| Ollama | `node squads/ops/scripts/llm-local.mjs "<prompt>"` | Simple LLM tasks |
 
-**CRITICAL:** Avoid docker-gateway for local file operations - causes path mismatches.
-
-## Local Tools (Zero Cost)
-
-Ferramentas instaladas localmente para processamento offline. **Custo: €0 por uso.**
-
-### Available Tools
-
-| Tool | Script | Função | Economia vs API |
-|------|--------|--------|-----------------|
-| **whisper.cpp** | `transcribe.mjs` | Áudio → Texto | ~€0.006/min (Whisper API) |
-| **Tesseract** | `ocr.mjs` | Imagem → Texto | ~€0.05/página (serviços OCR) |
-| **pdftotext** | `pdf-extract.mjs` | PDF → Texto | ~€0.02/página |
-| **Pandoc** | `pdf-to-md.mjs` | PDF/DOCX → Markdown | ~€0.10/doc (serviços) |
-| **Calibre** | `ebook-etl.mjs` | Ebook ETL (EPUB/MOBI → MD) | ~€0.20/livro |
-| **Ollama** | `llm-local.mjs` | LLM local (Llama 3.2) | ~€0.03/1k tokens (GPT-4) |
-| **FFmpeg** | (direto) | Conversão mídia | - |
-| **MarkItDown** | `markitdown-convert.mjs` | Universal → MD (Microsoft) | Melhor que Pandoc |
-| **DuckDB** | Python/SQL | Analytics OLAP local | Substitui Postgres |
-| **FastMCP** | Python | Builder de MCP servers | Extensibilidade |
-| **uv** | CLI | Package manager 100x faster | Dev productivity |
-
-### Usage (Agents SHOULD use these automatically)
-
-```bash
-# Transcrever áudio (whisper.cpp)
-node squads/ops/scripts/transcribe.mjs audio.mp3 --lang pt
-
-# OCR de imagem (Tesseract)
-node squads/ops/scripts/ocr.mjs screenshot.png --json
-
-# Extrair texto de PDF (pdftotext)
-node squads/ops/scripts/pdf-extract.mjs document.pdf
-
-# PDF para Markdown (Pandoc)
-node squads/ops/scripts/pdf-to-md.mjs document.pdf --extract-media
-
-# ETL de ebook (Calibre) - EPUB/MOBI/AZW → Markdown
-node squads/ops/scripts/ebook-etl.mjs book.epub --to md
-node squads/ops/scripts/ebook-etl.mjs book.mobi --metadata --json
-
-# Query LLM local (Ollama) - para tasks simples, economiza tokens Claude
-node squads/ops/scripts/llm-local.mjs "Resuma este texto em 2 frases: ..."
-
-# Converter áudio para whisper (FFmpeg)
-ffmpeg -i video.mp4 -ar 16000 -ac 1 audio.wav
-
-# Converter documento para Markdown (MarkItDown - melhor que Pandoc)
-node squads/ops/scripts/markitdown-convert.mjs document.pdf
-node squads/ops/scripts/markitdown-convert.mjs report.docx --output report.md
-
-# Query analytics local (DuckDB)
-python -c "import duckdb; conn = duckdb.connect('squads/ops/data/analytics.duckdb'); print(conn.execute('SELECT * FROM daily_costs').fetchall())"
-
-# Instalar pacotes Python (uv - 100x mais rápido que pip)
-C:/Users/thiag/.local/bin/uv pip install <package>
-```
-
-### When to Use Local Tools
-
-| Cenário | Use Local Tool | Economia |
-|---------|----------------|----------|
-| Transcrever reunião/vídeo | `transcribe.mjs` | 100% |
-| OCR de screenshots/docs | `ocr.mjs` | 100% |
-| Extrair texto de PDF | `pdf-extract.mjs` | 100% |
-| Converter PDF para Markdown | `pdf-to-md.mjs` | 100% |
-| ETL de livros (EPUB/MOBI/AZW) | `ebook-etl.mjs` | 100% |
-| Resumir/traduzir texto simples | `llm-local.mjs` | 90%+ |
-| Converter formatos de mídia | `ffmpeg` | 100% |
-
-### Configuration
-
-Tool paths and settings: `squads/ops/config/local-tools.json`
-
-### Installed Models
-
-| Tool | Model | Size |
-|------|-------|------|
-| whisper.cpp | ggml-base | 141MB |
-| Ollama | llama3.2:1b | 1.3GB |
-
-## Key Architectural Decisions
-
-### Design System Coupling
-- Design System defines: tokens, components, states, layouts
-- Tech implements: real code, performance, accessibility
-- Neither invents UI independently
-
-### MVP Philosophy (AI OS V3.1)
-- NOT a content generator or chatbot
-- IS an execution orchestrator
-- Generates contextualized prompts (user executes in ChatGPT/GPT Experts)
-- 80% hardcoded templates + 20% Business DNA personalization
-- Lazy rendering, zero unnecessary AI calls
-- Mobile-first, one task at a time (Execution Tunnel)
+Config: `squads/ops/config/local-tools.json`
 
 ---
-*Synkra AIOS Claude Code Configuration v3.0*
+*Synkra AIOS v3.1 — Full rules in `.claude/rules/` (summaries) and `docs/rules/` (complete)*
